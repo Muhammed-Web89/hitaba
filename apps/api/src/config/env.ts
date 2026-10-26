@@ -5,8 +5,8 @@ const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().default(4000),
   DATABASE_URL: z.string().min(1),
-  WEB_ORIGIN: z.string().default('http://localhost:3000'),
-  PUBLIC_WEB_URL: z.string().default('http://localhost:3000'),
+  WEB_ORIGIN: z.string().default('http://localhost:3737'),
+  PUBLIC_WEB_URL: z.string().default('http://localhost:3737'),
   JWT_ACCESS_SECRET: z.string().min(16),
   JWT_REFRESH_SECRET: z.string().min(16),
   ENCRYPTION_KEY: z

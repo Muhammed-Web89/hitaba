@@ -147,7 +147,7 @@ model User {
   passwordHash     String?
   telegramId       String?    @unique
   telegramUsername String?
-  locale           String     @default("uz")
+  locale           String     @default("en")
   timezone         String     @default("Asia/Tashkent")
   connectBalance   Int        @default(0)
   /// Artırıldığında tüm refresh token'lar geçersiz olur ("tüm oturumları kapat").

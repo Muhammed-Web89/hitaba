@@ -10,9 +10,9 @@ Kaynak: `00-mimari-tasarim.md`. Bu dosya, mimari dokümanın Faz 1 kapsamının 
 | Backend | NestJS 11 modüler monolit | Mimari dokümandaki servis sınırları = Nest modülleri; ileride mikroservise ayrılabilir |
 | Veritabanı | PostgreSQL + Prisma 6 | Geliştirmede PGlite (WASM Postgres, kurulum gerektirmez), üretimde gerçek Postgres |
 | Gerçek zamanlı | Socket.io (`/chat` namespace) | Tek instance'ta adaptörsüz; ölçeklemede Redis adapter |
-| Cache / rate-limit | Redis (opsiyonel) → yoksa bellek içi yedek | Geliştirme sürtünmesiz |
+| Cache / rate-limit | Faz 1: bellek içi (Nest Throttler). Çoklu instance'ta Redis'e geçilecek | Geliştirme sürtünmesiz |
 | Dosya | Yerel disk (`apps/api/storage`), `StorageService` arayüzü ile S3'e geçiş | Fotoğraflar asla public URL ile servis edilmez, API üzerinden filigranlı akar |
-| Diller | uz (varsayılan), ru, tr, en — ar (RTL) altyapısı hazır | |
+| Diller | uz, ru, tr, en, ar (RTL) — varsayılan cihaz dili, desteklenmiyorsa en; ilk girişte dil seçimi | |
 | Ödeme | Telegram Stars (Faz 1); kart/PSP Faz 2 | |
 | Monorepo | npm workspaces: `apps/api`, `apps/web`, `packages/shared` | |
 
@@ -46,3 +46,17 @@ Kaynak: `00-mimari-tasarim.md`. Bu dosya, mimari dokümanın Faz 1 kapsamının 
 
 Veli OTP, kademeli iade, 2FA, kimlik rozeti, mahr aracı (Faz 2) · istihare, aile görüşmesi, video (Faz 3).
 Gerçek AI moderasyon sağlayıcısı: arayüz hazır, ilk sürüm kural tabanlı.
+
+## Geliştirme ortamı notları
+
+- Postgres: PGlite (`npm run db`, port 54329). PGlite tüm bağlantıları tek oturumda topladığı için `DATABASE_URL` içinde `connection_limit=1&pgbouncer=true` zorunlu.
+- Web portu 3737 (makinede 3000/3100 başka projelerce kullanılıyor).
+- Ödeme: `DEV_PAYMENTS=true` iken Telegram dışında connect alımı simüle edilir (üretimde asla açılmaz).
+
+## Bilinen eksikler / sonraki adımlar
+
+- Yerleşik çeviri butonu (§5.5) — sağlayıcı seçimi bekliyor.
+- Filtre aboneliği, kaçırılanı geçmişe dönük ücretli geri getirme, tekrar görüntüleme talebi (§5.3–5.4).
+- Push bildirim (FCM/APNs) — şimdilik uygulama içi + Telegram bot.
+- Gerçek AI moderasyon sağlayıcısı (arayüz hazır: `AiScreenService`).
+- Üretim: S3 depolama, Redis socket adapter, Sentry, CI.

@@ -66,6 +66,7 @@ const START_TEXT: Record<string, [string, string]> = {
   ru: ['Ассаляму алейкум! Hitaba — знакомства с намерением никаха, под наблюдением свидетелей и вали.', 'Открыть Hitaba'],
   tr: ['Esselamü aleyküm! Hitaba — nikah niyetli, şahitli ve veli gözetimli tanışma.', 'Hitaba’yı aç'],
   en: ['Assalamu alaykum! Hitaba — marriage-minded introductions with witnesses and wali oversight.', 'Open Hitaba'],
+  ar: ['السلام عليكم! هِتابة — تعارف بنية الزواج بحضور الشهود وإشراف الولي.', 'افتح هِتابة'],
 };
 
 @Controller('telegram')
@@ -103,8 +104,8 @@ export class TelegramWebhookController {
     }
 
     if (update.message?.text?.startsWith('/start')) {
-      const lang = update.message.from?.language_code?.slice(0, 2) ?? 'uz';
-      const [text, label] = START_TEXT[lang] ?? START_TEXT.uz;
+      const lang = update.message.from?.language_code?.slice(0, 2) ?? 'en';
+      const [text, label] = START_TEXT[lang] ?? START_TEXT.en;
       await this.telegram.sendMessage(String(update.message.chat.id), text, label);
     }
     return { ok: true };

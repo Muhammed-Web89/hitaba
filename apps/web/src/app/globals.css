@@ -1,0 +1,204 @@
+@import 'tailwindcss';
+
+/* Hitaba tasarım sistemi — docs/00-mimari-tasarim.md §8 */
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --brand-50: #eef7f1;
+  --brand-100: #d3ebdb;
+  --brand-300: #8fcba3;
+  --brand-500: #2f8f5b;
+  --brand-600: #24734a;
+  --brand-700: #1b5938;
+  --brand-ink: #ffffff;
+
+  --paper-50: #fbfaf6;
+  --paper-100: #f3f0e7;
+  --paper-200: #e8e3d4;
+
+  --accent-500: #c79a4b;
+  --success: #2f8f5b;
+  --warning: #c77f2e;
+  --warning-bg: #fbf1e3;
+  --danger: #b6412e;
+  --info: #3b6e91;
+  --info-bg: #eaf1f6;
+
+  --bg-base: var(--paper-50);
+  --bg-surface: #ffffff;
+  --bg-surface-alt: var(--paper-100);
+  --border-subtle: var(--paper-200);
+  --text-primary: #1c1b17;
+  --text-secondary: #5a574c;
+  --text-muted: #8c887a;
+  --bubble-mine: var(--brand-100);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --pattern-opacity: 0.035;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg-base: #121410;
+    --bg-surface: #1b1e18;
+    --bg-surface-alt: #242821;
+    --border-subtle: #333830;
+    --text-primary: #f2f0e8;
+    --text-secondary: #b8b5a8;
+    --text-muted: #7d7a6e;
+    --brand-500: #4fb37a;
+    --brand-600: #3f9d68;
+    --brand-100: #1f3a2a;
+    --brand-50: #18281e;
+    --brand-ink: #0d140f;
+    --accent-500: #d9b06a;
+    --warning-bg: #2e2416;
+    --info-bg: #17232c;
+    --bubble-mine: #1f3a2a;
+    --shadow-card: none;
+    --pattern-opacity: 0.045;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg-base: #121410;
+  --bg-surface: #1b1e18;
+  --bg-surface-alt: #242821;
+  --border-subtle: #333830;
+  --text-primary: #f2f0e8;
+  --text-secondary: #b8b5a8;
+  --text-muted: #7d7a6e;
+  --brand-500: #4fb37a;
+  --brand-600: #3f9d68;
+  --brand-100: #1f3a2a;
+  --brand-50: #18281e;
+  --brand-ink: #0d140f;
+  --accent-500: #d9b06a;
+  --warning-bg: #2e2416;
+  --info-bg: #17232c;
+  --bubble-mine: #1f3a2a;
+  --shadow-card: none;
+  --pattern-opacity: 0.045;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-300: var(--brand-300);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-ink: var(--brand-ink);
+  --color-accent: var(--accent-500);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-surface-alt: var(--bg-surface-alt);
+  --color-line: var(--border-subtle);
+  --color-ink: var(--text-primary);
+  --color-ink-2: var(--text-secondary);
+  --color-ink-3: var(--text-muted);
+  --color-bubble: var(--bubble-mine);
+  --shadow-card: var(--shadow-card);
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-arabic: var(--font-naskh), var(--font-manrope), serif;
+  --radius-card: 12px;
+  --radius-control: 8px;
+}
+
+/* Tailwind yardımcı sınıfları bu temel stilleri ezebilsin diye katman içinde. */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    min-height: 100dvh;
+  }
+
+  html[lang='ar'] body {
+    font-family: var(--font-arabic);
+  }
+
+  /* Çok düşük opaklıkta girih deseni (§8.4) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: var(--pattern-opacity);
+    background-color: var(--text-primary);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='black' stroke-width='1.2'%3E%3Cpath d='M40 6 L49 31 L74 40 L49 49 L40 74 L31 49 L6 40 L31 31 Z'/%3E%3Cpath d='M16 16 L40 26 L64 16 L54 40 L64 64 L40 54 L16 64 L26 40 Z'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3Cpath d='M0 0 L6 6 M80 0 L74 6 M0 80 L6 74 M80 80 L74 74'/%3E%3C/g%3E%3C/svg%3E");
+    mask-size: 80px 80px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='black' stroke-width='1.2'%3E%3Cpath d='M40 6 L49 31 L74 40 L49 49 L40 74 L31 49 L6 40 L31 31 Z'/%3E%3Cpath d='M16 16 L40 26 L64 16 L54 40 L64 64 L40 54 L16 64 L26 40 Z'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3Cpath d='M0 0 L6 6 M80 0 L74 6 M0 80 L6 74 M80 80 L74 74'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 80px 80px;
+  }
+
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  html[lang='ar'] h1,
+  html[lang='ar'] h2,
+  html[lang='ar'] h3 {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
+
+  /* RTL'de yön okları aynalanır (§8.6) */
+  [dir='rtl'] .flip-rtl {
+    transform: scaleX(-1);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-pop {
+  animation: pop-in 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

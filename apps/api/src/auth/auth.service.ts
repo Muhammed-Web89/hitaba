@@ -107,7 +107,7 @@ export class AuthService {
 
 function normalizeLocale(locale?: string | null): string {
   const l = (locale ?? '').slice(0, 2).toLowerCase();
-  return SUPPORTED_LOCALES.has(l) ? l : 'uz';
+  return SUPPORTED_LOCALES.has(l) ? l : 'en';
 }
 
 // Var olmayan kullanıcılar için sabit maliyetli doğrulama.

@@ -161,6 +161,7 @@ export interface NotificationItem {
 }
 
 export interface WaliPortalView {
+  femaleId: string;
   femaleDisplayName: string;
   waliName: string | null;
   witnesses: { name: string; relation: Relation }[];

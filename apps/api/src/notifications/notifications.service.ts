@@ -72,9 +72,21 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     mahram_approved: 'The mahram contact was posted in the chat.',
     connects_credited: 'Connects were added to your balance.',
   },
+  ar: {
+    profile_approved: 'تمت الموافقة على ملفك. يمكنك الآن تصفح الملفات.',
+    profile_rejected: 'لم يجتز ملفك المراجعة. التفاصيل في التطبيق.',
+    mutual_match: 'لديك اهتمام متبادل جديد.',
+    photo_approved: 'وافقت الأخت على صورتك — يمكنك الآن بدء المحادثة.',
+    chat_requested: 'تطلب الأخت منك بدء المحادثة.',
+    chat_opened: 'تم فتح محادثة جديدة لك.',
+    silence_reminder: 'لا توجد رسائل في محادثتك منذ مدة.',
+    chat_closed: 'تم إغلاق محادثتك.',
+    mahram_approved: 'تم نشر بيانات تواصل المحرم في المحادثة.',
+    connects_credited: 'تمت إضافة الرصيد إلى حسابك.',
+  },
 };
 
-const OPEN_LABEL: Record<string, string> = { uz: 'Ochish', ru: 'Открыть', tr: 'Aç', en: 'Open' };
+const OPEN_LABEL: Record<string, string> = { uz: 'Ochish', ru: 'Открыть', tr: 'Aç', en: 'Open', ar: 'فتح' };
 
 export function toNotificationItem(n: Notification): NotificationItem {
   return {
@@ -102,9 +114,9 @@ export class NotificationsService {
       where: { id: userId },
       select: { telegramId: true, locale: true },
     });
-    const text = user && (TG_TEXT[user.locale] ?? TG_TEXT.uz)[type];
+    const text = user && (TG_TEXT[user.locale] ?? TG_TEXT.en)[type];
     if (user?.telegramId && text) {
-      void this.telegram.sendMessage(user.telegramId, `Hitaba · ${text}`, OPEN_LABEL[user.locale] ?? OPEN_LABEL.uz);
+      void this.telegram.sendMessage(user.telegramId, `Hitaba · ${text}`, OPEN_LABEL[user.locale] ?? OPEN_LABEL.en);
     }
     return n;
   }

@@ -111,6 +111,7 @@ export class WaliService {
     }
 
     return {
+      femaleId: link.femaleId,
       femaleDisplayName: link.female.profile?.displayName ?? '',
       waliName: link.waliName,
       witnesses: witnesses.map((w) => ({ name: w.name, relation: w.relation })),
