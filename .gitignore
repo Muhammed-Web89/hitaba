@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+.env
+.env.local
+.env.*.local
+
+.pgdata/
+apps/api/storage/
+
+.DS_Store
+*.log
+next-env.d.ts

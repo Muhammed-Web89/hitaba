@@ -1,0 +1,505 @@
+// Hitaba veri modeli — docs/00-mimari-tasarim.md §6
+// Enum'lar packages/shared/src/enums.ts ile birebir aynı tutulmalı.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum UserStatus {
+  ONBOARDING
+  PENDING_MODERATION
+  APPROVED
+  REJECTED
+  FROZEN
+  BANNED
+  DELETED
+}
+
+enum MaritalStatus {
+  NEVER_MARRIED
+  DIVORCED
+  WIDOWED
+  MARRIED
+}
+
+enum PolygamyAnswer {
+  YES
+  NO
+  PREFER_NOT_TO_SAY
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MatchStage {
+  MUTUAL
+  PHOTO_APPROVED
+  CHAT_OPEN
+  CLOSED
+}
+
+enum ChatStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+}
+
+enum ChatCloseReason {
+  USER
+  SILENCE
+  MODERATOR
+  BAN
+}
+
+enum MessageKind {
+  TEXT
+  SYSTEM
+  MAHRAM_CONTACT
+}
+
+enum MessageState {
+  DELIVERED
+  HELD
+  REJECTED
+}
+
+enum ModerationTarget {
+  PROFILE
+  PHOTO
+  MESSAGE
+  MAHRAM_CONTACT
+}
+
+enum ReportCategory {
+  FAKE_PROFILE
+  INAPPROPRIATE
+  CONTACT_SHARING
+  NOT_SERIOUS
+  MINOR
+  OTHER
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+enum ConnectTxType {
+  PURCHASE
+  SPEND
+  REFUND
+  BONUS
+  PENALTY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum PhotoKind {
+  MAIN
+  EXTRA
+}
+
+enum Relation {
+  FATHER
+  BROTHER
+  UNCLE
+  GRANDFATHER
+  SON
+  MOTHER
+  SISTER
+  AUNT
+  FRIEND
+  OTHER
+}
+
+// ── Kimlik ───────────────────────────────────────────────────────────────
+
+model User {
+  id               String     @id @default(cuid())
+  role             Role       @default(USER)
+  gender           Gender
+  status           UserStatus @default(ONBOARDING)
+  email            String?    @unique
+  passwordHash     String?
+  telegramId       String?    @unique
+  telegramUsername String?
+  locale           String     @default("uz")
+  timezone         String     @default("Asia/Tashkent")
+  connectBalance   Int        @default(0)
+  /// Artırıldığında tüm refresh token'lar geçersiz olur ("tüm oturumları kapat").
+  tokenVersion     Int        @default(0)
+  /// Reddedilen profil için kullanıcıya gösterilen gerekçe (boşsa gizli).
+  statusReason     String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  /// Dahili — kullanıcılara gösterilmez.
+  lastLoginAt      DateTime?
+
+  profile        Profile?
+  photos         Photo[]
+  likesGiven     Like[]          @relation("likeFrom")
+  likesReceived  Like[]          @relation("likeTo")
+  passesGiven    Pass[]          @relation("passFrom")
+  passesReceived Pass[]          @relation("passTo")
+  favorites      Favorite[]      @relation("favOwner")
+  favoritedBy    Favorite[]      @relation("favTarget")
+  matchesAsMale  Match[]         @relation("matchMale")
+  matchesAsFemale Match[]        @relation("matchFemale")
+  messages       Message[]
+  reactions      MessageReaction[]
+  waliLink       WaliLink?
+  witnesses      Witness[]
+  connectTxs     ConnectTx[]
+  payments       Payment[]
+  notifications  Notification[]
+  reportsFiled   Report[]        @relation("reporter")
+  reportsAgainst Report[]        @relation("reported")
+  photoViews     PhotoView[]
+
+  @@index([role, gender, status])
+}
+
+model Profile {
+  userId            String           @id
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName       String?
+  birthDate         DateTime?        @db.Date
+  country           String?
+  city              String?
+  nationality       String?
+  languages         String[]
+  willingToRelocate Boolean          @default(false)
+  heightCm          Int?
+  weightKg          Int?
+  maritalStatus     MaritalStatus?
+  nikahCount        Int              @default(0)
+  childrenCount     Int              @default(0)
+  polygamyAnswer    PolygamyAnswer?
+  aboutMe           String?
+  aboutSpouse       String?
+  beliefsManhaj     String?
+  /// AES-256-GCM şifreli JSON — yalnızca moderatör çözebilir.
+  screeningEnc      String?
+  acceptedRulesAt   DateTime?
+  completedSteps    String[]
+  /// Erkek: akışta fotoğrafımı göster (varsayılan kapalı).
+  showPhotoInFeed   Boolean          @default(false)
+  /// Kadın: "şu an sohbette" rozetini gizle.
+  hideBusyBadge     Boolean          @default(false)
+  moderationStatus  ModerationStatus @default(PENDING)
+  submittedAt       DateTime?
+  approvedAt        DateTime?
+  updatedAt         DateTime         @updatedAt
+
+  @@index([country, moderationStatus])
+}
+
+model Photo {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind            PhotoKind
+  position        Int              @default(0)
+  storageKey      String           @unique
+  mime            String
+  status          ModerationStatus @default(PENDING)
+  rejectionReason String?
+  moderatedAt     DateTime?
+  createdAt       DateTime         @default(now())
+  views           PhotoView[]
+
+  @@index([userId, status])
+}
+
+/// Kadın fotoğrafı her görüntülendiğinde kayıt (§5.4). Moderatör erişebilir.
+model PhotoView {
+  id       String   @id @default(cuid())
+  photoId  String
+  photo    Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  viewerId String
+  viewer   User     @relation(fields: [viewerId], references: [id], onDelete: Cascade)
+  viewedAt DateTime @default(now())
+
+  @@index([photoId, viewedAt])
+}
+
+// ── Eşleşme ─────────────────────────────────────────────────────────────
+
+model Like {
+  fromId    String
+  toId      String
+  from      User     @relation("likeFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        User     @relation("likeTo", fields: [toId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([fromId, toId])
+  @@index([toId])
+  @@index([fromId, createdAt])
+}
+
+model Pass {
+  fromId    String
+  toId      String
+  from      User     @relation("passFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        User     @relation("passTo", fields: [toId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([fromId, toId])
+  @@index([fromId, createdAt])
+}
+
+model Favorite {
+  userId    String
+  targetId  String
+  user      User     @relation("favOwner", fields: [userId], references: [id], onDelete: Cascade)
+  target    User     @relation("favTarget", fields: [targetId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, targetId])
+}
+
+model Match {
+  id               String     @id @default(cuid())
+  maleId           String
+  femaleId         String
+  male             User       @relation("matchMale", fields: [maleId], references: [id], onDelete: Cascade)
+  female           User       @relation("matchFemale", fields: [femaleId], references: [id], onDelete: Cascade)
+  stage            MatchStage @default(MUTUAL)
+  /// Kadın erkeğin fotoğrafını onayladığı an.
+  femaleApprovedAt DateTime?
+  /// Erkeğin kadının fotoğrafını görebileceği son an (onay + 24 saat).
+  malePhotoAccessUntil DateTime?
+  /// Kadın "sohbeti başlatmasını iste" dedi.
+  chatRequestedAt  DateTime?
+  closedById       String?
+  closedAt         DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  chat             Chat?
+
+  @@unique([maleId, femaleId])
+  @@index([femaleId, stage])
+}
+
+// ── Sohbet ──────────────────────────────────────────────────────────────
+
+model Chat {
+  id                String           @id @default(cuid())
+  matchId           String           @unique
+  match             Match            @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  openedById        String
+  status            ChatStatus       @default(ACTIVE)
+  /// Kullanıcıya gösterilen duraklatma gerekçesi (ör. iletişim bilgisi denemesi).
+  pausedReason      String?
+  closeReason       ChatCloseReason?
+  closedById        String?
+  closedAt          DateTime?
+  connectSpent      Int              @default(0)
+  reopenCount       Int              @default(0)
+  maleModeratorId   String?
+  femaleModeratorId String?
+  mahramSharedAt    DateTime?
+  lastActivityAt    DateTime         @default(now())
+  reminder1SentAt   DateTime?
+  reminder2SentAt   DateTime?
+  createdAt         DateTime         @default(now())
+  messages          Message[]
+  mahramContacts    MahramContact[]
+
+  @@index([status, lastActivityAt])
+}
+
+model Message {
+  id             String            @id @default(cuid())
+  chatId         String
+  chat           Chat              @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  senderId       String?
+  sender         User?             @relation(fields: [senderId], references: [id], onDelete: SetNull)
+  kind           MessageKind       @default(TEXT)
+  state          MessageState      @default(DELIVERED)
+  text           String
+  /// Düzenleme öncesi metinler — yalnızca moderatör görür.
+  history        String[]
+  contactSignals String[]
+  clientId       String?
+  editedAt       DateTime?
+  /// Karşı tarafta gizlenir, moderatörde kalır.
+  deletedAt      DateTime?
+  createdAt      DateTime          @default(now())
+  reactions      MessageReaction[]
+
+  @@index([chatId, createdAt])
+}
+
+model MessageReaction {
+  messageId String
+  userId    String
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reaction  String
+  createdAt DateTime @default(now())
+
+  @@id([messageId, userId])
+}
+
+model MahramContact {
+  id            String           @id @default(cuid())
+  chatId        String
+  chat          Chat             @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  submittedById String
+  name          String
+  relation      Relation
+  /// Şifreli — onaylanana kadar karşı tarafa hiçbir şekilde gitmez.
+  contactEnc    String
+  note          String?
+  status        ModerationStatus @default(PENDING)
+  decidedById   String?
+  decidedAt     DateTime?
+  createdAt     DateTime         @default(now())
+}
+
+// ── Veli & şahit ─────────────────────────────────────────────────────────
+
+model WaliLink {
+  id           String    @id @default(cuid())
+  femaleId     String    @unique
+  female       User      @relation(fields: [femaleId], references: [id], onDelete: Cascade)
+  /// SHA-256(token) — arama için.
+  tokenHash    String    @unique
+  /// Şifreli token — kullanıcı linki tekrar kopyalayabilsin diye.
+  tokenEnc     String
+  waliName     String?
+  waliRelation Relation?
+  lastAccessAt DateTime?
+  createdAt    DateTime  @default(now())
+}
+
+model Witness {
+  id        String   @id @default(cuid())
+  femaleId  String
+  female    User     @relation(fields: [femaleId], references: [id], onDelete: Cascade)
+  name      String
+  relation  Relation
+  createdAt DateTime @default(now())
+}
+
+// ── Connect & ödeme ──────────────────────────────────────────────────────
+
+model ConnectTx {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// İşaretli: alım/iade/bonus pozitif, harcama/ceza negatif.
+  amount    Int
+  type      ConnectTxType
+  chatId    String?
+  paymentId String?
+  note      String?
+  createdAt DateTime      @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Payment {
+  id               String        @id @default(cuid())
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider         String
+  packageId        String
+  connects         Int
+  amount           Int
+  currency         String
+  status           PaymentStatus @default(PENDING)
+  /// Sağlayıcının ödeme kimliği — çift kredilemeyi önler.
+  providerChargeId String?       @unique
+  createdAt        DateTime      @default(now())
+  paidAt           DateTime?
+}
+
+// ── Moderasyon, şikâyet, denetim ────────────────────────────────────────
+
+model ModerationItem {
+  id            String           @id @default(cuid())
+  targetType    ModerationTarget
+  targetId      String
+  subjectUserId String
+  /// Cinsiyete bölünmüş erişim: kadın fotoğrafını yalnızca kadın moderatör görür.
+  subjectGender Gender
+  aiFlags       String[]
+  status        ModerationStatus @default(PENDING)
+  decidedById   String?
+  reason        String?
+  decidedAt     DateTime?
+  createdAt     DateTime         @default(now())
+
+  @@index([status, targetType, subjectGender])
+  @@index([targetType, targetId])
+}
+
+model Report {
+  id           String         @id @default(cuid())
+  reporterId   String
+  reporter     User           @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  targetUserId String
+  targetUser   User           @relation("reported", fields: [targetUserId], references: [id], onDelete: Cascade)
+  chatId       String?
+  category     ReportCategory
+  details      String?
+  status       ReportStatus   @default(OPEN)
+  resolvedById String?
+  resolution   String?
+  createdAt    DateTime       @default(now())
+  resolvedAt   DateTime?
+
+  @@index([status, createdAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  data      Json      @default("{}")
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, createdAt])
+}
+
+/// Moderatör/admin erişim logu: kim, ne zaman, neyi okudu (§7).
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  targetType String
+  targetId   String
+  meta       Json     @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([targetType, targetId])
+  @@index([actorId, createdAt])
+}

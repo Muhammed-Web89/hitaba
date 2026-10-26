@@ -1,0 +1,34 @@
+{
+  "name": "hitaba",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Hitaba — şahitli, veli onaylı, nikah niyetli eşleşme platformu",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "db": "pglite-server --db=./.pgdata --port=54329 --max-connections=10",
+    "build:shared": "npm run build -w @hitaba/shared",
+    "dev:api": "npm run dev -w @hitaba/api",
+    "dev:web": "npm run dev -w @hitaba/web",
+    "dev": "npm run build:shared && concurrently -n db,api,web -c gray,green,blue \"npm run db\" \"npm run dev:api\" \"npm run dev:web\"",
+    "db:push": "npm run db:push -w @hitaba/api",
+    "db:seed": "npm run db:seed -w @hitaba/api",
+    "build": "npm run build:shared && npm run build -w @hitaba/api && npm run build -w @hitaba/web",
+    "typecheck": "npm run build:shared && npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.11",
+    "@electric-sql/pglite-socket": "^0.2.14",
+    "concurrently": "^9.2.1",
+    "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "overrides": {
+    "multer": "2.5.0"
+  }
+}
