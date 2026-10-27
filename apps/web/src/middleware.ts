@@ -4,5 +4,6 @@ import { routing } from './i18n/routing';
 export default createMiddleware(routing);
 
 export const config = {
-  matcher: ['/((?!_next|_vercel|.*\\..*).*)'],
+  // /api → Nest API proxy'si (next.config rewrites); dil öneki eklenmez.
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };

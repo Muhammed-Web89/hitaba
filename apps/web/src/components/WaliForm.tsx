@@ -63,10 +63,13 @@ export function WaliForm({ onSaved }: { onSaved?: () => void }) {
     }
   }
 
+  // Link, kullanıcının o an eriştiği adresten üretilir (yayın adresi değişse de doğru kalır).
+  const link = data?.url ? `${window.location.origin}${new URL(data.url).pathname}` : null;
+
   async function copy() {
-    if (!data?.url) return;
+    if (!link) return;
     try {
-      await navigator.clipboard.writeText(data.url);
+      await navigator.clipboard.writeText(link);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -144,7 +147,7 @@ export function WaliForm({ onSaved }: { onSaved?: () => void }) {
           </div>
           <div className="flex items-center gap-2 rounded-control bg-surface-alt px-3 py-2">
             <code className="min-w-0 flex-1 truncate text-xs" dir="ltr">
-              {data.url}
+              {link}
             </code>
             <Button size="sm" variant="secondary" icon={copied ? 'check' : 'copy'} onClick={copy}>
               {copied ? tc('copied') : tc('copy')}

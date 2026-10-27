@@ -461,7 +461,7 @@ export class ChatService implements OnModuleInit {
       viewer.id === chat.match.maleId &&
       chat.status === 'CLOSED' &&
       chat.reopenCount < 1 &&
-      // Kız kardeş kapattıysa ya da moderatör kapattıysa yeniden açılamaz.
+      // Kadın kapattıysa ya da moderatör kapattıysa yeniden açılamaz.
       (chat.closeReason === 'SILENCE' || (chat.closeReason === 'USER' && chat.closedById === viewer.id))
     );
   }

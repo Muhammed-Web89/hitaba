@@ -29,6 +29,16 @@ Hepsi birden: `npm run dev` (db + api + web).
 
 `apps/api/.env` dosyası `.env.example`'dan oluşturulur (gizli anahtarlar için açıklamalara bakın). Docker varsa `docker compose up -d` ile gerçek Postgres + Redis kullanılabilir; `DATABASE_URL`'i ona göre değiştirin.
 
+## Çevrimiçi paylaşma (geçici)
+
+```bash
+npm run share
+```
+
+Uygulamayı üretim modunda derler, başlatır ve Cloudflare tüneliyle `https://….trycloudflare.com` adresinde herkese açar (adres terminalde yazar). Hesap gerekmez; adres her seferinde değişir ve yalnızca bu bilgisayar açık ve komut çalışırken erişilebilir. API, aynı adresin `/api` yolundan sunulur.
+
+> Demo hesapları ve `hitaba123` şifresi herkese açık adreste de geçerlidir — adresi yalnızca güvendiğiniz kişilerle paylaşın.
+
 ## Demo hesapları
 
 Tüm şifreler: `hitaba123`
@@ -37,8 +47,8 @@ Tüm şifreler: `hitaba123`
 |---|---|
 | `admin@hitaba.dev` | Admin (erkek) |
 | `mod.m@hitaba.dev` / `mod.f@hitaba.dev` | Moderatör (erkek / kadın) |
-| `ali@` · `umar@` · `yusuf@hitaba.dev` | Kardeş |
-| `aisha@` · `maryam@` · `fatima@hitaba.dev` | Abla |
+| `ali@` · `umar@` · `yusuf@hitaba.dev` | Erkek |
+| `aisha@` · `maryam@` · `fatima@hitaba.dev` | Kadın |
 
 ## Testler
 

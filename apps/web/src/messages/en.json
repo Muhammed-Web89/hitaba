@@ -20,7 +20,7 @@
   "landing": {
     "eyebrow": "Bismillah",
     "title": "Getting to know each other — the halal way",
-    "subtitle": "Hitaba introduces brothers and sisters seeking nikah. Every conversation is witnessed, the wali can follow along, and privacy is protected at every step.",
+    "subtitle": "Hitaba introduces men and women seeking nikah. Every conversation is witnessed, the wali can follow along, and privacy is protected at every step.",
     "ctaRegister": "Create a profile",
     "ctaLogin": "Sign in",
     "openApp": "Open the app",
@@ -31,18 +31,45 @@
       "held": "A message with contact details was held for the moderator"
     },
     "principles": {
-      "witnessed": { "title": "Never alone", "text": "Two strangers never talk unwatched. Male and female moderators, an AI assistant and her witnesses are present in every chat." },
-      "wali": { "title": "The wali follows", "text": "The sister shares a private, read-only link with her wali. He can follow the conversation without registering." },
-      "privacy": { "title": "Photos under her control", "text": "A sister's photo never appears in lists. It opens only by her decision, for 24 hours, with a watermark." },
-      "moderation": { "title": "Human moderation", "text": "Every profile and photo is checked by a moderator of the same gender. Contact details are blocked until the family stage." }
+      "witnessed": {
+        "title": "Never alone",
+        "text": "Two strangers never talk unwatched. Male and female moderators, an AI assistant and the woman's witnesses are present in every chat."
+      },
+      "wali": {
+        "title": "The wali follows",
+        "text": "The woman shares a private, read-only link with her wali. He can follow the conversation without registering."
+      },
+      "privacy": {
+        "title": "Photos under her control",
+        "text": "A woman's photo never appears in lists. It opens only by her decision, for 24 hours, with a watermark."
+      },
+      "moderation": {
+        "title": "Human moderation",
+        "text": "Every profile and photo is checked by a moderator of the same gender. Contact details are blocked until the family stage."
+      }
     },
     "howTitle": "How does it work?",
     "steps": {
-      "profile": { "title": "Profile", "text": "Fill in your profile honestly; a moderator reviews it." },
-      "match": { "title": "Mutual interest", "text": "When both sides like each other, a match is formed." },
-      "photo": { "title": "Photo order", "text": "The sister sees the brother's photo first and decides." },
-      "chat": { "title": "Witnessed chat", "text": "The brother opens the chat; everyone watching is visible." },
-      "family": { "title": "Family stage", "text": "The mahram contact is shared after moderator approval." }
+      "profile": {
+        "title": "Profile",
+        "text": "Fill in your profile honestly; a moderator reviews it."
+      },
+      "match": {
+        "title": "Mutual interest",
+        "text": "When both sides like each other, a match is formed."
+      },
+      "photo": {
+        "title": "Photo order",
+        "text": "The woman sees the man's photo first and decides."
+      },
+      "chat": {
+        "title": "Witnessed chat",
+        "text": "The man opens the chat; everyone watching is visible."
+      },
+      "family": {
+        "title": "Family stage",
+        "text": "The mahram contact is shared after moderator approval."
+      }
     },
     "footer": "Hitaba · Intention is the foundation of every deed."
   },
@@ -61,12 +88,12 @@
     "haveAccount": "Already registered?",
     "loginLink": "Sign in",
     "genderQuestion": "I am a…",
-    "brother": "Brother",
+    "brother": "Man",
     "brotherHint": "Looking for a wife",
-    "sister": "Sister",
+    "sister": "Woman",
     "sisterHint": "Looking for a husband",
     "genderPermanent": "This cannot be changed later.",
-    "genderRequired": "Please choose brother or sister.",
+    "genderRequired": "Please choose man or woman.",
     "adultsOnly": "Only for adults (18+) with the intention of nikah.",
     "tgWelcome": "Welcome to Hitaba",
     "tgOnly": "Open from Telegram",
@@ -80,17 +107,50 @@
     "rejectedTitle": "Your profile needs changes",
     "rejectedNoReason": "Please review your profile and submit it again.",
     "steps": {
-      "basics": { "title": "About you", "why": "Your name is shown to others; instead of your exact age, an age range is shown." },
-      "location": { "title": "Where you live", "why": "Helps find people close to you or willing to relocate." },
-      "body": { "title": "Appearance", "why": "Approximate values are enough." },
-      "family": { "title": "Family status", "why": "Being open from the start builds trust." },
-      "about": { "title": "About me", "why": "Describe your character, work and plans. At least 100 characters." },
-      "spouse": { "title": "The spouse I seek", "why": "What matters to you in a spouse?" },
-      "beliefs": { "title": "Aqidah, manhaj and scholars", "why": "Agreement in religious understanding is the foundation of a family." },
-      "screening": { "title": "Screening questions", "why": "Seen only by the moderator — never shown to other users." },
-      "photos": { "title": "Photos", "why": "Optional. Up to 3 photos, reviewed by a moderator of your gender." },
-      "wali": { "title": "Wali and witnesses", "why": "Your wali can follow your chats through a private link." },
-      "rules": { "title": "Platform rules", "why": "Please read carefully before continuing." }
+      "basics": {
+        "title": "About you",
+        "why": "Your name is shown to others; instead of your exact age, an age range is shown."
+      },
+      "location": {
+        "title": "Where you live",
+        "why": "Helps find people close to you or willing to relocate."
+      },
+      "body": {
+        "title": "Appearance",
+        "why": "Approximate values are enough."
+      },
+      "family": {
+        "title": "Family status",
+        "why": "Being open from the start builds trust."
+      },
+      "about": {
+        "title": "About me",
+        "why": "Describe your character, work and plans. At least 100 characters."
+      },
+      "spouse": {
+        "title": "The spouse I seek",
+        "why": "What matters to you in a spouse?"
+      },
+      "beliefs": {
+        "title": "Aqidah, manhaj and scholars",
+        "why": "Agreement in religious understanding is the foundation of a family."
+      },
+      "screening": {
+        "title": "Screening questions",
+        "why": "Seen only by the moderator — never shown to other users."
+      },
+      "photos": {
+        "title": "Photos",
+        "why": "Optional. Up to 3 photos, reviewed by a moderator of your gender."
+      },
+      "wali": {
+        "title": "Wali and witnesses",
+        "why": "Your wali can follow your chats through a private link."
+      },
+      "rules": {
+        "title": "Platform rules",
+        "why": "Please read carefully before continuing."
+      }
     },
     "fields": {
       "displayName": "Name or nickname",
@@ -110,7 +170,7 @@
       "nikahCount": "Previous nikahs",
       "childrenCount": "Children",
       "polygamy": "Are you open to being a second wife?",
-      "polygamyHint": "Only brothers who filter for this will see your answer.",
+      "polygamyHint": "Only men who filter for this will see your answer.",
       "aboutMe": "About me",
       "aboutMeHint": "Character, work, daily life, plans.",
       "aboutSpouse": "The spouse I seek",
@@ -124,8 +184,8 @@
       "drugs": "Do you use drugs?",
       "relationsOutsideNikah": "Are you currently in a relationship outside nikah?",
       "contagiousDisease": "Do you have a contagious disease?",
-      "photosFemale": "Your photo never appears in lists. A brother sees it only after you approve, for 24 hours, with a watermark.",
-      "photosMale": "The sister sees your photo first. Showing it in the feed is off by default.",
+      "photosFemale": "Your photo never appears in lists. A man sees it only after you approve, for 24 hours, with a watermark.",
+      "photosMale": "The woman sees your photo first. Showing it in the feed is off by default.",
       "acceptRules": "I have read and accept the rules"
     }
   },
@@ -143,7 +203,11 @@
     "makeMain": "Make main",
     "delete": "Delete photo",
     "hint": "Up to {max} photos. Metadata (including location) is removed automatically.",
-    "status": { "PENDING": "Under review", "APPROVED": "Approved", "REJECTED": "Rejected" }
+    "status": {
+      "PENDING": "Under review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    }
   },
   "wali": {
     "title": "Wali and witnesses",
@@ -194,7 +258,7 @@
     "limitReached": "You have used today's likes. They renew at midnight in your time zone.",
     "mutualTitle": "Mutual interest",
     "mutualTextSister": "You both expressed interest. You can now see his photo and decide.",
-    "mutualTextBrother": "You both expressed interest. The sister will see your photo and decide.",
+    "mutualTextBrother": "You both expressed interest. The woman will see your photo and decide.",
     "keepBrowsing": "Keep browsing",
     "viewMutual": "View",
     "filter": {
@@ -236,7 +300,11 @@
     "polygamy": "Second wife"
   },
   "likes": {
-    "tabs": { "mutual": "Mutual", "mine": "My likes", "favorites": "Favorites" },
+    "tabs": {
+      "mutual": "Mutual",
+      "mine": "My likes",
+      "favorites": "Favorites"
+    },
     "emptyMutual": "No mutual interest yet",
     "emptyMutualText": "When someone you liked likes you back, they appear here.",
     "emptyMine": "You haven't liked anyone yet",
@@ -244,35 +312,47 @@
     "status": {
       "inChat": "In chat",
       "chatClosed": "Chat closed",
-      "waitingSister": "Waiting for the sister's decision",
+      "waitingSister": "Waiting for the woman's decision",
       "yourDecision": "Your decision is needed",
       "requested": "You asked him to start the chat",
-      "waitingBrother": "Waiting for the brother to open the chat",
-      "sisterBusy": "The sister is in another chat",
+      "waitingBrother": "Waiting for the man to open the chat",
+      "sisterBusy": "She is in another chat",
       "canOpen": "You can open the chat",
       "canOpenWindow": "You can open the chat · photo visible {h} h",
       "closed": "Closed"
     }
   },
   "match": {
-    "sisterDecisionText": "You can now see this brother's photo. If you approve, he will see your photo for 24 hours and may open a chat. This decision is final.",
+    "sisterDecisionText": "You can now see this man's photo. If you approve, he will see your photo for 24 hours and may open a chat. This decision is final.",
     "approvePhoto": "Approve",
     "declinePhoto": "Not suitable",
-    "sisterWaitingText": "You approved. The brother can now open a chat.",
+    "sisterWaitingText": "You approved. He can now open a chat.",
     "requestChat": "Ask him to start the chat",
-    "brotherWaitingText": "The sister will see your photo and decide. You will be notified.",
-    "sisterRequested": "The sister asked you to start the chat.",
-    "sisterBusy": "The sister is currently in another chat. You can open a chat when she is free.",
-    "openChatText": "Opening a chat costs {cost} connect. Moderators, the AI assistant and the sister's witnesses will be present.",
+    "brotherWaitingText": "The woman will see your photo and decide. You will be notified.",
+    "sisterRequested": "She asked you to start the chat.",
+    "sisterBusy": "She is currently in another chat. You can open a chat when she is free.",
+    "openChatText": "Opening a chat costs {cost} connect. Moderators, the AI assistant and the woman's witnesses will be present.",
     "openChat": "Open chat · {cost} connect",
     "buyConnects": "Buy connects",
     "goToChat": "Go to chat",
     "decline": "End this match",
     "confirm": {
-      "approve": { "title": "Approve the photo?", "text": "He will see your photo for {hours} hours and may open a chat. This decision is final." },
-      "declinePhoto": { "title": "Not suitable?", "text": "The match will be closed. This decision is final." },
-      "decline": { "title": "End this match?", "text": "The match will be closed and cannot be restored." },
-      "open": { "title": "Open the chat?", "text": "{cost} connect will be spent." }
+      "approve": {
+        "title": "Approve the photo?",
+        "text": "He will see your photo for {hours} hours and may open a chat. This decision is final."
+      },
+      "declinePhoto": {
+        "title": "Not suitable?",
+        "text": "The match will be closed. This decision is final."
+      },
+      "decline": {
+        "title": "End this match?",
+        "text": "The match will be closed and cannot be restored."
+      },
+      "open": {
+        "title": "Open the chat?",
+        "text": "{cost} connect will be spent."
+      }
     }
   },
   "chats": {
@@ -292,8 +372,8 @@
     "close": "End chat",
     "watchers": "Witnesses: {n}",
     "watcher": {
-      "maleModerator": "Moderator (brother)",
-      "femaleModerator": "Moderator (sister)",
+      "maleModerator": "Moderator (male)",
+      "femaleModerator": "Moderator (female)",
       "ai": "AI assistant (24/7)",
       "witness": "Witness · {relation}",
       "wali": "Wali (read-only)"
@@ -366,19 +446,27 @@
     "edit": "Edit profile",
     "editHint": "Changes to free-text fields are reviewed by a moderator again.",
     "remoderation": "Your recent changes are being reviewed. Your profile stays visible.",
-    "moderation": { "PENDING": "Under review", "APPROVED": "Approved", "REJECTED": "Needs changes" }
+    "moderation": {
+      "PENDING": "Under review",
+      "APPROVED": "Approved",
+      "REJECTED": "Needs changes"
+    }
   },
   "settings": {
     "title": "Settings",
     "appearance": "Appearance",
     "theme": "Theme",
-    "themes": { "system": "System", "light": "Light", "dark": "Dark" },
+    "themes": {
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
     "language": "Language",
     "privacy": "Privacy",
     "showPhotoInFeed": "Show my photo in the feed",
-    "showPhotoInFeedHint": "Off by default. Sisters see your photo after mutual interest anyway.",
+    "showPhotoInFeedHint": "Off by default. Women see your photo after mutual interest anyway.",
     "hideBusyBadge": "Hide the \"in a chat now\" badge",
-    "hideBusyBadgeHint": "Brothers will not see that you are in a chat.",
+    "hideBusyBadgeHint": "Men will not see that you are in a chat.",
     "account": "Account",
     "logout": "Sign out",
     "logoutAll": "Sign out on all devices",
@@ -393,7 +481,13 @@
     "devNote": "Payment with Telegram Stars works inside the Telegram Mini App. In the development environment purchases are simulated.",
     "history": "History",
     "noHistory": "No transactions yet.",
-    "tx": { "PURCHASE": "Purchase", "SPEND": "Chat opened", "REFUND": "Refund", "BONUS": "Bonus", "PENALTY": "Balance reset" }
+    "tx": {
+      "PURCHASE": "Purchase",
+      "SPEND": "Chat opened",
+      "REFUND": "Refund",
+      "BONUS": "Bonus",
+      "PENALTY": "Balance reset"
+    }
   },
   "notifications": {
     "title": "Notifications",
@@ -403,8 +497,8 @@
       "profile_rejected": "Your profile needs changes.",
       "photo_rejected": "One of your photos was not approved.",
       "mutual_match": "You have a new mutual interest.",
-      "photo_approved": "The sister approved — you can open a chat.",
-      "chat_requested": "The sister asked you to start the chat.",
+      "photo_approved": "She approved — you can open a chat.",
+      "chat_requested": "She asked you to start the chat.",
       "chat_opened": "A new chat was opened for you.",
       "chat_closed": "A chat was closed.",
       "silence_reminder": "Your chat has been quiet for a while.",
@@ -419,7 +513,11 @@
     "witnesses": "Witnesses",
     "noChat": "There is no active conversation yet.",
     "with": "Talking with",
-    "status": { "ACTIVE": "Active", "PAUSED": "Paused for moderation", "CLOSED": "Closed" },
+    "status": {
+      "ACTIVE": "Active",
+      "PAUSED": "Paused for moderation",
+      "CLOSED": "Closed"
+    },
     "readonly": "This is a read-only view.",
     "refresh": "Refresh",
     "privacy": "Please do not share this link or screenshots with anyone.",
@@ -427,10 +525,29 @@
     "invalidText": "The link may have been revoked or replaced. Ask for a new link."
   },
   "enums": {
-    "marital": { "NEVER_MARRIED": "Never married", "DIVORCED": "Divorced", "WIDOWED": "Widowed", "MARRIED": "Married" },
-    "polygamy": { "YES": "Yes", "NO": "No", "PREFER_NOT_TO_SAY": "Prefer not to say" },
-    "prayer": { "ALWAYS": "Always", "MOSTLY": "Mostly", "SOMETIMES": "Sometimes", "NO": "No" },
-    "hijab": { "NIQAB": "Niqab", "HIJAB": "Hijab", "PARTIAL": "Partially", "NONE": "No" },
+    "marital": {
+      "NEVER_MARRIED": "Never married",
+      "DIVORCED": "Divorced",
+      "WIDOWED": "Widowed",
+      "MARRIED": "Married"
+    },
+    "polygamy": {
+      "YES": "Yes",
+      "NO": "No",
+      "PREFER_NOT_TO_SAY": "Prefer not to say"
+    },
+    "prayer": {
+      "ALWAYS": "Always",
+      "MOSTLY": "Mostly",
+      "SOMETIMES": "Sometimes",
+      "NO": "No"
+    },
+    "hijab": {
+      "NIQAB": "Niqab",
+      "HIJAB": "Hijab",
+      "PARTIAL": "Partially",
+      "NONE": "No"
+    },
     "relation": {
       "FATHER": "Father",
       "BROTHER": "Brother",
@@ -465,7 +582,7 @@
     "profile_not_approved": "Your profile is not approved yet.",
     "daily_like_limit": "You have used today's likes.",
     "insufficient_connects": "Not enough connects.",
-    "sister_busy": "The sister is in another chat right now.",
+    "sister_busy": "She is in another chat right now.",
     "invalid_stage": "This action is not available at this stage.",
     "chat_paused": "The chat is paused until a moderator reviews it.",
     "chat_closed": "The chat is closed.",
@@ -487,10 +604,28 @@
   "admin": {
     "title": "Moderation",
     "logout": "Sign out",
-    "role": { "MODERATOR": "Moderator", "ADMIN": "Admin", "USER": "User" },
-    "gender": { "MALE": "Brother", "FEMALE": "Sister" },
-    "tabs": { "queue": "Queue", "reports": "Reports", "chats": "Chats", "users": "Users" },
-    "target": { "ALL": "All", "MESSAGE": "Message", "MAHRAM_CONTACT": "Mahram contact", "PROFILE": "Profile", "PHOTO": "Photo" },
+    "role": {
+      "MODERATOR": "Moderator",
+      "ADMIN": "Admin",
+      "USER": "User"
+    },
+    "gender": {
+      "MALE": "Male",
+      "FEMALE": "Female"
+    },
+    "tabs": {
+      "queue": "Queue",
+      "reports": "Reports",
+      "chats": "Chats",
+      "users": "Users"
+    },
+    "target": {
+      "ALL": "All",
+      "MESSAGE": "Message",
+      "MAHRAM_CONTACT": "Mahram contact",
+      "PROFILE": "Profile",
+      "PHOTO": "Photo"
+    },
     "segregationNote": "Photos are shown only to moderators of the same gender.",
     "queueEmpty": "The queue is empty",
     "openUser": "Open user",
@@ -510,12 +645,20 @@
     "heldMessage": "Held message",
     "transcript": "Transcript",
     "editedFrom": "edited from",
-    "reportStatus": { "OPEN": "Open", "RESOLVED": "Resolved", "DISMISSED": "Dismissed" },
+    "reportStatus": {
+      "OPEN": "Open",
+      "RESOLVED": "Resolved",
+      "DISMISSED": "Dismissed"
+    },
     "reportsEmpty": "No reports",
     "openChat": "Open chat",
     "resolve": "Resolve",
     "dismiss": "Dismiss",
-    "chatStatus": { "ACTIVE": "Active", "PAUSED": "Paused", "CLOSED": "Closed" },
+    "chatStatus": {
+      "ACTIVE": "Active",
+      "PAUSED": "Paused",
+      "CLOSED": "Closed"
+    },
     "chatsEmpty": "No chats",
     "messages": "{n} messages",
     "connectSpent": "Connects spent: {n}",

@@ -17,7 +17,8 @@
     "db:seed": "npm run db:seed -w @hitaba/api",
     "build": "npm run build:shared && npm run build -w @hitaba/api && npm run build -w @hitaba/web",
     "typecheck": "npm run build:shared && npm run typecheck --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present"
+    "test": "npm run test --workspaces --if-present",
+    "share": "bash scripts/share.sh"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.11",

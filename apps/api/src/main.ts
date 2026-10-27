@@ -8,7 +8,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({ origin: env.WEB_ORIGIN.split(','), credentials: true });
-  app.set('trust proxy', 1);
+  // Yerel proxy'ler (Next.js rewrite, tünel) atlanır; hız sınırı gerçek istemci IP'sine göre işler.
+  app.set('trust proxy', process.env.TRUST_PROXY ?? 'loopback');
   app.disable('x-powered-by');
   app.useBodyParser('json', { limit: '256kb' });
   app.enableShutdownHooks();
