@@ -8,6 +8,7 @@ cd "$(dirname "$0")/.."
 npm run build:shared >/dev/null
 (cd apps/api && npm run build >/dev/null)
 # Tarayıcı API'ye aynı adresin /api yolu üzerinden ulaşır (apps/web/next.config.ts rewrites).
+export NEXT_DIST_DIR=.next-share
 (cd apps/web && NEXT_PUBLIC_API_URL=/api npx next build >/dev/null)
 
 trap 'kill 0' EXIT

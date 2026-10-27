@@ -15,6 +15,8 @@ const securityHeaders = [
 const API_INTERNAL_URL = process.env.API_INTERNAL_URL ?? 'http://localhost:4000';
 
 const config: NextConfig = {
+  // Paylaşılan yayın ayrı klasörde derlenir; geliştirme derlemeleri onu bozmaz (scripts/share.sh).
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
   reactStrictMode: true,
   poweredByHeader: false,
   // socket.io yolu sonda "/" ister; Next bunu yönlendirmemeli.
