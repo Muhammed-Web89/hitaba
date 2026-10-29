@@ -69,6 +69,17 @@ Fotoğraflar hiçbir zaman doğrudan R2 adresinden servis edilmez: API yetkiyi k
 | `ENCRYPTION_KEY` | 32 bayt base64 — **yedekleyin**, kaybolursa şifreli veriler okunamaz |
 | `DEV_PAYMENTS` | boş / `false` |
 
+### Render
+
+Depo kökündeki `render.yaml` Blueprint'i servisi tanımlar (Docker, Ohio bölgesi — Neon `us-east-2` ile aynı yer, şimdilik Free plan, `/health`).
+
+1. Render → **New → Blueprint** → GitHub'daki `hitaba` deposunu seçin.
+2. `sync: false` değerlerini girin: Neon `DATABASE_URL` (havuzlu) ve `DATABASE_URL_UNPOOLED` (doğrudan), `WEB_ORIGIN`/`PUBLIC_WEB_URL`, R2 ve Resend bilgileri.
+3. `JWT_*`, `ENCRYPTION_KEY` ve `TELEGRAM_WEBHOOK_SECRET` değerlerini Render üretir. `ENCRYPTION_KEY`'i panelden kopyalayıp yedekleyin.
+4. Servis adresi (`https://hitaba-api.onrender.com`) → Vercel'de `NEXT_PUBLIC_API_URL`.
+
+**Free plan sınırı:** 15 dakika boşta kalan servis uyur (ilk istek ~1 dk sürer), Socket.io bağlantıları kopar ve uykudayken sohbet sessizlik zamanlayıcıları çalışmaz. Gerçek kullanıcılarla canlıya çıkmadan önce Starter'a geçin (`render.yaml` → `plan: starter`).
+
 **Üretim korumaları:** API, şu durumlarda başlamayı reddeder: zayıf/aynı JWT anahtarları, `DEV_PAYMENTS` açık, yerel disk depolama, e-posta sağlayıcısı yok, https olmayan adresler, veritabanında `@hitaba.dev` demo hesabı bulunması.
 
 ## 5. Web (Vercel)

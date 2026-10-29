@@ -1,0 +1,80 @@
+# Hitaba API — Render Blueprint (Dashboard → New → Blueprint → bu repo).
+# Veritabanı Neon'da (us-east-2) olduğu için servis Render'ın Ohio bölgesinde çalışır.
+# sync: false olan değerler Blueprint oluşturulurken Render panelinde elle girilir.
+services:
+  - type: web
+    name: hitaba-api
+    runtime: docker
+    region: ohio
+    # Şimdilik free. Free 15 dk boşta kalınca uyur: Socket.io bağlantıları kopar, sessizlik
+    # zamanlayıcıları çalışmaz. Gerçek kullanıcılarla canlıya çıkmadan önce starter'a geçin.
+    plan: free
+    numInstances: 1 # istek sınırı ve Socket.io bellek içi; ikinci instance için önce Redis gerekir
+    dockerContext: .
+    dockerfilePath: ./apps/api/Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - apps/api/**
+        - packages/shared/**
+        - package.json
+        - package-lock.json
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4000"
+      - key: TRUST_PROXY
+        value: "1"
+
+      # Neon — production dalı (Neon Console → Connect). Havuzlu adres "-pooler" içerir.
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+
+      # Web adresi (Vercel). Virgülle birden fazla origin verilebilir; yalnızca https.
+      - key: WEB_ORIGIN
+        sync: false
+      - key: PUBLIC_WEB_URL
+        sync: false
+
+      # Render rastgele üretir. ENCRYPTION_KEY'i panelden kopyalayıp güvenli bir yere yedekleyin:
+      # kaybolursa şifreli veriler (tarama cevapları, veli linkleri, mahrem bilgisi) okunamaz.
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        generateValue: true
+
+      # Cloudflare R2 — özel bucket
+      - key: STORAGE_DRIVER
+        value: s3
+      - key: S3_REGION
+        value: auto
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+
+      # Resend — e-posta doğrulama
+      - key: MAIL_DRIVER
+        value: resend
+      - key: MAIL_FROM
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+
+      # Telegram (opsiyonel; boş bırakılabilir)
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        generateValue: true

@@ -28,8 +28,10 @@ COPY --from=build --chown=hitaba /repo/packages/shared/dist packages/shared/dist
 COPY --from=build --chown=hitaba /repo/apps/api/package.json apps/api/package.json
 COPY --from=build --chown=hitaba /repo/apps/api/dist apps/api/dist
 COPY --from=build --chown=hitaba /repo/apps/api/prisma apps/api/prisma
+COPY --from=build --chown=hitaba /repo/apps/api/scripts/prisma.mjs apps/api/scripts/prisma.mjs
 USER hitaba
 WORKDIR /repo/apps/api
 EXPOSE 4000
-# Açılışta Neon'a bekleyen migration'lar uygulanır (DIRECT_URL ile), sonra API başlar.
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+# Açılışta Neon'a bekleyen migration'lar uygulanır (DATABASE_URL_UNPOOLED ile; scripts/prisma.mjs
+# Prisma CLI'nin desteklemediği channel_binding parametresini ayıklar), sonra API başlar.
+CMD ["sh", "-c", "node scripts/prisma.mjs migrate deploy && node dist/main.js"]
