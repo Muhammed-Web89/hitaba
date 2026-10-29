@@ -331,8 +331,8 @@
     "brotherWaitingText": "The woman will see your photo and decide. You will be notified.",
     "sisterRequested": "She asked you to start the chat.",
     "sisterBusy": "She is currently in another chat. You can open a chat when she is free.",
-    "openChatText": "Opening a chat costs {cost} connect. Moderators, the AI assistant and the woman's witnesses will be present.",
-    "openChat": "Open chat · {cost} connect",
+    "openChatText": "Opening a chat costs {cost, plural, one {# connect} other {# connects}}. Moderators, the AI assistant and the woman's witnesses will be present.",
+    "openChat": "Open chat · {cost, plural, one {# connect} other {# connects}}",
     "buyConnects": "Buy connects",
     "goToChat": "Go to chat",
     "decline": "End this match",
@@ -351,7 +351,7 @@
       },
       "open": {
         "title": "Open the chat?",
-        "text": "{cost} connect will be spent."
+        "text": "{cost, plural, one {# connect} other {# connects}} will be spent."
       }
     }
   },
@@ -393,9 +393,9 @@
     "contactWarning": "This message seems to contain contact details. It will not be delivered and the chat will pause until a moderator reviews it.",
     "editMessage": "Edit message",
     "sendAnyway": "Send anyway",
-    "reopen": "Reopen chat · {cost} connect",
+    "reopen": "Reopen chat · {cost, plural, one {# connect} other {# connects}}",
     "reopenTitle": "Reopen the chat?",
-    "reopenText": "{cost} connect will be spent. A chat can be reopened only once.",
+    "reopenText": "{cost, plural, one {# connect} other {# connects}} will be spent. A chat can be reopened only once.",
     "closeTitle": "End the chat?",
     "closeText": "The chat will be closed for both sides.",
     "mahramCard": "Mahram contact",
@@ -440,7 +440,7 @@
     "wali": "Wali and witnesses",
     "waliHint": "Link and witnesses",
     "wallet": "Connects",
-    "balance": "{n} connect",
+    "balance": "{n, plural, one {# connect} other {# connects}}",
     "settings": "Settings",
     "photos": "Photos",
     "edit": "Edit profile",
@@ -526,10 +526,10 @@
   },
   "enums": {
     "marital": {
-      "NEVER_MARRIED": "Never married",
-      "DIVORCED": "Divorced",
-      "WIDOWED": "Widowed",
-      "MARRIED": "Married"
+      "NEVER_MARRIED": "{gender, select, other {Never married}}",
+      "DIVORCED": "{gender, select, other {Divorced}}",
+      "WIDOWED": "{gender, select, other {Widowed}}",
+      "MARRIED": "{gender, select, other {Married}}"
     },
     "polygamy": {
       "YES": "Yes",
@@ -599,7 +599,20 @@
     "already_decided": "A decision has already been made.",
     "forbidden_target": "You cannot act on this account.",
     "Unauthorized": "Please sign in again.",
-    "Forbidden": "You do not have access."
+    "Forbidden": "You do not have access.",
+    "already_closed": "This has already been closed.",
+    "counterpart_unavailable": "The other person is no longer available.",
+    "empty_message": "The message is empty.",
+    "forbidden": "You do not have access.",
+    "unauthorized": "Please sign in again.",
+    "gender_required": "Please choose man or woman.",
+    "invoice_failed": "Could not create the payment. Please try again.",
+    "not_approved": "Only approved profiles can be frozen.",
+    "not_frozen": "This profile is not frozen.",
+    "not_deletable": "This message can no longer be deleted.",
+    "not_editable": "This message can no longer be edited.",
+    "only_brother_opens": "Only the man can open the chat.",
+    "profile_locked": "Your profile cannot be edited right now."
   },
   "admin": {
     "title": "Moderation",
@@ -673,6 +686,41 @@
     "freeze": "Freeze profile",
     "unfreeze": "Unfreeze",
     "ban": "Ban account",
-    "banNote": "Ban: all sessions end, balance is reset, open chats close and the other side is refunded."
+    "banNote": "Ban: all sessions end, balance is reset, open chats close and the other side is refunded.",
+    "userStatus": {
+      "ONBOARDING": "Filling in profile",
+      "PENDING_MODERATION": "Awaiting review",
+      "APPROVED": "Approved",
+      "REJECTED": "Needs changes",
+      "FROZEN": "Frozen",
+      "BANNED": "Banned",
+      "DELETED": "Deleted"
+    },
+    "itemStatus": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
+    "closeReason": {
+      "USER": "Ended by a participant",
+      "SILENCE": "Closed for silence",
+      "MODERATOR": "Closed by a moderator",
+      "BAN": "Account banned"
+    },
+    "pausedReason": {
+      "contact_info": "Contact details"
+    },
+    "flags": {
+      "contact_phone": "Phone number",
+      "contact_email": "Email address",
+      "contact_url": "Link",
+      "contact_handle": "Username",
+      "contact_messenger": "Messenger mentioned",
+      "spam_repeated_chars": "Repeated characters",
+      "quality_too_short": "Too short",
+      "quality_low_resolution": "Low resolution"
+    },
+    "yes": "Yes",
+    "no": "No"
   }
 }

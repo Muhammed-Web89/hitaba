@@ -57,7 +57,7 @@ export default function ReportsPage() {
                 <Link href={`/admin/users/${r.targetUser.id}`} className="font-semibold text-danger hover:underline">
                   {r.targetUser.profile?.displayName ?? r.targetUser.id}
                 </Link>{' '}
-                <Chip>{r.targetUser.status}</Chip>
+                <Chip>{t(`userStatus.${r.targetUser.status}` as never)}</Chip>
               </p>
               {r.details && <p className="whitespace-pre-wrap text-sm text-ink-2">{r.details}</p>}
               <div className="flex flex-wrap gap-2">

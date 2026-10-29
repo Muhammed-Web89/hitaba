@@ -5,6 +5,24 @@ import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TelegramService } from '../telegram/telegram.service';
 
+/** Telegram fatura başlığı kullanıcının dilinde: uz "tanga", ru "монета", tr "jeton", ar "عملة". */
+function connectsLabel(locale: string, n: number): string {
+  const ruForm = new Intl.PluralRules('ru').select(n);
+  const arForm = new Intl.PluralRules('ar').select(n);
+  switch (locale) {
+    case 'uz':
+      return `${n} ta tanga`;
+    case 'ru':
+      return `${n} ${ruForm === 'one' ? 'монета' : ruForm === 'few' ? 'монеты' : 'монет'}`;
+    case 'tr':
+      return `${n} jeton`;
+    case 'ar':
+      return n === 1 ? 'عملة واحدة' : n === 2 ? 'عملتان' : `${n} ${arForm === 'few' ? 'عملات' : 'عملة'}`;
+    default:
+      return `${n} ${n === 1 ? 'connect' : 'connects'}`;
+  }
+}
+
 type Tx = Prisma.TransactionClient;
 
 @Injectable()
@@ -77,8 +95,8 @@ export class ConnectsService {
       },
     });
     const link = await this.telegram.createStarsInvoiceLink({
-      title: `Hitaba · ${pkg.connects} connect`,
-      description: `${pkg.connects} connect`,
+      title: `Hitaba · ${connectsLabel(user.locale, pkg.connects)}`,
+      description: connectsLabel(user.locale, pkg.connects),
       payload: payment.id,
       stars: pkg.stars,
     });

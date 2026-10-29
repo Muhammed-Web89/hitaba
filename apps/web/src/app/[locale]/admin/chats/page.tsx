@@ -41,7 +41,7 @@ export default function AdminChatsPage() {
               <span className="flex-1 font-semibold">
                 {c.match.male.profile?.displayName} ♂ · {c.match.female.profile?.displayName} ♀
               </span>
-              {c.pausedReason && <Chip tone="warning">{c.pausedReason}</Chip>}
+              {c.pausedReason && <Chip tone="warning">{t.has(`pausedReason.${c.pausedReason}` as never) ? t(`pausedReason.${c.pausedReason}` as never) : c.pausedReason}</Chip>}
               <span className="text-sm text-ink-3">{t('messages', { n: c._count.messages })}</span>
               <span className="text-xs text-ink-3">{time.ago(c.lastActivityAt)}</span>
             </Link>

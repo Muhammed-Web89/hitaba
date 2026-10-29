@@ -39,14 +39,14 @@ export default function AdminChatPage({ params }: { params: Promise<{ id: string
       <aside className="space-y-4">
         <Card className="space-y-2 p-4 text-sm">
           <p>
-            <Chip>{chat.status}</Chip> {chat.closeReason && <Chip tone="warning">{chat.closeReason}</Chip>}
+            <Chip>{t(`chatStatus.${chat.status}` as never)}</Chip> {chat.closeReason && <Chip tone="warning">{t(`closeReason.${chat.closeReason}` as never)}</Chip>}
           </p>
           {[chat.match.male, chat.match.female].map((u) => (
             <p key={u.id}>
               <Link href={`/admin/users/${u.id}`} className="font-semibold hover:underline">
                 {u.profile?.displayName}
               </Link>{' '}
-              <Chip>{u.status}</Chip>
+              <Chip>{t(`userStatus.${u.status}` as never)}</Chip>
             </p>
           ))}
           <p className="text-ink-3">{t('connectSpent', { n: chat.connectSpent })}</p>

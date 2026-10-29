@@ -37,7 +37,7 @@
       },
       "wali": {
         "title": "Veli takip eder",
-        "text": "Kadın velisine gizli, salt-okunur bir bağlantı gönderir. Veli kayıt olmadan sohbeti takip edebilir."
+        "text": "Kadın, velisine yalnızca izleyebileceği gizli bir bağlantı gönderir. Veli kayıt olmadan sohbeti takip edebilir."
       },
       "privacy": {
         "title": "Fotoğraf kadının kontrolünde",
@@ -68,7 +68,7 @@
       },
       "family": {
         "title": "Aile aşaması",
-        "text": "Mahrem iletişim bilgisi moderatör onayıyla paylaşılır."
+        "text": "Mahrem yakının iletişim bilgisi moderatör onayıyla paylaşılır."
       }
     },
     "footer": "Hitaba · Her amelin temeli niyettir."
@@ -97,7 +97,7 @@
     "adultsOnly": "Yalnızca nikah niyetindeki yetişkinler (18+) için.",
     "tgWelcome": "Hitaba’ya hoş geldiniz",
     "tgOnly": "Telegram’dan açın",
-    "tgOnlyText": "Bu sayfa Telegram Mini App içinde çalışır. Web’de lütfen e-posta ile giriş yapın."
+    "tgOnlyText": "Bu sayfa Telegram mini uygulaması içinde çalışır. Tarayıcıdan lütfen e-posta adresinizle giriş yapın."
   },
   "onboarding": {
     "stepOf": "Adım {current} / {total}",
@@ -136,7 +136,7 @@
         "why": "Dini anlayışta uyum ailenin temelidir."
       },
       "screening": {
-        "title": "Tarama soruları",
+        "title": "Değerlendirme soruları",
         "why": "Yalnızca moderatör görür — diğer kullanıcılara asla gösterilmez."
       },
       "photos": {
@@ -192,7 +192,7 @@
   "rules": {
     "niyyah": "Burada yalnızca nikah niyetiyle bulunuyorum.",
     "witnesses": "Her sohbetin moderatörler ve şahitler tarafından izlendiğini kabul ediyorum.",
-    "contact": "Telefon numarası, kullanıcı adı veya bağlantı paylaşmayacağım; iletişim moderatör onayından sonra mahrem üzerinden kurulur.",
+    "contact": "Telefon numarası, kullanıcı adı veya bağlantı paylaşmayacağım; iletişim, moderatör onayından sonra mahrem yakın üzerinden kurulur.",
     "photos": "Kimsenin fotoğrafının ekran görüntüsünü almayacak, kaydetmeyecek ve paylaşmayacağım.",
     "respect": "Edeple konuşacak ve niyetimi samimi tutacağım.",
     "honesty": "Profilimdeki her bilgi doğrudur; ikinci hesap açmak yasaktır."
@@ -211,7 +211,7 @@
   },
   "wali": {
     "title": "Veli ve şahitler",
-    "intro": "Veliniz son sohbetinizi takip etmek için gizli, salt-okunur bir bağlantı alır. Şahitlerinizin adı karşı tarafa asla gösterilmez — yalnızca sayısı ve yakınlık derecesi.",
+    "intro": "Veliniz son sohbetinizi takip edebilmesi için gizli bir bağlantı alır; bu bağlantıyla yalnızca izleyebilir. Şahitlerinizin adı karşı tarafa asla gösterilmez — yalnızca sayıları ve yakınlık dereceleri.",
     "waliName": "Velinin adı",
     "relation": "Yakınlık",
     "witnesses": "Şahitler (en fazla {max})",
@@ -233,7 +233,7 @@
     "likes": "İlgi",
     "chats": "Sohbetler",
     "profile": "Profil",
-    "wallet": "Connect",
+    "wallet": "Jetonlar",
     "notifications": "Bildirimler"
   },
   "status": {
@@ -259,7 +259,7 @@
     "mutualTitle": "Karşılıklı ilgi",
     "mutualTextSister": "İkiniz de ilgi gösterdiniz. Artık onun fotoğrafını görüp karar verebilirsiniz.",
     "mutualTextBrother": "İkiniz de ilgi gösterdiniz. Kadın fotoğrafınızı görüp karar verecek.",
-    "keepBrowsing": "Gezinmeye devam",
+    "keepBrowsing": "İncelemeye devam et",
     "viewMutual": "Görüntüle",
     "filter": {
       "apply": "Uygula",
@@ -318,7 +318,7 @@
       "waitingBrother": "Erkeğin sohbeti açması bekleniyor",
       "sisterBusy": "Başka bir sohbette",
       "canOpen": "Sohbeti açabilirsiniz",
-      "canOpenWindow": "Sohbeti açabilirsiniz · fotoğraf {h} sa görünür",
+      "canOpenWindow": "Sohbeti açabilirsiniz · fotoğraf {h} saat daha görünür",
       "closed": "Kapandı"
     }
   },
@@ -331,9 +331,9 @@
     "brotherWaitingText": "Kadın fotoğrafınızı görüp karar verecek. Size haber vereceğiz.",
     "sisterRequested": "Sohbeti başlatmanızı istedi.",
     "sisterBusy": "Şu an başka bir sohbette. Müsait olduğunda sohbet açabilirsiniz.",
-    "openChatText": "Sohbet açmak {cost} connect tutar. Sohbette moderatörler, yapay zekâ asistanı ve kadının şahitleri bulunur.",
-    "openChat": "Sohbeti aç · {cost} connect",
-    "buyConnects": "Connect satın al",
+    "openChatText": "Sohbet açmak {cost} jeton tutar. Sohbette moderatörler, yapay zekâ asistanı ve kadının şahitleri bulunur.",
+    "openChat": "Sohbeti aç · {cost} jeton",
+    "buyConnects": "Jeton satın al",
     "goToChat": "Sohbete git",
     "decline": "Bu eşleşmeyi sonlandır",
     "confirm": {
@@ -351,7 +351,7 @@
       },
       "open": {
         "title": "Sohbet açılsın mı?",
-        "text": "{cost} connect harcanacak."
+        "text": "{cost} jeton harcanacak."
       }
     }
   },
@@ -362,11 +362,11 @@
     "paused": "Durduruldu",
     "closed": "Kapandı",
     "witnessed": "Şahitli",
-    "mahramShared": "Mahrem bilgisi paylaşıldı"
+    "mahramShared": "Mahrem yakının bilgisi paylaşıldı"
   },
   "chat": {
     "menu": "Menü",
-    "shareMahram": "Mahrem iletişim bilgisi paylaş",
+    "shareMahram": "Mahrem yakının iletişim bilgisini paylaş",
     "extend": "Sohbeti uzat",
     "report": "Şikâyet et",
     "close": "Sohbeti sonlandır",
@@ -376,7 +376,7 @@
       "femaleModerator": "Moderatör (kadın)",
       "ai": "Yapay zekâ asistanı (7/24)",
       "witness": "Şahit · {relation}",
-      "wali": "Veli (salt-okunur)"
+      "wali": "Veli (yalnızca izler)"
     },
     "etiquette": "Bu sohbet moderatörler ve şahitler tarafından izlenir. Edeple konuşun; telefon, kullanıcı adı veya bağlantı paylaşmayın.",
     "placeholder": "Mesaj yazın…",
@@ -393,12 +393,12 @@
     "contactWarning": "Bu mesaj iletişim bilgisi içeriyor gibi görünüyor. Teslim edilmeyecek ve moderatör inceleyene kadar sohbet duracak.",
     "editMessage": "Mesajı düzenle",
     "sendAnyway": "Yine de gönder",
-    "reopen": "Sohbeti yeniden aç · {cost} connect",
+    "reopen": "Sohbeti yeniden aç · {cost} jeton",
     "reopenTitle": "Sohbet yeniden açılsın mı?",
-    "reopenText": "{cost} connect harcanacak. Bir sohbet yalnızca bir kez yeniden açılabilir.",
+    "reopenText": "{cost} jeton harcanacak. Bir sohbet yalnızca bir kez yeniden açılabilir.",
     "closeTitle": "Sohbet sonlandırılsın mı?",
     "closeText": "Sohbet iki taraf için de kapanacak.",
-    "mahramCard": "Mahrem iletişim",
+    "mahramCard": "Mahrem yakının iletişim bilgisi",
     "closedBanner": {
       "USER": "Bu sohbet sonlandırıldı.",
       "SILENCE": "72 saatlik sessizlikten sonra sohbet otomatik kapandı.",
@@ -418,7 +418,7 @@
       "chat_closed_ban": "Sohbet kapandı."
     },
     "mahram": {
-      "title": "Mahrem iletişim bilgisi paylaş",
+      "title": "Mahrem yakının iletişim bilgisini paylaş",
       "intro": "Bilgiler önce bir moderatör tarafından incelenir, sonra sohbette otomatik olarak yayınlanır.",
       "name": "Ad",
       "relation": "Yakınlık",
@@ -439,8 +439,8 @@
     "quick": "Hızlı erişim",
     "wali": "Veli ve şahitler",
     "waliHint": "Bağlantı ve şahitler",
-    "wallet": "Connect",
-    "balance": "{n} connect",
+    "wallet": "Jetonlar",
+    "balance": "{n} jeton",
     "settings": "Ayarlar",
     "photos": "Fotoğraflar",
     "edit": "Profili düzenle",
@@ -474,18 +474,18 @@
   },
   "wallet": {
     "balance": "Bakiye",
-    "explain": "1 connect = 1 sohbet açma. Connect süresizdir ve devredilemez. Sohbeti moderatör kapatırsa ya da karşı tarafın hesabı engellenirse connect iade edilir.",
+    "explain": "1 jeton = 1 sohbet açma hakkı. Jetonların süresi dolmaz ve başkasına devredilemez. Sohbeti moderatör kapatırsa ya da karşı tarafın hesabı engellenirse jetonunuz iade edilir.",
     "packages": "Paketler",
-    "connects": "connect",
+    "connects": "jeton",
     "buy": "Satın al",
-    "devNote": "Telegram Stars ile ödeme Telegram Mini App içinde çalışır. Geliştirme ortamında satın almalar simüle edilir.",
+    "devNote": "Telegram Yıldızları (Stars) ile ödeme Telegram mini uygulaması içinde çalışır. Test ortamında satın almalar gerçek ödeme alınmadan yapılır.",
     "history": "Geçmiş",
     "noHistory": "Henüz işlem yok.",
     "tx": {
       "PURCHASE": "Satın alma",
       "SPEND": "Sohbet açıldı",
       "REFUND": "İade",
-      "BONUS": "Bonus",
+      "BONUS": "Hediye",
       "PENALTY": "Bakiye sıfırlandı"
     }
   },
@@ -502,9 +502,9 @@
       "chat_opened": "Sizin için yeni bir sohbet açıldı.",
       "chat_closed": "Bir sohbet kapandı.",
       "silence_reminder": "Sohbetinizde bir süredir mesaj yok.",
-      "mahram_approved": "Mahrem iletişim bilgisi sohbette paylaşıldı.",
-      "mahram_rejected": "Mahrem iletişim bilgisi onaylanmadı.",
-      "connects_credited": "Bakiyenize connect eklendi."
+      "mahram_approved": "Mahrem yakının iletişim bilgisi sohbette paylaşıldı.",
+      "mahram_rejected": "Mahrem yakının iletişim bilgisi onaylanmadı.",
+      "connects_credited": "Bakiyenize jeton eklendi."
     }
   },
   "portal": {
@@ -518,7 +518,7 @@
       "PAUSED": "Moderasyon için durduruldu",
       "CLOSED": "Kapandı"
     },
-    "readonly": "Bu bir salt-okunur görünümdür.",
+    "readonly": "Bu sayfa yalnızca görüntüleme içindir.",
     "refresh": "Yenile",
     "privacy": "Lütfen bu bağlantıyı veya ekran görüntülerini kimseyle paylaşmayın.",
     "invalidTitle": "Bağlantı geçersiz",
@@ -526,10 +526,10 @@
   },
   "enums": {
     "marital": {
-      "NEVER_MARRIED": "Hiç evlenmemiş",
-      "DIVORCED": "Boşanmış",
-      "WIDOWED": "Dul",
-      "MARRIED": "Evli"
+      "NEVER_MARRIED": "{gender, select, other {Hiç evlenmemiş}}",
+      "DIVORCED": "{gender, select, other {Boşanmış}}",
+      "WIDOWED": "{gender, select, other {Dul}}",
+      "MARRIED": "{gender, select, other {Evli}}"
     },
     "polygamy": {
       "YES": "Evet",
@@ -546,7 +546,7 @@
       "NIQAB": "Peçe (nikab)",
       "HIJAB": "Tesettür",
       "PARTIAL": "Kısmen",
-      "NONE": "Hayır"
+      "NONE": "Yok"
     },
     "relation": {
       "FATHER": "Baba",
@@ -581,7 +581,7 @@
     "already_submitted": "Profiliniz zaten gönderildi.",
     "profile_not_approved": "Profiliniz henüz onaylanmadı.",
     "daily_like_limit": "Bugünkü beğenileriniz bitti.",
-    "insufficient_connects": "Yeterli connect yok.",
+    "insufficient_connects": "Yeterli jetonunuz yok.",
     "sister_busy": "Şu an başka bir sohbette.",
     "invalid_stage": "Bu işlem bu aşamada yapılamaz.",
     "chat_paused": "Moderatör inceleyene kadar sohbet durduruldu.",
@@ -599,14 +599,27 @@
     "already_decided": "Karar zaten verildi.",
     "forbidden_target": "Bu hesap üzerinde işlem yapamazsınız.",
     "Unauthorized": "Lütfen yeniden giriş yapın.",
-    "Forbidden": "Erişim yetkiniz yok."
+    "Forbidden": "Erişim yetkiniz yok.",
+    "already_closed": "Bu zaten kapatılmış.",
+    "counterpart_unavailable": "Karşı taraf artık uygun değil.",
+    "empty_message": "Mesaj boş.",
+    "forbidden": "Erişim yetkiniz yok.",
+    "unauthorized": "Lütfen yeniden giriş yapın.",
+    "gender_required": "Lütfen erkek veya kadın seçin.",
+    "invoice_failed": "Ödeme oluşturulamadı. Lütfen tekrar deneyin.",
+    "not_approved": "Yalnızca onaylı profiller dondurulabilir.",
+    "not_frozen": "Bu profil dondurulmuş değil.",
+    "not_deletable": "Bu mesaj artık silinemez.",
+    "not_editable": "Bu mesaj artık düzenlenemez.",
+    "only_brother_opens": "Sohbeti yalnızca erkek açabilir.",
+    "profile_locked": "Profiliniz şu an düzenlenemez."
   },
   "admin": {
     "title": "Moderasyon",
     "logout": "Çıkış",
     "role": {
       "MODERATOR": "Moderatör",
-      "ADMIN": "Admin",
+      "ADMIN": "Yönetici",
       "USER": "Kullanıcı"
     },
     "gender": {
@@ -614,7 +627,7 @@
       "FEMALE": "Kadın"
     },
     "tabs": {
-      "queue": "Kuyruk",
+      "queue": "İnceleme sırası",
       "reports": "Şikâyetler",
       "chats": "Sohbetler",
       "users": "Kullanıcılar"
@@ -622,12 +635,12 @@
     "target": {
       "ALL": "Tümü",
       "MESSAGE": "Mesaj",
-      "MAHRAM_CONTACT": "Mahrem bilgisi",
+      "MAHRAM_CONTACT": "Mahrem yakın bilgisi",
       "PROFILE": "Profil",
       "PHOTO": "Fotoğraf"
     },
     "segregationNote": "Fotoğraflar yalnızca aynı cinsiyetten moderatörlere gösterilir.",
-    "queueEmpty": "Kuyruk boş",
+    "queueEmpty": "İnceleme sırası boş",
     "openUser": "Kullanıcıyı aç",
     "targetGone": "Öğe artık mevcut değil",
     "decision": "Karar",
@@ -638,7 +651,7 @@
     "reject": "Reddet",
     "auditNote": "Her görüntüleme ve karar kayıt altına alınır.",
     "age": "Yaş",
-    "screening": "Tarama cevapları (gizli)",
+    "screening": "Değerlendirme cevapları (gizli)",
     "mahramName": "Ad",
     "mahramContact": "İletişim",
     "note": "Not",
@@ -661,9 +674,9 @@
     },
     "chatsEmpty": "Sohbet yok",
     "messages": "{n} mesaj",
-    "connectSpent": "Harcanan connect: {n}",
+    "connectSpent": "Harcanan jeton: {n}",
     "closeChat": "Sohbeti kapat",
-    "closeRefundNote": "Açan tarafın harcadığı connect otomatik iade edilir.",
+    "closeRefundNote": "Sohbeti açan tarafın harcadığı jeton otomatik olarak iade edilir.",
     "searchPlaceholder": "Ad, e-posta, @kullanıcı adı veya ID ile ara",
     "usersEmpty": "Kullanıcı bulunamadı",
     "balance": "Bakiye",
@@ -673,6 +686,41 @@
     "freeze": "Profili dondur",
     "unfreeze": "Dondurmayı kaldır",
     "ban": "Hesabı engelle",
-    "banNote": "Ban: tüm oturumlar kapanır, bakiye sıfırlanır, açık sohbetler kapanır ve karşı tarafa iade yapılır."
+    "banNote": "Engelleme: tüm oturumlar kapanır, bakiye sıfırlanır, açık sohbetler kapanır ve karşı tarafa iade yapılır.",
+    "userStatus": {
+      "ONBOARDING": "Kayıt aşamasında",
+      "PENDING_MODERATION": "İnceleme bekliyor",
+      "APPROVED": "Onaylı",
+      "REJECTED": "Değişiklik gerekli",
+      "FROZEN": "Dondurulmuş",
+      "BANNED": "Engellenmiş",
+      "DELETED": "Silinmiş"
+    },
+    "itemStatus": {
+      "PENDING": "Bekliyor",
+      "APPROVED": "Onaylandı",
+      "REJECTED": "Reddedildi"
+    },
+    "closeReason": {
+      "USER": "Taraflardan biri sonlandırdı",
+      "SILENCE": "Sessizlik nedeniyle kapandı",
+      "MODERATOR": "Moderatör kapattı",
+      "BAN": "Hesap engellendi"
+    },
+    "pausedReason": {
+      "contact_info": "İletişim bilgisi"
+    },
+    "flags": {
+      "contact_phone": "Telefon numarası",
+      "contact_email": "E-posta adresi",
+      "contact_url": "Bağlantı",
+      "contact_handle": "Kullanıcı adı",
+      "contact_messenger": "Mesajlaşma uygulaması anılmış",
+      "spam_repeated_chars": "Tekrarlanan karakterler",
+      "quality_too_short": "Çok kısa",
+      "quality_low_resolution": "Düşük çözünürlük"
+    },
+    "yes": "Evet",
+    "no": "Hayır"
   }
 }

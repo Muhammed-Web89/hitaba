@@ -18,6 +18,7 @@ interface Detail {
 export default function ItemPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const t = useTranslations('admin');
+  const flagLabel = useFlagLabel();
   const errorText = useErrorText();
   const router = useRouter();
   const { data, error: loadError } = useSWR<Detail>(`/moderation/items/${id}`);
@@ -49,21 +50,21 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
           <Chip>{t(`gender.${item.subjectGender as 'MALE' | 'FEMALE'}`)}</Chip>
           {item.aiFlags.map((f) => (
             <Chip key={f} tone="accent">
-              {f}
+              {flagLabel(f)}
             </Chip>
           ))}
           <Link href={`/admin/users/${item.subjectUserId}`} className="text-sm font-semibold text-brand-600 hover:underline">
             {t('openUser')}
           </Link>
         </div>
-        {!context ? <EmptyState icon="info" title={t('targetGone')} /> : <ContextView type={item.targetType} context={context} />}
+        {!context ? <EmptyState icon="info" title={t('targetGone')} /> : <ContextView type={item.targetType} context={context} gender={item.subjectGender} />}
       </div>
 
       <aside>
         <Card className="sticky top-4 space-y-4 p-4">
           <h2 className="text-lg font-semibold">{t('decision')}</h2>
           {item.status !== 'PENDING' ? (
-            <Notice>{t('alreadyDecided', { status: item.status })}</Notice>
+            <Notice>{t('alreadyDecided', { status: t(`itemStatus.${item.status}` as never) })}</Notice>
           ) : (
             <>
               <Field label={t('reason')} hint={t('reasonHint')}>
@@ -96,9 +97,25 @@ function KV({ k, v }: { k: string; v: React.ReactNode }) {
   );
 }
 
-function ContextView({ type, context }: { type: ModerationTarget; context: any }) {
+/** AI bayrakları "contact:phone" biçimindedir; çevirisi yoksa ham kod gösterilir. */
+function useFlagLabel() {
+  const t = useTranslations('admin.flags');
+  return (flag: string) => {
+    const key = flag.replace(':', '_');
+    return t.has(key as never) ? t(key as never) : flag;
+  };
+}
+
+function ContextView({ type, context, gender }: { type: ModerationTarget; context: any; gender: string }) {
   const t = useTranslations('admin');
   const tf = useTranslations('onboarding.fields');
+  const te = useTranslations('enums');
+  const flagLabel = useFlagLabel();
+  const screeningValue = (k: string, v: unknown) => {
+    if (typeof v === 'boolean') return t(v ? 'yes' : 'no');
+    if ((k === 'prayer' || k === 'hijab') && typeof v === 'string') return te(`${k}.${v}` as never);
+    return String(v);
+  };
 
   if (type === 'PHOTO') {
     return (
@@ -119,7 +136,7 @@ function ContextView({ type, context }: { type: ModerationTarget; context: any }
             <KV k={t('age')} v={p.age} />
             <KV k={tf('country')} v={`${p.city ?? ''}, ${p.country ?? ''}`} />
             <KV k={tf('nationality')} v={p.nationality} />
-            <KV k={tf('maritalStatus')} v={`${p.maritalStatus} · ${tf('nikahCount')}: ${p.nikahCount} · ${tf('childrenCount')}: ${p.childrenCount}`} />
+            <KV k={tf('maritalStatus')} v={`${te(`marital.${p.maritalStatus}` as 'marital.MARRIED', { gender })} · ${tf('nikahCount')}: ${p.nikahCount} · ${tf('childrenCount')}: ${p.childrenCount}`} />
             <KV k={tf('aboutMe')} v={p.aboutMe} />
             <KV k={tf('aboutSpouse')} v={p.aboutSpouse} />
             <KV k={tf('beliefsManhaj')} v={p.beliefsManhaj} />
@@ -130,7 +147,7 @@ function ContextView({ type, context }: { type: ModerationTarget; context: any }
           {context.screening ? (
             <dl className="divide-y divide-line">
               {Object.entries(context.screening).map(([k, v]) => (
-                <KV key={k} k={tf.has(k as never) ? tf(k as never) : k} v={String(v)} />
+                <KV key={k} k={tf.has(k as never) ? tf(k as never) : k} v={screeningValue(k, v)} />
               ))}
             </dl>
           ) : (
@@ -146,7 +163,7 @@ function ContextView({ type, context }: { type: ModerationTarget; context: any }
     return (
       <Card className="p-4">
         <dl className="divide-y divide-line">
-          <KV k={t('mahramName')} v={`${m.name} · ${m.relation}`} />
+          <KV k={t('mahramName')} v={`${m.name} · ${te(`relation.${m.relation}` as never)}`} />
           <KV k={t('mahramContact')} v={<span dir="ltr">{m.contact}</span>} />
           <KV k={t('note')} v={m.note} />
         </dl>
@@ -163,7 +180,7 @@ function ContextView({ type, context }: { type: ModerationTarget; context: any }
         <div className="mt-2 flex gap-1">
           {context.message.contactSignals.map((s: string) => (
             <Chip key={s} tone="warning">
-              {s}
+              {flagLabel(`contact:${s.toLowerCase()}`)}
             </Chip>
           ))}
         </div>

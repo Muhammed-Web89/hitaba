@@ -28,6 +28,8 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
   const { id } = use(params);
   const t = useTranslations('admin');
   const tc = useTranslations('common');
+  const ta = useTranslations('auth');
+  const te = useTranslations('enums.report');
   const errorText = useErrorText();
   const time = useRelativeTime();
   const { me } = useAuth();
@@ -56,7 +58,7 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
           <h1 className="text-2xl font-semibold">{u.profile?.displayName ?? u.id}</h1>
           <div className="mt-1 flex flex-wrap gap-2">
             <Chip>{t(`gender.${u.gender as 'MALE' | 'FEMALE'}`)}</Chip>
-            <Chip tone={u.status === 'APPROVED' ? 'brand' : 'warning'}>{u.status}</Chip>
+            <Chip tone={u.status === 'APPROVED' ? 'brand' : 'warning'}>{t(`userStatus.${u.status}` as never)}</Chip>
             {u.role !== 'USER' && <Chip tone="accent">{t(`role.${u.role as 'MODERATOR' | 'ADMIN' | 'USER'}`)}</Chip>}
           </div>
           {u.statusReason && <p className="mt-2 text-sm text-ink-2">{u.statusReason}</p>}
@@ -65,7 +67,7 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
           <dl className="grid grid-cols-[140px_1fr] gap-y-1.5">
             <dt className="text-ink-3">ID</dt>
             <dd className="font-mono text-xs">{u.id}</dd>
-            <dt className="text-ink-3">Email</dt>
+            <dt className="text-ink-3">{ta('email')}</dt>
             <dd>{u.email ?? '—'}</dd>
             <dt className="text-ink-3">Telegram</dt>
             <dd>{u.telegramUsername ? `@${u.telegramUsername}` : '—'}</dd>
@@ -90,7 +92,7 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
             <ul className="space-y-2 text-sm">
               {u.reportsAgainst.map((r) => (
                 <li key={r.id}>
-                  <Chip tone="warning">{r.category}</Chip> <span className="text-ink-3">{time.ago(r.createdAt)}</span>
+                  <Chip tone="warning">{te(r.category as never)}</Chip> <span className="text-ink-3">{time.ago(r.createdAt)}</span>
                   {r.details && <p className="text-ink-2">{r.details}</p>}
                 </li>
               ))}

@@ -37,7 +37,7 @@
       },
       "wali": {
         "title": "Valiy kuzatadi",
-        "text": "Ayol valiysiga maxfiy, faqat oʻqish uchun havola yuboradi. Valiy roʻyxatdan oʻtmasdan suhbatni kuzata oladi."
+        "text": "Ayol valiysiga faqat kuzatish uchun moʻljallangan maxfiy havola yuboradi. Valiy roʻyxatdan oʻtmasdan suhbatni kuzata oladi."
       },
       "privacy": {
         "title": "Surat ayolning ixtiyorida",
@@ -56,7 +56,7 @@
       },
       "match": {
         "title": "Oʻzaro qiziqish",
-        "text": "Ikki tomon bir-birini yoqtirsa, juftlik hosil boʻladi."
+        "text": "Ikki tomon bir-biriga qiziqish bildirsa, tanishuv boshlanadi."
       },
       "photo": {
         "title": "Surat tartibi",
@@ -68,7 +68,7 @@
       },
       "family": {
         "title": "Oila bosqichi",
-        "text": "Mahram aloqasi moderator tasdigʻidan soʻng ulashiladi."
+        "text": "Mahramning aloqa maʼlumotlari moderator tasdigʻidan soʻng ulashiladi."
       }
     },
     "footer": "Hitaba · Har bir amalning asosi — niyat."
@@ -78,7 +78,7 @@
     "loginSubtitle": "Hisobingizga kiring",
     "registerTitle": "Anketa yaratish",
     "registerSubtitle": "Nikoh niyatida — qadamma-qadam",
-    "email": "Email",
+    "email": "Elektron pochta",
     "password": "Parol",
     "passwordHint": "Kamida 8 ta belgi",
     "loginSubmit": "Kirish",
@@ -97,10 +97,10 @@
     "adultsOnly": "Faqat nikoh niyatidagi voyaga yetganlar (18+) uchun.",
     "tgWelcome": "Hitaba’ga xush kelibsiz",
     "tgOnly": "Telegram orqali oching",
-    "tgOnlyText": "Bu sahifa Telegram Mini App ichida ishlaydi. Vebda email orqali kiring."
+    "tgOnlyText": "Bu sahifa Telegram mini-ilovasi ichida ishlaydi. Brauzerda elektron pochta orqali kiring."
   },
   "onboarding": {
-    "stepOf": "{total} dan {current}-qadam",
+    "stepOf": "{current}-qadam ({total} tadan)",
     "saveContinue": "Saqlash va davom etish",
     "continue": "Davom etish",
     "submit": "Tekshiruvga yuborish",
@@ -185,12 +185,12 @@
       "relationsOutsideNikah": "Hozir nikohsiz munosabatdamisiz?",
       "contagiousDisease": "Yuqumli kasalligingiz bormi?",
       "photosFemale": "Suratingiz hech qachon roʻyxatlarda koʻrinmaydi. Erkak uni faqat siz tasdiqlaganingizdan soʻng, 24 soat davomida, suv belgisi bilan koʻradi.",
-      "photosMale": "Suratingizni avval ayol koʻradi. Lentada koʻrsatish odatda oʻchiq.",
+      "photosMale": "Suratingizni avval ayol koʻradi. Lentada koʻrsatish dastlab oʻchiq turadi.",
       "acceptRules": "Qoidalarni oʻqidim va qabul qilaman"
     }
   },
   "rules": {
-    "niyyah": "Men bu yerda faqat nikoh niyatida turibman.",
+    "niyyah": "Bu yerda faqat nikoh niyatidaman.",
     "witnesses": "Har bir suhbatni moderatorlar va guvohlar kuzatishini qabul qilaman.",
     "contact": "Telefon raqam, foydalanuvchi nomi yoki havola ulashmayman; aloqa moderator tasdigʻidan soʻng mahram orqali boʻladi.",
     "photos": "Hech kimning suratini skrinshot qilmayman, saqlamayman va tarqatmayman.",
@@ -211,7 +211,7 @@
   },
   "wali": {
     "title": "Valiy va guvohlar",
-    "intro": "Valiyingiz soʻnggi suhbatingizni kuzatish uchun maxfiy, faqat oʻqish uchun havola oladi. Guvohlaringiz ismi qarshi tomonga hech qachon koʻrsatilmaydi — faqat soni va qarindoshligi.",
+    "intro": "Valiyingiz soʻnggi suhbatingizni kuzatishi uchun maxfiy havola oladi — u faqat kuzata oladi. Guvohlaringiz ismi qarshi tomonga hech qachon koʻrsatilmaydi — faqat soni va qarindoshligi.",
     "waliName": "Valiyning ismi",
     "relation": "Qarindoshlik",
     "witnesses": "Guvohlar ({max} tagacha)",
@@ -233,13 +233,13 @@
     "likes": "Qiziqish",
     "chats": "Suhbatlar",
     "profile": "Profil",
-    "wallet": "Connectlar",
+    "wallet": "Tangalar",
     "notifications": "Bildirishnomalar"
   },
   "status": {
     "pendingTitle": "Anketangiz tekshirilmoqda",
     "pendingText": "Moderator tez orada anketangizni koʻrib chiqadi. Tasdiqlanganda xabar beramiz.",
-    "frozenTitle": "Anketangiz toʻxtatilgan",
+    "frozenTitle": "Anketangiz vaqtincha toʻxtatilgan",
     "frozenText": "Tafsilotlar uchun qoʻllab-quvvatlash xizmatiga murojaat qiling."
   },
   "feed": {
@@ -249,7 +249,7 @@
     "undo": "Oxirgi oʻtkazib yuborilganni qaytarish",
     "filters": "Filtrlar",
     "resetFilters": "Filtrlarni tozalash",
-    "favorite": "Saralanganlarga qoʻshish",
+    "favorite": "Sevimlilarga qoʻshish",
     "report": "Shikoyat",
     "like": "Qiziqaman",
     "pass": "Oʻtkazib yuborish",
@@ -303,12 +303,12 @@
     "tabs": {
       "mutual": "Oʻzaro",
       "mine": "Yoqtirganlarim",
-      "favorites": "Saralangan"
+      "favorites": "Sevimlilar"
     },
     "emptyMutual": "Hozircha oʻzaro qiziqish yoʻq",
     "emptyMutualText": "Siz yoqtirgan inson ham sizni yoqtirsa, shu yerda paydo boʻladi.",
     "emptyMine": "Hali hech kimni yoqtirmadingiz",
-    "emptyFavorites": "Saralanganlar boʻsh",
+    "emptyFavorites": "Sevimlilar roʻyxati boʻsh",
     "status": {
       "inChat": "Suhbatda",
       "chatClosed": "Suhbat yopilgan",
@@ -323,7 +323,7 @@
     }
   },
   "match": {
-    "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u 24 soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qaror qatʼiy.",
+    "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u 24 soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qarorni keyin oʻzgartirib boʻlmaydi.",
     "approvePhoto": "Tasdiqlash",
     "declinePhoto": "Mos emas",
     "sisterWaitingText": "Siz tasdiqladingiz. Endi u suhbatni ochishi mumkin.",
@@ -331,27 +331,27 @@
     "brotherWaitingText": "Ayol suratingizni koʻrib, qaror qiladi. Sizga xabar beramiz.",
     "sisterRequested": "U sizdan suhbatni boshlashingizni soʻradi.",
     "sisterBusy": "U hozir boshqa suhbatda. Boʻshaganda suhbat ochishingiz mumkin.",
-    "openChatText": "Suhbat ochish {cost} connect turadi. Suhbatda moderatorlar, sunʼiy intellekt yordamchisi va ayolning guvohlari ishtirok etadi.",
-    "openChat": "Suhbatni ochish · {cost} connect",
-    "buyConnects": "Connect sotib olish",
+    "openChatText": "Suhbat ochish {cost} ta tanga turadi. Suhbatda moderatorlar, sunʼiy intellekt yordamchisi va ayolning guvohlari ishtirok etadi.",
+    "openChat": "Suhbatni ochish · {cost} tanga",
+    "buyConnects": "Tanga sotib olish",
     "goToChat": "Suhbatga oʻtish",
-    "decline": "Bu juftlikni yakunlash",
+    "decline": "Bu tanishuvni yakunlash",
     "confirm": {
       "approve": {
         "title": "Suratni tasdiqlaysizmi?",
-        "text": "U {hours} soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qaror qatʼiy."
+        "text": "U {hours} soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qarorni keyin oʻzgartirib boʻlmaydi."
       },
       "declinePhoto": {
         "title": "Mos emasmi?",
-        "text": "Juftlik yopiladi. Bu qaror qatʼiy."
+        "text": "Tanishuv yakunlanadi. Bu qarorni keyin oʻzgartirib boʻlmaydi."
       },
       "decline": {
-        "title": "Juftlikni yakunlaysizmi?",
-        "text": "Juftlik yopiladi va qayta tiklanmaydi."
+        "title": "Tanishuvni yakunlaysizmi?",
+        "text": "Tanishuv yakunlanadi va uni qayta tiklab boʻlmaydi."
       },
       "open": {
         "title": "Suhbatni ochasizmi?",
-        "text": "{cost} connect sarflanadi."
+        "text": "{cost} ta tanga sarflanadi."
       }
     }
   },
@@ -362,11 +362,11 @@
     "paused": "Toʻxtatilgan",
     "closed": "Yopilgan",
     "witnessed": "Guvohli",
-    "mahramShared": "Mahram aloqasi ulashildi"
+    "mahramShared": "Mahram maʼlumotlari ulashildi"
   },
   "chat": {
     "menu": "Menyu",
-    "shareMahram": "Mahram aloqasini ulashish",
+    "shareMahram": "Mahram maʼlumotlarini ulashish",
     "extend": "Suhbatni uzaytirish",
     "report": "Shikoyat",
     "close": "Suhbatni yakunlash",
@@ -376,7 +376,7 @@
       "femaleModerator": "Moderator (ayol)",
       "ai": "Sunʼiy intellekt yordamchisi (24/7)",
       "witness": "Guvoh · {relation}",
-      "wali": "Valiy (faqat oʻqish)"
+      "wali": "Valiy (faqat kuzatadi)"
     },
     "etiquette": "Bu suhbatni moderatorlar va guvohlar kuzatadi. Odob bilan gaplashing; telefon raqam, foydalanuvchi nomi yoki havola ulashmang.",
     "placeholder": "Xabar yozing…",
@@ -393,12 +393,12 @@
     "contactWarning": "Bu xabarda aloqa maʼlumoti borga oʻxshaydi. U yetkazilmaydi va moderator koʻrib chiqquncha suhbat toʻxtaydi.",
     "editMessage": "Xabarni tahrirlash",
     "sendAnyway": "Baribir yuborish",
-    "reopen": "Suhbatni qayta ochish · {cost} connect",
+    "reopen": "Suhbatni qayta ochish · {cost} tanga",
     "reopenTitle": "Suhbatni qayta ochasizmi?",
-    "reopenText": "{cost} connect sarflanadi. Suhbatni faqat bir marta qayta ochish mumkin.",
+    "reopenText": "{cost} ta tanga sarflanadi. Suhbatni faqat bir marta qayta ochish mumkin.",
     "closeTitle": "Suhbatni yakunlaysizmi?",
     "closeText": "Suhbat ikki tomon uchun ham yopiladi.",
-    "mahramCard": "Mahram aloqasi",
+    "mahramCard": "Mahram maʼlumotlari",
     "closedBanner": {
       "USER": "Bu suhbat yakunlangan.",
       "SILENCE": "72 soatlik sukutdan soʻng suhbat avtomatik yopildi.",
@@ -418,7 +418,7 @@
       "chat_closed_ban": "Suhbat yopildi."
     },
     "mahram": {
-      "title": "Mahram aloqasini ulashish",
+      "title": "Mahram maʼlumotlarini ulashish",
       "intro": "Maʼlumotlar avval moderator tomonidan tekshiriladi, soʻng suhbatda avtomatik eʼlon qilinadi.",
       "name": "Ism",
       "relation": "Qarindoshlik",
@@ -439,8 +439,8 @@
     "quick": "Tezkor kirish",
     "wali": "Valiy va guvohlar",
     "waliHint": "Havola va guvohlar",
-    "wallet": "Connectlar",
-    "balance": "{n} connect",
+    "wallet": "Tangalar",
+    "balance": "{n} ta tanga",
     "settings": "Sozlamalar",
     "photos": "Suratlar",
     "edit": "Anketani tahrirlash",
@@ -464,7 +464,7 @@
     "language": "Til",
     "privacy": "Maxfiylik",
     "showPhotoInFeed": "Suratimni lentada koʻrsatish",
-    "showPhotoInFeedHint": "Odatda oʻchiq. Ayollar oʻzaro qiziqishdan soʻng suratingizni baribir koʻradi.",
+    "showPhotoInFeedHint": "Dastlab oʻchiq. Ayollar oʻzaro qiziqishdan soʻng suratingizni baribir koʻradi.",
     "hideBusyBadge": "\"Hozir suhbatda\" belgisini yashirish",
     "hideBusyBadgeHint": "Erkaklar suhbatda ekaningizni koʻrmaydi.",
     "account": "Hisob",
@@ -474,13 +474,13 @@
   },
   "wallet": {
     "balance": "Balans",
-    "explain": "1 connect = 1 ta suhbat ochish. Connectlar muddatsiz va boshqaga oʻtkazilmaydi. Suhbatni moderator yopsa yoki qarshi tomon hisobi bloklansa, connect qaytariladi.",
+    "explain": "1 tanga = 1 ta suhbat ochish. Tangalarning muddati tugamaydi va ularni boshqaga oʻtkazib boʻlmaydi. Suhbatni moderator yopsa yoki qarshi tomonning hisobi bloklansa, tanga qaytariladi.",
     "packages": "Paketlar",
-    "connects": "connect",
+    "connects": "tanga",
     "buy": "Sotib olish",
-    "devNote": "Telegram Stars orqali toʻlov Telegram Mini App ichida ishlaydi. Ishlab chiqish muhitida xaridlar simulyatsiya qilinadi.",
+    "devNote": "Telegram yulduzlari (Stars) bilan toʻlov faqat Telegram mini-ilovasi ichida ishlaydi. Sinov muhitida xaridlar haqiqiy toʻlovsiz amalga oshiriladi.",
     "history": "Tarix",
-    "noHistory": "Hali tranzaksiyalar yoʻq.",
+    "noHistory": "Hali amaliyotlar yoʻq.",
     "tx": {
       "PURCHASE": "Xarid",
       "SPEND": "Suhbat ochildi",
@@ -502,9 +502,9 @@
       "chat_opened": "Siz uchun yangi suhbat ochildi.",
       "chat_closed": "Suhbat yopildi.",
       "silence_reminder": "Suhbatingizda bir muddatdan beri xabar yoʻq.",
-      "mahram_approved": "Mahram aloqasi suhbatda eʼlon qilindi.",
-      "mahram_rejected": "Mahram aloqasi tasdiqlanmadi.",
-      "connects_credited": "Hisobingizga connect qoʻshildi."
+      "mahram_approved": "Mahram maʼlumotlari suhbatda eʼlon qilindi.",
+      "mahram_rejected": "Mahram maʼlumotlari tasdiqlanmadi.",
+      "connects_credited": "Hisobingizga tanga qoʻshildi."
     }
   },
   "portal": {
@@ -518,7 +518,7 @@
       "PAUSED": "Moderatsiya uchun toʻxtatilgan",
       "CLOSED": "Yopilgan"
     },
-    "readonly": "Bu faqat oʻqish uchun koʻrinish.",
+    "readonly": "Bu sahifa faqat kuzatish uchun.",
     "refresh": "Yangilash",
     "privacy": "Iltimos, bu havola va skrinshotlarni hech kimga ulashmang.",
     "invalidTitle": "Havola yaroqsiz",
@@ -526,10 +526,10 @@
   },
   "enums": {
     "marital": {
-      "NEVER_MARRIED": "Turmush qurmagan",
-      "DIVORCED": "Ajrashgan",
-      "WIDOWED": "Beva",
-      "MARRIED": "Uylangan"
+      "NEVER_MARRIED": "{gender, select, FEMALE {Turmushga chiqmagan} other {Uylanmagan}}",
+      "DIVORCED": "{gender, select, other {Ajrashgan}}",
+      "WIDOWED": "{gender, select, FEMALE {Beva} other {Tul}}",
+      "MARRIED": "{gender, select, FEMALE {Turmushda} other {Uylangan}}"
     },
     "polygamy": {
       "YES": "Ha",
@@ -572,8 +572,8 @@
   "errors": {
     "generic": "Xatolik yuz berdi. Qaytadan urinib koʻring.",
     "network": "Serverga ulanib boʻlmadi. Internetni tekshiring.",
-    "invalid_credentials": "Email yoki parol notoʻgʻri.",
-    "email_taken": "Bu email allaqachon roʻyxatdan oʻtgan.",
+    "invalid_credentials": "Elektron pochta yoki parol notoʻgʻri.",
+    "email_taken": "Bu elektron pochta allaqachon roʻyxatdan oʻtgan.",
     "account_blocked": "Bu hisob bloklangan.",
     "invalid_init_data": "Telegram tekshiruvi muvaffaqiyatsiz. Ilovani qayta oching.",
     "validation_failed": "Iltimos, maydonlarni tekshiring.",
@@ -581,7 +581,7 @@
     "already_submitted": "Anketangiz allaqachon yuborilgan.",
     "profile_not_approved": "Anketangiz hali tasdiqlanmagan.",
     "daily_like_limit": "Bugungi yoqtirishlar tugadi.",
-    "insufficient_connects": "Connect yetarli emas.",
+    "insufficient_connects": "Tangangiz yetarli emas.",
     "sister_busy": "U hozir boshqa suhbatda.",
     "invalid_stage": "Bu bosqichda bu amal mavjud emas.",
     "chat_paused": "Moderator koʻrib chiqquncha suhbat toʻxtatilgan.",
@@ -599,14 +599,27 @@
     "already_decided": "Qaror allaqachon qabul qilingan.",
     "forbidden_target": "Bu hisob ustida amal bajara olmaysiz.",
     "Unauthorized": "Iltimos, qaytadan kiring.",
-    "Forbidden": "Sizda ruxsat yoʻq."
+    "Forbidden": "Sizda ruxsat yoʻq.",
+    "already_closed": "Bu allaqachon yopilgan.",
+    "counterpart_unavailable": "Qarshi tomon endi mavjud emas.",
+    "empty_message": "Xabar boʻsh.",
+    "forbidden": "Sizda ruxsat yoʻq.",
+    "unauthorized": "Iltimos, qaytadan kiring.",
+    "gender_required": "Iltimos, erkak yoki ayolni tanlang.",
+    "invoice_failed": "Toʻlovni yaratib boʻlmadi. Qaytadan urinib koʻring.",
+    "not_approved": "Faqat tasdiqlangan anketani toʻxtatish mumkin.",
+    "not_frozen": "Bu anketa toʻxtatilmagan.",
+    "not_deletable": "Bu xabarni endi oʻchirib boʻlmaydi.",
+    "not_editable": "Bu xabarni endi tahrirlab boʻlmaydi.",
+    "only_brother_opens": "Suhbatni faqat erkak ochadi.",
+    "profile_locked": "Anketani hozir tahrirlab boʻlmaydi."
   },
   "admin": {
     "title": "Moderatsiya",
     "logout": "Chiqish",
     "role": {
       "MODERATOR": "Moderator",
-      "ADMIN": "Admin",
+      "ADMIN": "Administrator",
       "USER": "Foydalanuvchi"
     },
     "gender": {
@@ -622,7 +635,7 @@
     "target": {
       "ALL": "Barchasi",
       "MESSAGE": "Xabar",
-      "MAHRAM_CONTACT": "Mahram aloqasi",
+      "MAHRAM_CONTACT": "Mahram maʼlumotlari",
       "PROFILE": "Anketa",
       "PHOTO": "Surat"
     },
@@ -661,10 +674,10 @@
     },
     "chatsEmpty": "Suhbat yoʻq",
     "messages": "{n} ta xabar",
-    "connectSpent": "Sarflangan connect: {n}",
+    "connectSpent": "Sarflangan tanga: {n}",
     "closeChat": "Suhbatni yopish",
-    "closeRefundNote": "Ochgan tomon sarflagan connect avtomatik qaytariladi.",
-    "searchPlaceholder": "Ism, email, @username yoki ID boʻyicha qidirish",
+    "closeRefundNote": "Suhbatni ochgan tomon sarflagan tanga avtomatik qaytariladi.",
+    "searchPlaceholder": "Ism, elektron pochta, @foydalanuvchi nomi yoki ID boʻyicha qidirish",
     "usersEmpty": "Foydalanuvchi topilmadi",
     "balance": "Balans",
     "joined": "Qoʻshilgan",
@@ -673,6 +686,41 @@
     "freeze": "Anketani toʻxtatish",
     "unfreeze": "Qayta faollashtirish",
     "ban": "Hisobni bloklash",
-    "banNote": "Bloklash: barcha seanslar yopiladi, balans nolga tushadi, ochiq suhbatlar yopiladi va qarshi tomonga qaytariladi."
+    "banNote": "Bloklash: barcha seanslar yopiladi, balans nolga tushadi, ochiq suhbatlar yopiladi va qarshi tomonga qaytariladi.",
+    "userStatus": {
+      "ONBOARDING": "Anketa toʻldirilmoqda",
+      "PENDING_MODERATION": "Tekshiruvni kutmoqda",
+      "APPROVED": "Tasdiqlangan",
+      "REJECTED": "Oʻzgartirish kerak",
+      "FROZEN": "Toʻxtatilgan",
+      "BANNED": "Bloklangan",
+      "DELETED": "Oʻchirilgan"
+    },
+    "itemStatus": {
+      "PENDING": "Kutilmoqda",
+      "APPROVED": "Tasdiqlangan",
+      "REJECTED": "Rad etilgan"
+    },
+    "closeReason": {
+      "USER": "Ishtirokchi yakunladi",
+      "SILENCE": "Sukut tufayli yopilgan",
+      "MODERATOR": "Moderator yopgan",
+      "BAN": "Hisob bloklangan"
+    },
+    "pausedReason": {
+      "contact_info": "Aloqa maʼlumoti"
+    },
+    "flags": {
+      "contact_phone": "Telefon raqam",
+      "contact_email": "Elektron pochta",
+      "contact_url": "Havola",
+      "contact_handle": "Foydalanuvchi nomi",
+      "contact_messenger": "Messenjer nomi tilga olingan",
+      "spam_repeated_chars": "Takroriy belgilar",
+      "quality_too_short": "Juda qisqa",
+      "quality_low_resolution": "Sifati past"
+    },
+    "yes": "Ha",
+    "no": "Yoʻq"
   }
 }

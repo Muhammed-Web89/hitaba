@@ -34,7 +34,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     silence_reminder: 'Suhbatingizda bir muddatdan beri xabar yo‘q.',
     chat_closed: 'Suhbatingiz yopildi.',
     mahram_approved: 'Mahram aloqa ma’lumoti suhbatda e’lon qilindi.',
-    connects_credited: 'Hisobingizga connect qo‘shildi.',
+    connects_credited: 'Hisobingizga tanga qo‘shildi.',
   },
   ru: {
     profile_approved: 'Ваш профиль одобрен. Теперь вы можете смотреть анкеты.',
@@ -46,7 +46,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     silence_reminder: 'В вашем чате давно нет сообщений.',
     chat_closed: 'Ваш чат закрыт.',
     mahram_approved: 'Контакт махрама опубликован в чате.',
-    connects_credited: 'Коннекты зачислены на ваш баланс.',
+    connects_credited: 'Монеты зачислены на ваш баланс.',
   },
   tr: {
     profile_approved: 'Profiliniz onaylandı. Artık profilleri görebilirsiniz.',
@@ -58,7 +58,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     silence_reminder: 'Sohbetinizde bir süredir mesaj yok.',
     chat_closed: 'Sohbetiniz kapatıldı.',
     mahram_approved: 'Mahrem iletişim bilgisi sohbette paylaşıldı.',
-    connects_credited: 'Bakiyenize connect eklendi.',
+    connects_credited: 'Bakiyenize jeton eklendi.',
   },
   en: {
     profile_approved: 'Your profile is approved. You can now browse profiles.',
@@ -82,7 +82,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     silence_reminder: 'لا توجد رسائل في محادثتك منذ مدة.',
     chat_closed: 'تم إغلاق محادثتك.',
     mahram_approved: 'تم نشر بيانات تواصل المحرم في المحادثة.',
-    connects_credited: 'تمت إضافة الرصيد إلى حسابك.',
+    connects_credited: 'أُضيفت العملات إلى رصيدك.',
   },
 };
 

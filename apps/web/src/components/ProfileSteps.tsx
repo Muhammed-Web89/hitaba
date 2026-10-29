@@ -166,7 +166,7 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
             <Select value={draft.maritalStatus} onChange={(e) => set({ maritalStatus: e.target.value })}>
               {Object.values(MaritalStatus).map((m) => (
                 <option key={m} value={m}>
-                  {te(`marital.${m}`)}
+                  {te(`marital.${m}`, { gender })}
                 </option>
               ))}
             </Select>

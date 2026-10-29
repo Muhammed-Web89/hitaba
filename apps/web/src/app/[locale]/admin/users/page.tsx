@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
               <span className="text-sm text-ink-3">{u.email ?? (u.telegramUsername ? `@${u.telegramUsername}` : '')}</span>
               <Chip>{t(`gender.${u.gender as 'MALE' | 'FEMALE'}`)}</Chip>
               {u.role !== 'USER' && <Chip tone="accent">{t(`role.${u.role as 'MODERATOR' | 'ADMIN' | 'USER'}`)}</Chip>}
-              <Chip tone={u.status === 'APPROVED' ? 'brand' : u.status === 'BANNED' ? 'warning' : 'info'}>{u.status}</Chip>
+              <Chip tone={u.status === 'APPROVED' ? 'brand' : u.status === 'BANNED' ? 'warning' : 'info'}>{t(`userStatus.${u.status}` as never)}</Chip>
               {u._count.reportsAgainst > 0 && <Chip tone="warning">⚑ {u._count.reportsAgainst}</Chip>}
             </Link>
           ))}
