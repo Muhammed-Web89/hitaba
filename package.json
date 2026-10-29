@@ -32,5 +32,9 @@
   "overrides": {
     "multer": "2.5.0",
     "postcss": "8.5.31"
+  },
+  "dependencies": {
+    "@neon/config": "^1.9.5",
+    "@neon/env": "^1.6.6"
   }
 }

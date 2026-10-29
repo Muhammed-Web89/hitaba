@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import './load-env';
 import { z } from 'zod';
 import { productionProblems } from './production-checks';
 

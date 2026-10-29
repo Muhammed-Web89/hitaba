@@ -3,8 +3,9 @@
  *   ADMIN_EMAIL=... ADMIN_PASSWORD=... ADMIN_GENDER=MALE|FEMALE [ADMIN_ROLE=ADMIN|MODERATOR] npm run create-admin
  * Şifre en az 14 karakter olmalı; komut bittiğinde ortam değişkenini kabuk geçmişinden temizleyin.
  */
-import 'dotenv/config';
-import { PrismaClient, type Gender, type Role } from '@prisma/client';
+import '../src/config/load-env';
+import type { Gender, Role } from '@prisma/client';
+import { createPrismaClient } from '../src/prisma/client';
 import { hashPassword } from '../src/common/crypto';
 import { DEMO_EMAIL_DOMAIN } from '../src/config/production-checks';
 
@@ -25,7 +26,7 @@ if (gender !== 'MALE' && gender !== 'FEMALE') fail('ADMIN_GENDER must be MALE or
 if (role !== 'ADMIN' && role !== 'MODERATOR') fail('ADMIN_ROLE must be ADMIN or MODERATOR');
 
 async function main() {
-  const prisma = new PrismaClient();
+  const prisma = createPrismaClient();
   const passwordHash = await hashPassword(password);
   try {
     const u = await prisma.user.upsert({

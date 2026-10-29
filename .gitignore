@@ -16,3 +16,5 @@ apps/api/storage/
 *.log
 next-env.d.ts
 .next-share/
+.neon
+.next-neon/

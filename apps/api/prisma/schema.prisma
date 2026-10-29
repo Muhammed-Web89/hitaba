@@ -7,10 +7,10 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  /// Uygulama bağlantısı (Neon'da havuzlu "-pooler" adresi).
+  /// Uygulama trafiği: Neon havuzlu ("-pooler", PgBouncer transaction modu) bağlantı.
   url       = env("DATABASE_URL")
-  /// Migration bağlantısı (Neon'da havuzsuz doğrudan adres). Yerelde DATABASE_URL ile aynı.
-  directUrl = env("DIRECT_URL")
+  /// Migration'lar: Neon doğrudan bağlantı. Adlar `neon env pull` çıktısıyla aynı.
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 enum Gender {

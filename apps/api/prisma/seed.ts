@@ -3,12 +3,13 @@
  * Yalnızca yerel veritabanında çalışır; API de üretimde bu hesapları görürse açılmaz.
  * Tüm hesapların şifresi: hitaba123
  */
-import { PrismaClient, type ConsentKind, type Gender, type Relation } from '@prisma/client';
+import '../src/config/load-env';
+import { createPrismaClient } from '../src/prisma/client';
+import { type ConsentKind, type Gender, type Relation } from '@prisma/client';
 import { POLICY_VERSION } from '@hitaba/shared';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import sharp from 'sharp';
-import 'dotenv/config';
 import { encrypt, hashPassword, randomToken } from '../src/common/crypto';
 
 const dbHost = (() => {
@@ -18,12 +19,15 @@ const dbHost = (() => {
     return '';
   }
 })();
-if (process.env.NODE_ENV === 'production' || !['127.0.0.1', 'localhost'].includes(dbHost)) {
-  console.error(`demo seed refused: only runs against a local database (got "${dbHost || 'none'}")`);
+// Neon'da yalnızca geçici test dalına izin verilir: host açıkça SEED_ALLOW_HOST ile adlandırılmalı.
+// production dalının host'u asla buraya yazılmamalı — API üretimde demo hesap görürse açılmaz.
+const allowedHosts = ['127.0.0.1', 'localhost', ...(process.env.SEED_ALLOW_HOST ? [process.env.SEED_ALLOW_HOST] : [])];
+if (process.env.NODE_ENV === 'production' || process.env.NEON_BRANCH === 'production' || !allowedHosts.includes(dbHost)) {
+  console.error(`demo seed refused: only runs against a local database or an explicitly allowed test branch (got "${dbHost || 'none'}", branch "${process.env.NEON_BRANCH ?? '-'}")`);
   process.exit(1);
 }
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const PASSWORD = 'hitaba123';
 const consents = {
   create: (['PRIVACY', 'TERMS', 'SENSITIVE_DATA', 'ADULT'] as ConsentKind[]).map((kind) => ({ kind, version: POLICY_VERSION })),

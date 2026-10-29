@@ -19,11 +19,24 @@ Tarayıcı / Telegram Mini App
 
 ## 1. Neon
 
-1. Proje oluşturun (bölge: kullanıcılara ve API'ye en yakın; ör. `aws-eu-central-1`).
-2. İki bağlantı adresi alın:
-   - **Havuzlu** (`-pooler` içeren) → `DATABASE_URL`, sonuna `&pgbouncer=true&connection_limit=10` ekleyin.
-   - **Doğrudan** → `DIRECT_URL` (migration'lar bununla çalışır).
-3. Şema, API açılırken `prisma migrate deploy` ile otomatik uygulanır. Elle: `DIRECT_URL=... npm run db:migrate -w @hitaba/api`.
+Proje: `plain-grass-41703862` (org `org-bold-bonus-99421134`, bölge `aws-us-east-2`). Depo `neon init` ile bağlı (`neon.ts`, git'e girmeyen `.neon`).
+
+| Dal | Kullanım |
+|---|---|
+| `production` (varsayılan) | Canlı. Şema uygulandı, **demo/test verisi yok**. Seed bu dalda çalışmaz. |
+| `dev-*` (`neon checkout dev --create`) | Yerel geliştirme; `neon.ts` politikasıyla 7 gün sonra kendiliğinden silinir. |
+| geçici test dalı | `neon branches create --name e2e-… --parent production --expires-at …`; testten sonra silinir. |
+
+Bağlantı adları `neon env pull` çıktısıyla aynıdır (Prisma `url`/`directUrl` bunlara bağlı):
+
+- `DATABASE_URL` — **havuzlu** (`-pooler`, PgBouncer transaction modu): uygulama trafiği.
+- `DATABASE_URL_UNPOOLED` — **doğrudan**: migration'lar (`prisma migrate`).
+
+Yerelde `neon deploy` / `neon checkout` / `neon env pull` bu değerleri depo kökündeki `.env.local`'a yazar; API (`src/config/load-env.ts`) ve Prisma CLI sarmalayıcısı (`scripts/prisma.mjs`) önce bu dosyayı, sonra `apps/api/.env`'i okur. Üretimde değişkenler platformdan gelir.
+
+**Sürücü:** Prisma + `@prisma/adapter-pg` (node-postgres) — uzun ömürlü sunucu için Neon önerisi. Prisma'nın yerleşik motoru Neon'un `channel_binding=require` parametresini desteklemiyor (yanıltıcı `P1001` hatası) ve macOS'ta sıkı sertifika doğrulaması yapamıyor. node-postgres ise TLS 1.3 + sertifika/host doğrulaması (`sslmode=verify-full`'a sabitlenir) ve kanal bağlamalı SCRAM kullanır. Migration'larda (Prisma CLI) yalnızca `channel_binding` parametresi kaldırılır; bağlantı yine TLS'lidir.
+
+Migration: API açılışında `node scripts/prisma.mjs migrate deploy` otomatik çalışır. Elle: `npm run db:migrate -w @hitaba/api` · durum: `npm run db:status -w @hitaba/api`.
 
 ## 2. Cloudflare R2 (fotoğraflar)
 
@@ -65,10 +78,10 @@ Fotoğraflar hiçbir zaman doğrudan R2 adresinden servis edilmez: API yetkiyi k
 
 ## 6. İlk yönetici
 
-Demo seed üretimde **çalışmaz** (yalnızca yerel veritabanına izin verir). Yöneticiler ve moderatörler şu komutla oluşturulur (moderasyon cinsiyete bölünmüş olduğu için en az bir erkek ve bir kadın moderatör gerekir):
+Demo seed üretimde **çalışmaz**: yalnızca yerel veritabanında ya da `SEED_ALLOW_HOST` ile açıkça adlandırılmış geçici bir test dalında çalışır; `NEON_BRANCH=production` iken her durumda reddedilir. Yöneticiler ve moderatörler şu komutla oluşturulur (moderasyon cinsiyete bölünmüş olduğu için en az bir erkek ve bir kadın moderatör gerekir):
 
 ```bash
-DATABASE_URL=... DIRECT_URL=... ADMIN_EMAIL=... ADMIN_PASSWORD='en-az-14-karakter' ADMIN_GENDER=MALE ADMIN_ROLE=ADMIN \
+DATABASE_URL=... ADMIN_EMAIL=... ADMIN_PASSWORD='en-az-14-karakter' ADMIN_GENDER=MALE ADMIN_ROLE=ADMIN \
   npm run create-admin -w @hitaba/api
 ```
 
@@ -99,4 +112,15 @@ Yerel PGlite (tek bağlantı), okuma + yazma karışımı, sanal kullanıcılar 
 | 50 | 263 | 183 ms | 263 ms | 274 ms | 0 |
 | 100 | 255 | 374 ms | 522 ms | 545 ms | 0 |
 
-Verim ~255 istek/sn'de sabitlendi: darboğaz yerel veritabanının tek bağlantısı. Gerçek kullanımda 100 aktif kullanıcı ≈ 20–40 istek/sn üretir. Neon (havuzlu bağlantı) üzerindeki staging ölçümü yayından önce tekrarlanmalı.
+Verim ~255 istek/sn'de sabitlendi: darboğaz yerel veritabanının tek bağlantısı. Gerçek kullanımda 100 aktif kullanıcı ≈ 20–40 istek/sn üretir.
+
+### Yük testi — Neon geçici test dalı, API Türkiye'de (2026-10-29)
+
+Yalnızca okuma; API bu Mac'te (Türkiye), veritabanı Neon `us-east-2`. Tek sorgu gidiş-dönüşü **~148 ms** (min 143, max 245).
+
+| Eşzamanlı | istek/sn | p50 | p97.5 | hata |
+|---|---|---|---|---|
+| 5 | 8 | 521 ms | 1156 ms | 0 |
+| 100 | 9 | 5332 ms | 8063 ms | %77 (zaman aşımı) |
+
+Bu ölçüm **kıtalararası gecikmeyi** ölçer, kapasiteyi değil: bir istek art arda 3–10 sorgu yapar (her biri ~148 ms) ve 10 bağlantılık havuz 100 kullanıcıda kuyruğa girer. Üretimde API Neon ile aynı bölgede (Render Ohio ↔ `us-east-2`, gidiş-dönüş ~1–2 ms) çalışmalı; **geçerli kapasite ölçümü yayından sonra aynı bölgeden** (`API_URL=https://hitaba-api… npm run loadtest`) yapılmalıdır. İyileştirme fırsatı: istek başına sıralı sorgu sayısını azaltmak (ör. `toPublic` içindeki sorguları birleştirmek).
