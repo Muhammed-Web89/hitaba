@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { Public } from './auth/guards';
 import { ChatModule } from './chat/chat.module';
 import { ConnectsModule } from './connects/connects.module';
+import { MailModule } from './mail/mail.service';
 import { MatchingModule } from './matching/matching.module';
 import { ModerationModule } from './moderation/moderation.module';
 import { NotificationsModule } from './notifications/notifications.service';
@@ -36,6 +37,7 @@ class HealthController {
     TelegramModule,
     StorageModule,
     NotificationsModule,
+    MailModule,
     ModerationModule,
     AuthModule,
     ConnectsModule,

@@ -4,6 +4,7 @@
 
 - Ürün/mimari: [`docs/00-mimari-tasarim.md`](docs/00-mimari-tasarim.md)
 - Faz 1 uygulama planı: [`docs/01-faz1-plan.md`](docs/01-faz1-plan.md)
+- **Üretim yayını (Vercel + API + Neon + R2 + Resend): [`docs/02-yayin.md`](docs/02-yayin.md)**
 
 ## Yapı
 
@@ -41,7 +42,7 @@ Uygulamayı üretim modunda derler, başlatır ve Cloudflare tüneliyle `https:/
 
 ## Demo hesapları
 
-Tüm şifreler: `hitaba123`
+Tüm şifreler: `hitaba123` — **yalnızca yerel geliştirme.** Seed yalnızca yerel veritabanında çalışır; API üretimde bu hesapları görürse açılmaz. Üretim yöneticisi: `npm run create-admin -w @hitaba/api` (bkz. docs/02-yayin.md).
 
 | E-posta | Rol |
 |---|---|
@@ -55,6 +56,8 @@ Tüm şifreler: `hitaba123`
 ```bash
 npm test                                  # birim testleri (shared + api)
 npm run smoke -w @hitaba/api              # çalışan API'ye karşı uçtan uca akış (11 adım)
+npm run ratelimit -w @hitaba/api          # istek sınırı (429) ve sahte X-Forwarded-For
+npm run loadtest -w @hitaba/api           # yük testi (LT_USERS, LT_SECONDS, LT_WRITES=1)
 npm run check:i18n -w @hitaba/web         # 5 dil dosyasının anahtar eşitliği
 npm run typecheck
 ```

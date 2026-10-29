@@ -3,6 +3,7 @@ import { Icon, type IconName } from '@/components/icons';
 import { LandingCta } from '@/components/LandingCta';
 import { LocaleMenu } from '@/components/LocaleMenu';
 import { Logo } from '@/components/Logo';
+import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 
 const PRINCIPLES: Array<{ key: 'witnessed' | 'wali' | 'privacy' | 'moderation'; icon: IconName }> = [
@@ -18,6 +19,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations('landing');
+  const tl = await getTranslations('legal');
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6">
@@ -84,6 +86,14 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
 
       <footer className="border-t border-line py-8 text-sm text-ink-3">
         <p>{t('footer')}</p>
+        <nav className="mt-3 flex gap-4">
+          <Link href="/privacy" className="hover:text-ink">
+            {tl('privacy.title')}
+          </Link>
+          <Link href="/terms" className="hover:text-ink">
+            {tl('terms.title')}
+          </Link>
+        </nav>
       </footer>
     </div>
   );

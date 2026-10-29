@@ -37,3 +37,11 @@ export const CONNECT_PACKAGES = [
 ] as const;
 
 export type ConnectPackageId = (typeof CONNECT_PACKAGES)[number]['id'];
+
+/**
+ * Gizlilik politikası / kullanım koşulları sürümü. Metin değiştiğinde artırılır;
+ * kullanıcının hangi sürümü onayladığı Consent tablosunda tutulur.
+ */
+export const POLICY_VERSION = '2026-10-29';
+
+export const EMAIL_VERIFY_TTL_HOURS = 48;

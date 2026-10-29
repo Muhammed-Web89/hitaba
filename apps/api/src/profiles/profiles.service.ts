@@ -74,6 +74,7 @@ export class ProfilesService implements OnModuleInit {
       status: user.status,
       statusReason: user.statusReason,
       email: user.email,
+      emailVerified: !user.email || Boolean(user.emailVerifiedAt),
       telegramUsername: user.telegramUsername,
       locale: user.locale,
       timezone: user.timezone,
@@ -159,6 +160,8 @@ export class ProfilesService implements OnModuleInit {
     if (user.status !== 'ONBOARDING' && user.status !== 'REJECTED') {
       throw new BadRequestException({ error: 'already_submitted' });
     }
+    // E-posta ile kayıt olanlar doğrulamadan incelemeye gönderemez (Telegram kimliği zaten doğrulanmış).
+    if (user.email && !user.emailVerifiedAt) throw new BadRequestException({ error: 'email_not_verified' });
     const profile = await this.prisma.profile.findUniqueOrThrow({ where: { userId: user.id } });
     const missing = PROFILE_STEP_ORDER.filter((s) => !profile.completedSteps.includes(s));
     if (missing.length) throw new BadRequestException({ error: 'steps_incomplete', missing });

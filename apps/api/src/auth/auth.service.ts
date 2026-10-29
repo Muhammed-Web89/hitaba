@@ -1,9 +1,11 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import type { User } from '@prisma/client';
-import type { AuthTokens, LoginInput, RegisterInput, TelegramAuthInput } from '@hitaba/shared';
+import type { ConsentKind, Prisma, User } from '@prisma/client';
+import { EMAIL_VERIFY_TTL_HOURS, POLICY_VERSION, type AuthTokens, type LoginInput, type RegisterInput, type TelegramAuthInput } from '@hitaba/shared';
 import { env } from '../config/env';
-import { hashPassword, verifyPassword } from '../common/crypto';
+import { hashPassword, randomToken, sha256, verifyPassword } from '../common/crypto';
+import { hours } from '../common/time';
+import { MailService } from '../mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { AccessPayload } from './guards';
 import { verifyTelegramInitData } from './telegram-init-data';
@@ -14,15 +16,35 @@ interface RefreshPayload {
 }
 
 const SUPPORTED_LOCALES = new Set(['uz', 'ru', 'tr', 'en', 'ar']);
+const CONSENT_KINDS: ConsentKind[] = ['PRIVACY', 'TERMS', 'SENSITIVE_DATA', 'ADULT'];
+const VERIFY_PURPOSE = 'verify_email';
+
+/** Rıza kaydı için istek bağlamı (KVKK/GDPR ispatı). */
+export interface RequestMeta {
+  ip?: string;
+  userAgent?: string;
+}
+
+function consentRows(meta: RequestMeta): Prisma.ConsentCreateWithoutUserInput[] {
+  return CONSENT_KINDS.map((kind) => ({
+    kind,
+    version: POLICY_VERSION,
+    ip: meta.ip ?? null,
+    userAgent: meta.userAgent?.slice(0, 300) ?? null,
+  }));
+}
 
 @Injectable()
 export class AuthService {
+  private readonly log = new Logger(AuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
+    private readonly mail: MailService,
   ) {}
 
-  async register(input: RegisterInput): Promise<AuthTokens> {
+  async register(input: RegisterInput, meta: RequestMeta): Promise<AuthTokens> {
     const existing = await this.prisma.user.findUnique({ where: { email: input.email } });
     if (existing) throw new ConflictException({ error: 'email_taken' });
     const user = await this.prisma.user.create({
@@ -32,9 +54,46 @@ export class AuthService {
         gender: input.gender,
         locale: normalizeLocale(input.locale),
         profile: { create: {} },
+        consents: { create: consentRows(meta) },
       },
     });
+    // E-posta gönderimi başarısız olsa da kayıt tamamlanır; kullanıcı yeniden gönderebilir.
+    await this.sendVerification(user).catch((e) => this.log.warn(`verification mail: ${(e as Error).message}`));
     return this.issue(user);
+  }
+
+  async sendVerification(user: User): Promise<void> {
+    if (!user.email || user.emailVerifiedAt) return;
+    const token = randomToken(32);
+    await this.prisma.$transaction([
+      // Önceki kullanılmamış linkler geçersiz olur.
+      this.prisma.emailToken.updateMany({
+        where: { userId: user.id, purpose: VERIFY_PURPOSE, usedAt: null },
+        data: { usedAt: new Date() },
+      }),
+      this.prisma.emailToken.create({
+        data: {
+          userId: user.id,
+          tokenHash: sha256(token),
+          purpose: VERIFY_PURPOSE,
+          expiresAt: new Date(Date.now() + hours(EMAIL_VERIFY_TTL_HOURS)),
+        },
+      }),
+    ]);
+    const link = `${env.PUBLIC_WEB_URL}/${user.locale}/verify-email?token=${token}`;
+    await this.mail.send(this.mail.verificationEmail(user.email, user.locale, link));
+  }
+
+  async verifyEmail(token: string): Promise<{ ok: true }> {
+    const row = await this.prisma.emailToken.findUnique({ where: { tokenHash: sha256(token) } });
+    if (!row || row.purpose !== VERIFY_PURPOSE || row.usedAt || row.expiresAt < new Date()) {
+      throw new BadRequestException({ error: 'invalid_or_expired_token' });
+    }
+    await this.prisma.$transaction([
+      this.prisma.emailToken.update({ where: { id: row.id }, data: { usedAt: new Date() } }),
+      this.prisma.user.update({ where: { id: row.userId }, data: { emailVerifiedAt: new Date() } }),
+    ]);
+    return { ok: true };
   }
 
   async login(input: LoginInput): Promise<AuthTokens> {
@@ -48,14 +107,15 @@ export class AuthService {
     return this.issue(user);
   }
 
-  async telegram(input: TelegramAuthInput): Promise<AuthTokens> {
+  async telegram(input: TelegramAuthInput, meta: RequestMeta): Promise<AuthTokens> {
     const tgUser = verifyTelegramInitData(input.initData, env.TELEGRAM_BOT_TOKEN);
     if (!tgUser) throw new UnauthorizedException({ error: 'invalid_init_data' });
 
     const telegramId = String(tgUser.id);
     let user = await this.prisma.user.findUnique({ where: { telegramId } });
     if (!user) {
-      if (!input.gender) throw new ConflictException({ error: 'gender_required' });
+      // İlk girişte cinsiyet ve rızalar birlikte istenir.
+      if (!input.gender || !input.consents) throw new ConflictException({ error: 'signup_required' });
       user = await this.prisma.user.create({
         data: {
           telegramId,
@@ -63,6 +123,7 @@ export class AuthService {
           gender: input.gender,
           locale: normalizeLocale(tgUser.language_code),
           profile: { create: {} },
+          consents: { create: consentRows(meta) },
         },
       });
     } else if (user.status === 'BANNED' || user.status === 'DELETED') {

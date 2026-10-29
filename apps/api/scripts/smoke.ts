@@ -39,11 +39,15 @@ async function expectError(p: Promise<unknown>, error: string) {
 const login = (email: string) => call('POST', '/auth/login', undefined, { email, password: 'hitaba123' }).then((t) => t.accessToken as string);
 
 async function onboard(gender: 'MALE' | 'FEMALE', name: string) {
-  const { accessToken: t } = await call('POST', '/auth/register', undefined, {
-    email: `${name.toLowerCase()}.${run}@test.dev`,
-    password: 'password123',
-    gender,
-  });
+  const email = `${name.toLowerCase()}.${run}@test.dev`;
+  const consents = { privacy: true, terms: true, sensitiveData: true, adult: true };
+  await expectError(call('POST', '/auth/register', undefined, { email, password: 'password123', gender }), 'validation_failed');
+  await expectError(
+    call('POST', '/auth/register', undefined, { email, password: 'password123', gender, consents: { ...consents, sensitiveData: false } }),
+    'validation_failed',
+  );
+  const { accessToken: t } = await call('POST', '/auth/register', undefined, { email, password: 'password123', gender, consents });
+  assert.equal((await call('GET', '/me', t)).emailVerified, false);
   const about = 'Assalomu alaykum. Men oilani dinimiz asosida qurishni niyat qilganman, namozlarimni vaqtida o‘qiyman va halol kasb bilan shug‘ullanaman.';
   const steps: Record<string, unknown> = {
     basics: { displayName: name, birthDate: '1998-04-10' },
@@ -55,6 +59,14 @@ async function onboard(gender: 'MALE' | 'FEMALE', name: string) {
     beliefs: { beliefsManhaj: 'Ahli sunna val jamoa aqidasidaman, ulamolarni hurmat qilaman.' },
     screening: { prayer: 'ALWAYS', alcohol: false, drugs: false, relationsOutsideNikah: false, contagiousDisease: false, ...(gender === 'FEMALE' && { hijab: 'HIJAB' }) },
   };
+  // E-posta doğrulanmadan incelemeye gönderilemez.
+  await expectError(call('POST', '/profile/submit', t), 'email_not_verified');
+  const mail = (await call('GET', `/dev/mails?to=${encodeURIComponent(email)}`))[0];
+  const token = /token=([\w-]+)/.exec(mail.text)![1];
+  await call('POST', '/auth/verify-email', undefined, { token });
+  await expectError(call('POST', '/auth/verify-email', undefined, { token }), 'invalid_or_expired_token');
+  assert.equal((await call('GET', '/me', t)).emailVerified, true);
+
   await expectError(call('POST', '/profile/submit', t), 'steps_incomplete');
   for (const [k, v] of Object.entries(steps)) await call('PUT', `/profile/steps/${k}`, t, v);
   await call('PUT', '/profile/steps/rules', t, { acceptedRules: true });
@@ -80,7 +92,7 @@ async function approveAll(modToken: string, type: string, subjectUserId: string)
 async function main() {
   const [modM, modF, admin] = await Promise.all([login('mod.m@hitaba.dev'), login('mod.f@hitaba.dev'), login('admin@hitaba.dev')]);
 
-  console.log('1. kayıt + sihirbaz + gönderim');
+  console.log('1. kayıt (rıza zorunlu) + e-posta doğrulama + sihirbaz + gönderim');
   const bro = await onboard('MALE', 'Hamza');
   const sis = await onboard('FEMALE', 'Xadija');
   await expectError(call('POST', '/feed/next', bro.t, {}), 'profile_not_approved');

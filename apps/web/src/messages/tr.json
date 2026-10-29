@@ -80,7 +80,7 @@
     "registerSubtitle": "Nikah niyetiyle — adım adım",
     "email": "E-posta",
     "password": "Şifre",
-    "passwordHint": "En az 8 karakter",
+    "passwordHint": "En az 10 karakter",
     "loginSubmit": "Giriş yap",
     "registerSubmit": "Devam et",
     "noAccount": "Hesabınız yok mu?",
@@ -97,7 +97,8 @@
     "adultsOnly": "Yalnızca nikah niyetindeki yetişkinler (18+) için.",
     "tgWelcome": "Hitaba’ya hoş geldiniz",
     "tgOnly": "Telegram’dan açın",
-    "tgOnlyText": "Bu sayfa Telegram mini uygulaması içinde çalışır. Tarayıcıdan lütfen e-posta adresinizle giriş yapın."
+    "tgOnlyText": "Bu sayfa Telegram mini uygulaması içinde çalışır. Tarayıcıdan lütfen e-posta adresinizle giriş yapın.",
+    "consentRequired": "Lütfen zorunlu onayların hepsini verin."
   },
   "onboarding": {
     "stepOf": "Adım {current} / {total}",
@@ -612,7 +613,11 @@
     "not_deletable": "Bu mesaj artık silinemez.",
     "not_editable": "Bu mesaj artık düzenlenemez.",
     "only_brother_opens": "Sohbeti yalnızca erkek açabilir.",
-    "profile_locked": "Profiliniz şu an düzenlenemez."
+    "profile_locked": "Profiliniz şu an düzenlenemez.",
+    "email_not_verified": "Lütfen önce e-postanızı doğrulayın.",
+    "invalid_or_expired_token": "Bu bağlantı geçersiz ya da süresi dolmuş. Yenisini isteyin.",
+    "signup_required": "Lütfen kaydı tamamlayın.",
+    "ThrottlerException: Too Many Requests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar deneyin."
   },
   "admin": {
     "title": "Moderasyon",
@@ -722,5 +727,123 @@
     },
     "yes": "Evet",
     "no": "Hayır"
+  },
+  "consent": {
+    "title": "Onaylar (zorunlu)",
+    "privacy": "<link>Gizlilik Politikası</link>’nı okudum, kişisel verilerimin işlenmesini kabul ediyorum.",
+    "terms": "<link>Kullanım Koşulları</link>’nı ve platform kurallarını kabul ediyorum.",
+    "sensitiveData": "Verdiğim özel nitelikli verilerin (dini inanç ve uygulama, sağlıkla ilgili tarama cevapları) işlenmesine açıkça rıza veriyorum. Tarama cevaplarını yalnızca moderatörler görür.",
+    "adult": "18 yaşından büyüğüm ve burada nikah niyetiyle bulunuyorum.",
+    "withdraw": "Rızanızı hesabınızı silerek dilediğiniz zaman geri alabilirsiniz."
+  },
+  "verify": {
+    "bannerTitle": "E-postanızı doğrulayın",
+    "bannerText": "{email} adresine bir doğrulama bağlantısı gönderdik. Profilinizi incelemeye göndermeden önce doğrulamanız gerekir.",
+    "resend": "Bağlantıyı tekrar gönder",
+    "sent": "Yeni bağlantı gönderildi.",
+    "okTitle": "E-posta doğrulandı",
+    "okText": "Teşekkürler. Profilinize devam edebilirsiniz.",
+    "errorTitle": "Bağlantı geçersiz",
+    "continue": "Devam et"
+  },
+  "legal": {
+    "version": "Sürüm {version}",
+    "draftNotice": "Taslak — yayından önce bir hukukçu tarafından (KVKK/GDPR ve yerel mevzuat) incelenmelidir.",
+    "privacy": {
+      "title": "Gizlilik Politikası",
+      "intro": "Hitaba, nikah niyetindeki kişiler için bir tanışma platformudur. Bu amaç gereği kişisel ve bazı özel nitelikli verileri işleriz. Bu politika neyi, neden topladığımızı, kimin görebildiğini ve haklarınızı açıklar.",
+      "sections": {
+        "controller": {
+          "title": "Veri sorumlusu",
+          "body": "[Şirket unvanı], [adres]. Gizlilik konularında iletişim: privacy@[alan adı]."
+        },
+        "data": {
+          "title": "Topladığımız veriler",
+          "body": "Hesap verileri (e-posta veya Telegram kimliği, şifre özeti), profil verileri (ad veya takma ad, doğum tarihi, ülke/şehir, milliyet, diller, boy/kilo, medeni durum, çocuklar, yazdığınız metinler), fotoğraflar, sohbet mesajları, veli ve şahitlerin adı ve yakınlığı, paylaşmayı seçtiğiniz mahrem iletişim bilgisi, ödeme kayıtları ve teknik kayıtlar (IP adresi, cihaz, zaman)."
+        },
+        "sensitive": {
+          "title": "Özel nitelikli veriler",
+          "body": "Dini inanç ve uygulamaya dair bilgiler ile sağlıkla ilgili tarama cevapları (ör. bulaşıcı hastalık) özel nitelikli verilerdir. Bunları yalnızca açık rızanızla işleriz. Tarama cevapları şifrelenir ve yalnızca moderatörler görür."
+        },
+        "purpose": {
+          "title": "İşleme amaçları",
+          "body": "Profil oluşturmak ve denetlemek, eşleşme önermek, şahitli sohbetleri yürütmek, kullanıcıları korumak (sahtecilik, reşit olmayanlar, iletişim bilgisinin kötüye kullanımı), ödemeleri işlemek ve yasal yükümlülükleri yerine getirmek. Hukuki sebepler: açık rızanız, sözleşmenin ifası ve platform güvenliğine ilişkin meşru menfaat."
+        },
+        "visibility": {
+          "title": "Kim neyi görür",
+          "body": "Diğer üyeler profilinizi soyadınız, tam yaşınız ve iletişim bilgileriniz olmadan görür. Kadının fotoğrafı erkeğe yalnızca kadın onayladıktan sonra, 24 saat ve filigranlı gösterilir. Fotoğrafları yalnızca aynı cinsiyetten moderatörler inceler. Her sohbet moderatörlere açıktır; kadının velisi, kadının kontrol ettiği özel bir bağlantıyla son sohbetini okuyabilir."
+        },
+        "processors": {
+          "title": "Hizmet sağlayıcılar",
+          "body": "Barındırma, veritabanı, özel dosya depolama, e-posta gönderimi ve (kullanıyorsanız) Telegram. Bu sağlayıcılar verileri yalnızca talimatımızla işler. Bazıları yurt dışında olabilir; sözleşmesel güvenceler kullanırız."
+        },
+        "retention": {
+          "title": "Saklama süresi",
+          "body": "Profil verileri hesabınız açık olduğu sürece saklanır. Hesabınızı sildiğinizde profil, fotoğraflar ve sohbetler 30 gün içinde silinir veya anonimleştirilir; yasal olarak saklamamız gereken kayıtlar (ör. ödemeler) ve 1 yıla kadar tutulan güvenlik kayıtları hariç."
+        },
+        "rights": {
+          "title": "Haklarınız",
+          "body": "Verilerinize erişme, düzeltme, silme, kopyasını alma, işlemeye itiraz etme ve rızanızı dilediğiniz zaman geri alma hakkınız vardır. Özel nitelikli veriler için rızanın geri alınması eşleşme özelliğinin kullanılamaması anlamına gelir. Yukarıdaki adresten bize ulaşabilir, ayrıca veri koruma kurumuna şikâyette bulunabilirsiniz."
+        },
+        "security": {
+          "title": "Güvenlik",
+          "body": "Şifreli bağlantılar, hassas cevapların ve iletişim bilgilerinin şifreli saklanması, yalnızca erişim kontrolünden sonra sunulan özel depolamadaki fotoğraflar, filigran, moderatör erişim kayıtları ve istek sınırlaması."
+        },
+        "minors": {
+          "title": "Reşit olmayanlar",
+          "body": "Hitaba yalnızca 18 yaş ve üzeri içindir. Reşit olmayan birine ait görünen hesaplar kaldırılır ve gerektiğinde yetkililere bildirilir."
+        },
+        "contact": {
+          "title": "İletişim ve değişiklikler",
+          "body": "Bu politikadaki önemli değişiklikleri uygulama içinde duyurur, gerekiyorsa rızanızı yeniden isteriz."
+        }
+      }
+    },
+    "terms": {
+      "title": "Kullanım Koşulları",
+      "intro": "Hesap oluşturarak bu koşulları kabul etmiş olursunuz. Lütfen dikkatlice okuyun.",
+      "sections": {
+        "purpose": {
+          "title": "Amaç",
+          "body": "Hitaba yalnızca kişilerin İslami adaba uygun biçimde nikah amacıyla tanışmasına yardım eder. Başka kullanımlar (gelişigüzel flört, ticaret, eleman toplama) yasaktır."
+        },
+        "eligibility": {
+          "title": "Uygunluk",
+          "body": "En az 18 yaşında, evlenmeye hukuken ehil olmalı ve doğru bilgi vermelisiniz."
+        },
+        "account": {
+          "title": "Tek hesap",
+          "body": "Her kişi yalnızca bir hesap açabilir. Mükerrer veya sahte hesaplar engellenir. Şifrenizi gizli tutun; hesabınızdaki işlemlerden siz sorumlusunuz."
+        },
+        "conduct": {
+          "title": "Davranış",
+          "body": "Edep, dürüstlük ve saygıyla konuşun. Taciz, uygunsuz içerik, aldatma ve baskı yasaktır."
+        },
+        "contact": {
+          "title": "İletişim bilgileri",
+          "body": "Sohbetlerde telefon numarası, kullanıcı adı, bağlantı veya e-posta paylaşmayın. İletişim, moderatör onayından sonra mahrem üzerinden kurulur. İletişim bilgisi içeren mesajlar tutulur ve sohbet durdurulur."
+        },
+        "photos": {
+          "title": "Fotoğraflar",
+          "body": "Yalnızca kendinize ait, güncel ve edepli fotoğraflar yükleyin. Kimsenin fotoğrafının ekran görüntüsünü almayın, kaydetmeyin, paylaşmayın; görüntülemeler kayıt altındadır ve filigranlıdır."
+        },
+        "moderation": {
+          "title": "Moderasyon ve yaptırımlar",
+          "body": "Moderatörler profilleri, fotoğrafları ve sohbetleri inceleyebilir; içeriği reddedebilir, sohbeti durdurabilir veya kapatabilir, hesabı dondurabilir ya da engelleyebilir. Engelleme kararında bakiye iadesiz sıfırlanabilir."
+        },
+        "payments": {
+          "title": "Ödemeler",
+          "body": "Jetonlar sohbet açmak için kullanılır; süresizdir ve devredilemez. Sohbeti moderatör kapatırsa ya da karşı hesap engellenirse jeton iade edilir. Diğer iadeler iade politikasına tabidir."
+        },
+        "liability": {
+          "title": "Sorumluluk",
+          "body": "Hitaba kişileri tanıştırır; kimsenin kimliğini, niyetini veya bir evliliği garanti etmez. Aileler nikahtan önce kendi araştırmalarını yapmalıdır."
+        },
+        "changes": {
+          "title": "Değişiklikler",
+          "body": "Bu koşulları güncelleyebiliriz; önemli değişiklikler uygulama içinde duyurulur."
+        }
+      }
+    }
   }
 }

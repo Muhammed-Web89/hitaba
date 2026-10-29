@@ -26,6 +26,8 @@ export interface Me {
   status: UserStatus;
   statusReason: string | null;
   email: string | null;
+  /** E-posta ile kayıtlı ve henüz doğrulanmamışsa false; Telegram hesaplarında true. */
+  emailVerified: boolean;
   telegramUsername: string | null;
   locale: string;
   timezone: string;

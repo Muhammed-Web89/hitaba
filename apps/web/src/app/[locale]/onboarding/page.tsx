@@ -8,6 +8,7 @@ import { Icon } from '@/components/icons';
 import { Logo } from '@/components/Logo';
 import { draftFrom, payloadFor, StepFields, stepsFor, type Draft } from '@/components/ProfileSteps';
 import { Button, Notice, PageLoader } from '@/components/ui';
+import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { useRouter } from '@/i18n/navigation';
 import { api, ApiError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -95,6 +96,10 @@ export default function OnboardingPage() {
           </Notice>
         </div>
       )}
+
+      <div className="mt-5">
+        <VerifyEmailBanner />
+      </div>
 
       <main className="mt-6">
         <h1 className="text-2xl font-semibold">{t(`steps.${step}.title`)}</h1>

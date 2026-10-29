@@ -6,8 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  /// Uygulama bağlantısı (Neon'da havuzlu "-pooler" adresi).
+  url       = env("DATABASE_URL")
+  /// Migration bağlantısı (Neon'da havuzsuz doğrudan adres). Yerelde DATABASE_URL ile aynı.
+  directUrl = env("DIRECT_URL")
 }
 
 enum Gender {
@@ -144,6 +147,8 @@ model User {
   gender           Gender
   status           UserStatus @default(ONBOARDING)
   email            String?    @unique
+  /// E-posta ile kayıtta doğrulanana kadar null. Telegram hesaplarında kullanılmaz.
+  emailVerifiedAt  DateTime?
   passwordHash     String?
   telegramId       String?    @unique
   telegramUsername String?
@@ -159,26 +164,28 @@ model User {
   /// Dahili — kullanıcılara gösterilmez.
   lastLoginAt      DateTime?
 
-  profile        Profile?
-  photos         Photo[]
-  likesGiven     Like[]          @relation("likeFrom")
-  likesReceived  Like[]          @relation("likeTo")
-  passesGiven    Pass[]          @relation("passFrom")
-  passesReceived Pass[]          @relation("passTo")
-  favorites      Favorite[]      @relation("favOwner")
-  favoritedBy    Favorite[]      @relation("favTarget")
-  matchesAsMale  Match[]         @relation("matchMale")
-  matchesAsFemale Match[]        @relation("matchFemale")
-  messages       Message[]
-  reactions      MessageReaction[]
-  waliLink       WaliLink?
-  witnesses      Witness[]
-  connectTxs     ConnectTx[]
-  payments       Payment[]
-  notifications  Notification[]
-  reportsFiled   Report[]        @relation("reporter")
-  reportsAgainst Report[]        @relation("reported")
-  photoViews     PhotoView[]
+  profile         Profile?
+  photos          Photo[]
+  likesGiven      Like[]            @relation("likeFrom")
+  likesReceived   Like[]            @relation("likeTo")
+  passesGiven     Pass[]            @relation("passFrom")
+  passesReceived  Pass[]            @relation("passTo")
+  favorites       Favorite[]        @relation("favOwner")
+  favoritedBy     Favorite[]        @relation("favTarget")
+  matchesAsMale   Match[]           @relation("matchMale")
+  matchesAsFemale Match[]           @relation("matchFemale")
+  messages        Message[]
+  reactions       MessageReaction[]
+  waliLink        WaliLink?
+  witnesses       Witness[]
+  connectTxs      ConnectTx[]
+  payments        Payment[]
+  notifications   Notification[]
+  reportsFiled    Report[]          @relation("reporter")
+  reportsAgainst  Report[]          @relation("reported")
+  photoViews      PhotoView[]
+  consents        Consent[]
+  emailTokens     EmailToken[]
 
   @@index([role, gender, status])
 }
@@ -283,23 +290,23 @@ model Favorite {
 }
 
 model Match {
-  id               String     @id @default(cuid())
-  maleId           String
-  femaleId         String
-  male             User       @relation("matchMale", fields: [maleId], references: [id], onDelete: Cascade)
-  female           User       @relation("matchFemale", fields: [femaleId], references: [id], onDelete: Cascade)
-  stage            MatchStage @default(MUTUAL)
+  id                   String     @id @default(cuid())
+  maleId               String
+  femaleId             String
+  male                 User       @relation("matchMale", fields: [maleId], references: [id], onDelete: Cascade)
+  female               User       @relation("matchFemale", fields: [femaleId], references: [id], onDelete: Cascade)
+  stage                MatchStage @default(MUTUAL)
   /// Kadın erkeğin fotoğrafını onayladığı an.
-  femaleApprovedAt DateTime?
+  femaleApprovedAt     DateTime?
   /// Erkeğin kadının fotoğrafını görebileceği son an (onay + 24 saat).
   malePhotoAccessUntil DateTime?
   /// Kadın "sohbeti başlatmasını iste" dedi.
-  chatRequestedAt  DateTime?
-  closedById       String?
-  closedAt         DateTime?
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
-  chat             Chat?
+  chatRequestedAt      DateTime?
+  closedById           String?
+  closedAt             DateTime?
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+  chat                 Chat?
 
   @@unique([maleId, femaleId])
   @@index([femaleId, stage])
@@ -438,6 +445,44 @@ model Payment {
   providerChargeId String?       @unique
   createdAt        DateTime      @default(now())
   paidAt           DateTime?
+}
+
+// ── Rıza & e-posta doğrulama ────────────────────────────────────────────
+
+enum ConsentKind {
+  PRIVACY
+  TERMS
+  SENSITIVE_DATA
+  ADULT
+}
+
+/// KVKK/GDPR ispat yükümlülüğü: kim, hangi metin sürümünü, ne zaman, nereden onayladı.
+model Consent {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind        ConsentKind
+  version     String
+  acceptedAt  DateTime    @default(now())
+  ip          String?
+  userAgent   String?
+  withdrawnAt DateTime?
+
+  @@index([userId, kind])
+}
+
+model EmailToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// SHA-256(token) — token'ın kendisi yalnızca e-postada bulunur.
+  tokenHash String    @unique
+  purpose   String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, purpose])
 }
 
 // ── Moderasyon, şikâyet, denetim ────────────────────────────────────────

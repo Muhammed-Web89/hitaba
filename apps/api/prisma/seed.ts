@@ -1,21 +1,33 @@
 /**
- * Geliştirme verisi. Üretimde çalışmaz.
+ * Geliştirme verisi — bilinen şifreli demo hesaplar. ÜRETİM VERİTABANINA ASLA GİRMEMELİ.
+ * Yalnızca yerel veritabanında çalışır; API de üretimde bu hesapları görürse açılmaz.
  * Tüm hesapların şifresi: hitaba123
  */
-import { PrismaClient, type Gender, type Relation } from '@prisma/client';
+import { PrismaClient, type ConsentKind, type Gender, type Relation } from '@prisma/client';
+import { POLICY_VERSION } from '@hitaba/shared';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import sharp from 'sharp';
 import 'dotenv/config';
 import { encrypt, hashPassword, randomToken } from '../src/common/crypto';
 
-if (process.env.NODE_ENV === 'production') {
-  console.error('seed is disabled in production');
+const dbHost = (() => {
+  try {
+    return new URL(process.env.DATABASE_URL ?? '').hostname;
+  } catch {
+    return '';
+  }
+})();
+if (process.env.NODE_ENV === 'production' || !['127.0.0.1', 'localhost'].includes(dbHost)) {
+  console.error(`demo seed refused: only runs against a local database (got "${dbHost || 'none'}")`);
   process.exit(1);
 }
 
 const prisma = new PrismaClient();
 const PASSWORD = 'hitaba123';
+const consents = {
+  create: (['PRIVACY', 'TERMS', 'SENSITIVE_DATA', 'ADULT'] as ConsentKind[]).map((kind) => ({ kind, version: POLICY_VERSION })),
+};
 const storageRoot = resolve(process.env.STORAGE_DIR ?? './storage');
 
 const ABOUT_M =
@@ -74,6 +86,7 @@ async function main() {
       update: {},
       create: {
         email: s.email,
+        emailVerifiedAt: new Date(),
         passwordHash,
         gender: s.gender,
         role: s.role,
@@ -89,9 +102,11 @@ async function main() {
     const user = await prisma.user.create({
       data: {
         email: p.email,
+        emailVerifiedAt: new Date(),
         passwordHash,
         gender: p.gender,
         status: 'APPROVED',
+        consents,
         connectBalance: p.connects ?? 0,
         timezone: p.country === 'TR' ? 'Europe/Istanbul' : 'Asia/Tashkent',
         profile: {
@@ -140,6 +155,9 @@ async function main() {
       await prisma.witness.createMany({ data: witnesses.map((w) => ({ ...w, femaleId: user.id })) });
     }
   }
+
+  // Daha önce oluşturulmuş demo hesaplar da doğrulanmış sayılsın.
+  await prisma.user.updateMany({ where: { email: { endsWith: '@hitaba.dev' }, emailVerifiedAt: null }, data: { emailVerifiedAt: new Date() } });
 
   console.log('\nSeed tamam. Tüm hesapların şifresi:', PASSWORD);
   console.table([...staff.map((s) => ({ email: s.email, role: s.role, gender: s.gender })), ...people.map((p) => ({ email: p.email, role: 'USER', gender: p.gender }))]);

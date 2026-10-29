@@ -80,7 +80,7 @@
     "registerSubtitle": "Nikoh niyatida — qadamma-qadam",
     "email": "Elektron pochta",
     "password": "Parol",
-    "passwordHint": "Kamida 8 ta belgi",
+    "passwordHint": "Kamida 10 ta belgi",
     "loginSubmit": "Kirish",
     "registerSubmit": "Davom etish",
     "noAccount": "Hisobingiz yoʻqmi?",
@@ -97,7 +97,8 @@
     "adultsOnly": "Faqat nikoh niyatidagi voyaga yetganlar (18+) uchun.",
     "tgWelcome": "Hitaba’ga xush kelibsiz",
     "tgOnly": "Telegram orqali oching",
-    "tgOnlyText": "Bu sahifa Telegram mini-ilovasi ichida ishlaydi. Brauzerda elektron pochta orqali kiring."
+    "tgOnlyText": "Bu sahifa Telegram mini-ilovasi ichida ishlaydi. Brauzerda elektron pochta orqali kiring.",
+    "consentRequired": "Iltimos, barcha majburiy roziliklarni bering."
   },
   "onboarding": {
     "stepOf": "{current}-qadam ({total} tadan)",
@@ -612,7 +613,11 @@
     "not_deletable": "Bu xabarni endi oʻchirib boʻlmaydi.",
     "not_editable": "Bu xabarni endi tahrirlab boʻlmaydi.",
     "only_brother_opens": "Suhbatni faqat erkak ochadi.",
-    "profile_locked": "Anketani hozir tahrirlab boʻlmaydi."
+    "profile_locked": "Anketani hozir tahrirlab boʻlmaydi.",
+    "email_not_verified": "Iltimos, avval emailingizni tasdiqlang.",
+    "invalid_or_expired_token": "Bu havola yaroqsiz yoki muddati oʻtgan. Yangisini soʻrang.",
+    "signup_required": "Iltimos, roʻyxatdan oʻtishni yakunlang.",
+    "ThrottlerException: Too Many Requests": "Urinishlar juda koʻp. Biroz kutib, qaytadan urinib koʻring."
   },
   "admin": {
     "title": "Moderatsiya",
@@ -722,5 +727,123 @@
     },
     "yes": "Ha",
     "no": "Yoʻq"
+  },
+  "consent": {
+    "title": "Roziliklar (majburiy)",
+    "privacy": "<link>Maxfiylik siyosati</link> bilan tanishdim va shaxsiy maʼlumotlarim qayta ishlanishiga roziman.",
+    "terms": "<link>Foydalanish shartlari</link> va platforma qoidalarini qabul qilaman.",
+    "sensitiveData": "Men bergan maxsus toifadagi maʼlumotlar (diniy eʼtiqod va amallar, sogʻliq bilan bogʻliq tekshiruv javoblari) qayta ishlanishiga aniq rozilik beraman. Tekshiruv javoblarini faqat moderatorlar koʻradi.",
+    "adult": "Men 18 yoshdan kattaman va bu yerda nikoh niyatida turibman.",
+    "withdraw": "Roziligingizni istalgan vaqtda hisobingizni oʻchirib, qaytarib olishingiz mumkin."
+  },
+  "verify": {
+    "bannerTitle": "Emailingizni tasdiqlang",
+    "bannerText": "{email} manziliga tasdiqlash havolasini yubordik. Anketani tekshiruvga yuborishdan oldin uni tasdiqlashingiz kerak.",
+    "resend": "Havolani qayta yuborish",
+    "sent": "Yangi havola yuborildi.",
+    "okTitle": "Email tasdiqlandi",
+    "okText": "Rahmat. Anketangizni davom ettirishingiz mumkin.",
+    "errorTitle": "Havola yaroqsiz",
+    "continue": "Davom etish"
+  },
+  "legal": {
+    "version": "Versiya {version}",
+    "draftNotice": "Qoralama — ishga tushirishdan oldin yurist tomonidan (shaxsiy maʼlumotlar toʻgʻrisidagi qonun/GDPR) koʻrib chiqilishi kerak.",
+    "privacy": {
+      "title": "Maxfiylik siyosati",
+      "intro": "Hitaba — nikoh niyatidagi insonlar uchun tanishuv platformasi. Shu maqsad tufayli biz shaxsiy va baʼzi maxsus toifadagi maʼlumotlarni qayta ishlaymiz. Ushbu siyosat nimani, nima uchun yigʻishimiz, kim koʻra olishi va huquqlaringizni tushuntiradi.",
+      "sections": {
+        "controller": {
+          "title": "Maʼlumotlar operatori",
+          "body": "[Kompaniya nomi], [manzil]. Maxfiylik masalalari boʻyicha aloqa: privacy@[domen]."
+        },
+        "data": {
+          "title": "Yigʻiladigan maʼlumotlar",
+          "body": "Hisob maʼlumotlari (email yoki Telegram ID, parol xeshi), anketa maʼlumotlari (ism yoki taxallus, tugʻilgan sana, mamlakat/shahar, millat, tillar, boʻy/vazn, oilaviy holat, farzandlar, siz yozgan matnlar), suratlar, suhbat xabarlari, valiy va guvohlarning ismi va qarindoshligi, ulashishni tanlagan mahram aloqasi, toʻlov yozuvlari va texnik yozuvlar (IP manzil, qurilma, vaqt)."
+        },
+        "sensitive": {
+          "title": "Maxsus toifadagi maʼlumotlar",
+          "body": "Diniy eʼtiqod va amallar haqidagi maʼlumotlar hamda sogʻliq bilan bogʻliq tekshiruv javoblari (masalan, yuqumli kasallik) maxsus toifadagi maʼlumotlardir. Ularni faqat aniq roziligingiz bilan qayta ishlaymiz. Tekshiruv javoblari shifrlanadi va faqat moderatorlarga koʻrinadi."
+        },
+        "purpose": {
+          "title": "Qayta ishlash maqsadlari",
+          "body": "Anketa yaratish va moderatsiya qilish, juftlik taklif etish, guvohli suhbatlarni yuritish, foydalanuvchilarni himoya qilish (firibgarlik, voyaga yetmaganlar, aloqa maʼlumotidan suiisteʼmol), toʻlovlarni amalga oshirish va qonuniy majburiyatlarni bajarish. Huquqiy asoslar: aniq roziligingiz, shartnomani bajarish va platforma xavfsizligiga oid qonuniy manfaat."
+        },
+        "visibility": {
+          "title": "Kim nimani koʻradi",
+          "body": "Boshqa aʼzolar anketangizni familiya, aniq yosh va aloqa maʼlumotlarisiz koʻradi. Ayolning surati erkakka faqat ayol tasdiqlaganidan soʻng, 24 soatga va suv belgisi bilan koʻrsatiladi. Suratlarni faqat bir xil jinsdagi moderatorlar tekshiradi. Har bir suhbat moderatorlarga ochiq; ayolning valiysi ayol boshqaradigan maxfiy havola orqali soʻnggi suhbatni oʻqiy oladi."
+        },
+        "processors": {
+          "title": "Xizmat koʻrsatuvchilar",
+          "body": "Xosting, maʼlumotlar bazasi, maxfiy fayl ombori, email yuborish va (agar foydalansangiz) Telegram. Ular maʼlumotlarni faqat bizning koʻrsatmamiz bilan qayta ishlaydi. Baʼzilari xorijda boʻlishi mumkin; shartnomaviy kafolatlardan foydalanamiz."
+        },
+        "retention": {
+          "title": "Saqlash muddati",
+          "body": "Anketa maʼlumotlari hisobingiz faol ekan saqlanadi. Hisobni oʻchirganingizda anketa, suratlar va suhbatlar 30 kun ichida oʻchiriladi yoki anonimlashtiriladi; qonunan saqlanishi shart boʻlgan yozuvlar (masalan, toʻlovlar) va 1 yilgacha saqlanadigan xavfsizlik yozuvlari bundan mustasno."
+        },
+        "rights": {
+          "title": "Huquqlaringiz",
+          "body": "Maʼlumotlaringizdan foydalanish, tuzatish, oʻchirish, nusxasini olish, qayta ishlashga eʼtiroz bildirish va roziligingizni istalgan vaqtda qaytarib olish huquqingiz bor. Maxsus maʼlumotlar uchun rozilikni qaytarib olish juftlik xizmatidan foydalana olmaslikni bildiradi. Yuqoridagi manzil orqali murojaat qiling; vakolatli organga shikoyat ham qilishingiz mumkin."
+        },
+        "security": {
+          "title": "Xavfsizlik",
+          "body": "Shifrlangan ulanishlar, maxfiy javoblar va aloqa maʼlumotlarining shifrlangan holda saqlanishi, faqat ruxsat tekshiruvidan soʻng beriladigan maxfiy ombordagi suratlar, suv belgisi, moderatorlar kirish jurnali va soʻrovlar cheklovi."
+        },
+        "minors": {
+          "title": "Voyaga yetmaganlar",
+          "body": "Hitaba faqat 18 yosh va undan kattalar uchun. Voyaga yetmaganga tegishli koʻringan hisoblar oʻchiriladi va zarur boʻlsa vakolatli organlarga xabar qilinadi."
+        },
+        "contact": {
+          "title": "Aloqa va oʻzgarishlar",
+          "body": "Ushbu siyosatdagi muhim oʻzgarishlarni ilovada eʼlon qilamiz va zarur boʻlsa roziligingizni qayta soʻraymiz."
+        }
+      }
+    },
+    "terms": {
+      "title": "Foydalanish shartlari",
+      "intro": "Hisob yaratish orqali siz ushbu shartlarni qabul qilasiz. Iltimos, diqqat bilan oʻqing.",
+      "sections": {
+        "purpose": {
+          "title": "Maqsad",
+          "body": "Hitaba faqat insonlarning islomiy odobga muvofiq nikoh maqsadida tanishishiga yordam beradi. Boshqa maqsadlar (oddiy uchrashuvlar, savdo, xodim yollash) taqiqlanadi."
+        },
+        "eligibility": {
+          "title": "Talablar",
+          "body": "Kamida 18 yoshda boʻlishingiz, qonunan nikohga layoqatli boʻlishingiz va toʻgʻri maʼlumot berishingiz kerak."
+        },
+        "account": {
+          "title": "Bitta hisob",
+          "body": "Har bir inson faqat bitta hisob ochishi mumkin. Takroriy yoki soxta hisoblar bloklanadi. Parolingizni sir saqlang; hisobingizdagi harakatlar uchun oʻzingiz javobgarsiz."
+        },
+        "conduct": {
+          "title": "Xulq-atvor",
+          "body": "Odob, rostgoʻylik va hurmat bilan gaplashing. Tazyiq, nojoʻya kontent, aldov va bosim taqiqlanadi."
+        },
+        "contact": {
+          "title": "Aloqa maʼlumotlari",
+          "body": "Suhbatlarda telefon raqam, foydalanuvchi nomi, havola yoki email ulashmang. Aloqa moderator tasdigʻidan soʻng mahram orqali boʻladi. Aloqa maʼlumoti bor xabarlar ushlab qolinadi va suhbat toʻxtatiladi."
+        },
+        "photos": {
+          "title": "Suratlar",
+          "body": "Faqat oʻzingizning, yaqinda tushgan va odobli suratlaringizni yuklang. Hech kimning suratini skrinshot qilmang, saqlamang, tarqatmang; koʻrishlar qayd etiladi va suv belgisi bilan koʻrsatiladi."
+        },
+        "moderation": {
+          "title": "Moderatsiya va choralar",
+          "body": "Moderatorlar anketalar, suratlar va suhbatlarni koʻrib chiqishi, kontentni rad etishi, suhbatni toʻxtatishi yoki yopishi, hisobni muzlatishi yoki bloklashi mumkin. Bloklashda balans qaytarilmasdan nolga tushirilishi mumkin."
+        },
+        "payments": {
+          "title": "Toʻlovlar",
+          "body": "Tangalar suhbat ochish uchun ishlatiladi; ular muddatsiz va boshqaga oʻtkazilmaydi. Suhbatni moderator yopsa yoki qarshi hisob bloklansa, tanga qaytariladi. Boshqa qaytarishlar qaytarish siyosatiga muvofiq."
+        },
+        "liability": {
+          "title": "Masʼuliyat",
+          "body": "Hitaba insonlarni tanishtiradi; hech kimning shaxsi, niyati yoki nikoh kafolatlanmaydi. Oilalar nikohdan oldin oʻzlari surishtiruv oʻtkazishi lozim."
+        },
+        "changes": {
+          "title": "Oʻzgarishlar",
+          "body": "Ushbu shartlarni yangilashimiz mumkin; muhim oʻzgarishlar ilovada eʼlon qilinadi."
+        }
+      }
+    }
   }
 }

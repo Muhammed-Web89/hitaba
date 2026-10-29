@@ -7,11 +7,24 @@ const enumOf = <T extends Record<string, string>>(o: T) =>
 
 // ── Auth ────────────────────────────────────────────────────────────────
 
+/**
+ * Kayıtta zorunlu rızalar (KVKK/GDPR). Din ve sağlık tarama cevapları özel nitelikli veri
+ * olduğundan ayrı ve açık rıza alınır. Hepsi `true` olmalı; sürüm sunucuda kaydedilir.
+ */
+export const consentSchema = z.object({
+  privacy: z.literal(true),
+  terms: z.literal(true),
+  sensitiveData: z.literal(true),
+  adult: z.literal(true),
+});
+export type ConsentInput = z.infer<typeof consentSchema>;
+
 export const registerSchema = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
-  password: z.string().min(8).max(128),
+  password: z.string().min(10).max(128),
   gender: enumOf(Gender),
   locale: z.string().min(2).max(5).optional(),
+  consents: consentSchema,
 });
 export type RegisterInput = z.infer<typeof registerSchema>;
 
@@ -25,7 +38,11 @@ export const telegramAuthSchema = z.object({
   initData: z.string().min(1).max(4096),
   /** Yalnızca ilk girişte (hesap yoksa) zorunlu. */
   gender: enumOf(Gender).optional(),
+  /** Yalnızca ilk girişte (hesap yoksa) zorunlu. */
+  consents: consentSchema.optional(),
 });
+
+export const verifyEmailSchema = z.object({ token: z.string().min(20).max(200) });
 export type TelegramAuthInput = z.infer<typeof telegramAuthSchema>;
 
 // ── Profil sihirbazı ──────────────────────────────────────────────────────

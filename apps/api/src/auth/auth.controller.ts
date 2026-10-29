@@ -1,20 +1,24 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { User } from '@prisma/client';
+import type { Request } from 'express';
 import { z } from 'zod';
 import {
   loginSchema,
   registerSchema,
   telegramAuthSchema,
+  verifyEmailSchema,
   type LoginInput,
   type RegisterInput,
   type TelegramAuthInput,
 } from '@hitaba/shared';
 import { ZodPipe } from '../common/zod.pipe';
-import { AuthService } from './auth.service';
+import { AuthService, type RequestMeta } from './auth.service';
 import { CurrentUser, Public } from './guards';
 
 const refreshSchema = z.object({ refreshToken: z.string().min(1) });
+
+const metaOf = (req: Request): RequestMeta => ({ ip: req.ip, userAgent: req.headers['user-agent'] });
 
 @Controller('auth')
 @Throttle({ default: { limit: 10, ttl: 60_000 } })
@@ -23,8 +27,8 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  register(@Body(new ZodPipe(registerSchema)) body: RegisterInput) {
-    return this.auth.register(body);
+  register(@Body(new ZodPipe(registerSchema)) body: RegisterInput, @Req() req: Request) {
+    return this.auth.register(body, metaOf(req));
   }
 
   @Public()
@@ -37,8 +41,23 @@ export class AuthController {
   @Public()
   @Post('telegram')
   @HttpCode(200)
-  telegram(@Body(new ZodPipe(telegramAuthSchema)) body: TelegramAuthInput) {
-    return this.auth.telegram(body);
+  telegram(@Body(new ZodPipe(telegramAuthSchema)) body: TelegramAuthInput, @Req() req: Request) {
+    return this.auth.telegram(body, metaOf(req));
+  }
+
+  @Public()
+  @Post('verify-email')
+  @HttpCode(200)
+  verifyEmail(@Body(new ZodPipe(verifyEmailSchema)) body: { token: string }) {
+    return this.auth.verifyEmail(body.token);
+  }
+
+  /** Kötüye kullanım ve e-posta bombardımanına karşı sıkı sınır: 15 dakikada 3. */
+  @Post('resend-verification')
+  @HttpCode(204)
+  @Throttle({ default: { limit: 3, ttl: 15 * 60_000 } })
+  async resendVerification(@CurrentUser() user: User) {
+    await this.auth.sendVerification(user);
   }
 
   @Public()

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "cd ../.. && npm ci --workspace @hitaba/web --workspace @hitaba/shared --include-workspace-root",
+  "buildCommand": "cd ../.. && npm run build -w @hitaba/shared && cd apps/web && next build"
+}

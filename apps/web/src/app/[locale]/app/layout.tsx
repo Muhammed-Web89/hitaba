@@ -7,6 +7,7 @@ import type { NotificationItem } from '@hitaba/shared';
 import { Icon, type IconName } from '@/components/icons';
 import { Logo } from '@/components/Logo';
 import { cx, PageLoader } from '@/components/ui';
+import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/lib/auth';
 import { getSocket } from '@/lib/socket';
@@ -72,7 +73,14 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         </header>
       )}
 
-      <main className={cx('flex-1', !inChat && 'px-4 pb-24 pt-4')}>{children}</main>
+      <main className={cx('flex-1', !inChat && 'px-4 pb-24 pt-4')}>
+        {!inChat && !me.emailVerified && (
+          <div className="mb-4">
+            <VerifyEmailBanner />
+          </div>
+        )}
+        {children}
+      </main>
 
       {!inChat && (
         <nav

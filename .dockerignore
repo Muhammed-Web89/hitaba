@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.next
+**/.next-share
+**/.env
+**/.env.local
+.pgdata
+apps/api/storage
+.git
+docs

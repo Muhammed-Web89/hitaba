@@ -80,7 +80,7 @@
     "registerSubtitle": "With the intention of nikah — step by step",
     "email": "Email",
     "password": "Password",
-    "passwordHint": "At least 8 characters",
+    "passwordHint": "At least 10 characters",
     "loginSubmit": "Sign in",
     "registerSubmit": "Continue",
     "noAccount": "No account yet?",
@@ -97,7 +97,8 @@
     "adultsOnly": "Only for adults (18+) with the intention of nikah.",
     "tgWelcome": "Welcome to Hitaba",
     "tgOnly": "Open from Telegram",
-    "tgOnlyText": "This page works inside the Telegram Mini App. On the web, please sign in with email."
+    "tgOnlyText": "This page works inside the Telegram Mini App. On the web, please sign in with email.",
+    "consentRequired": "Please accept all required consents."
   },
   "onboarding": {
     "stepOf": "Step {current} of {total}",
@@ -612,7 +613,11 @@
     "not_deletable": "This message can no longer be deleted.",
     "not_editable": "This message can no longer be edited.",
     "only_brother_opens": "Only the man can open the chat.",
-    "profile_locked": "Your profile cannot be edited right now."
+    "profile_locked": "Your profile cannot be edited right now.",
+    "email_not_verified": "Please confirm your email first.",
+    "invalid_or_expired_token": "This link is invalid or has expired. Request a new one.",
+    "signup_required": "Please complete sign-up.",
+    "ThrottlerException: Too Many Requests": "Too many attempts. Please wait a moment and try again."
   },
   "admin": {
     "title": "Moderation",
@@ -722,5 +727,123 @@
     },
     "yes": "Yes",
     "no": "No"
+  },
+  "consent": {
+    "title": "Consents (required)",
+    "privacy": "I have read the <link>Privacy Policy</link> and agree to the processing of my personal data.",
+    "terms": "I accept the <link>Terms of Use</link> and the platform rules.",
+    "sensitiveData": "I explicitly consent to the processing of sensitive data I provide (religious beliefs and practice, health-related screening answers). Only moderators see the screening answers.",
+    "adult": "I am at least 18 years old and I am here with the intention of nikah.",
+    "withdraw": "You can withdraw your consent at any time by deleting your account."
+  },
+  "verify": {
+    "bannerTitle": "Confirm your email",
+    "bannerText": "We sent a confirmation link to {email}. You need to confirm it before sending your profile for review.",
+    "resend": "Send the link again",
+    "sent": "A new link has been sent.",
+    "okTitle": "Email confirmed",
+    "okText": "Thank you. You can continue with your profile.",
+    "errorTitle": "Link not valid",
+    "continue": "Continue"
+  },
+  "legal": {
+    "version": "Version {version}",
+    "draftNotice": "Draft — must be reviewed by a lawyer (KVKK/GDPR and local law) before launch.",
+    "privacy": {
+      "title": "Privacy Policy",
+      "intro": "Hitaba is a matchmaking platform for people who intend nikah. Because of this purpose we process personal and some sensitive data. This policy explains what we collect, why, who can see it and what your rights are.",
+      "sections": {
+        "controller": {
+          "title": "Data controller",
+          "body": "[Company legal name], [address]. Contact for privacy matters: privacy@[domain]."
+        },
+        "data": {
+          "title": "Data we collect",
+          "body": "Account data (email or Telegram ID, password hash), profile data (name or nickname, date of birth, country/city, nationality, languages, height/weight, marital status, children, texts you write), photos, messages in chats, wali and witness names and relations, mahram contact details you choose to share, payment records and technical logs (IP address, device, time)."
+        },
+        "sensitive": {
+          "title": "Sensitive data",
+          "body": "Information about religious beliefs and practice, and health-related screening answers (e.g. contagious disease) are special categories of data. We process them only with your explicit consent. Screening answers are encrypted and visible only to moderators."
+        },
+        "purpose": {
+          "title": "Why we process it",
+          "body": "To create and moderate profiles, suggest matches, run witnessed chats, protect users (fraud, minors, contact-information misuse), process payments and meet legal obligations. Legal bases: your explicit consent, performance of the contract and legitimate interest in platform safety."
+        },
+        "visibility": {
+          "title": "Who can see what",
+          "body": "Other members see your profile without surname, exact age or contact details. A woman's photo is shown to a man only after her approval, for 24 hours and with a watermark. Photos are reviewed only by moderators of the same gender. Every chat is visible to moderators; a woman's wali can read her latest chat through a private link she controls."
+        },
+        "processors": {
+          "title": "Service providers",
+          "body": "Hosting, database, private file storage, email delivery and (if you use it) Telegram. These providers process data only on our instructions. Some may be located outside your country; we use contractual safeguards."
+        },
+        "retention": {
+          "title": "Retention",
+          "body": "Profile data is kept while your account is active. When you delete your account, profile, photos and chats are deleted or anonymised within 30 days, except records we must keep by law (e.g. payments) and safety logs kept for up to 1 year."
+        },
+        "rights": {
+          "title": "Your rights",
+          "body": "You can request access, correction, deletion and a copy of your data, object to processing and withdraw consent at any time. Withdrawing consent for sensitive data means you can no longer use matching. Contact us at the address above; you may also complain to your data protection authority."
+        },
+        "security": {
+          "title": "Security",
+          "body": "Encrypted connections, encrypted storage of sensitive answers and contact details, photos in private storage served only after an access check, watermarks, access logs for moderators and rate limiting."
+        },
+        "minors": {
+          "title": "Minors",
+          "body": "Hitaba is only for people aged 18 and over. Accounts that appear to belong to minors are removed and may be reported to authorities."
+        },
+        "contact": {
+          "title": "Contact and changes",
+          "body": "We will announce material changes to this policy in the app and ask for consent again when required."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "intro": "By creating an account you agree to these terms. Please read them carefully.",
+      "sections": {
+        "purpose": {
+          "title": "Purpose",
+          "body": "Hitaba exists only to help people meet for nikah in a way consistent with Islamic etiquette. Any other use (casual dating, commerce, recruiting) is not allowed."
+        },
+        "eligibility": {
+          "title": "Eligibility",
+          "body": "You must be at least 18, legally able to marry and provide true information."
+        },
+        "account": {
+          "title": "One account",
+          "body": "Each person may have one account. Duplicate or fake accounts are banned. Keep your password secret; you are responsible for activity on your account."
+        },
+        "conduct": {
+          "title": "Conduct",
+          "body": "Speak with adab, honesty and respect. Harassment, indecent content, deception and pressure are forbidden."
+        },
+        "contact": {
+          "title": "Contact details",
+          "body": "Do not share phone numbers, usernames, links or e-mail addresses in chats. Contact passes through the mahram after moderator approval. Messages containing contact details are held and the chat is paused."
+        },
+        "photos": {
+          "title": "Photos",
+          "body": "Upload only your own, recent and modest photos. Do not screenshot, save or share anyone's photos; viewing is logged and watermarked."
+        },
+        "moderation": {
+          "title": "Moderation and sanctions",
+          "body": "Moderators may review profiles, photos and chats, reject content, pause or close chats, freeze or ban accounts. Ban decisions may reset the balance without refund."
+        },
+        "payments": {
+          "title": "Payments",
+          "body": "Coins are used to open chats; they do not expire and cannot be transferred. If a moderator closes a chat or the other account is banned, the coin is refunded. Other refunds follow the refund policy."
+        },
+        "liability": {
+          "title": "Responsibility",
+          "body": "Hitaba introduces people; it does not guarantee anyone's identity, intentions or a marriage. Families should do their own due diligence before nikah."
+        },
+        "changes": {
+          "title": "Changes",
+          "body": "We may update these terms; material changes will be announced in the app."
+        }
+      }
+    }
   }
 }
