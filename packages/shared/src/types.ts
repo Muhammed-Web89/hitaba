@@ -49,6 +49,7 @@ export interface OwnProfile {
   weightKg: number | null;
   maritalStatus: MaritalStatus | null;
   nikahCount: number;
+  currentWives: number;
   childrenCount: number;
   polygamyAnswer: PolygamyAnswer | null;
   aboutMe: string | null;
@@ -86,6 +87,8 @@ export interface PublicProfile {
   weightKg: number | null;
   maritalStatus: MaritalStatus;
   nikahCount: number;
+  /** Evli erkek için mevcut eş sayısı; diğerlerinde 0. */
+  currentWives: number;
   childrenCount: number;
   polygamyAnswer: PolygamyAnswer | null;
   aboutMe: string;

@@ -80,7 +80,10 @@ export const profileSteps = {
   }),
   family: z.object({
     maritalStatus: enumOf(MaritalStatus),
+    /** Sona ermiş (önceki) nikah sayısı. */
     nikahCount: z.number().int().min(0).max(RULES.maxNikahCount),
+    /** Yalnızca evli erkek: mevcut eş sayısı. Cinsiyete bağlı kurallar sunucuda uygulanır. */
+    currentWives: z.number().int().min(0).max(RULES.maxCurrentWives).optional(),
     childrenCount: z.number().int().min(0).max(30),
     polygamyAnswer: enumOf(PolygamyAnswer).optional(),
   }),

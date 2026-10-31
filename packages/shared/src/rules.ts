@@ -8,6 +8,8 @@ export const RULES = {
   aboutMinChars: 100,
   aboutMaxChars: 2000,
   maxNikahCount: 20,
+  /** Evli erkeğin mevcut eş sayısı (en fazla 4 eşten biri olacağı için 1–3). */
+  maxCurrentWives: 3,
 
   maxPhotos: 3,
   photoViewWindowHours: 24,

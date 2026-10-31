@@ -168,7 +168,7 @@
       "weight": "Vazn (kg)",
       "bodyHint": "Taxminiy qiymatlar yetarli.",
       "maritalStatus": "Oilaviy holat",
-      "nikahCount": "Avvalgi nikohlar soni",
+      "nikahCount": "Tugagan avvalgi nikohlar soni",
       "childrenCount": "Farzandlar",
       "polygamy": "Ikkinchi xotin boʻlishga rozimisiz?",
       "polygamyHint": "Javobingizni faqat shu filtrni tanlagan erkaklar koʻradi.",
@@ -187,7 +187,9 @@
       "contagiousDisease": "Yuqumli kasalligingiz bormi?",
       "photosFemale": "Suratingiz hech qachon roʻyxatlarda koʻrinmaydi. Erkak uni faqat siz tasdiqlaganingizdan soʻng, 24 soat davomida, suv belgisi bilan koʻradi.",
       "photosMale": "Suratingizni avval ayol koʻradi. Lentada koʻrsatish dastlab oʻchiq turadi.",
-      "acceptRules": "Qoidalarni oʻqidim va qabul qilaman"
+      "acceptRules": "Qoidalarni oʻqidim va qabul qilaman",
+      "currentWives": "Hozirgi xotinlar soni",
+      "currentWivesHint": "Uylangan ekaningiz va nechta xotiningiz borligini ochiq koʻrsatish shart; ayollar buni anketangizda koʻradi."
     }
   },
   "rules": {
@@ -297,8 +299,10 @@
     "languages": "Tillar",
     "height": "Boʻy",
     "weight": "Vazn",
-    "nikahCount": "Avvalgi nikohlar",
-    "polygamy": "Ikkinchi xotin"
+    "nikahCount": "Avvalgi (tugagan) nikohlar",
+    "polygamy": "Ikkinchi xotin",
+    "currentWives": "Hozirgi xotinlar soni",
+    "currentWivesChip": "{n} ta xotini bor"
   },
   "likes": {
     "tabs": {
@@ -617,7 +621,9 @@
     "email_not_verified": "Iltimos, avval emailingizni tasdiqlang.",
     "invalid_or_expired_token": "Bu havola yaroqsiz yoki muddati oʻtgan. Yangisini soʻrang.",
     "signup_required": "Iltimos, roʻyxatdan oʻtishni yakunlang.",
-    "ThrottlerException: Too Many Requests": "Urinishlar juda koʻp. Biroz kutib, qaytadan urinib koʻring."
+    "ThrottlerException: Too Many Requests": "Urinishlar juda koʻp. Biroz kutib, qaytadan urinib koʻring.",
+    "married_female_not_allowed": "Turmushdagi ayollar roʻyxatdan oʻta olmaydi.",
+    "current_wives_required": "Iltimos, hozirgi xotinlaringiz sonini tanlang."
   },
   "admin": {
     "title": "Moderatsiya",

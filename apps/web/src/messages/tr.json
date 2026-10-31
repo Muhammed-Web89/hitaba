@@ -168,7 +168,7 @@
       "weight": "Kilo (kg)",
       "bodyHint": "Yaklaşık değerler yeterli.",
       "maritalStatus": "Medeni durum",
-      "nikahCount": "Önceki nikah sayısı",
+      "nikahCount": "Sona ermiş önceki nikah sayısı",
       "childrenCount": "Çocuk sayısı",
       "polygamy": "İkinci eş olmaya açık mısınız?",
       "polygamyHint": "Cevabınızı yalnızca bu filtreyi seçen erkekler görür.",
@@ -187,7 +187,9 @@
       "contagiousDisease": "Bulaşıcı bir hastalığınız var mı?",
       "photosFemale": "Fotoğrafınız asla listelerde görünmez. Erkek onu yalnızca siz onayladıktan sonra, 24 saat boyunca, filigranlı olarak görür.",
       "photosMale": "Fotoğrafınızı önce kadın görür. Akışta gösterme varsayılan olarak kapalıdır.",
-      "acceptRules": "Kuralları okudum ve kabul ediyorum"
+      "acceptRules": "Kuralları okudum ve kabul ediyorum",
+      "currentWives": "Mevcut eş sayısı",
+      "currentWivesHint": "Evli olduğunuzu ve kaç eşiniz olduğunu açıkça belirtmek zorunludur; kadın kullanıcılar bunu profilinizde görür."
     }
   },
   "rules": {
@@ -297,8 +299,10 @@
     "languages": "Diller",
     "height": "Boy",
     "weight": "Kilo",
-    "nikahCount": "Önceki nikahlar",
-    "polygamy": "İkinci eş"
+    "nikahCount": "Önceki (sona ermiş) nikahlar",
+    "polygamy": "İkinci eş",
+    "currentWives": "Mevcut eş sayısı",
+    "currentWivesChip": "{n, plural, other {# eşi var}}"
   },
   "likes": {
     "tabs": {
@@ -617,7 +621,9 @@
     "email_not_verified": "Lütfen önce e-postanızı doğrulayın.",
     "invalid_or_expired_token": "Bu bağlantı geçersiz ya da süresi dolmuş. Yenisini isteyin.",
     "signup_required": "Lütfen kaydı tamamlayın.",
-    "ThrottlerException: Too Many Requests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar deneyin."
+    "ThrottlerException: Too Many Requests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar deneyin.",
+    "married_female_not_allowed": "Evli kadınlar kayıt olamaz.",
+    "current_wives_required": "Lütfen mevcut eş sayınızı seçin."
   },
   "admin": {
     "title": "Moderasyon",

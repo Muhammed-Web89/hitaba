@@ -29,6 +29,7 @@ export function draftFrom(p: OwnProfile): Draft {
     weightKg: p.weightKg ?? '',
     maritalStatus: p.maritalStatus ?? 'NEVER_MARRIED',
     nikahCount: p.nikahCount,
+    currentWives: p.currentWives || 1,
     childrenCount: p.childrenCount,
     polygamyAnswer: p.polygamyAnswer ?? 'PREFER_NOT_TO_SAY',
     aboutMe: p.aboutMe ?? '',
@@ -63,6 +64,7 @@ export function payloadFor(step: ProfileStepKey, d: Draft, gender: 'MALE' | 'FEM
       return {
         maritalStatus: d.maritalStatus,
         nikahCount: Number(d.nikahCount),
+        ...(gender === 'MALE' && d.maritalStatus === 'MARRIED' && { currentWives: Number(d.currentWives) }),
         childrenCount: Number(d.childrenCount),
         ...(gender === 'FEMALE' && { polygamyAnswer: d.polygamyAnswer }),
       };
@@ -164,13 +166,27 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
         <>
           <Field label={t('maritalStatus')}>
             <Select value={draft.maritalStatus} onChange={(e) => set({ maritalStatus: e.target.value })}>
-              {Object.values(MaritalStatus).map((m) => (
-                <option key={m} value={m}>
-                  {te(`marital.${m}`, { gender })}
-                </option>
-              ))}
+              {/* Evli bir kadın nikah arayamaz; "Evli" yalnızca erkeklere sunulur. */}
+              {Object.values(MaritalStatus)
+                .filter((m) => gender === 'MALE' || m !== 'MARRIED')
+                .map((m) => (
+                  <option key={m} value={m}>
+                    {te(`marital.${m}`, { gender })}
+                  </option>
+                ))}
             </Select>
           </Field>
+          {gender === 'MALE' && draft.maritalStatus === 'MARRIED' && (
+            <Field label={t('currentWives')} hint={t('currentWivesHint')}>
+              <Select value={draft.currentWives} onChange={(e) => set({ currentWives: e.target.value })}>
+                {Array.from({ length: RULES.maxCurrentWives }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </Select>
+            </Field>
+          )}
           <div className="grid grid-cols-2 gap-4">
             <Field label={t('nikahCount')}>
               <Input type="number" min={0} max={RULES.maxNikahCount} value={draft.nikahCount} onChange={(e) => set({ nikahCount: e.target.value })} />

@@ -107,6 +107,7 @@ export class ProfilesService implements OnModuleInit {
       weightKg: p.weightKg,
       maritalStatus: p.maritalStatus,
       nikahCount: p.nikahCount,
+      currentWives: p.currentWives,
       childrenCount: p.childrenCount,
       polygamyAnswer: p.polygamyAnswer,
       aboutMe: p.aboutMe,
@@ -226,6 +227,7 @@ export class ProfilesService implements OnModuleInit {
       weightKg: p.weightKg,
       maritalStatus: p.maritalStatus ?? 'NEVER_MARRIED',
       nikahCount: p.nikahCount,
+      currentWives: p.currentWives,
       childrenCount: p.childrenCount,
       polygamyAnswer: isFemale ? p.polygamyAnswer : null,
       aboutMe: p.aboutMe ?? '',
@@ -255,9 +257,14 @@ export class ProfilesService implements OnModuleInit {
       }
       case 'family': {
         const v = input as Record<string, unknown>;
+        const married = v.maritalStatus === 'MARRIED';
+        // Evli bir kadın nikah arayamaz; evli erkek ise mevcut eş sayısını belirtmek zorundadır.
+        if (married && user.gender === 'FEMALE') throw new BadRequestException({ error: 'married_female_not_allowed' });
+        if (married && !v.currentWives) throw new BadRequestException({ error: 'current_wives_required' });
         return {
           maritalStatus: v.maritalStatus as Profile['maritalStatus'],
           nikahCount: v.nikahCount as number,
+          currentWives: married ? (v.currentWives as number) : 0,
           childrenCount: v.childrenCount as number,
           // Çok eşlilik sorusu yalnızca kadına sorulur (§6).
           polygamyAnswer: user.gender === 'FEMALE' ? ((v.polygamyAnswer as Profile['polygamyAnswer']) ?? null) : null,

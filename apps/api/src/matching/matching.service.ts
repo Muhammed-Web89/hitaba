@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Chat, Match, Prisma, User } from '@prisma/client';
+import type { Chat, Match, Prisma, Profile, User } from '@prisma/client';
 import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicProfile } from '@hitaba/shared';
 import { hours } from '../common/time';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -17,7 +17,8 @@ export class MatchingService {
   // ── Feed ──────────────────────────────────────────────────────────────
 
   async next(viewer: User, filter: FeedFilter): Promise<FeedCard | null> {
-    const where = this.candidateWhere(viewer, filter);
+    const own = await this.prisma.profile.findUnique({ where: { userId: viewer.id }, select: { polygamyAnswer: true } });
+    const where = this.candidateWhere(viewer, filter, own?.polygamyAnswer ?? null);
     const [target, remaining] = await Promise.all([
       this.prisma.user.findFirst({
         where,
@@ -30,8 +31,10 @@ export class MatchingService {
     return { profile: await this.profiles.toPublic(viewer, target), remaining };
   }
 
-  private candidateWhere(viewer: User, f: FeedFilter): Prisma.UserWhereInput {
+  private candidateWhere(viewer: User, f: FeedFilter, viewerPolygamy: Profile['polygamyAnswer']): Prisma.UserWhereInput {
     const profile: Prisma.ProfileWhereInput = {};
+    // Çok eşliliğe "Hayır" diyen kadına evli erkekler hiç gösterilmez.
+    if (viewer.gender === 'FEMALE' && viewerPolygamy === 'NO') profile.maritalStatus = { not: 'MARRIED' };
     const now = new Date();
     if (f.countries?.length) profile.country = { in: f.countries.map((c) => c.toUpperCase()) };
     if (f.city) profile.city = { equals: f.city, mode: 'insensitive' };

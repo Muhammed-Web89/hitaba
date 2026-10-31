@@ -168,7 +168,7 @@
       "weight": "Weight (kg)",
       "bodyHint": "Approximate values are fine.",
       "maritalStatus": "Marital status",
-      "nikahCount": "Previous nikahs",
+      "nikahCount": "Previous (ended) nikahs",
       "childrenCount": "Children",
       "polygamy": "Are you open to being a second wife?",
       "polygamyHint": "Only men who filter for this will see your answer.",
@@ -187,7 +187,9 @@
       "contagiousDisease": "Do you have a contagious disease?",
       "photosFemale": "Your photo never appears in lists. A man sees it only after you approve, for 24 hours, with a watermark.",
       "photosMale": "The woman sees your photo first. Showing it in the feed is off by default.",
-      "acceptRules": "I have read and accept the rules"
+      "acceptRules": "I have read and accept the rules",
+      "currentWives": "Current number of wives",
+      "currentWivesHint": "Being married and how many wives you have must be stated openly; women see this on your profile."
     }
   },
   "rules": {
@@ -297,8 +299,10 @@
     "languages": "Languages",
     "height": "Height",
     "weight": "Weight",
-    "nikahCount": "Previous nikahs",
-    "polygamy": "Second wife"
+    "nikahCount": "Previous (ended) nikahs",
+    "polygamy": "Second wife",
+    "currentWives": "Current wives",
+    "currentWivesChip": "{n, plural, one {# wife} other {# wives}}"
   },
   "likes": {
     "tabs": {
@@ -617,7 +621,9 @@
     "email_not_verified": "Please confirm your email first.",
     "invalid_or_expired_token": "This link is invalid or has expired. Request a new one.",
     "signup_required": "Please complete sign-up.",
-    "ThrottlerException: Too Many Requests": "Too many attempts. Please wait a moment and try again."
+    "ThrottlerException: Too Many Requests": "Too many attempts. Please wait a moment and try again.",
+    "married_female_not_allowed": "Married women cannot register.",
+    "current_wives_required": "Please select your current number of wives."
   },
   "admin": {
     "title": "Moderation",

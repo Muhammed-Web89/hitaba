@@ -84,7 +84,10 @@ export function ProfileDetails({ profile }: { profile: PublicProfile }) {
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap gap-1.5">
-        <Chip tone="brand">{te(`marital.${profile.maritalStatus}`, { gender: profile.gender })}</Chip>
+        <Chip tone={profile.currentWives ? 'warning' : 'brand'}>
+          {te(`marital.${profile.maritalStatus}`, { gender: profile.gender })}
+          {profile.currentWives > 0 && ` · ${t('currentWivesChip', { n: profile.currentWives })}`}
+        </Chip>
         {profile.childrenCount === 0 ? <Chip>{t('noChildren')}</Chip> : <Chip>{t('children', { n: profile.childrenCount })}</Chip>}
         {profile.willingToRelocate && <Chip tone="info">{t('relocate')}</Chip>}
         {profile.gender === 'FEMALE' && profile.witnessCount > 0 && (
@@ -117,6 +120,7 @@ export function ProfileDetails({ profile }: { profile: PublicProfile }) {
         <Row label={t('languages')}>{profile.languages.map(names.language).join(', ')}</Row>
         {profile.heightCm && <Row label={t('height')}>{profile.heightCm} cm</Row>}
         {profile.weightKg && <Row label={t('weight')}>~{profile.weightKg} kg</Row>}
+        {profile.currentWives > 0 && <Row label={t('currentWives')}>{profile.currentWives}</Row>}
         <Row label={t('nikahCount')}>{profile.nikahCount}</Row>
         {profile.polygamyAnswer && <Row label={t('polygamy')}>{te(`polygamy.${profile.polygamyAnswer}`)}</Row>}
       </dl>

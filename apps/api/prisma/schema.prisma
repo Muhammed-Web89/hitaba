@@ -203,7 +203,10 @@ model Profile {
   heightCm          Int?
   weightKg          Int?
   maritalStatus     MaritalStatus?
+  /// Sona ermiş (önceki) nikah sayısı.
   nikahCount        Int              @default(0)
+  /// Yalnızca evli erkek: mevcut eş sayısı (1–3).
+  currentWives      Int              @default(0)
   childrenCount     Int              @default(0)
   polygamyAnswer    PolygamyAnswer?
   aboutMe           String?
