@@ -282,8 +282,30 @@
       "neverMarried": "Не состоял(а) в браке",
       "noChildren": "Без детей",
       "relocate": "Готов(а) к переезду",
-      "polygamy": "Согласна на многожёнство"
-    }
+      "polygamy": "Согласна на многожёнство",
+      "clear": "Очистить",
+      "where": "Где живёт?",
+      "pickCountryFirst": "Сначала выберите страну",
+      "origin": "Национальность и язык",
+      "language": "Язык общения",
+      "age": "Возраст",
+      "height": "Рост",
+      "weight": "Вес",
+      "profile": "Параметры анкеты",
+      "relocateHint": "Готовы к переезду ради брака",
+      "withPhotoHint": "Только с загруженным фото (фото всё равно открывается по порядку после одобрения)",
+      "noChildrenHint": "Без детей",
+      "neverMarriedHint": "Никогда не состояли в браке",
+      "polygamyHint": "Ответили «Да» о многожёнстве",
+      "notBusy": "Сейчас не в чате",
+      "notBusyHint": "Скрыть женщин, которые общаются с кем-то другим",
+      "applyHint": "Фильтр применяется со следующей анкеты"
+    },
+    "title": "Анкеты",
+    "changeFilters": "Изменить фильтры",
+    "resetPasses": "Показать пропущенных снова",
+    "likesLeftShort": "Сегодня {n}/{max} симпатий",
+    "close": "Закрыть"
   },
   "profile": {
     "ageRange": "{range} лет",
@@ -309,7 +331,10 @@
     "currentWivesChip": "{n, plural, one {# жена} few {# жены} other {# жён}}",
     "childrenLivingAll": "все живут с ним(ней)",
     "childrenLivingNone": "никто не живёт с ним(ней)",
-    "childrenLivingSome": "{n} живут с ним(ней)"
+    "childrenLivingSome": "{n} живут с ним(ней)",
+    "openPhoto": "Увеличить фото",
+    "family": "Семья",
+    "previousNikahs": "{n, plural, one {# предыдущий никах} few {# предыдущих никаха} other {# предыдущих никахов}}"
   },
   "likes": {
     "tabs": {

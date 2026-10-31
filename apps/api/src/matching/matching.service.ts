@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Chat, Match, Prisma, Profile, User } from '@prisma/client';
+import type { Chat, ChatStatus, Match, Prisma, Profile, User } from '@prisma/client';
 import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicProfile } from '@hitaba/shared';
 import { hours } from '../common/time';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -50,6 +50,9 @@ export class MatchingService {
     if (f.heightMin || f.heightMax) {
       profile.heightCm = { ...(f.heightMin && { gte: f.heightMin }), ...(f.heightMax && { lte: f.heightMax }) };
     }
+    if (f.weightMin || f.weightMax) {
+      profile.weightKg = { ...(f.weightMin && { gte: f.weightMin }), ...(f.weightMax && { lte: f.weightMax }) };
+    }
     if (f.willingToRelocate) profile.willingToRelocate = true;
     if (f.noChildren) profile.childrenCount = 0;
     if (f.neverMarried) profile.maritalStatus = 'NEVER_MARRIED';
@@ -64,7 +67,17 @@ export class MatchingService {
       likesReceived: { none: { fromId: viewer.id } },
       passesReceived: { none: { fromId: viewer.id } },
       ...(viewer.gender === 'MALE'
-        ? { matchesAsFemale: { none: { maleId: viewer.id } } }
+        ? {
+            matchesAsFemale: {
+              none: {
+                OR: [
+                  { maleId: viewer.id },
+                  // "Sohbette olanları gizle": başka biriyle açık sohbeti olan kadınlar.
+                  ...(f.notBusy ? [{ chat: { status: { in: ['ACTIVE', 'PAUSED'] as ChatStatus[] } } }] : []),
+                ],
+              },
+            },
+          }
         : { matchesAsMale: { none: { femaleId: viewer.id } } }),
       ...(f.withPhoto && { photos: { some: { status: 'APPROVED' } } }),
     };
@@ -114,6 +127,12 @@ export class MatchingService {
       update: { createdAt: new Date() },
     });
     return { ok: true };
+  }
+
+  /** Tüm geçilen profilleri yeniden feed'e döndürür ("kimse kalmadı" ekranından). */
+  async resetPasses(viewer: User) {
+    const { count } = await this.prisma.pass.deleteMany({ where: { fromId: viewer.id } });
+    return { restored: count };
   }
 
   /** Son kaçırılan profili geri getirir (son kaçırma ücretsiz — §5.3). */

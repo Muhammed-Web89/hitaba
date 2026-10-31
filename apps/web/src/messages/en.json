@@ -282,8 +282,30 @@
       "neverMarried": "Never married",
       "noChildren": "No children",
       "relocate": "Open to relocating",
-      "polygamy": "Open to polygamy"
-    }
+      "polygamy": "Open to polygamy",
+      "clear": "Clear",
+      "where": "Where do they live?",
+      "pickCountryFirst": "Choose a country first",
+      "origin": "Nationality and language",
+      "language": "Language spoken",
+      "age": "Age",
+      "height": "Height",
+      "weight": "Weight",
+      "profile": "Profile details",
+      "relocateHint": "Open to relocating for marriage",
+      "withPhotoHint": "Only those who uploaded a photo (still revealed in order after approval)",
+      "noChildrenHint": "Without children",
+      "neverMarriedHint": "Never married before",
+      "polygamyHint": "Answered \"Yes\" to polygamy",
+      "notBusy": "Not in a chat right now",
+      "notBusyHint": "Hide women who are chatting with someone else",
+      "applyHint": "Filters apply from the next profile"
+    },
+    "title": "Profiles",
+    "changeFilters": "Change filters",
+    "resetPasses": "Show skipped profiles again",
+    "likesLeftShort": "{n}/{max} likes today",
+    "close": "Close"
   },
   "profile": {
     "ageRange": "{range} years",
@@ -309,7 +331,10 @@
     "currentWivesChip": "{n, plural, one {# wife} other {# wives}}",
     "childrenLivingAll": "all live with them",
     "childrenLivingNone": "none live with them",
-    "childrenLivingSome": "{n} live with them"
+    "childrenLivingSome": "{n} live with them",
+    "openPhoto": "Enlarge photo",
+    "family": "Family",
+    "previousNikahs": "{n, plural, one {# previous nikah} other {# previous nikahs}}"
   },
   "likes": {
     "tabs": {

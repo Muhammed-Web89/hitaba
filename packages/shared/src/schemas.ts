@@ -143,6 +143,10 @@ export const feedFilterSchema = z.object({
   ageMax: z.number().int().min(RULES.minAge).max(RULES.maxAge).optional(),
   heightMin: z.number().int().optional(),
   heightMax: z.number().int().optional(),
+  weightMin: z.number().int().optional(),
+  weightMax: z.number().int().optional(),
+  /** Erkek görüntüleyen: şu an başka biriyle sohbette olan kadınları gizle. */
+  notBusy: z.boolean().optional(),
   willingToRelocate: z.boolean().optional(),
   withPhoto: z.boolean().optional(),
   noChildren: z.boolean().optional(),

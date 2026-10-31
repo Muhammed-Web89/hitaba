@@ -4,10 +4,10 @@ import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { PublicProfile } from '@hitaba/shared';
-import { PhotoFrame, ProfileDetails, ProfileHeadline } from '@/components/ProfileView';
+import { ProfileCard } from '@/components/ProfileView';
 import { ReportDialog } from '@/components/ReportDialog';
 import { StatusGate } from '@/components/StatusGate';
-import { Card, EmptyState, IconButton, PageLoader } from '@/components/ui';
+import { EmptyState, IconButton, PageLoader } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
 
 export default function ProfilePage({ params }: { params: Promise<{ userId: string }> }) {
@@ -33,13 +33,7 @@ function Profile({ userId }: { userId: string }) {
         <IconButton icon="back" label={t('back')} onClick={() => router.back()} className="flip-rtl" />
         <IconButton icon="flag" label={tf('report')} onClick={() => setReport(true)} />
       </div>
-      <Card className="overflow-hidden">
-        <PhotoFrame profile={data} className="aspect-[4/5] w-full" />
-        <div className="space-y-5 p-5">
-          <ProfileHeadline profile={data} />
-          <ProfileDetails profile={data} />
-        </div>
-      </Card>
+      <ProfileCard profile={data} />
       <ReportDialog open={report} onClose={() => setReport(false)} targetUserId={data.userId} />
     </div>
   );

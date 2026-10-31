@@ -282,8 +282,30 @@
       "neverMarried": "لم يسبق له/لها الزواج",
       "noChildren": "بلا أطفال",
       "relocate": "مستعد/ة للانتقال",
-      "polygamy": "تقبل التعدد"
-    }
+      "polygamy": "تقبل التعدد",
+      "clear": "مسح",
+      "where": "أين يقيم؟",
+      "pickCountryFirst": "اختر الدولة أولًا",
+      "origin": "الجنسية واللغة",
+      "language": "اللغة",
+      "age": "العمر",
+      "height": "الطول",
+      "weight": "الوزن",
+      "profile": "خصائص الملف",
+      "relocateHint": "مستعدون للانتقال من أجل الزواج",
+      "withPhotoHint": "من رفعوا صورة فقط (تُفتح الصورة حسب الترتيب بعد الموافقة)",
+      "noChildrenHint": "بلا أطفال",
+      "neverMarriedHint": "لم يسبق لهم الزواج",
+      "polygamyHint": "أجابوا «نعم» عن التعدد",
+      "notBusy": "ليسوا في محادثة الآن",
+      "notBusyHint": "إخفاء النساء اللواتي يتحدثن مع شخص آخر",
+      "applyHint": "يُطبَّق المرشّح بدءًا من الملف التالي"
+    },
+    "title": "الملفات",
+    "changeFilters": "تغيير المرشّحات",
+    "resetPasses": "إظهار الملفات المتخطاة مجددًا",
+    "likesLeftShort": "اليوم {n}/{max} إعجابات",
+    "close": "إغلاق"
   },
   "profile": {
     "ageRange": "{range} سنة",
@@ -309,7 +331,10 @@
     "currentWivesChip": "{n, plural, one {زوجة واحدة} two {زوجتان} other {# زوجات}}",
     "childrenLivingAll": "جميعهم يعيشون معه/معها",
     "childrenLivingNone": "لا أحد منهم يعيش معه/معها",
-    "childrenLivingSome": "{n} منهم يعيشون معه/معها"
+    "childrenLivingSome": "{n} منهم يعيشون معه/معها",
+    "openPhoto": "تكبير الصورة",
+    "family": "الأسرة",
+    "previousNikahs": "{n, plural, one {زواج سابق واحد} two {زواجان سابقان} other {# زيجات سابقة}}"
   },
   "likes": {
     "tabs": {

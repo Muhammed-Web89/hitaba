@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import type { MatchSummary, PublicProfile } from '@hitaba/shared';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
-import { PhotoFrame } from '@/components/ProfileView';
+import { ProfileAvatar } from '@/components/ProfileView';
 import { StatusGate } from '@/components/StatusGate';
 import { Card, Chip, cx, EmptyState, PageLoader } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
@@ -60,7 +60,7 @@ function MutualList() {
           <li key={m.id}>
             <Link href={`/app/matches/${m.id}`}>
               <Card className="flex items-center gap-3 p-3 transition-colors hover:bg-surface-alt">
-                <PhotoFrame profile={m.other} className="h-16 w-16 shrink-0 rounded-full" />
+                <ProfileAvatar profile={m.other} size={64} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold">{m.other.displayName}</p>
                   <p className="truncate text-sm text-ink-3">
@@ -93,9 +93,9 @@ function ProfileList({ tab }: { tab: 'mine' | 'favorites' }) {
       {data.map((p) => (
         <li key={p.userId}>
           <Link href={`/app/profiles/${p.userId}`}>
-            <Card className="overflow-hidden transition-colors hover:bg-surface-alt">
-              <PhotoFrame profile={p} className="aspect-square w-full" />
-              <div className="p-3">
+            <Card className="flex flex-col items-center p-3 text-center transition-colors hover:bg-surface-alt">
+              <ProfileAvatar profile={p} size={80} />
+              <div className="mt-1 w-full">
                 <p className="truncate font-semibold">{p.displayName}</p>
                 <p className="truncate text-xs text-ink-3">
                   {p.ageRange} · {names.country(p.country)}

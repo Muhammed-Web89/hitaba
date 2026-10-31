@@ -29,6 +29,11 @@ export class MatchingController {
     return this.matching.pass(user, userId);
   }
 
+  @Post('feed/reset-passes')
+  resetPasses(@CurrentUser() user: User) {
+    return this.matching.resetPasses(user);
+  }
+
   @Post('feed/undo')
   undo(@CurrentUser() user: User) {
     return this.matching.undoPass(user).then((profile) => ({ profile }));

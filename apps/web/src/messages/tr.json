@@ -282,8 +282,30 @@
       "neverMarried": "Hiç evlenmemiş",
       "noChildren": "Çocuksuz",
       "relocate": "Taşınmaya açık",
-      "polygamy": "Çok eşliliğe açık"
-    }
+      "polygamy": "Çok eşliliğe açık",
+      "clear": "Temizle",
+      "where": "Nerede yaşıyor?",
+      "pickCountryFirst": "Önce ülke seçin",
+      "origin": "Milliyet ve dil",
+      "language": "Konuştuğu dil",
+      "age": "Yaş",
+      "height": "Boy",
+      "weight": "Kilo",
+      "profile": "Profil özellikleri",
+      "relocateHint": "Evlilik için taşınmaya açık olanlar",
+      "withPhotoHint": "Yalnızca fotoğraf yükleyenler (fotoğraf yine onay sırasıyla açılır)",
+      "noChildrenHint": "Çocuğu olmayanlar",
+      "neverMarriedHint": "Daha önce hiç evlenmemiş olanlar",
+      "polygamyHint": "Çok eşliliğe \"Evet\" diyenler",
+      "notBusy": "Şu an sohbette olmayanlar",
+      "notBusyHint": "Başka biriyle sohbet eden kadınları gizle",
+      "applyHint": "Filtre bir sonraki profilden itibaren uygulanır"
+    },
+    "title": "Profiller",
+    "changeFilters": "Filtreleri değiştir",
+    "resetPasses": "Geçtiklerimi yeniden göster",
+    "likesLeftShort": "Bugün {n}/{max} beğeni",
+    "close": "Kapat"
   },
   "profile": {
     "ageRange": "{range} yaş",
@@ -309,7 +331,10 @@
     "currentWivesChip": "{n, plural, other {# eşi var}}",
     "childrenLivingAll": "hepsi yanında yaşıyor",
     "childrenLivingNone": "hiçbiri yanında yaşamıyor",
-    "childrenLivingSome": "{n} tanesi yanında yaşıyor"
+    "childrenLivingSome": "{n} tanesi yanında yaşıyor",
+    "openPhoto": "Fotoğrafı büyüt",
+    "family": "Aile",
+    "previousNikahs": "{n} önceki nikah"
   },
   "likes": {
     "tabs": {

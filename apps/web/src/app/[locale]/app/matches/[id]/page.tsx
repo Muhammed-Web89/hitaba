@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import { RULES, type ChatSummary, type MatchSummary } from '@hitaba/shared';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
-import { PhotoFrame, ProfileDetails, ProfileHeadline } from '@/components/ProfileView';
+import { ProfileCard } from '@/components/ProfileView';
 import { ReportDialog } from '@/components/ReportDialog';
 import { StatusGate } from '@/components/StatusGate';
 import { Button, Card, Chip, EmptyState, IconButton, Modal, Notice, PageLoader } from '@/components/ui';
@@ -147,13 +147,7 @@ function Match({ id }: { id: string }) {
         {error && <Notice tone="danger">{error}</Notice>}
       </Card>
 
-      <Card className="overflow-hidden">
-        <PhotoFrame profile={m.other} className="aspect-[4/5] w-full" />
-        <div className="space-y-5 p-5">
-          <ProfileHeadline profile={m.other} />
-          <ProfileDetails profile={m.other} />
-        </div>
-      </Card>
+      <ProfileCard profile={m.other} />
 
       <Modal
         open={confirm !== null}

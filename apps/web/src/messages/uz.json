@@ -282,8 +282,30 @@
       "neverMarried": "Turmush qurmaganlar",
       "noChildren": "Farzandsizlar",
       "relocate": "Koʻchishga tayyorlar",
-      "polygamy": "Koʻp xotinlikka rozilar"
-    }
+      "polygamy": "Koʻp xotinlikka rozilar",
+      "clear": "Tozalash",
+      "where": "Qayerda yashaydi?",
+      "pickCountryFirst": "Avval mamlakatni tanlang",
+      "origin": "Millat va til",
+      "language": "Gapiradigan tili",
+      "age": "Yosh",
+      "height": "Boʻy",
+      "weight": "Vazn",
+      "profile": "Anketa xususiyatlari",
+      "relocateHint": "Nikoh uchun koʻchishga tayyorlar",
+      "withPhotoHint": "Faqat surat yuklaganlar (surat baribir tasdiq tartibida ochiladi)",
+      "noChildrenHint": "Farzandi yoʻqlar",
+      "neverMarriedHint": "Avval hech turmush qurmaganlar",
+      "polygamyHint": "Koʻp xotinlikka \"Ha\" deganlar",
+      "notBusy": "Hozir suhbatda emaslar",
+      "notBusyHint": "Boshqa birov bilan suhbatlashayotgan ayollarni yashirish",
+      "applyHint": "Filtr keyingi anketadan boshlab qoʻllanadi"
+    },
+    "title": "Anketalar",
+    "changeFilters": "Filtrlarni oʻzgartirish",
+    "resetPasses": "Oʻtkazib yuborilganlarni qayta koʻrsatish",
+    "likesLeftShort": "Bugun {n}/{max} yoqtirish",
+    "close": "Yopish"
   },
   "profile": {
     "ageRange": "{range} yosh",
@@ -309,7 +331,10 @@
     "currentWivesChip": "{n} ta xotini bor",
     "childrenLivingAll": "hammasi u bilan yashaydi",
     "childrenLivingNone": "hech biri u bilan yashamaydi",
-    "childrenLivingSome": "{n} tasi u bilan yashaydi"
+    "childrenLivingSome": "{n} tasi u bilan yashaydi",
+    "openPhoto": "Suratni kattalashtirish",
+    "family": "Oila",
+    "previousNikahs": "{n} ta avvalgi nikoh"
   },
   "likes": {
     "tabs": {
