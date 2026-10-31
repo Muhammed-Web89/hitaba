@@ -120,6 +120,13 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    overscroll-behavior: none;
+  }
+
+  /* Uygulama arka plandayken / odak dışındayken içerik bulanıklaşır (uygulama değiştirici önizlemesi, ekran kaydı). */
+  html[data-shield] body > * {
+    filter: blur(24px);
+    transition: none;
   }
 
   body {

@@ -35,6 +35,9 @@ export const viewport: Viewport = {
 /** Tema ilk boyamadan önce uygulanır (yanıp sönme olmaz). */
 const themeScript = `try{var t=localStorage.getItem('hitaba.theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 
+/** Telegram Mini App içinde mi? Açılış adresindeki tgWebAppData oturum boyunca hatırlanır (sayfa geçişlerinde hash kaybolur). */
+const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1)sessionStorage.setItem('hitaba.tg','1');if(sessionStorage.getItem('hitaba.tg'))document.documentElement.dataset.tg='1'}catch(e){}`;
+
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
@@ -43,7 +46,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   return (
     <html lang={locale} dir={RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript + tgScript }} />
       </head>
       <body className={`${fraunces.variable} ${manrope.variable} ${naskh.variable} antialiased`}>
         <NextIntlClientProvider>
