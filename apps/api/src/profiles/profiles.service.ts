@@ -109,6 +109,7 @@ export class ProfilesService implements OnModuleInit {
       nikahCount: p.nikahCount,
       currentWives: p.currentWives,
       childrenCount: p.childrenCount,
+      childrenLivingWith: p.childrenLivingWith,
       polygamyAnswer: p.polygamyAnswer,
       aboutMe: p.aboutMe,
       aboutSpouse: p.aboutSpouse,
@@ -229,6 +230,7 @@ export class ProfilesService implements OnModuleInit {
       nikahCount: p.nikahCount,
       currentWives: p.currentWives,
       childrenCount: p.childrenCount,
+      childrenLivingWith: p.childrenLivingWith,
       polygamyAnswer: isFemale ? p.polygamyAnswer : null,
       aboutMe: p.aboutMe ?? '',
       aboutSpouse: p.aboutSpouse ?? '',
@@ -261,11 +263,14 @@ export class ProfilesService implements OnModuleInit {
         // Evli bir kadın nikah arayamaz; evli erkek ise mevcut eş sayısını belirtmek zorundadır.
         if (married && user.gender === 'FEMALE') throw new BadRequestException({ error: 'married_female_not_allowed' });
         if (married && !v.currentWives) throw new BadRequestException({ error: 'current_wives_required' });
+        const living = (v.childrenLivingWith as number | undefined) ?? 0;
+        if (living > (v.childrenCount as number)) throw new BadRequestException({ error: 'children_living_invalid' });
         return {
           maritalStatus: v.maritalStatus as Profile['maritalStatus'],
           nikahCount: v.nikahCount as number,
           currentWives: married ? (v.currentWives as number) : 0,
           childrenCount: v.childrenCount as number,
+          childrenLivingWith: living,
           // Çok eşlilik sorusu yalnızca kadına sorulur (§6).
           polygamyAnswer: user.gender === 'FEMALE' ? ((v.polygamyAnswer as Profile['polygamyAnswer']) ?? null) : null,
         };

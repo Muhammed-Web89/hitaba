@@ -88,7 +88,18 @@ export function ProfileDetails({ profile }: { profile: PublicProfile }) {
           {te(`marital.${profile.maritalStatus}`, { gender: profile.gender })}
           {profile.currentWives > 0 && ` · ${t('currentWivesChip', { n: profile.currentWives })}`}
         </Chip>
-        {profile.childrenCount === 0 ? <Chip>{t('noChildren')}</Chip> : <Chip>{t('children', { n: profile.childrenCount })}</Chip>}
+        {profile.childrenCount === 0 ? (
+          <Chip>{t('noChildren')}</Chip>
+        ) : (
+          <Chip>
+            {t('children', { n: profile.childrenCount })} ·{' '}
+            {profile.childrenLivingWith === profile.childrenCount
+              ? t('childrenLivingAll')
+              : profile.childrenLivingWith === 0
+                ? t('childrenLivingNone')
+                : t('childrenLivingSome', { n: profile.childrenLivingWith })}
+          </Chip>
+        )}
         {profile.willingToRelocate && <Chip tone="info">{t('relocate')}</Chip>}
         {profile.gender === 'FEMALE' && profile.witnessCount > 0 && (
           <Chip tone="accent">

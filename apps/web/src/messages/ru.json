@@ -189,7 +189,11 @@
       "photosMale": "Ваше фото первой видит женщина. Показ в ленте по умолчанию выключен.",
       "acceptRules": "Я прочитал(а) и принимаю правила",
       "currentWives": "Количество жён сейчас",
-      "currentWivesHint": "Нужно открыто указать, что вы женаты, и сколько у вас жён; женщины видят это в вашей анкете."
+      "currentWivesHint": "Нужно открыто указать, что вы женаты, и сколько у вас жён; женщины видят это в вашей анкете.",
+      "childrenLivingWith": "Сколько из них живут с вами?",
+      "childrenLivingWithHint": "Обеим сторонам важно заранее знать, как будет устроен дом после брака.",
+      "childrenLivingAll": "Все ({n})",
+      "childrenLivingNone": "Никто"
     }
   },
   "rules": {
@@ -302,7 +306,10 @@
     "nikahCount": "Предыдущие (завершённые) никахи",
     "polygamy": "Второй женой",
     "currentWives": "Жён сейчас",
-    "currentWivesChip": "{n, plural, one {# жена} few {# жены} other {# жён}}"
+    "currentWivesChip": "{n, plural, one {# жена} few {# жены} other {# жён}}",
+    "childrenLivingAll": "все живут с ним(ней)",
+    "childrenLivingNone": "никто не живёт с ним(ней)",
+    "childrenLivingSome": "{n} живут с ним(ней)"
   },
   "likes": {
     "tabs": {
@@ -623,7 +630,8 @@
     "signup_required": "Пожалуйста, завершите регистрацию.",
     "ThrottlerException: Too Many Requests": "Слишком много попыток. Подождите немного и попробуйте снова.",
     "married_female_not_allowed": "Замужние женщины не могут регистрироваться.",
-    "current_wives_required": "Пожалуйста, укажите количество жён."
+    "current_wives_required": "Пожалуйста, укажите количество жён.",
+    "children_living_invalid": "Детей, живущих с вами, не может быть больше общего числа детей."
   },
   "admin": {
     "title": "Модерация",

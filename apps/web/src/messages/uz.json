@@ -189,7 +189,11 @@
       "photosMale": "Suratingizni avval ayol koʻradi. Lentada koʻrsatish dastlab oʻchiq turadi.",
       "acceptRules": "Qoidalarni oʻqidim va qabul qilaman",
       "currentWives": "Hozirgi xotinlar soni",
-      "currentWivesHint": "Uylangan ekaningiz va nechta xotiningiz borligini ochiq koʻrsatish shart; ayollar buni anketangizda koʻradi."
+      "currentWivesHint": "Uylangan ekaningiz va nechta xotiningiz borligini ochiq koʻrsatish shart; ayollar buni anketangizda koʻradi.",
+      "childrenLivingWith": "Ulardan nechtasi siz bilan yashaydi?",
+      "childrenLivingWithHint": "Nikohdan keyingi uy tartibini oldindan bilish ikki tomon uchun muhim.",
+      "childrenLivingAll": "Hammasi ({n})",
+      "childrenLivingNone": "Hech biri"
     }
   },
   "rules": {
@@ -302,7 +306,10 @@
     "nikahCount": "Avvalgi (tugagan) nikohlar",
     "polygamy": "Ikkinchi xotin",
     "currentWives": "Hozirgi xotinlar soni",
-    "currentWivesChip": "{n} ta xotini bor"
+    "currentWivesChip": "{n} ta xotini bor",
+    "childrenLivingAll": "hammasi u bilan yashaydi",
+    "childrenLivingNone": "hech biri u bilan yashamaydi",
+    "childrenLivingSome": "{n} tasi u bilan yashaydi"
   },
   "likes": {
     "tabs": {
@@ -623,7 +630,8 @@
     "signup_required": "Iltimos, roʻyxatdan oʻtishni yakunlang.",
     "ThrottlerException: Too Many Requests": "Urinishlar juda koʻp. Biroz kutib, qaytadan urinib koʻring.",
     "married_female_not_allowed": "Turmushdagi ayollar roʻyxatdan oʻta olmaydi.",
-    "current_wives_required": "Iltimos, hozirgi xotinlaringiz sonini tanlang."
+    "current_wives_required": "Iltimos, hozirgi xotinlaringiz sonini tanlang.",
+    "children_living_invalid": "Siz bilan yashaydigan farzandlar soni umumiy sondan koʻp boʻlishi mumkin emas."
   },
   "admin": {
     "title": "Moderatsiya",

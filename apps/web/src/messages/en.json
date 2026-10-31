@@ -189,7 +189,11 @@
       "photosMale": "The woman sees your photo first. Showing it in the feed is off by default.",
       "acceptRules": "I have read and accept the rules",
       "currentWives": "Current number of wives",
-      "currentWivesHint": "Being married and how many wives you have must be stated openly; women see this on your profile."
+      "currentWivesHint": "Being married and how many wives you have must be stated openly; women see this on your profile.",
+      "childrenLivingWith": "How many of them live with you?",
+      "childrenLivingWithHint": "Knowing the home arrangement after marriage matters for both sides.",
+      "childrenLivingAll": "All ({n})",
+      "childrenLivingNone": "None"
     }
   },
   "rules": {
@@ -302,7 +306,10 @@
     "nikahCount": "Previous (ended) nikahs",
     "polygamy": "Second wife",
     "currentWives": "Current wives",
-    "currentWivesChip": "{n, plural, one {# wife} other {# wives}}"
+    "currentWivesChip": "{n, plural, one {# wife} other {# wives}}",
+    "childrenLivingAll": "all live with them",
+    "childrenLivingNone": "none live with them",
+    "childrenLivingSome": "{n} live with them"
   },
   "likes": {
     "tabs": {
@@ -623,7 +630,8 @@
     "signup_required": "Please complete sign-up.",
     "ThrottlerException: Too Many Requests": "Too many attempts. Please wait a moment and try again.",
     "married_female_not_allowed": "Married women cannot register.",
-    "current_wives_required": "Please select your current number of wives."
+    "current_wives_required": "Please select your current number of wives.",
+    "children_living_invalid": "Children living with you cannot exceed the total number of children."
   },
   "admin": {
     "title": "Moderation",

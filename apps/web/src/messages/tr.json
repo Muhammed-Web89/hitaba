@@ -189,7 +189,11 @@
       "photosMale": "Fotoğrafınızı önce kadın görür. Akışta gösterme varsayılan olarak kapalıdır.",
       "acceptRules": "Kuralları okudum ve kabul ediyorum",
       "currentWives": "Mevcut eş sayısı",
-      "currentWivesHint": "Evli olduğunuzu ve kaç eşiniz olduğunu açıkça belirtmek zorunludur; kadın kullanıcılar bunu profilinizde görür."
+      "currentWivesHint": "Evli olduğunuzu ve kaç eşiniz olduğunu açıkça belirtmek zorunludur; kadın kullanıcılar bunu profilinizde görür.",
+      "childrenLivingWith": "Kaçı sizinle birlikte yaşıyor?",
+      "childrenLivingWithHint": "Evlilikten sonraki ev düzenini önceden bilmek her iki taraf için önemlidir.",
+      "childrenLivingAll": "Hepsi ({n})",
+      "childrenLivingNone": "Hiçbiri"
     }
   },
   "rules": {
@@ -302,7 +306,10 @@
     "nikahCount": "Önceki (sona ermiş) nikahlar",
     "polygamy": "İkinci eş",
     "currentWives": "Mevcut eş sayısı",
-    "currentWivesChip": "{n, plural, other {# eşi var}}"
+    "currentWivesChip": "{n, plural, other {# eşi var}}",
+    "childrenLivingAll": "hepsi yanında yaşıyor",
+    "childrenLivingNone": "hiçbiri yanında yaşamıyor",
+    "childrenLivingSome": "{n} tanesi yanında yaşıyor"
   },
   "likes": {
     "tabs": {
@@ -623,7 +630,8 @@
     "signup_required": "Lütfen kaydı tamamlayın.",
     "ThrottlerException: Too Many Requests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar deneyin.",
     "married_female_not_allowed": "Evli kadınlar kayıt olamaz.",
-    "current_wives_required": "Lütfen mevcut eş sayınızı seçin."
+    "current_wives_required": "Lütfen mevcut eş sayınızı seçin.",
+    "children_living_invalid": "Yanında yaşayan çocuk sayısı toplam çocuk sayısından fazla olamaz."
   },
   "admin": {
     "title": "Moderasyon",

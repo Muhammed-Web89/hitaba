@@ -31,6 +31,7 @@ export function draftFrom(p: OwnProfile): Draft {
     nikahCount: p.nikahCount,
     currentWives: p.currentWives || 1,
     childrenCount: p.childrenCount,
+    childrenLivingWith: p.childrenLivingWith,
     polygamyAnswer: p.polygamyAnswer ?? 'PREFER_NOT_TO_SAY',
     aboutMe: p.aboutMe ?? '',
     aboutSpouse: p.aboutSpouse ?? '',
@@ -66,6 +67,7 @@ export function payloadFor(step: ProfileStepKey, d: Draft, gender: 'MALE' | 'FEM
         nikahCount: Number(d.nikahCount),
         ...(gender === 'MALE' && d.maritalStatus === 'MARRIED' && { currentWives: Number(d.currentWives) }),
         childrenCount: Number(d.childrenCount),
+        childrenLivingWith: Math.min(Number(d.childrenLivingWith) || 0, Number(d.childrenCount) || 0),
         ...(gender === 'FEMALE' && { polygamyAnswer: d.polygamyAnswer }),
       };
     case 'about':
@@ -192,9 +194,26 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
               <Input type="number" min={0} max={RULES.maxNikahCount} value={draft.nikahCount} onChange={(e) => set({ nikahCount: e.target.value })} />
             </Field>
             <Field label={t('childrenCount')}>
-              <Input type="number" min={0} max={30} value={draft.childrenCount} onChange={(e) => set({ childrenCount: e.target.value })} />
+              <Input
+                type="number"
+                min={0}
+                max={30}
+                value={draft.childrenCount}
+                onChange={(e) => set({ childrenCount: e.target.value, childrenLivingWith: Math.min(Number(draft.childrenLivingWith) || 0, Number(e.target.value) || 0) })}
+              />
             </Field>
           </div>
+          {Number(draft.childrenCount) > 0 && (
+            <Field label={t('childrenLivingWith')} hint={t('childrenLivingWithHint')}>
+              <Select value={draft.childrenLivingWith} onChange={(e) => set({ childrenLivingWith: e.target.value })}>
+                {Array.from({ length: Number(draft.childrenCount) + 1 }, (_, i) => i).map((n) => (
+                  <option key={n} value={n}>
+                    {n === Number(draft.childrenCount) ? t('childrenLivingAll', { n }) : n === 0 ? t('childrenLivingNone') : n}
+                  </option>
+                ))}
+              </Select>
+            </Field>
+          )}
           {gender === 'FEMALE' && (
             <Field label={t('polygamy')} hint={t('polygamyHint')}>
               <Select value={draft.polygamyAnswer} onChange={(e) => set({ polygamyAnswer: e.target.value })}>

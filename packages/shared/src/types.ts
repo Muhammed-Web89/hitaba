@@ -51,6 +51,8 @@ export interface OwnProfile {
   nikahCount: number;
   currentWives: number;
   childrenCount: number;
+  /** Çocuklardan kaçı birlikte yaşıyor. */
+  childrenLivingWith: number;
   polygamyAnswer: PolygamyAnswer | null;
   aboutMe: string | null;
   aboutSpouse: string | null;
@@ -90,6 +92,8 @@ export interface PublicProfile {
   /** Evli erkek için mevcut eş sayısı; diğerlerinde 0. */
   currentWives: number;
   childrenCount: number;
+  /** Çocuklardan kaçı birlikte yaşıyor. */
+  childrenLivingWith: number;
   polygamyAnswer: PolygamyAnswer | null;
   aboutMe: string;
   aboutSpouse: string;

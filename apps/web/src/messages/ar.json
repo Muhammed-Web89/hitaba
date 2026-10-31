@@ -189,7 +189,11 @@
       "photosMale": "ترى المرأة صورتك أولًا. إظهارها في قائمة الملفات معطّل افتراضيًا.",
       "acceptRules": "قرأت القواعد وأوافق عليها",
       "currentWives": "عدد الزوجات الحالي",
-      "currentWivesHint": "يجب التصريح بأنك متزوج وبعدد زوجاتك؛ تظهر هذه المعلومة للنساء في ملفك."
+      "currentWivesHint": "يجب التصريح بأنك متزوج وبعدد زوجاتك؛ تظهر هذه المعلومة للنساء في ملفك.",
+      "childrenLivingWith": "كم منهم يعيش معك؟",
+      "childrenLivingWithHint": "معرفة ترتيب المنزل بعد الزواج مسبقًا أمر مهم للطرفين.",
+      "childrenLivingAll": "جميعهم ({n})",
+      "childrenLivingNone": "لا أحد"
     }
   },
   "rules": {
@@ -302,7 +306,10 @@
     "nikahCount": "الزيجات السابقة (المنتهية)",
     "polygamy": "زوجة ثانية",
     "currentWives": "عدد الزوجات الحالي",
-    "currentWivesChip": "{n, plural, one {زوجة واحدة} two {زوجتان} other {# زوجات}}"
+    "currentWivesChip": "{n, plural, one {زوجة واحدة} two {زوجتان} other {# زوجات}}",
+    "childrenLivingAll": "جميعهم يعيشون معه/معها",
+    "childrenLivingNone": "لا أحد منهم يعيش معه/معها",
+    "childrenLivingSome": "{n} منهم يعيشون معه/معها"
   },
   "likes": {
     "tabs": {
@@ -623,7 +630,8 @@
     "signup_required": "يرجى إكمال التسجيل.",
     "ThrottlerException: Too Many Requests": "محاولات كثيرة جدًا. يرجى الانتظار قليلًا ثم المحاولة مجددًا.",
     "married_female_not_allowed": "لا يمكن للمتزوجات التسجيل.",
-    "current_wives_required": "يرجى اختيار عدد زوجاتك الحالي."
+    "current_wives_required": "يرجى اختيار عدد زوجاتك الحالي.",
+    "children_living_invalid": "لا يمكن أن يتجاوز عدد الأطفال الذين يعيشون معك العدد الإجمالي للأطفال."
   },
   "admin": {
     "title": "الإشراف",

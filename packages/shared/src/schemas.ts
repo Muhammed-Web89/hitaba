@@ -85,6 +85,8 @@ export const profileSteps = {
     /** Yalnızca evli erkek: mevcut eş sayısı. Cinsiyete bağlı kurallar sunucuda uygulanır. */
     currentWives: z.number().int().min(0).max(RULES.maxCurrentWives).optional(),
     childrenCount: z.number().int().min(0).max(30),
+    /** Çocuklardan kaçı kişiyle birlikte yaşıyor (≤ childrenCount; sunucuda doğrulanır). */
+    childrenLivingWith: z.number().int().min(0).max(30).optional(),
     polygamyAnswer: enumOf(PolygamyAnswer).optional(),
   }),
   about: z.object({

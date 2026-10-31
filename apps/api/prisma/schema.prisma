@@ -191,39 +191,41 @@ model User {
 }
 
 model Profile {
-  userId            String           @id
-  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  displayName       String?
-  birthDate         DateTime?        @db.Date
-  country           String?
-  city              String?
-  nationality       String?
-  languages         String[]
-  willingToRelocate Boolean          @default(false)
-  heightCm          Int?
-  weightKg          Int?
-  maritalStatus     MaritalStatus?
+  userId             String           @id
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName        String?
+  birthDate          DateTime?        @db.Date
+  country            String?
+  city               String?
+  nationality        String?
+  languages          String[]
+  willingToRelocate  Boolean          @default(false)
+  heightCm           Int?
+  weightKg           Int?
+  maritalStatus      MaritalStatus?
   /// Sona ermiş (önceki) nikah sayısı.
-  nikahCount        Int              @default(0)
+  nikahCount         Int              @default(0)
   /// Yalnızca evli erkek: mevcut eş sayısı (1–3).
-  currentWives      Int              @default(0)
-  childrenCount     Int              @default(0)
-  polygamyAnswer    PolygamyAnswer?
-  aboutMe           String?
-  aboutSpouse       String?
-  beliefsManhaj     String?
+  currentWives       Int              @default(0)
+  childrenCount      Int              @default(0)
+  /// Çocuklardan kaçı kişiyle birlikte yaşıyor (≤ childrenCount).
+  childrenLivingWith Int              @default(0)
+  polygamyAnswer     PolygamyAnswer?
+  aboutMe            String?
+  aboutSpouse        String?
+  beliefsManhaj      String?
   /// AES-256-GCM şifreli JSON — yalnızca moderatör çözebilir.
-  screeningEnc      String?
-  acceptedRulesAt   DateTime?
-  completedSteps    String[]
+  screeningEnc       String?
+  acceptedRulesAt    DateTime?
+  completedSteps     String[]
   /// Erkek: akışta fotoğrafımı göster (varsayılan kapalı).
-  showPhotoInFeed   Boolean          @default(false)
+  showPhotoInFeed    Boolean          @default(false)
   /// Kadın: "şu an sohbette" rozetini gizle.
-  hideBusyBadge     Boolean          @default(false)
-  moderationStatus  ModerationStatus @default(PENDING)
-  submittedAt       DateTime?
-  approvedAt        DateTime?
-  updatedAt         DateTime         @updatedAt
+  hideBusyBadge      Boolean          @default(false)
+  moderationStatus   ModerationStatus @default(PENDING)
+  submittedAt        DateTime?
+  approvedAt         DateTime?
+  updatedAt          DateTime         @updatedAt
 
   @@index([country, moderationStatus])
 }
