@@ -19,3 +19,6 @@ next-env.d.ts
 .neon
 .next-neon/
 .vercel
+
+# Yerel ekran görüntüleri / notlar (repoya girmez)
+/*.png
