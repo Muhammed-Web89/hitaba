@@ -414,15 +414,14 @@
     "photo": {
       "title": "Photo",
       "open": "View photo",
-      "openHint": "Opens once and stays visible for {min} minutes. To see it again you need to ask for permission.",
-      "reopen": "Show photo again",
-      "openUntil": "Open: less than {min} minutes left",
+      "openHint": "Opens once; after you close it, it won’t open again. To see it again you need to ask for permission.",
       "request": "Ask to see it again",
       "requested": "Permission requested — waiting for approval",
       "used": "You’ve seen the photo. Ask for permission to see it again.",
       "sisterAsk": "wants to see your photo once more.",
       "allow": "Allow",
-      "deny": "Decline"
+      "deny": "Decline",
+      "onceNote": "Once you close this window, the photo won’t open again."
     }
   },
   "chats": {

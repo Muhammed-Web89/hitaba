@@ -92,6 +92,11 @@ export class MatchingController {
     return this.matching.openPhoto(user, id);
   }
 
+  @Post('matches/:id/photo/close')
+  closePhoto(@CurrentUser() user: User, @Param('id') id: string) {
+    return this.matching.closePhoto(user, id);
+  }
+
   @Post('matches/:id/photo/request')
   requestPhotoView(@CurrentUser() user: User, @Param('id') id: string) {
     return this.matching.requestPhotoView(user, id);

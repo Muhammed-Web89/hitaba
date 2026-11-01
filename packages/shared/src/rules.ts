@@ -13,8 +13,11 @@ export const RULES = {
   maxInterests: 10,
 
   maxPhotos: 3,
-  /** Tek seferlik görüntüleme açıldıktan sonra fotoğrafın yüklenip bakılabileceği süre. */
-  photoViewOpenMinutes: 3,
+  /**
+   * Tek seferlik görüntüleme: fotoğraflar açılışta bir kez yüklenir, kapatınca erişim hemen biter.
+   * Bu süre yalnızca yükleme içindir (uygulama kapatma gibi "kapat" gelmeyen durumlar için üst sınır).
+   */
+  photoViewLoadSeconds: 60,
 
   maleDailyFreeLikes: 10,
 

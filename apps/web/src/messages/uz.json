@@ -414,15 +414,14 @@
     "photo": {
       "title": "Surat",
       "open": "Suratni koʻrish",
-      "openHint": "Bir marta ochiladi va {min} daqiqa koʻrinadi. Qayta koʻrish uchun ruxsat soʻrash kerak.",
-      "reopen": "Suratni yana koʻrsatish",
-      "openUntil": "Ochiq: {min} daqiqadan kam qoldi",
+      "openHint": "Bir marta ochiladi; yopganingizdan keyin qayta ochilmaydi. Qayta koʻrish uchun ruxsat soʻrash kerak.",
       "request": "Qayta koʻrish uchun ruxsat soʻrash",
       "requested": "Ruxsat soʻraldi — javob kutilmoqda",
       "used": "Suratni koʻrdingiz. Qayta koʻrish uchun ruxsat soʻrang.",
       "sisterAsk": "suratingizni yana bir bor koʻrmoqchi.",
       "allow": "Ruxsat berish",
-      "deny": "Rad etish"
+      "deny": "Rad etish",
+      "onceNote": "Oynani yopsangiz, surat boshqa ochilmaydi."
     }
   },
   "chats": {

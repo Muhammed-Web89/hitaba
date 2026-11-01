@@ -6,7 +6,8 @@ import useSWR from 'swr';
 import { RULES, type ChatSummary, type MatchSummary, type PublicProfile } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
-import { PhotoFrame, ProfileCard } from '@/components/ProfileView';
+import { OneTimePhotoViewer } from '@/components/OneTimePhotoViewer';
+import { ProfileCard } from '@/components/ProfileView';
 import { ReportDialog } from '@/components/ReportDialog';
 import { StatusGate } from '@/components/StatusGate';
 import { Button, Card, Chip, EmptyState, IconButton, Modal, Notice, PageLoader } from '@/components/ui';
@@ -66,7 +67,13 @@ function Match({ id }: { id: string }) {
       setPhoto(res.profile);
     });
   const photoStage = m.stage === 'PHOTO_APPROVED' || m.stage === 'CHAT_OPEN';
-  const openMinutesLeft = m.photoViewOpenUntil ? Math.max(1, Math.ceil((new Date(m.photoViewOpenUntil).getTime() - Date.now()) / 60_000)) : 0;
+  // Görüntüleyici kapandı: erişim sunucuda hemen biter, tekrar görmek yeni izin ister.
+  const endPhoto = () => {
+    setPhoto(null);
+    void api(`/matches/${m.id}/photo/close`, { method: 'POST' })
+      .catch(() => {})
+      .then(() => mutate());
+  };
 
   const openChat = () =>
     run(async () => {
@@ -162,19 +169,12 @@ function Match({ id }: { id: string }) {
           <h2 className="flex items-center gap-2 font-sans text-xs font-bold uppercase tracking-wider text-ink-3">
             <Icon name="camera" size={15} className="text-brand-500" /> {t('photo.title')}
           </h2>
-          {m.photoViewOpenUntil ? (
-            <>
-              <Button className="w-full" icon="eye" loading={busy} onClick={viewPhoto}>
-                {t('photo.reopen')}
-              </Button>
-              <p className="text-xs text-ink-3">{t('photo.openUntil', { min: openMinutesLeft })}</p>
-            </>
-          ) : m.photoViewAvailable ? (
+          {m.photoViewAvailable ? (
             <>
               <Button className="w-full" icon="eye" loading={busy} onClick={viewPhoto}>
                 {t('photo.open')}
               </Button>
-              <p className="text-xs text-ink-3">{t('photo.openHint', { min: RULES.photoViewOpenMinutes })}</p>
+              <p className="text-xs text-ink-3">{t('photo.openHint')}</p>
             </>
           ) : m.photoViewRequested ? (
             <Notice icon="clock">{t('photo.requested')}</Notice>
@@ -210,9 +210,9 @@ function Match({ id }: { id: string }) {
 
       <ProfileCard profile={m.other} />
 
-      <Modal open={!!photo} onClose={() => setPhoto(null)} title={m.other.displayName}>
-        {photo && <PhotoFrame profile={photo} className="aspect-[3/4] w-full" />}
-        {photo && !photo.photoUrls.length && <p>{t('photo.used')}</p>}
+      <Modal open={!!photo} onClose={endPhoto} title={m.other.displayName}>
+        {photo && <OneTimePhotoViewer profile={photo} onEnd={endPhoto} />}
+        <p className="mt-3 text-xs text-ink-3">{t('photo.onceNote')}</p>
       </Modal>
 
       <Modal

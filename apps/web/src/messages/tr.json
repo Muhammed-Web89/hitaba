@@ -414,15 +414,14 @@
     "photo": {
       "title": "Fotoğraf",
       "open": "Fotoğrafı gör",
-      "openHint": "Bir kez açılır ve {min} dakika görünür. Tekrar görmek için izin istemeniz gerekir.",
-      "reopen": "Fotoğrafı tekrar göster",
-      "openUntil": "Açık: {min} dakikadan az kaldı",
+      "openHint": "Bir kez açılır; kapattığınızda tekrar açılmaz. Yeniden görmek için izin istemeniz gerekir.",
       "request": "Tekrar görmek için izin iste",
       "requested": "İzin istendi — onay bekleniyor",
       "used": "Fotoğrafı gördünüz. Tekrar görmek için izin isteyin.",
       "sisterAsk": "fotoğrafınızı bir kez daha görmek istiyor.",
       "allow": "İzin ver",
-      "deny": "Reddet"
+      "deny": "Reddet",
+      "onceNote": "Pencereyi kapattığınızda fotoğraf bir daha açılmaz."
     }
   },
   "chats": {

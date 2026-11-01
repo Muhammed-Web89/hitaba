@@ -274,21 +274,30 @@ export class MatchingService {
 
   // ── Kadın fotoğrafı: istek başına tek seferlik görüntüleme ─────────────
 
-  /** Erkek görme hakkını kullanır: fotoğraflar birkaç dakika açık kalır, sonra hak biter. */
+  /**
+   * Erkek görme hakkını kullanır. Hak hemen düşer; fotoğraflar yalnızca yüklenme süresi kadar servis edilir
+   * ve erkek görüntüleyiciyi kapatınca (closePhoto) erişim o anda biter. Tekrar görmek yeni izin ister.
+   */
   async openPhoto(viewer: User, id: string) {
     const m = await this.ownMatch(viewer, id);
     if (viewer.gender !== 'MALE' || m.stage === 'CLOSED' || m.stage === 'MUTUAL') throw new BadRequestException({ error: 'invalid_stage' });
-    const open = m.malePhotoAccessUntil && m.malePhotoAccessUntil > new Date();
-    if (!open) {
-      // Koşullu güncelleme: aynı hak iki kez kullanılamaz.
-      const res = await this.prisma.match.updateMany({
-        where: { id, malePhotoViewGranted: true },
-        data: { malePhotoViewGranted: false, malePhotoAccessUntil: new Date(Date.now() + RULES.photoViewOpenMinutes * 60_000) },
-      });
-      if (res.count === 0) throw new ForbiddenException({ error: 'photo_view_not_granted' });
-    }
+    // Koşullu güncelleme: aynı hak iki kez kullanılamaz.
+    const res = await this.prisma.match.updateMany({
+      where: { id, malePhotoViewGranted: true },
+      data: { malePhotoViewGranted: false, malePhotoAccessUntil: new Date(Date.now() + RULES.photoViewLoadSeconds * 1000) },
+    });
+    if (res.count === 0) throw new ForbiddenException({ error: 'photo_view_not_granted' });
     const female = await this.prisma.user.findUniqueOrThrow({ where: { id: m.femaleId }, include: { profile: true } });
     return { profile: await this.profiles.toPublic(viewer, female), match: await this.match(viewer, id) };
+  }
+
+  /** Görüntüleyici kapandı: erişim hemen biter. */
+  async closePhoto(viewer: User, id: string) {
+    const m = await this.ownMatch(viewer, id);
+    if (viewer.gender === 'MALE' && m.malePhotoAccessUntil) {
+      await this.prisma.match.update({ where: { id }, data: { malePhotoAccessUntil: null } });
+    }
+    return { ok: true };
   }
 
   /** Erkek fotoğrafı yeniden görmek ister; kadına bildirim gider. */
