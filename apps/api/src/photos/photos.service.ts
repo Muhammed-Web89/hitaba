@@ -194,26 +194,33 @@ export class PhotosService implements OnModuleInit {
     if (isOwner || photo.user.gender === 'MALE') return data;
 
     await this.prisma.photoView.create({ data: { photoId, viewerId: viewer.id } });
-    return watermark(data, `${viewer.profile?.displayName ?? viewer.role} · ${viewer.id.slice(-8).toUpperCase()}`);
+    return watermark(data, viewer.id.slice(-8).toUpperCase());
   }
 }
 
-async function watermark(data: Buffer, label: string): Promise<Buffer> {
+/**
+ * Kadın fotoğrafı filigranı: seyrek, kontursuz "hitaba.me" yazısı (çapraz) + sağ alt köşede küçük bakan kodu.
+ * Kod, fotoğraf dışarı sızarsa kimin görüntülediğini bulmaya yarar (PhotoView kaydıyla eşleşir).
+ */
+async function watermark(data: Buffer, viewerCode: string): Promise<Buffer> {
   const img = sharp(data);
   const { width = 1200, height = 1200 } = await img.metadata();
-  const safe = label.replace(/[<>&"']/g, '');
-  const rows: string[] = [];
-  const step = 180;
-  for (let row = 0, y = -height; y < height * 2; row++, y += step) {
-    for (let x = -width; x < width * 2; x += 520) {
-      rows.push(`<text x="${x + (row % 2) * 260}" y="${y}">${safe}</text>`);
+  const size = Math.round(Math.min(width, height) / 9);
+  const stepX = size * 6;
+  const stepY = size * 3.2;
+  const marks: string[] = [];
+  for (let row = 0, y = -height * 0.5; y < height * 1.5; row++, y += stepY) {
+    for (let x = -width * 0.5 + (row % 2) * (stepX / 2); x < width * 1.5; x += stepX) {
+      marks.push(`<text x="${Math.round(x)}" y="${Math.round(y)}">hitaba.me</text>`);
     }
   }
+  const code = viewerCode.replace(/[^A-Z0-9]/g, '');
+  const small = Math.max(12, Math.round(Math.min(width, height) / 45));
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-    <g transform="rotate(-30 ${width / 2} ${height / 2})" fill="#ffffff" fill-opacity="0.28"
-       stroke="#000000" stroke-opacity="0.18" stroke-width="1"
-       font-family="sans-serif" font-size="${Math.round(Math.max(width, height) / 40)}" font-weight="600">
-      ${rows.join('')}
-    </g></svg>`;
+    <g transform="rotate(-28 ${width / 2} ${height / 2})" fill="#ffffff" fill-opacity="0.2"
+       font-family="sans-serif" font-size="${size}" font-weight="700" letter-spacing="2">${marks.join('')}</g>
+    <text x="${width - small}" y="${height - small}" text-anchor="end" fill="#ffffff" fill-opacity="0.45"
+       font-family="monospace" font-size="${small}">${code}</text>
+  </svg>`;
   return img.composite([{ input: Buffer.from(svg), top: 0, left: 0 }]).jpeg({ quality: 82 }).toBuffer();
 }
