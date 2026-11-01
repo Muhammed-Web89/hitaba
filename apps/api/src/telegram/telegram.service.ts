@@ -34,6 +34,8 @@ export class TelegramService {
     return this.call('sendMessage', {
       chat_id: chatId,
       text,
+      // Bot mesajları iletilemez/kaydedilemez (Telegram yalnızca bot sohbetindeki mesajlar için destekler).
+      protect_content: true,
       ...(openAppLabel && {
         reply_markup: { inline_keyboard: [[{ text: openAppLabel, web_app: { url: `${env.PUBLIC_WEB_URL}/tg` } }]] },
       }),

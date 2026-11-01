@@ -1,6 +1,5 @@
 'use client';
 
-import Script from 'next/script';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { AuthTokens, ConsentInput, Gender, Me } from '@hitaba/shared';
@@ -13,7 +12,7 @@ import { api, ApiError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useErrorText } from '@/lib/format';
 import { homeFor } from '@/lib/routing';
-import '@/lib/telegram';
+import { loadTelegramSdk } from '@/lib/telegram';
 
 /** Telegram Mini App girişi: initData sunucuda HMAC-SHA256 ile doğrulanır. */
 export default function TelegramEntry() {
@@ -25,14 +24,11 @@ export default function TelegramEntry() {
   const [consents, setConsents] = useState(EMPTY_CONSENTS);
   const [gender, setGender] = useState<Gender | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [scriptReady, setScriptReady] = useState(false);
 
   const authenticate = useCallback(
     async (g?: Gender, consents?: ConsentInput) => {
       const wa = window.Telegram?.WebApp;
       if (!wa?.initData) return setState('notTelegram');
-      wa.ready();
-      wa.expand();
       if (wa.colorScheme) document.documentElement.dataset.theme = wa.colorScheme;
       try {
         const tokens = await api<AuthTokens>('/auth/telegram', { method: 'POST', body: { initData: wa.initData, gender: g, consents }, auth: false });
@@ -48,12 +44,11 @@ export default function TelegramEntry() {
   );
 
   useEffect(() => {
-    if (scriptReady) void authenticate();
-  }, [scriptReady, authenticate]);
+    void loadTelegramSdk().then(() => authenticate());
+  }, [authenticate]);
 
   return (
     <>
-      <Script src="https://telegram.org/js/telegram-web-app.js" strategy="afterInteractive" onReady={() => setScriptReady(true)} />
       {state === 'loading' && <PageLoader />}
       {state === 'signup' && (
         <AuthShell title={t('tgWelcome')} subtitle={t('registerSubtitle')}>
