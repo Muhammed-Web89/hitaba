@@ -41,9 +41,14 @@ export default function WalletPage() {
     try {
       if (data!.telegramPayments && inTelegram) {
         const { invoiceLink } = await api<{ invoiceLink: string }>('/connects/invoice', { method: 'POST', body: { packageId } });
-        tg!.openInvoice?.(invoiceLink, () => {
-          void mutate();
-          void refreshMe();
+        tg!.openInvoice?.(invoiceLink, (status) => {
+          if (status === 'failed') setError(t('paymentFailed'));
+          if (status !== 'paid') return;
+          // Jeton, Telegram'ın sunucumuza gönderdiği ödeme bildirimiyle eklenir; birkaç saniye içinde yenile.
+          const refresh = () => Promise.all([mutate(), refreshMe()]);
+          void refresh();
+          setTimeout(refresh, 2000);
+          setTimeout(refresh, 6000);
         });
       } else {
         // Geliştirme ortamı: ödeme simülasyonu (API'de DEV_PAYMENTS=true).

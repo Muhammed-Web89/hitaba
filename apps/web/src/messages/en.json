@@ -537,7 +537,8 @@
     },
     "introBadge": "One-time",
     "oldPrice": "Old price: {n} stars",
-    "introNote": "Intro offer: valid once, on your first 1-connect purchase."
+    "introNote": "Intro offer: valid once, on your first 1-connect purchase.",
+    "paymentFailed": "The payment didn’t go through. If no Stars were charged, you can try again."
   },
   "notifications": {
     "title": "Notifications",

@@ -12,7 +12,7 @@ export interface TelegramWebApp {
   disableVerticalSwipes?(): void;
   setHeaderColor?(color: string): void;
   setBackgroundColor?(color: string): void;
-  onEvent?(event: 'viewportChanged' | 'activated' | 'deactivated', cb: () => void): void;
+  onEvent?(event: 'viewportChanged' | 'activated' | 'deactivated' | 'invoiceClosed', cb: () => void): void;
   openInvoice?(url: string, callback: (status: 'paid' | 'cancelled' | 'failed' | 'pending') => void): void;
 }
 

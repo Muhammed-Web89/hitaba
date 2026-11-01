@@ -537,7 +537,8 @@
     },
     "introBadge": "Tek sefer",
     "oldPrice": "Eski fiyat: {n} yıldız",
-    "introNote": "Tanışma indirimi: ilk 1 jetonluk alımınızda bir kereye mahsus geçerlidir."
+    "introNote": "Tanışma indirimi: ilk 1 jetonluk alımınızda bir kereye mahsus geçerlidir.",
+    "paymentFailed": "Ödeme tamamlanamadı. Yıldızlarınız düşülmediyse tekrar deneyebilirsiniz."
   },
   "notifications": {
     "title": "Bildirimler",

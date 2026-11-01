@@ -537,7 +537,8 @@
     },
     "introBadge": "Bir martalik",
     "oldPrice": "Eski narx: {n} yulduz",
-    "introNote": "Tanishuv chegirmasi: birinchi 1 tangalik xaridingizda bir marta amal qiladi."
+    "introNote": "Tanishuv chegirmasi: birinchi 1 tangalik xaridingizda bir marta amal qiladi.",
+    "paymentFailed": "Toʻlov amalga oshmadi. Yulduzlaringiz yechilmagan boʻlsa, qayta urinib koʻring."
   },
   "notifications": {
     "title": "Bildirishnomalar",

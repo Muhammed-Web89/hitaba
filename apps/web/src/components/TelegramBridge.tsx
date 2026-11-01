@@ -12,23 +12,29 @@ export function TelegramBridge() {
   return null;
 }
 
-/** Sayfa gizlenince (ve Telegram içinde odak kaybolunca) içeriği bulanıklaştırır. */
+/**
+ * Uygulama arka plana geçince içeriği bulanıklaştırır (uygulama değiştirici önizlemesi, ekran kaydı).
+ * Telegram'da pencere odağı (blur/focus) kullanılmaz: ödeme penceresi gibi Telegram'ın kendi ekranları
+ * odağı alır ve kapanınca "focus" her zaman gelmez, ekran bulanık kalırdı. Onun yerine Telegram'ın
+ * activated/deactivated olayları ve sayfa görünürlüğü kullanılır.
+ */
 export function PrivacyShield() {
   useEffect(() => {
     const root = document.documentElement;
     const on = () => (root.dataset.shield = '1');
     const off = () => delete root.dataset.shield;
     const onVisibility = () => (document.hidden ? on() : off());
-    const inTelegram = root.dataset.tg === '1';
     document.addEventListener('visibilitychange', onVisibility);
-    if (inTelegram) {
-      window.addEventListener('blur', on);
-      window.addEventListener('focus', off);
+    if (root.dataset.tg === '1') {
+      void loadTelegramSdk().then((wa) => {
+        wa?.onEvent?.('deactivated', on);
+        wa?.onEvent?.('activated', off);
+        wa?.onEvent?.('invoiceClosed', off);
+      });
     }
     return () => {
       document.removeEventListener('visibilitychange', onVisibility);
-      window.removeEventListener('blur', on);
-      window.removeEventListener('focus', off);
+      off();
     };
   }, []);
   return null;
