@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import type { AuthTokens, Me } from '@hitaba/shared';
+import type { AuthTokens, Me } from '@hitaba/shared/client';
 import { AuthShell } from '@/components/AuthShell';
 import { Button, Field, Input, Notice } from '@/components/ui';
 import { Link, useRouter } from '@/i18n/navigation';

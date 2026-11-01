@@ -57,6 +57,7 @@ export interface OwnProfile {
   aboutMe: string | null;
   aboutSpouse: string | null;
   beliefsManhaj: string | null;
+  interests: string[];
   hasScreening: boolean;
   acceptedRules: boolean;
   completedSteps: string[];
@@ -98,6 +99,7 @@ export interface PublicProfile {
   aboutMe: string;
   aboutSpouse: string;
   beliefsManhaj: string;
+  interests: string[];
   /** Görüntüleyenin erişimi olan fotoğrafların URL'leri (yoksa boş). */
   photoUrls: string[];
   hasPhoto: boolean;

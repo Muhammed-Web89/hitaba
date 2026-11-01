@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { SWRConfig } from 'swr';
 import { fetcher } from '@/lib/api';
 import { AuthProvider } from '@/lib/auth';
+import { GlowTracker } from './GlowTracker';
 import { PrivacyShield, TelegramBridge } from './TelegramBridge';
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -12,6 +13,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <AuthProvider>{children}</AuthProvider>
       <TelegramBridge />
       <PrivacyShield />
+      <GlowTracker />
     </SWRConfig>
   );
 }

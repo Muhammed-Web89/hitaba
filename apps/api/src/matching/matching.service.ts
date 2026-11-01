@@ -23,12 +23,13 @@ export class MatchingService {
       this.prisma.user.findFirst({
         where,
         include: { profile: true },
-        orderBy: [{ profile: { approvedAt: 'desc' } }],
+        orderBy: [{ profile: { approvedAt: 'desc' } }, { id: 'asc' }],
+        skip: filter.offset ?? 0,
       }),
       this.prisma.user.count({ where }),
     ]);
     if (!target) return null;
-    return { profile: await this.profiles.toPublic(viewer, target), remaining };
+    return { profile: await this.profiles.toPublic(viewer, target), remaining: remaining - (filter.offset ?? 0) };
   }
 
   private candidateWhere(viewer: User, f: FeedFilter, viewerPolygamy: Profile['polygamyAnswer']): Prisma.UserWhereInput {

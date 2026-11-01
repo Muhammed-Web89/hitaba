@@ -1,9 +1,9 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { PROFILE_STEP_ORDER, type OwnProfile, type ProfileStepKey } from '@hitaba/shared';
+import { PROFILE_STEP_ORDER, type OwnProfile, type ProfileStepKey } from '@hitaba/shared/client';
 import { draftFrom, payloadFor, StepFields, type Draft } from '@/components/ProfileSteps';
 import { Button, EmptyState, IconButton, Notice, PageLoader } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
@@ -18,14 +18,15 @@ export default function EditStepPage({ params }: { params: Promise<{ step: strin
   const errorText = useErrorText();
   const router = useRouter();
   const { me } = useAuth();
+  const locale = useLocale();
   const { data: profile, mutate } = useSWR<OwnProfile>('/profile');
   const [draft, setDraft] = useState<Draft | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (profile && !draft) setDraft(draftFrom(profile));
-  }, [profile, draft]);
+    if (profile && me && !draft) setDraft(draftFrom(profile, me.gender, locale));
+  }, [profile, me, draft, locale]);
 
   if (!PROFILE_STEP_ORDER.includes(step as ProfileStepKey) || step === 'rules') return <EmptyState icon="user" title={tc('notFound')} />;
   if (!draft || !me) return <PageLoader />;

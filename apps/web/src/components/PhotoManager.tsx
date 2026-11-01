@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { RULES, type OwnPhoto } from '@hitaba/shared';
+import { RULES, type OwnPhoto } from '@hitaba/shared/client';
 import { api, mediaUrl } from '@/lib/api';
 import { useErrorText } from '@/lib/format';
 import { Icon } from './icons';
@@ -42,7 +42,7 @@ export function PhotoManager() {
         {(photos ?? []).map((p) => (
           <figure key={p.id} className="relative aspect-[3/4] overflow-hidden rounded-card border border-line bg-surface-alt">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={mediaUrl(p.url)} alt="" className="h-full w-full object-cover" />
+            <img src={mediaUrl(p.url)} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
             <figcaption className="absolute inset-x-1 top-1 flex flex-wrap gap-1">
               {p.kind === 'MAIN' && <Chip tone="accent">{t('main')}</Chip>}
               {p.status !== 'APPROVED' && <Chip tone={p.status === 'PENDING' ? 'info' : 'warning'}>{t(`status.${p.status}`)}</Chip>}

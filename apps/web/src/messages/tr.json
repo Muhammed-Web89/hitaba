@@ -247,7 +247,11 @@
     "pendingTitle": "Profiliniz inceleniyor",
     "pendingText": "Bir moderatör profilinizi kısa süre içinde inceleyecek. Onaylandığında size haber vereceğiz.",
     "frozenTitle": "Profiliniz durduruldu",
-    "frozenText": "Ayrıntılar için lütfen destek ile iletişime geçin."
+    "frozenText": "Ayrıntılar için lütfen destek ile iletişime geçin.",
+    "pendingLockedTitle": "Profiliniz onaylanınca açılır",
+    "pendingLockedText": "İnceleme sürerken profillere göz atabilirsiniz. Beğenme ve sohbet onaydan sonra açılır.",
+    "browseProfiles": "Profillere göz at",
+    "pendingBadge": "İnceleniyor"
   },
   "feed": {
     "likesLeft": "Bugün {max} beğeniden {n} kaldı",
@@ -299,13 +303,18 @@
       "polygamyHint": "Çok eşliliğe \"Evet\" diyenler",
       "notBusy": "Şu an sohbette olmayanlar",
       "notBusyHint": "Başka biriyle sohbet eden kadınları gizle",
-      "applyHint": "Filtre bir sonraki profilden itibaren uygulanır"
+      "applyHint": "Filtre bir sonraki profilden itibaren uygulanır",
+      "anyCity": "Tüm şehirler"
     },
     "title": "Profiller",
     "changeFilters": "Filtreleri değiştir",
     "resetPasses": "Geçtiklerimi yeniden göster",
     "likesLeftShort": "Bugün {n}/{max} beğeni",
-    "close": "Kapat"
+    "close": "Kapat",
+    "browseFromStart": "Baştan göz at",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "readOnly": "Yalnızca göz atma"
   },
   "profile": {
     "ageRange": "{range} yaş",
@@ -334,7 +343,8 @@
     "childrenLivingSome": "{n} tanesi yanında yaşıyor",
     "openPhoto": "Fotoğrafı büyüt",
     "family": "Aile",
-    "previousNikahs": "{n} önceki nikah"
+    "previousNikahs": "{n} önceki nikah",
+    "interests": "İlgi alanları"
   },
   "likes": {
     "tabs": {
@@ -883,6 +893,87 @@
           "body": "Bu koşulları güncelleyebiliriz; önemli değişiklikler uygulama içinde duyurulur."
         }
       }
+    }
+  },
+  "pickers": {
+    "citySearch": "Şehir ara…",
+    "useCity": "\"{city}\" kullan",
+    "typeCity": "Şehrinizi yazın",
+    "interests": "İlgi alanları",
+    "interestsHint": "Size uyanlara dokunun (en fazla 10).",
+    "yes": "Evet",
+    "no": "Hayır",
+    "useMyLocation": "Konumumu kullan",
+    "useMyLocationHint": "Ülke ve şehir otomatik doldurulur",
+    "locationFailed": "Konum alınamadı; listeden seçin",
+    "other": "Diğer",
+    "habits": "Alışkanlıklar",
+    "habit": {
+      "alcohol": "Alkol",
+      "smoking": "Sigara",
+      "drugs": "Uyuşturucu",
+      "relationsOutsideNikah": "Nikahsız ilişki",
+      "contagiousDisease": "Bulaşıcı hastalık"
+    }
+  },
+  "tgHint": {
+    "title": "Uygulamaya nasıl geri dönersiniz?",
+    "dismiss": "Kapat",
+    "messagePlaceholder": "Mesaj",
+    "step1": "Telegram’da {bot} sohbetini açın.",
+    "step2": "Sol alttaki mavi “Hitaba” düğmesine dokunun.",
+    "tip": "İpucu: Sohbeti sabitlerseniz her zaman en üstte durur.",
+    "gotIt": "Anladım"
+  },
+  "catalog": {
+    "interests": {
+      "QURAN": "Kur’an",
+      "ISLAMIC_KNOWLEDGE": "İlim",
+      "ARABIC": "Arapça",
+      "READING": "Okumak",
+      "WRITING": "Yazmak",
+      "LANGUAGES": "Diller",
+      "TRAVEL": "Seyahat",
+      "NATURE": "Doğa",
+      "HIKING": "Yürüyüş",
+      "GARDENING": "Bahçecilik",
+      "COOKING": "Yemek",
+      "SPORTS": "Spor",
+      "SWIMMING": "Yüzme",
+      "HORSE_RIDING": "Binicilik",
+      "ARCHERY": "Okçuluk",
+      "CHARITY": "Hayır işleri",
+      "BUSINESS": "Ticaret",
+      "TECHNOLOGY": "Teknoloji",
+      "CALLIGRAPHY": "Hat sanatı",
+      "CRAFTS": "El işi",
+      "HOMEMAKING": "Ev düzeni",
+      "ANIMALS": "Hayvanlar"
+    },
+    "nationalities": {
+      "UZBEK": "Özbek",
+      "TAJIK": "Tacik",
+      "KAZAKH": "Kazak",
+      "KYRGYZ": "Kırgız",
+      "TURKMEN": "Türkmen",
+      "KARAKALPAK": "Karakalpak",
+      "UYGHUR": "Uygur",
+      "TATAR": "Tatar",
+      "BASHKIR": "Başkurt",
+      "AZERBAIJANI": "Azerbaycanlı",
+      "TURKISH": "Türk",
+      "RUSSIAN": "Rus",
+      "CHECHEN": "Çeçen",
+      "DAGESTANI": "Dağıstanlı",
+      "ARAB": "Arap",
+      "AFGHAN": "Afgan",
+      "PERSIAN": "Fars",
+      "KURDISH": "Kürt",
+      "PAKISTANI": "Pakistanlı",
+      "INDIAN": "Hintli",
+      "BENGALI": "Bengalli",
+      "MALAY": "Malay",
+      "INDONESIAN": "Endonezyalı"
     }
   }
 }

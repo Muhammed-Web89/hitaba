@@ -28,6 +28,8 @@ export const Public = () => SetMetadata(IS_PUBLIC, true);
 export const Roles = (...roles: Role[]) => SetMetadata(ROLES, roles);
 /** Profili onaylanmış kullanıcı gerektirir (feed, beğeni, sohbet). */
 export const RequireApproved = () => SetMetadata(REQUIRE_APPROVED, true);
+/** Salt okunur uç: incelemedeki kullanıcı da gezinebilir (ekran kilitlenmez). Sınıftaki RequireApproved'ı ezer. */
+export const AllowPendingReview = () => SetMetadata(REQUIRE_APPROVED, 'pending');
 
 export const CurrentUser = createParamDecorator((_: unknown, ctx: ExecutionContext): User => {
   return ctx.switchToHttp().getRequest().user;
@@ -58,7 +60,9 @@ export class AuthGuard implements CanActivate {
     const roles = this.reflector.getAllAndOverride<Role[] | undefined>(ROLES, targets);
     if (roles && !roles.includes(user.role)) throw new ForbiddenException();
 
-    if (this.reflector.getAllAndOverride<boolean>(REQUIRE_APPROVED, targets) && user.status !== 'APPROVED') {
+    const approval = this.reflector.getAllAndOverride<boolean | 'pending'>(REQUIRE_APPROVED, targets);
+    const allowed = approval === 'pending' ? ['APPROVED', 'PENDING_MODERATION'] : ['APPROVED'];
+    if (approval && !allowed.includes(user.status)) {
       throw new ForbiddenException({ error: 'profile_not_approved' });
     }
     return true;

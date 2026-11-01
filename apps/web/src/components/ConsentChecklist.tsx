@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import type { ConsentInput } from '@hitaba/shared';
+import type { ConsentInput } from '@hitaba/shared/client';
 import { Link } from '@/i18n/navigation';
 
 export type ConsentState = Record<keyof ConsentInput, boolean>;
@@ -31,7 +31,7 @@ export function ConsentChecklist({ value, onChange }: { value: ConsentState; onC
     </label>
   );
   return (
-    <fieldset className="space-y-3 rounded-card border border-line bg-surface p-4">
+    <fieldset className="space-y-3 glass glow rounded-card border p-4">
       <legend className="px-1 text-sm font-semibold">{t('title')}</legend>
       {item(
         'privacy',

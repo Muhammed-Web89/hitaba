@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { ModerationTarget } from '@hitaba/shared';
+import type { ModerationTarget } from '@hitaba/shared/client';
 import { Card, Chip, EmptyState, PageLoader } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { useRelativeTime } from '@/lib/format';

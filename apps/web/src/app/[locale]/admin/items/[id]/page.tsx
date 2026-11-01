@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { ModerationTarget } from '@hitaba/shared';
+import type { ModerationTarget } from '@hitaba/shared/client';
 import { Button, Card, Chip, EmptyState, Field, Notice, PageLoader, Textarea } from '@/components/ui';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api, mediaUrl } from '@/lib/api';
@@ -121,7 +121,7 @@ function ContextView({ type, context, gender }: { type: ModerationTarget; contex
     return (
       <Card className="p-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={mediaUrl(context.url)} alt="" className="max-h-[70vh] rounded-card object-contain" />
+        <img src={mediaUrl(context.url)} alt="" loading="lazy" decoding="async" className="max-h-[70vh] rounded-card object-contain" />
       </Card>
     );
   }

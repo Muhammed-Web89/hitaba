@@ -3,9 +3,11 @@
 import { useEffect, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { NotificationItem } from '@hitaba/shared';
+import type { NotificationItem } from '@hitaba/shared/client';
 import { Icon, type IconName } from '@/components/icons';
 import { Logo } from '@/components/Logo';
+import { ReviewBadge } from '@/components/StatusGate';
+import { TelegramReopenHint } from '@/components/TelegramReopenHint';
 import { cx, PageLoader } from '@/components/ui';
 import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
@@ -52,8 +54,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col">
       {!inChat && (
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-line bg-base/90 px-4 backdrop-blur">
-          <Logo href="/app" />
+        <header className="glass sticky top-0 z-20 flex h-14 items-center justify-between border-b px-4">
+          <div className="flex items-center gap-2">
+            <Logo href="/app" />
+            <ReviewBadge />
+          </div>
           <div className="flex items-center gap-1">
             {me.gender === 'MALE' && (
               <Link href="/app/wallet" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-line px-3 text-sm font-semibold" aria-label={t('wallet')}>
@@ -74,6 +79,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       )}
 
       <main className={cx('flex-1', !inChat && 'px-4 pb-24 pt-4')}>
+        {!inChat && <TelegramReopenHint />}
         {!inChat && !me.emailVerified && (
           <div className="mb-4">
             <VerifyEmailBanner />
@@ -84,7 +90,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       {!inChat && (
         <nav
-          className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-surface/95 backdrop-blur"
+          className="glass fixed inset-x-0 bottom-0 z-20 border-t"
           style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
           aria-label={t('main')}
         >
@@ -96,7 +102,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                   <Link
                     href={n.href}
                     aria-current={active ? 'page' : undefined}
-                    className={cx('flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-semibold', active ? 'text-brand-500' : 'text-ink-3')}
+                    className={cx(
+                      'glow flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-semibold transition-colors',
+                      active ? 'text-brand-500 [&_svg]:drop-shadow-[0_0_8px_var(--brand-500)]' : 'text-ink-3 hover:text-ink-2',
+                    )}
                   >
                     <Icon name={n.icon} size={22} />
                     {t(n.key)}

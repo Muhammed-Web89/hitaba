@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { PROFILE_STEP_ORDER, type OwnProfile } from '@hitaba/shared';
+import { PROFILE_STEP_ORDER, type OwnProfile } from '@hitaba/shared/client';
 import { Icon, type IconName } from '@/components/icons';
 import { PhotoManager } from '@/components/PhotoManager';
 import { Card, Chip, Notice, PageLoader, SectionTitle } from '@/components/ui';

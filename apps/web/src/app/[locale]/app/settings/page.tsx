@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { OwnProfile } from '@hitaba/shared';
+import type { OwnProfile } from '@hitaba/shared/client';
 import { LocaleMenu } from '@/components/LocaleMenu';
 import { ThemeSelector } from '@/components/ThemeToggle';
 import { Button, Card, IconButton, Modal, PageLoader, SectionTitle, Toggle } from '@/components/ui';

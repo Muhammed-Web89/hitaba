@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Module, Param, Patch, Post, Put } from '@nestjs/common';
 import type { User } from '@prisma/client';
 import { z } from 'zod';
-import { CurrentUser, RequireApproved } from '../auth/guards';
+import { AllowPendingReview, CurrentUser } from '../auth/guards';
 import { ZodPipe } from '../common/zod.pipe';
 import { PhotosModule } from '../photos/photos.module';
 import { ProfilesService } from './profiles.service';
@@ -43,7 +43,7 @@ export class ProfilesController {
   }
 
   @Get('profiles/:userId')
-  @RequireApproved()
+  @AllowPendingReview()
   publicProfile(@CurrentUser() user: User, @Param('userId') userId: string) {
     return this.profiles.publicProfile(user, userId);
   }

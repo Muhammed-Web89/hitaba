@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { ChatSummary } from '@hitaba/shared';
+import type { ChatSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { StatusGate } from '@/components/StatusGate';
 import { Card, Chip, EmptyState, PageLoader } from '@/components/ui';

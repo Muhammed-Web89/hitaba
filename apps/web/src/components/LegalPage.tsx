@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { POLICY_VERSION } from '@hitaba/shared';
+import { POLICY_VERSION } from '@hitaba/shared/client';
 import { LocaleMenu } from './LocaleMenu';
 import { Logo } from './Logo';
 

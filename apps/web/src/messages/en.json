@@ -247,7 +247,11 @@
     "pendingTitle": "Your profile is being reviewed",
     "pendingText": "A moderator will review your profile soon. We will notify you when it is approved.",
     "frozenTitle": "Your profile is paused",
-    "frozenText": "Please contact support for details."
+    "frozenText": "Please contact support for details.",
+    "pendingLockedTitle": "Opens once your profile is approved",
+    "pendingLockedText": "While we review, you can browse profiles. Likes and chats open after approval.",
+    "browseProfiles": "Browse profiles",
+    "pendingBadge": "In review"
   },
   "feed": {
     "likesLeft": "{n} of {max} likes left today",
@@ -299,13 +303,18 @@
       "polygamyHint": "Answered \"Yes\" to polygamy",
       "notBusy": "Not in a chat right now",
       "notBusyHint": "Hide women who are chatting with someone else",
-      "applyHint": "Filters apply from the next profile"
+      "applyHint": "Filters apply from the next profile",
+      "anyCity": "All cities"
     },
     "title": "Profiles",
     "changeFilters": "Change filters",
     "resetPasses": "Show skipped profiles again",
     "likesLeftShort": "{n}/{max} likes today",
-    "close": "Close"
+    "close": "Close",
+    "browseFromStart": "Browse from the start",
+    "previous": "Previous",
+    "next": "Next",
+    "readOnly": "Browse only"
   },
   "profile": {
     "ageRange": "{range} years",
@@ -334,7 +343,8 @@
     "childrenLivingSome": "{n} live with them",
     "openPhoto": "Enlarge photo",
     "family": "Family",
-    "previousNikahs": "{n, plural, one {# previous nikah} other {# previous nikahs}}"
+    "previousNikahs": "{n, plural, one {# previous nikah} other {# previous nikahs}}",
+    "interests": "Interests"
   },
   "likes": {
     "tabs": {
@@ -883,6 +893,87 @@
           "body": "We may update these terms; material changes will be announced in the app."
         }
       }
+    }
+  },
+  "pickers": {
+    "citySearch": "Search city…",
+    "useCity": "Use \"{city}\"",
+    "typeCity": "Type your city",
+    "interests": "Interests",
+    "interestsHint": "Tap the ones that fit you (up to 10).",
+    "yes": "Yes",
+    "no": "No",
+    "useMyLocation": "Use my location",
+    "useMyLocationHint": "Fills in country and city automatically",
+    "locationFailed": "Couldn’t get location; pick from the list",
+    "other": "Other",
+    "habits": "Habits",
+    "habit": {
+      "alcohol": "Alcohol",
+      "smoking": "Smoking",
+      "drugs": "Drugs",
+      "relationsOutsideNikah": "Relations outside nikah",
+      "contagiousDisease": "Contagious disease"
+    }
+  },
+  "tgHint": {
+    "title": "How to come back to the app",
+    "dismiss": "Close",
+    "messagePlaceholder": "Message",
+    "step1": "Open the {bot} chat in Telegram.",
+    "step2": "Tap the blue “Hitaba” button at the bottom left.",
+    "tip": "Tip: pin the chat so it always stays on top.",
+    "gotIt": "Got it"
+  },
+  "catalog": {
+    "interests": {
+      "QURAN": "Qur’an",
+      "ISLAMIC_KNOWLEDGE": "Islamic knowledge",
+      "ARABIC": "Arabic",
+      "READING": "Reading",
+      "WRITING": "Writing",
+      "LANGUAGES": "Languages",
+      "TRAVEL": "Travel",
+      "NATURE": "Nature",
+      "HIKING": "Hiking",
+      "GARDENING": "Gardening",
+      "COOKING": "Cooking",
+      "SPORTS": "Sports",
+      "SWIMMING": "Swimming",
+      "HORSE_RIDING": "Horse riding",
+      "ARCHERY": "Archery",
+      "CHARITY": "Charity",
+      "BUSINESS": "Business",
+      "TECHNOLOGY": "Technology",
+      "CALLIGRAPHY": "Calligraphy",
+      "CRAFTS": "Crafts",
+      "HOMEMAKING": "Homemaking",
+      "ANIMALS": "Animals"
+    },
+    "nationalities": {
+      "UZBEK": "Uzbek",
+      "TAJIK": "Tajik",
+      "KAZAKH": "Kazakh",
+      "KYRGYZ": "Kyrgyz",
+      "TURKMEN": "Turkmen",
+      "KARAKALPAK": "Karakalpak",
+      "UYGHUR": "Uyghur",
+      "TATAR": "Tatar",
+      "BASHKIR": "Bashkir",
+      "AZERBAIJANI": "Azerbaijani",
+      "TURKISH": "Turkish",
+      "RUSSIAN": "Russian",
+      "CHECHEN": "Chechen",
+      "DAGESTANI": "Dagestani",
+      "ARAB": "Arab",
+      "AFGHAN": "Afghan",
+      "PERSIAN": "Persian",
+      "KURDISH": "Kurdish",
+      "PAKISTANI": "Pakistani",
+      "INDIAN": "Indian",
+      "BENGALI": "Bengali",
+      "MALAY": "Malay",
+      "INDONESIAN": "Indonesian"
     }
   }
 }

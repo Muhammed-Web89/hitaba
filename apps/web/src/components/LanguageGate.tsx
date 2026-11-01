@@ -51,7 +51,7 @@ export function LanguageGate() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-base/95 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-labelledby="lang-title">
-      <div className="w-full max-w-sm rounded-card border border-line bg-surface p-6 shadow-card">
+      <div className="w-full max-w-sm glass glow rounded-card border p-6 shadow-card">
         <div className="mb-5 flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-50 text-brand-500">
             <Icon name="globe" size={22} />

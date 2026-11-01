@@ -4,84 +4,71 @@
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/* Turkuaz vurgu; altın ikincil vurgu. Varsayılan tema koyu (tema betiği data-theme='dark' koyar). */
 :root {
-  --brand-50: #eef7f1;
-  --brand-100: #d3ebdb;
-  --brand-300: #8fcba3;
-  --brand-500: #2f8f5b;
-  --brand-600: #24734a;
-  --brand-700: #1b5938;
+  --brand-50: #ecfdfa;
+  --brand-100: #ccfbf1;
+  --brand-300: #5eead4;
+  --brand-500: #0d9488;
+  --brand-600: #0f766e;
+  --brand-700: #115e59;
   --brand-ink: #ffffff;
 
-  --paper-50: #fbfaf6;
-  --paper-100: #f3f0e7;
-  --paper-200: #e8e3d4;
-
-  --accent-500: #c79a4b;
-  --success: #2f8f5b;
+  --accent-500: #b8873a;
+  --success: #0d9488;
   --warning: #c77f2e;
   --warning-bg: #fbf1e3;
-  --danger: #b6412e;
-  --info: #3b6e91;
-  --info-bg: #eaf1f6;
+  --danger: #c2412d;
+  --info: #2f6f9a;
+  --info-bg: #e8f2f8;
 
-  --bg-base: var(--paper-50);
-  --bg-surface: #ffffff;
-  --bg-surface-alt: var(--paper-100);
-  --border-subtle: var(--paper-200);
-  --text-primary: #1c1b17;
-  --text-secondary: #5a574c;
-  --text-muted: #8c887a;
-  --bubble-mine: var(--brand-100);
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
-  --pattern-opacity: 0.035;
+  --bg-base: #f4f8f8;
+  --bg-surface: rgba(255, 255, 255, 0.72);
+  --bg-surface-alt: rgba(13, 148, 136, 0.06);
+  --border-subtle: rgba(15, 40, 45, 0.1);
+  --text-primary: #0f1c20;
+  --text-secondary: #43555b;
+  --text-muted: #7a8b90;
+  --bubble-mine: #ccfbf1;
+  --shadow-card: 0 8px 30px rgba(15, 60, 70, 0.08);
+  --pattern-opacity: 0.03;
+  --glass-blur: 18px;
+  --glow-color: rgba(13, 148, 136, 0.16);
+  --ambient-1: rgba(45, 212, 191, 0.18);
+  --ambient-2: rgba(226, 184, 102, 0.12);
 
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg-base: #121410;
-    --bg-surface: #1b1e18;
-    --bg-surface-alt: #242821;
-    --border-subtle: #333830;
-    --text-primary: #f2f0e8;
-    --text-secondary: #b8b5a8;
-    --text-muted: #7d7a6e;
-    --brand-500: #4fb37a;
-    --brand-600: #3f9d68;
-    --brand-100: #1f3a2a;
-    --brand-50: #18281e;
-    --brand-ink: #0d140f;
-    --accent-500: #d9b06a;
-    --warning-bg: #2e2416;
-    --info-bg: #17232c;
-    --bubble-mine: #1f3a2a;
-    --shadow-card: none;
-    --pattern-opacity: 0.045;
-    color-scheme: dark;
-  }
-}
-
 :root[data-theme='dark'] {
-  --bg-base: #121410;
-  --bg-surface: #1b1e18;
-  --bg-surface-alt: #242821;
-  --border-subtle: #333830;
-  --text-primary: #f2f0e8;
-  --text-secondary: #b8b5a8;
-  --text-muted: #7d7a6e;
-  --brand-500: #4fb37a;
-  --brand-600: #3f9d68;
-  --brand-100: #1f3a2a;
-  --brand-50: #18281e;
-  --brand-ink: #0d140f;
-  --accent-500: #d9b06a;
-  --warning-bg: #2e2416;
-  --info-bg: #17232c;
-  --bubble-mine: #1f3a2a;
-  --shadow-card: none;
-  --pattern-opacity: 0.045;
+  --brand-50: rgba(45, 212, 191, 0.1);
+  --brand-100: rgba(45, 212, 191, 0.18);
+  --brand-300: #99f6e4;
+  --brand-500: #2dd4bf;
+  --brand-600: #14b8a6;
+  --brand-700: #0d9488;
+  --brand-ink: #03201c;
+  --accent-500: #e2b866;
+  --success: #2dd4bf;
+  --warning: #f0a54a;
+  --warning-bg: rgba(240, 165, 74, 0.12);
+  --danger: #f2705b;
+  --info: #7cc4f2;
+  --info-bg: rgba(124, 196, 242, 0.1);
+
+  --bg-base: #060a0e;
+  --bg-surface: rgba(22, 32, 40, 0.58);
+  --bg-surface-alt: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --text-primary: #ecf4f5;
+  --text-secondary: #a8b8bd;
+  --text-muted: #6d7f85;
+  --bubble-mine: rgba(45, 212, 191, 0.18);
+  --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.35);
+  --pattern-opacity: 0.04;
+  --glow-color: rgba(45, 212, 191, 0.22);
+  --ambient-1: rgba(45, 212, 191, 0.16);
+  --ambient-2: rgba(226, 184, 102, 0.07);
   color-scheme: dark;
 }
 
@@ -130,7 +117,11 @@
   }
 
   body {
-    background: var(--bg-base);
+    background:
+      radial-gradient(70% 45% at 10% -5%, var(--ambient-1), transparent 70%),
+      radial-gradient(55% 40% at 105% 105%, var(--ambient-2), transparent 70%),
+      var(--bg-base);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: var(--font-sans);
     line-height: 1.5;
@@ -185,6 +176,44 @@
   [dir='rtl'] .flip-rtl {
     transform: scaleX(-1);
   }
+}
+
+/* Cam yüzey: yarı saydam zemin + arka plan bulanıklığı + ince ışık kenarı. */
+@utility glass {
+  background: var(--bg-surface);
+  border-color: var(--border-subtle);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    var(--shadow-card);
+}
+
+/* Fareyi (dokunmada parmağı) izleyen ışık: --mx/--my GlowTracker tarafından ayarlanır. */
+@utility glow {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 220ms ease;
+    background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), var(--glow-color), transparent 70%);
+  }
+  &:hover::after,
+  &:active::after,
+  &:focus-visible::after {
+    opacity: 1;
+  }
+}
+
+/* Dolu turkuaz yüzeyde ışık beyazımsı olur. */
+.bg-brand-500.glow {
+  --glow-color: rgba(255, 255, 255, 0.35);
 }
 
 @keyframes pop-in {

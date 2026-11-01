@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { MatchSummary, PublicProfile } from '@hitaba/shared';
+import type { MatchSummary, PublicProfile } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
 import { ProfileAvatar } from '@/components/ProfileView';

@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { PublicProfile } from '@hitaba/shared';
+import type { PublicProfile } from '@hitaba/shared/client';
 import { ProfileCard } from '@/components/ProfileView';
 import { ReportDialog } from '@/components/ReportDialog';
 import { StatusGate } from '@/components/StatusGate';
@@ -13,7 +13,7 @@ import { useRouter } from '@/i18n/navigation';
 export default function ProfilePage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = use(params);
   return (
-    <StatusGate>
+    <StatusGate allowPending>
       <Profile userId={userId} />
     </StatusGate>
   );

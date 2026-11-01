@@ -247,7 +247,11 @@
     "pendingTitle": "ملفك قيد المراجعة",
     "pendingText": "سيراجع المشرف ملفك قريبًا، وسنُعلمك عند الموافقة.",
     "frozenTitle": "ملفك موقوف مؤقتًا",
-    "frozenText": "يرجى التواصل مع الدعم لمعرفة التفاصيل."
+    "frozenText": "يرجى التواصل مع الدعم لمعرفة التفاصيل.",
+    "pendingLockedTitle": "يُفتح بعد الموافقة على ملفك",
+    "pendingLockedText": "يمكنك تصفح الملفات أثناء المراجعة. الإعجاب والمحادثة يُفتحان بعد الموافقة.",
+    "browseProfiles": "تصفح الملفات",
+    "pendingBadge": "قيد المراجعة"
   },
   "feed": {
     "likesLeft": "تبقّى {n} من {max} إعجابات اليوم",
@@ -299,13 +303,18 @@
       "polygamyHint": "أجابوا «نعم» عن التعدد",
       "notBusy": "ليسوا في محادثة الآن",
       "notBusyHint": "إخفاء النساء اللواتي يتحدثن مع شخص آخر",
-      "applyHint": "يُطبَّق المرشّح بدءًا من الملف التالي"
+      "applyHint": "يُطبَّق المرشّح بدءًا من الملف التالي",
+      "anyCity": "كل المدن"
     },
     "title": "الملفات",
     "changeFilters": "تغيير المرشّحات",
     "resetPasses": "إظهار الملفات المتخطاة مجددًا",
     "likesLeftShort": "اليوم {n}/{max} إعجابات",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "browseFromStart": "التصفح من البداية",
+    "previous": "السابق",
+    "next": "التالي",
+    "readOnly": "تصفح فقط"
   },
   "profile": {
     "ageRange": "{range} سنة",
@@ -334,7 +343,8 @@
     "childrenLivingSome": "{n} منهم يعيشون معه/معها",
     "openPhoto": "تكبير الصورة",
     "family": "الأسرة",
-    "previousNikahs": "{n, plural, one {زواج سابق واحد} two {زواجان سابقان} other {# زيجات سابقة}}"
+    "previousNikahs": "{n, plural, one {زواج سابق واحد} two {زواجان سابقان} other {# زيجات سابقة}}",
+    "interests": "الاهتمامات"
   },
   "likes": {
     "tabs": {
@@ -883,6 +893,87 @@
           "body": "قد نحدّث هذه الشروط، وسنعلن التغييرات الجوهرية داخل التطبيق."
         }
       }
+    }
+  },
+  "pickers": {
+    "citySearch": "ابحث عن مدينة…",
+    "useCity": "استخدم «{city}»",
+    "typeCity": "اكتب مدينتك",
+    "interests": "الاهتمامات",
+    "interestsHint": "اختر ما يناسبك (حتى 10).",
+    "yes": "نعم",
+    "no": "لا",
+    "useMyLocation": "استخدم موقعي",
+    "useMyLocationHint": "تُملأ الدولة والمدينة تلقائيًا",
+    "locationFailed": "تعذّر تحديد الموقع؛ اختر من القائمة",
+    "other": "أخرى",
+    "habits": "العادات",
+    "habit": {
+      "alcohol": "الكحول",
+      "smoking": "التدخين",
+      "drugs": "المخدرات",
+      "relationsOutsideNikah": "علاقات خارج النكاح",
+      "contagiousDisease": "مرض معدٍ"
+    }
+  },
+  "tgHint": {
+    "title": "كيف تعود إلى التطبيق؟",
+    "dismiss": "إغلاق",
+    "messagePlaceholder": "رسالة",
+    "step1": "افتح محادثة {bot} في تيليجرام.",
+    "step2": "اضغط الزر الأزرق «Hitaba» أسفل اليسار.",
+    "tip": "نصيحة: ثبّت المحادثة لتبقى في الأعلى دائمًا.",
+    "gotIt": "فهمت"
+  },
+  "catalog": {
+    "interests": {
+      "QURAN": "القرآن",
+      "ISLAMIC_KNOWLEDGE": "العلم الشرعي",
+      "ARABIC": "العربية",
+      "READING": "القراءة",
+      "WRITING": "الكتابة",
+      "LANGUAGES": "اللغات",
+      "TRAVEL": "السفر",
+      "NATURE": "الطبيعة",
+      "HIKING": "المشي",
+      "GARDENING": "البستنة",
+      "COOKING": "الطبخ",
+      "SPORTS": "الرياضة",
+      "SWIMMING": "السباحة",
+      "HORSE_RIDING": "ركوب الخيل",
+      "ARCHERY": "الرماية",
+      "CHARITY": "العمل الخيري",
+      "BUSINESS": "التجارة",
+      "TECHNOLOGY": "التقنية",
+      "CALLIGRAPHY": "الخط العربي",
+      "CRAFTS": "الحِرف اليدوية",
+      "HOMEMAKING": "تدبير المنزل",
+      "ANIMALS": "الحيوانات"
+    },
+    "nationalities": {
+      "UZBEK": "أوزبكي",
+      "TAJIK": "طاجيكي",
+      "KAZAKH": "كازاخي",
+      "KYRGYZ": "قيرغيزي",
+      "TURKMEN": "تركماني",
+      "KARAKALPAK": "قراقلباقي",
+      "UYGHUR": "أويغوري",
+      "TATAR": "تتري",
+      "BASHKIR": "باشكيري",
+      "AZERBAIJANI": "أذربيجاني",
+      "TURKISH": "تركي",
+      "RUSSIAN": "روسي",
+      "CHECHEN": "شيشاني",
+      "DAGESTANI": "داغستاني",
+      "ARAB": "عربي",
+      "AFGHAN": "أفغاني",
+      "PERSIAN": "فارسي",
+      "KURDISH": "كردي",
+      "PAKISTANI": "باكستاني",
+      "INDIAN": "هندي",
+      "BENGALI": "بنغالي",
+      "MALAY": "ملايوي",
+      "INDONESIAN": "إندونيسي"
     }
   }
 }

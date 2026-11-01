@@ -214,6 +214,8 @@ model Profile {
   aboutMe            String?
   aboutSpouse        String?
   beliefsManhaj      String?
+  /// İlgi alanı kodları (@hitaba/shared INTEREST_CODES).
+  interests          String[]         @default([])
   /// AES-256-GCM şifreli JSON — yalnızca moderatör çözebilir.
   screeningEnc       String?
   acceptedRulesAt    DateTime?

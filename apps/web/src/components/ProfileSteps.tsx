@@ -1,12 +1,28 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
-import { MaritalStatus, PolygamyAnswer, PROFILE_STEP_ORDER, RULES, type OwnProfile, type ProfileStepKey } from '@hitaba/shared';
-import { LANGUAGE_CODES, useDisplayNames } from '@/lib/format';
-import { Icon } from './icons';
-import { PhotoManager } from './PhotoManager';
-import { cx, Field, Input, Notice, Select, Textarea, Toggle } from './ui';
-import { WaliForm } from './WaliForm';
+import {
+  DEFAULT_NATIONALITY,
+  MaritalStatus,
+  NATIONALITY_CODES,
+  PolygamyAnswer,
+  PROFILE_STEP_ORDER,
+  RULES,
+  type OwnProfile,
+  type ProfileStepKey,
+} from '@hitaba/shared/client';
+import { useCatalog } from '@/lib/catalog';
+import { detectLocation, guessCountry } from '@/lib/cities';
+import { COUNTRY_CODES, LANGUAGE_CODES, useDisplayNames } from '@/lib/format';
+import { Icon, type IconName } from './icons';
+import { ChoiceChips, CityPicker, HabitTile, InterestGrid, Stepper, ValueSlider } from './pickers';
+import { cx, Field, Input, Notice, Select, Spinner, Textarea, Toggle } from './ui';
+
+// Yalnızca ilgili adımda gereken ağır bileşenler ayrı parçada yüklenir.
+const PhotoManager = dynamic(() => import('./PhotoManager').then((m) => m.PhotoManager));
+const WaliForm = dynamic(() => import('./WaliForm').then((m) => m.WaliForm));
 
 export type WizardStep = ProfileStepKey | 'photos' | 'wali';
 export type Draft = Record<string, any>;
@@ -16,17 +32,19 @@ export function stepsFor(gender: 'MALE' | 'FEMALE'): WizardStep[] {
   return [...base, 'photos', ...(gender === 'FEMALE' ? (['wali'] as const) : []), 'rules'];
 }
 
-export function draftFrom(p: OwnProfile): Draft {
+/** Boş alanlar en yaygın seçimle önceden doldurulur (yazma ve dokunma azalır). */
+export function draftFrom(p: OwnProfile, gender: 'MALE' | 'FEMALE', locale: string): Draft {
+  const country = p.country ?? guessCountry(COUNTRY_CODES);
   return {
     displayName: p.displayName ?? '',
     birthDate: p.birthDate ?? '',
-    country: p.country ?? 'UZ',
+    country,
     city: p.city ?? '',
-    nationality: p.nationality ?? '',
-    languages: p.languages.length ? p.languages : [],
+    nationality: p.nationality ?? DEFAULT_NATIONALITY[country] ?? '',
+    languages: p.languages.length ? p.languages : [locale],
     willingToRelocate: p.willingToRelocate,
-    heightCm: p.heightCm ?? '',
-    weightKg: p.weightKg ?? '',
+    heightCm: p.heightCm ?? (gender === 'MALE' ? 175 : 162),
+    weightKg: p.weightKg ?? (gender === 'MALE' ? 75 : 58),
     maritalStatus: p.maritalStatus ?? 'NEVER_MARRIED',
     nikahCount: p.nikahCount,
     currentWives: p.currentWives || 1,
@@ -34,10 +52,12 @@ export function draftFrom(p: OwnProfile): Draft {
     childrenLivingWith: p.childrenLivingWith,
     polygamyAnswer: p.polygamyAnswer ?? 'PREFER_NOT_TO_SAY',
     aboutMe: p.aboutMe ?? '',
+    interests: p.interests ?? [],
     aboutSpouse: p.aboutSpouse ?? '',
     beliefsManhaj: p.beliefsManhaj ?? '',
     prayer: 'ALWAYS',
     alcohol: false,
+    smoking: false,
     drugs: false,
     relationsOutsideNikah: false,
     contagiousDisease: false,
@@ -71,7 +91,7 @@ export function payloadFor(step: ProfileStepKey, d: Draft, gender: 'MALE' | 'FEM
         ...(gender === 'FEMALE' && { polygamyAnswer: d.polygamyAnswer }),
       };
     case 'about':
-      return { aboutMe: d.aboutMe };
+      return { aboutMe: d.aboutMe, interests: d.interests };
     case 'spouse':
       return { aboutSpouse: d.aboutSpouse };
     case 'beliefs':
@@ -80,6 +100,7 @@ export function payloadFor(step: ProfileStepKey, d: Draft, gender: 'MALE' | 'FEM
       return {
         prayer: d.prayer,
         alcohol: d.alcohol,
+        smoking: d.smoking,
         drugs: d.drugs,
         relationsOutsideNikah: d.relationsOutsideNikah,
         contagiousDisease: d.contagiousDisease,
@@ -90,11 +111,48 @@ export function payloadFor(step: ProfileStepKey, d: Draft, gender: 'MALE' | 'FEM
   }
 }
 
+const HABITS = [
+  { key: 'alcohol', icon: 'wine' },
+  { key: 'smoking', icon: 'cigarette' },
+  { key: 'drugs', icon: 'pill' },
+  { key: 'relationsOutsideNikah', icon: 'heartCrack' },
+  { key: 'contagiousDisease', icon: 'virus' },
+] as const;
+
+const MARITAL_ICONS: Record<string, IconName> = { NEVER_MARRIED: 'sparkle', DIVORCED: 'heartCrack', WIDOWED: 'clock', MARRIED: 'ring' };
+const POLYGAMY_ICONS: Record<string, IconName> = { YES: 'check', NO: 'x', PREFER_NOT_TO_SAY: 'lock' };
+
 export function StepFields({ step, draft, set, gender }: { step: WizardStep; draft: Draft; set: (p: Draft) => void; gender: 'MALE' | 'FEMALE' }) {
   const t = useTranslations('onboarding.fields');
+  const tp = useTranslations('pickers');
   const te = useTranslations('enums');
   const tr = useTranslations('rules');
   const names = useDisplayNames();
+  const catalog = useCatalog();
+  const [locating, setLocating] = useState(false);
+  const [locateFailed, setLocateFailed] = useState(false);
+  const [otherNationality, setOtherNationality] = useState(() => !!draft.nationality && !catalog.isNationalityCode(draft.nationality));
+
+  async function locate() {
+    setLocating(true);
+    setLocateFailed(false);
+    const found = await detectLocation();
+    setLocating(false);
+    if (!found || !(COUNTRY_CODES as readonly string[]).includes(found.country)) return setLocateFailed(true);
+    set({ country: found.country, city: found.city || draft.city, ...(!draft.nationality && { nationality: DEFAULT_NATIONALITY[found.country] ?? '' }) });
+  }
+
+  // İzin önceden verilmişse konum sessizce doldurulur (yeni izin penceresi açılmaz).
+  useEffect(() => {
+    if (step !== 'location' || draft.city) return;
+    navigator.permissions
+      ?.query({ name: 'geolocation' })
+      .then((r) => {
+        if (r.state === 'granted') void locate();
+      })
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   switch (step) {
     case 'basics': {
@@ -114,8 +172,22 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
     case 'location':
       return (
         <>
+          <button
+            type="button"
+            onClick={locate}
+            disabled={locating}
+            className="glass glow flex w-full items-center gap-3 rounded-card border border-brand-500/40 p-4 text-start disabled:opacity-60"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-500">
+              {locating ? <Spinner size={20} /> : <Icon name="locate" size={22} />}
+            </span>
+            <span className="min-w-0">
+              <span className="block font-semibold">{tp('useMyLocation')}</span>
+              <span className="block text-sm text-ink-3">{locateFailed ? tp('locationFailed') : tp('useMyLocationHint')}</span>
+            </span>
+          </button>
           <Field label={t('country')}>
-            <Select value={draft.country} onChange={(e) => set({ country: e.target.value })}>
+            <Select value={draft.country} onChange={(e) => set({ country: e.target.value, city: '' })}>
               {names.countries.map((c) => (
                 <option key={c.code} value={c.code}>
                   {c.name}
@@ -123,12 +195,46 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
               ))}
             </Select>
           </Field>
-          <Field label={t('city')}>
-            <Input value={draft.city} maxLength={80} onChange={(e) => set({ city: e.target.value })} />
-          </Field>
-          <Field label={t('nationality')} hint={t('nationalityHint')}>
-            <Input value={draft.nationality} maxLength={60} onChange={(e) => set({ nationality: e.target.value })} />
-          </Field>
+          <div>
+            <p className="mb-1.5 text-sm font-semibold">{t('city')}</p>
+            <CityPicker country={draft.country} value={draft.city} onChange={(city) => set({ city })} />
+          </div>
+          <fieldset>
+            <legend className="mb-2 text-sm font-semibold">{t('nationality')}</legend>
+            <div className="flex flex-wrap gap-2">
+              {sortedNationalities(draft.country).map((code) => {
+                const on = !otherNationality && draft.nationality === code;
+                return (
+                  <button
+                    key={code}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => {
+                      setOtherNationality(false);
+                      set({ nationality: code });
+                    }}
+                    className={cx('glow rounded-full border px-3 py-1.5 text-sm font-semibold', on ? 'border-brand-500 bg-brand-500 text-brand-ink' : 'glass')}
+                  >
+                    {catalog.nationality(code)}
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                aria-pressed={otherNationality}
+                onClick={() => {
+                  setOtherNationality(true);
+                  set({ nationality: catalog.isNationalityCode(draft.nationality) ? '' : draft.nationality });
+                }}
+                className={cx('glow inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold', otherNationality ? 'border-brand-500 bg-brand-500 text-brand-ink' : 'glass')}
+              >
+                <Icon name="plus" size={14} /> {tp('other')}
+              </button>
+            </div>
+            {otherNationality && (
+              <Input className="mt-2" autoFocus value={draft.nationality} maxLength={60} placeholder={t('nationalityHint')} onChange={(e) => set({ nationality: e.target.value })} />
+            )}
+          </fieldset>
           <fieldset>
             <legend className="mb-2 text-sm font-semibold">{t('languages')}</legend>
             <div className="flex flex-wrap gap-2">
@@ -140,8 +246,9 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
                     type="button"
                     aria-pressed={on}
                     onClick={() => set({ languages: on ? draft.languages.filter((x: string) => x !== l) : [...draft.languages, l] })}
-                    className={cx('rounded-full border px-3 py-1.5 text-sm font-semibold', on ? 'border-brand-500 bg-brand-500 text-brand-ink' : 'border-line bg-surface')}
+                    className={cx('glow inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold', on ? 'border-brand-500 bg-brand-500 text-brand-ink' : 'glass')}
                   >
+                    {on && <Icon name="check" size={14} />}
                     {names.language(l)}
                   </button>
                 );
@@ -153,80 +260,65 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
       );
     case 'body':
       return (
-        <div className="grid grid-cols-2 gap-4">
-          <Field label={t('height')}>
-            <Input type="number" inputMode="numeric" min={120} max={230} value={draft.heightCm} onChange={(e) => set({ heightCm: e.target.value })} />
-          </Field>
-          <Field label={t('weight')}>
-            <Input type="number" inputMode="numeric" min={35} max={250} value={draft.weightKg} onChange={(e) => set({ weightKg: e.target.value })} />
-          </Field>
-          <p className="col-span-2 text-xs text-ink-3">{t('bodyHint')}</p>
-        </div>
+        <>
+          <ValueSlider label={t('height')} icon="ruler" min={120} max={230} unit="cm" value={Number(draft.heightCm)} onChange={(v) => set({ heightCm: v })} />
+          <ValueSlider label={t('weight')} icon="scale" min={35} max={200} unit="kg" value={Number(draft.weightKg)} onChange={(v) => set({ weightKg: v })} />
+          <p className="text-xs text-ink-3">{t('bodyHint')}</p>
+        </>
       );
-    case 'family':
+    case 'family': {
+      const children = Number(draft.childrenCount) || 0;
       return (
         <>
-          <Field label={t('maritalStatus')}>
-            <Select value={draft.maritalStatus} onChange={(e) => set({ maritalStatus: e.target.value })}>
-              {/* Evli bir kadın nikah arayamaz; "Evli" yalnızca erkeklere sunulur. */}
-              {Object.values(MaritalStatus)
-                .filter((m) => gender === 'MALE' || m !== 'MARRIED')
-                .map((m) => (
-                  <option key={m} value={m}>
-                    {te(`marital.${m}`, { gender })}
-                  </option>
-                ))}
-            </Select>
-          </Field>
+          {/* Evli bir kadın nikah arayamaz; "Evli" yalnızca erkeklere sunulur. */}
+          <ChoiceChips
+            label={t('maritalStatus')}
+            value={draft.maritalStatus}
+            onChange={(v) => set({ maritalStatus: v })}
+            options={Object.values(MaritalStatus)
+              .filter((m) => gender === 'MALE' || m !== 'MARRIED')
+              .map((m) => ({ value: m, label: te(`marital.${m}`, { gender }), icon: MARITAL_ICONS[m] }))}
+          />
           {gender === 'MALE' && draft.maritalStatus === 'MARRIED' && (
-            <Field label={t('currentWives')} hint={t('currentWivesHint')}>
-              <Select value={draft.currentWives} onChange={(e) => set({ currentWives: e.target.value })}>
-                {Array.from({ length: RULES.maxCurrentWives }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+            <ChoiceChips
+              wide
+              label={t('currentWives')}
+              value={Number(draft.currentWives)}
+              onChange={(v) => set({ currentWives: v })}
+              options={Array.from({ length: RULES.maxCurrentWives }, (_, i) => ({ value: i + 1, label: String(i + 1), icon: 'ring' as const }))}
+            />
           )}
-          <div className="grid grid-cols-2 gap-4">
-            <Field label={t('nikahCount')}>
-              <Input type="number" min={0} max={RULES.maxNikahCount} value={draft.nikahCount} onChange={(e) => set({ nikahCount: e.target.value })} />
-            </Field>
-            <Field label={t('childrenCount')}>
-              <Input
-                type="number"
-                min={0}
-                max={30}
-                value={draft.childrenCount}
-                onChange={(e) => set({ childrenCount: e.target.value, childrenLivingWith: Math.min(Number(draft.childrenLivingWith) || 0, Number(e.target.value) || 0) })}
-              />
-            </Field>
-          </div>
-          {Number(draft.childrenCount) > 0 && (
-            <Field label={t('childrenLivingWith')} hint={t('childrenLivingWithHint')}>
-              <Select value={draft.childrenLivingWith} onChange={(e) => set({ childrenLivingWith: e.target.value })}>
-                {Array.from({ length: Number(draft.childrenCount) + 1 }, (_, i) => i).map((n) => (
-                  <option key={n} value={n}>
-                    {n === Number(draft.childrenCount) ? t('childrenLivingAll', { n }) : n === 0 ? t('childrenLivingNone') : n}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+          <Stepper label={t('nikahCount')} icon="ring" value={Number(draft.nikahCount) || 0} max={RULES.maxNikahCount} onChange={(v) => set({ nikahCount: v })} />
+          <Stepper
+            label={t('childrenCount')}
+            icon="baby"
+            value={children}
+            max={30}
+            onChange={(v) => set({ childrenCount: v, childrenLivingWith: Math.min(Number(draft.childrenLivingWith) || 0, v) })}
+          />
+          {children > 0 && (
+            <Stepper
+              label={t('childrenLivingWith')}
+              icon="home"
+              value={Math.min(Number(draft.childrenLivingWith) || 0, children)}
+              max={children}
+              onChange={(v) => set({ childrenLivingWith: v })}
+            />
           )}
           {gender === 'FEMALE' && (
-            <Field label={t('polygamy')} hint={t('polygamyHint')}>
-              <Select value={draft.polygamyAnswer} onChange={(e) => set({ polygamyAnswer: e.target.value })}>
-                {Object.values(PolygamyAnswer).map((p) => (
-                  <option key={p} value={p}>
-                    {te(`polygamy.${p}`)}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+            <div>
+              <ChoiceChips
+                label={t('polygamy')}
+                value={draft.polygamyAnswer}
+                onChange={(v) => set({ polygamyAnswer: v })}
+                options={Object.values(PolygamyAnswer).map((p) => ({ value: p, label: te(`polygamy.${p}`), icon: POLYGAMY_ICONS[p] }))}
+              />
+              <p className="mt-1.5 text-xs text-ink-3">{t('polygamyHint')}</p>
+            </div>
           )}
         </>
       );
+    }
     case 'about':
     case 'spouse':
     case 'beliefs': {
@@ -234,46 +326,48 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
       const min = step === 'about' ? RULES.aboutMinChars : 30;
       const len = (draft[key] as string).trim().length;
       return (
-        <Field
-          label={t(key)}
-          hint={t(`${key}Hint`)}
-          counter={
-            <span className={cx('text-xs font-semibold tabular-nums', len < min ? 'text-danger' : 'text-brand-500')} aria-live="polite">
-              {len} / {min}+
-            </span>
-          }
-        >
-          <Textarea rows={8} maxLength={RULES.aboutMaxChars} value={draft[key]} onChange={(e) => set({ [key]: e.target.value })} />
-        </Field>
+        <>
+          <Field
+            label={t(key)}
+            hint={t(`${key}Hint`)}
+            counter={
+              <span className={cx('text-xs font-semibold tabular-nums', len < min ? 'text-danger' : 'text-brand-500')} aria-live="polite">
+                {len} / {min}+
+              </span>
+            }
+          >
+            <Textarea rows={7} maxLength={RULES.aboutMaxChars} value={draft[key]} onChange={(e) => set({ [key]: e.target.value })} />
+          </Field>
+          {step === 'about' && <InterestGrid value={draft.interests} onChange={(interests) => set({ interests })} />}
+        </>
       );
     }
     case 'screening':
       return (
         <>
           <Notice icon="lock">{t('screeningPrivacy')}</Notice>
-          <Field label={t('prayer')}>
-            <Select value={draft.prayer} onChange={(e) => set({ prayer: e.target.value })}>
-              {(['ALWAYS', 'MOSTLY', 'SOMETIMES', 'NO'] as const).map((p) => (
-                <option key={p} value={p}>
-                  {te(`prayer.${p}`)}
-                </option>
-              ))}
-            </Select>
-          </Field>
+          <ChoiceChips
+            label={t('prayer')}
+            value={draft.prayer}
+            onChange={(v) => set({ prayer: v })}
+            options={(['ALWAYS', 'MOSTLY', 'SOMETIMES', 'NO'] as const).map((p) => ({ value: p, label: te(`prayer.${p}`) }))}
+          />
           {gender === 'FEMALE' && (
-            <Field label={t('hijab')}>
-              <Select value={draft.hijab} onChange={(e) => set({ hijab: e.target.value })}>
-                {(['NIQAB', 'HIJAB', 'PARTIAL', 'NONE'] as const).map((h) => (
-                  <option key={h} value={h}>
-                    {te(`hijab.${h}`)}
-                  </option>
-                ))}
-              </Select>
-            </Field>
+            <ChoiceChips
+              label={t('hijab')}
+              value={draft.hijab}
+              onChange={(v) => set({ hijab: v })}
+              options={(['NIQAB', 'HIJAB', 'PARTIAL', 'NONE'] as const).map((h) => ({ value: h, label: te(`hijab.${h}`), icon: h === 'NONE' ? undefined : ('hijab' as const) }))}
+            />
           )}
-          {(['alcohol', 'drugs', 'relationsOutsideNikah', 'contagiousDisease'] as const).map((k) => (
-            <Toggle key={k} checked={draft[k]} onChange={(v) => set({ [k]: v })} label={t(k)} />
-          ))}
+          <div>
+            <p className="mb-2 text-sm font-semibold">{tp('habits')}</p>
+            <div className="grid grid-cols-3 gap-2">
+              {HABITS.map((h) => (
+                <HabitTile key={h.key} icon={h.icon} label={tp(`habit.${h.key}`)} value={!!draft[h.key]} onChange={(v) => set({ [h.key]: v })} />
+              ))}
+            </div>
+          </div>
         </>
       );
     case 'photos':
@@ -290,7 +384,7 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
         <>
           <ul className="space-y-3">
             {(['niyyah', 'witnesses', 'contact', 'photos', 'respect', 'honesty'] as const).map((r) => (
-              <li key={r} className="flex gap-3 rounded-card border border-line bg-surface p-4">
+              <li key={r} className="glass glow flex gap-3 rounded-card border p-4">
                 <Icon name="check" className="mt-0.5 shrink-0 text-brand-500" />
                 <span className="text-[15px]">{tr(r)}</span>
               </li>
@@ -308,4 +402,10 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
         </>
       );
   }
+}
+
+/** Ülkenin varsayılan milliyeti başta, gerisi katalog sırasıyla. */
+function sortedNationalities(country: string) {
+  const first = DEFAULT_NATIONALITY[country];
+  return first ? [first, ...NATIONALITY_CODES.filter((c) => c !== first)] : [...NATIONALITY_CODES];
 }

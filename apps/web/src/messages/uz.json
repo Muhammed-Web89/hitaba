@@ -247,7 +247,11 @@
     "pendingTitle": "Anketangiz tekshirilmoqda",
     "pendingText": "Moderator tez orada anketangizni koʻrib chiqadi. Tasdiqlanganda xabar beramiz.",
     "frozenTitle": "Anketangiz vaqtincha toʻxtatilgan",
-    "frozenText": "Tafsilotlar uchun qoʻllab-quvvatlash xizmatiga murojaat qiling."
+    "frozenText": "Tafsilotlar uchun qoʻllab-quvvatlash xizmatiga murojaat qiling.",
+    "pendingLockedTitle": "Anketangiz tasdiqlangach ochiladi",
+    "pendingLockedText": "Tekshiruv davomida anketalarni koʻrib chiqishingiz mumkin. Yoqtirish va suhbat tasdiqdan keyin ochiladi.",
+    "browseProfiles": "Anketalarni koʻrish",
+    "pendingBadge": "Tekshirilmoqda"
   },
   "feed": {
     "likesLeft": "Bugun {max} tadan {n} ta yoqtirish qoldi",
@@ -299,13 +303,18 @@
       "polygamyHint": "Koʻp xotinlikka \"Ha\" deganlar",
       "notBusy": "Hozir suhbatda emaslar",
       "notBusyHint": "Boshqa birov bilan suhbatlashayotgan ayollarni yashirish",
-      "applyHint": "Filtr keyingi anketadan boshlab qoʻllanadi"
+      "applyHint": "Filtr keyingi anketadan boshlab qoʻllanadi",
+      "anyCity": "Barcha shaharlar"
     },
     "title": "Anketalar",
     "changeFilters": "Filtrlarni oʻzgartirish",
     "resetPasses": "Oʻtkazib yuborilganlarni qayta koʻrsatish",
     "likesLeftShort": "Bugun {n}/{max} yoqtirish",
-    "close": "Yopish"
+    "close": "Yopish",
+    "browseFromStart": "Boshidan koʻrish",
+    "previous": "Oldingi",
+    "next": "Keyingi",
+    "readOnly": "Faqat koʻrish"
   },
   "profile": {
     "ageRange": "{range} yosh",
@@ -334,7 +343,8 @@
     "childrenLivingSome": "{n} tasi u bilan yashaydi",
     "openPhoto": "Suratni kattalashtirish",
     "family": "Oila",
-    "previousNikahs": "{n} ta avvalgi nikoh"
+    "previousNikahs": "{n} ta avvalgi nikoh",
+    "interests": "Qiziqishlar"
   },
   "likes": {
     "tabs": {
@@ -883,6 +893,87 @@
           "body": "Ushbu shartlarni yangilashimiz mumkin; muhim oʻzgarishlar ilovada eʼlon qilinadi."
         }
       }
+    }
+  },
+  "pickers": {
+    "citySearch": "Shaharni qidiring…",
+    "useCity": "\"{city}\"ni tanlash",
+    "typeCity": "Shahringizni yozing",
+    "interests": "Qiziqishlar",
+    "interestsHint": "Sizga mosini bosing (koʻpi bilan 10 ta).",
+    "yes": "Ha",
+    "no": "Yoʻq",
+    "useMyLocation": "Joylashuvimni aniqlash",
+    "useMyLocationHint": "Mamlakat va shahar avtomatik toʻldiriladi",
+    "locationFailed": "Joylashuv aniqlanmadi; roʻyxatdan tanlang",
+    "other": "Boshqa",
+    "habits": "Odatlar",
+    "habit": {
+      "alcohol": "Spirtli ichimlik",
+      "smoking": "Chekish",
+      "drugs": "Giyohvandlik",
+      "relationsOutsideNikah": "Nikohsiz munosabat",
+      "contagiousDisease": "Yuqumli kasallik"
+    }
+  },
+  "tgHint": {
+    "title": "Ilovaga qanday qaytasiz?",
+    "dismiss": "Yopish",
+    "messagePlaceholder": "Xabar",
+    "step1": "Telegramda {bot} suhbatini oching.",
+    "step2": "Pastki chap burchakdagi koʻk “Hitaba” tugmasini bosing.",
+    "tip": "Maslahat: suhbatni qadab qoʻysangiz, doim tepada turadi.",
+    "gotIt": "Tushunarli"
+  },
+  "catalog": {
+    "interests": {
+      "QURAN": "Qurʼon",
+      "ISLAMIC_KNOWLEDGE": "Ilm",
+      "ARABIC": "Arab tili",
+      "READING": "Kitob oʻqish",
+      "WRITING": "Yozish",
+      "LANGUAGES": "Tillar",
+      "TRAVEL": "Sayohat",
+      "NATURE": "Tabiat",
+      "HIKING": "Piyoda sayr",
+      "GARDENING": "Bogʻdorchilik",
+      "COOKING": "Pazandalik",
+      "SPORTS": "Sport",
+      "SWIMMING": "Suzish",
+      "HORSE_RIDING": "Ot minish",
+      "ARCHERY": "Kamondan otish",
+      "CHARITY": "Xayriya",
+      "BUSINESS": "Tadbirkorlik",
+      "TECHNOLOGY": "Texnologiya",
+      "CALLIGRAPHY": "Xattotlik",
+      "CRAFTS": "Qoʻl mehnati",
+      "HOMEMAKING": "Uy-roʻzgʻor",
+      "ANIMALS": "Hayvonlar"
+    },
+    "nationalities": {
+      "UZBEK": "Oʻzbek",
+      "TAJIK": "Tojik",
+      "KAZAKH": "Qozoq",
+      "KYRGYZ": "Qirgʻiz",
+      "TURKMEN": "Turkman",
+      "KARAKALPAK": "Qoraqalpoq",
+      "UYGHUR": "Uygʻur",
+      "TATAR": "Tatar",
+      "BASHKIR": "Boshqird",
+      "AZERBAIJANI": "Ozarbayjon",
+      "TURKISH": "Turk",
+      "RUSSIAN": "Rus",
+      "CHECHEN": "Chechen",
+      "DAGESTANI": "Dogʻistonlik",
+      "ARAB": "Arab",
+      "AFGHAN": "Afgʻon",
+      "PERSIAN": "Fors",
+      "KURDISH": "Kurd",
+      "PAKISTANI": "Pokistonlik",
+      "INDIAN": "Hindistonlik",
+      "BENGALI": "Bengal",
+      "MALAY": "Malay",
+      "INDONESIAN": "Indonez"
     }
   }
 }

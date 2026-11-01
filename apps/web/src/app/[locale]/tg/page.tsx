@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import type { AuthTokens, ConsentInput, Gender, Me } from '@hitaba/shared';
+import type { AuthTokens, ConsentInput, Gender, Me } from '@hitaba/shared/client';
 import { AuthShell } from '@/components/AuthShell';
 import { allConsented, ConsentChecklist, EMPTY_CONSENTS } from '@/components/ConsentChecklist';
 import { GenderPicker } from '@/components/GenderPicker';
@@ -29,7 +29,6 @@ export default function TelegramEntry() {
     async (g?: Gender, consents?: ConsentInput) => {
       const wa = window.Telegram?.WebApp;
       if (!wa?.initData) return setState('notTelegram');
-      if (wa.colorScheme) document.documentElement.dataset.theme = wa.colorScheme;
       try {
         const tokens = await api<AuthTokens>('/auth/telegram', { method: 'POST', body: { initData: wa.initData, gender: g, consents }, auth: false });
         await signIn(tokens);

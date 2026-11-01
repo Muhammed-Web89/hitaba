@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { NotificationItem } from '@hitaba/shared';
+import type { NotificationItem } from '@hitaba/shared/client';
 import { Icon, type IconName } from '@/components/icons';
 import { Card, cx, EmptyState, PageLoader } from '@/components/ui';
 import { Link } from '@/i18n/navigation';

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ReportCategory } from '@hitaba/shared';
+import { ReportCategory } from '@hitaba/shared/client';
 import { api } from '@/lib/api';
 import { useErrorText } from '@/lib/format';
 import { Button, Field, Modal, Notice, Select, Textarea } from './ui';

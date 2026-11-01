@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { Me, OwnProfile } from '@hitaba/shared';
+import type { Me, OwnProfile } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { Logo } from '@/components/Logo';
 import { draftFrom, payloadFor, StepFields, stepsFor, type Draft } from '@/components/ProfileSteps';
@@ -20,6 +20,7 @@ export default function OnboardingPage() {
   const errorText = useErrorText();
   const router = useRouter();
   const { me, loading, signedIn, refreshMe } = useAuth();
+  const locale = useLocale();
   const { data: profile, mutate } = useSWR<OwnProfile>(me ? '/profile' : null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [index, setIndex] = useState(0);
@@ -38,11 +39,11 @@ export default function OnboardingPage() {
 
   // Taslaktan devam: ilk tamamlanmamış adım.
   useEffect(() => {
-    if (!profile || draft) return;
-    setDraft(draftFrom(profile));
+    if (!profile || !me || draft) return;
+    setDraft(draftFrom(profile, me.gender, locale));
     const first = steps.findIndex((s) => s !== 'photos' && s !== 'wali' && !profile.completedSteps.includes(s));
     setIndex(first === -1 ? steps.length - 1 : first);
-  }, [profile, draft, steps]);
+  }, [profile, me, draft, steps, locale]);
 
   if (!me || !profile || !draft) return <PageLoader />;
 
@@ -114,7 +115,7 @@ export default function OnboardingPage() {
         )}
       </main>
 
-      <footer className="fixed inset-x-0 bottom-0 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+      <footer className="fixed inset-x-0 bottom-0 glass border-t px-4 py-3" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
         <div className="mx-auto flex max-w-lg gap-3">
           <Button variant="secondary" disabled={index === 0 || busy} onClick={() => setIndex(index - 1)} aria-label={tc('back')}>
             <Icon name="back" size={18} className="flip-rtl" />

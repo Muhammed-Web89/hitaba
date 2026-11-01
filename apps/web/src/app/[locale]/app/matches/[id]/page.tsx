@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { RULES, type ChatSummary, type MatchSummary } from '@hitaba/shared';
+import { RULES, type ChatSummary, type MatchSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
 import { ProfileCard } from '@/components/ProfileView';

@@ -9,7 +9,7 @@ export default function AppHome() {
   const { me } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (me?.status === 'APPROVED') router.replace('/app/feed');
+    if (me?.status === 'APPROVED' || me?.status === 'PENDING_MODERATION') router.replace('/app/feed');
   }, [me, router]);
   return <StatusGate>{null}</StatusGate>;
 }

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { ConnectPackageId, ConnectTxType } from '@hitaba/shared';
+import type { ConnectPackageId, ConnectTxType } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { Button, Card, IconButton, Notice, PageLoader, SectionTitle } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';

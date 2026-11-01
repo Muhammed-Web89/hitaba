@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import type { MatchSummary } from '@hitaba/shared';
+import type { MatchSummary } from '@hitaba/shared/client';
 import { useAuth } from '@/lib/auth';
 import type { IconName } from './icons';
 

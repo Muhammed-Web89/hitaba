@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Gender, MaritalStatus, PolygamyAnswer, Relation, ReportCategory } from './enums';
+import { INTEREST_CODES } from './catalog';
 import { RULES } from './rules';
 
 const enumOf = <T extends Record<string, string>>(o: T) =>
@@ -91,6 +92,7 @@ export const profileSteps = {
   }),
   about: z.object({
     aboutMe: z.string().trim().min(RULES.aboutMinChars).max(RULES.aboutMaxChars),
+    interests: z.array(z.enum(INTEREST_CODES)).max(RULES.maxInterests).optional(),
   }),
   spouse: z.object({
     aboutSpouse: z.string().trim().min(30).max(RULES.aboutMaxChars),
@@ -102,6 +104,7 @@ export const profileSteps = {
   screening: z.object({
     prayer: z.enum(['ALWAYS', 'MOSTLY', 'SOMETIMES', 'NO']),
     alcohol: z.boolean(),
+    smoking: z.boolean().optional(),
     drugs: z.boolean(),
     relationsOutsideNikah: z.boolean(),
     contagiousDisease: z.boolean(),
@@ -116,18 +119,6 @@ export type ProfileStepKey = keyof typeof profileSteps;
 export type ProfileStepInput<K extends ProfileStepKey> = z.infer<(typeof profileSteps)[K]>;
 export type ScreeningAnswers = ProfileStepInput<'screening'>;
 
-/** Sihirbaz sırası. Kadında ek olarak `wali` adımı vardır (ayrı endpoint). */
-export const PROFILE_STEP_ORDER: ProfileStepKey[] = [
-  'basics',
-  'location',
-  'body',
-  'family',
-  'about',
-  'spouse',
-  'beliefs',
-  'screening',
-  'rules',
-];
 
 /** Değişince profili yeniden moderasyona sokan serbest metin alanları. */
 export const MODERATED_TEXT_FIELDS = ['displayName', 'aboutMe', 'aboutSpouse', 'beliefsManhaj'] as const;
@@ -152,6 +143,8 @@ export const feedFilterSchema = z.object({
   noChildren: z.boolean().optional(),
   neverMarried: z.boolean().optional(),
   openToPolygamy: z.boolean().optional(),
+  /** İnceleme bekleyen kullanıcı yalnızca gezinebilir; beğenmediği için sıra kaydırmayla ilerler. */
+  offset: z.number().int().min(0).max(1000).optional(),
 });
 export type FeedFilter = z.infer<typeof feedFilterSchema>;
 

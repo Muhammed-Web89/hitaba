@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import type { AuthTokens, Gender } from '@hitaba/shared';
+import type { AuthTokens, Gender } from '@hitaba/shared/client';
 import { AuthShell } from '@/components/AuthShell';
 import { allConsented, ConsentChecklist, EMPTY_CONSENTS } from '@/components/ConsentChecklist';
 import { GenderPicker } from '@/components/GenderPicker';

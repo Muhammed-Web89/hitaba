@@ -3,7 +3,7 @@
 import { use } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { WaliPortalView } from '@hitaba/shared';
+import type { WaliPortalView } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { LocaleMenu } from '@/components/LocaleMenu';
 import { Logo } from '@/components/Logo';
@@ -72,7 +72,7 @@ export default function WaliPortalPage({ params }: { params: Promise<{ token: st
       )}
 
       {/* Bu bir salt-okunur görünümdür — her zaman sabit (§8.5) */}
-      <div className="fixed inset-x-0 bottom-0 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur">
+      <div className="fixed inset-x-0 bottom-0 glass border-t px-4 py-3">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <span className="flex flex-1 items-center gap-2 text-xs text-ink-2">
             <Icon name="eye" size={16} className="shrink-0 text-brand-500" /> {t('readonly')}

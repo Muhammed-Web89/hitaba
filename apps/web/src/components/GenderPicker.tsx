@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import type { Gender } from '@hitaba/shared';
+import type { Gender } from '@hitaba/shared/client';
 import { cx } from './ui';
 
 export function GenderPicker({ value, onChange }: { value: Gender | null; onChange: (g: Gender) => void }) {

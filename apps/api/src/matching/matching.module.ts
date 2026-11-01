@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Module, Param, Post, Query } from '@nest
 import type { User } from '@prisma/client';
 import { z } from 'zod';
 import { feedFilterSchema, type FeedFilter } from '@hitaba/shared';
-import { CurrentUser, RequireApproved } from '../auth/guards';
+import { AllowPendingReview, CurrentUser, RequireApproved } from '../auth/guards';
 import { ZodPipe } from '../common/zod.pipe';
 import { ProfilesModule } from '../profiles/profiles.module';
 import { MatchingService } from './matching.service';
@@ -15,6 +15,7 @@ export class MatchingController {
   constructor(private readonly matching: MatchingService) {}
 
   @Post('feed/next')
+  @AllowPendingReview()
   next(@CurrentUser() user: User, @Body(new ZodPipe(feedFilterSchema)) filter: FeedFilter) {
     return this.matching.next(user, filter).then((card) => card ?? { profile: null, remaining: 0 });
   }

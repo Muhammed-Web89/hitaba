@@ -1,7 +1,9 @@
+import { TELEGRAM_SDK_URL } from './telegram-sdk';
+
 /** Telegram Mini App WebApp API'sinin kullandığımız kısmı. */
 export interface TelegramWebApp {
   initData: string;
-  colorScheme?: "light" | "dark";
+  colorScheme?: 'light' | 'dark';
   ready(): void;
   expand(): void;
   version?: string;
@@ -10,14 +12,8 @@ export interface TelegramWebApp {
   disableVerticalSwipes?(): void;
   setHeaderColor?(color: string): void;
   setBackgroundColor?(color: string): void;
-  onEvent?(
-    event: "viewportChanged" | "activated" | "deactivated",
-    cb: () => void,
-  ): void;
-  openInvoice?(
-    url: string,
-    callback: (status: "paid" | "cancelled" | "failed" | "pending") => void,
-  ): void;
+  onEvent?(event: 'viewportChanged' | 'activated' | 'deactivated', cb: () => void): void;
+  openInvoice?(url: string, callback: (status: 'paid' | 'cancelled' | 'failed' | 'pending') => void): void;
 }
 
 declare global {
@@ -26,7 +22,6 @@ declare global {
   }
 }
 
-const SDK_URL = 'https://telegram.org/js/telegram-web-app.js';
 let sdk: Promise<TelegramWebApp | undefined> | undefined;
 
 /** Telegram SDK'sını tek seferlik yükler; tüm çağıranlar aynı sözü bekler (çift yükleme/kaçan geri çağrı olmaz). */
@@ -34,11 +29,16 @@ export function loadTelegramSdk(): Promise<TelegramWebApp | undefined> {
   if (typeof window === 'undefined') return Promise.resolve(undefined);
   if (window.Telegram?.WebApp) return Promise.resolve(window.Telegram.WebApp);
   sdk ??= new Promise((resolve) => {
-    const s = document.createElement('script');
-    s.src = SDK_URL;
-    s.onload = () => resolve(window.Telegram?.WebApp);
-    s.onerror = () => resolve(undefined);
-    document.head.appendChild(s);
+    // Telegram'da sayfa başındaki betik SDK'yı çoktan eklemiştir; yoksa burada eklenir.
+    let s = document.getElementById('tg-sdk') as HTMLScriptElement | null;
+    if (!s) {
+      s = document.createElement('script');
+      s.src = TELEGRAM_SDK_URL;
+      s.id = 'tg-sdk';
+      document.head.appendChild(s);
+    }
+    s.addEventListener('load', () => resolve(window.Telegram?.WebApp));
+    s.addEventListener('error', () => resolve(undefined));
   });
   return sdk;
 }
@@ -59,8 +59,4 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
 }
 
 export const telegramWebApp = (): TelegramWebApp | undefined =>
-  typeof window === "undefined"
-    ? undefined
-    : window.Telegram?.WebApp?.initData
-      ? window.Telegram.WebApp
-      : undefined;
+  typeof window === 'undefined' ? undefined : window.Telegram?.WebApp?.initData ? window.Telegram.WebApp : undefined;

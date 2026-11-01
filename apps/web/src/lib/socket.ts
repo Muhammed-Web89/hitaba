@@ -1,7 +1,7 @@
 'use client';
 
 import { io, type Socket } from 'socket.io-client';
-import type { ClientToServerEvents, ServerToClientEvents } from '@hitaba/shared';
+import type { ClientToServerEvents, ServerToClientEvents } from '@hitaba/shared/client';
 import { API_URL, tokens } from './api';
 
 export type ChatSocket = Socket<ServerToClientEvents, ClientToServerEvents>;

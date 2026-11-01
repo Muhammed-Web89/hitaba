@@ -24,12 +24,12 @@ export function Button({
       {...rest}
       disabled={disabled || loading}
       className={cx(
-        'inline-flex items-center justify-center gap-2 rounded-control font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+        'glow inline-flex items-center justify-center gap-2 rounded-control font-semibold transition-[background-color,transform] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50',
         size === 'sm' && 'h-9 px-3 text-sm',
         size === 'md' && 'h-11 px-4 text-[15px]',
         size === 'lg' && 'h-12 px-5 text-base',
-        variant === 'primary' && 'bg-brand-500 text-brand-ink hover:bg-brand-600',
-        variant === 'secondary' && 'border border-line bg-transparent text-ink hover:bg-surface-alt',
+        variant === 'primary' && 'bg-brand-500 text-brand-ink shadow-[0_6px_24px_-6px_var(--brand-500)] hover:bg-brand-600',
+        variant === 'secondary' && 'glass border text-ink hover:bg-surface-alt',
         variant === 'ghost' && 'text-ink-2 hover:bg-surface-alt hover:text-ink',
         variant === 'danger' && 'bg-danger text-white hover:opacity-90',
         className,
@@ -47,7 +47,7 @@ export function IconButton({ icon, label, className, size = 20, ...rest }: Butto
       {...rest}
       aria-label={label}
       title={label}
-      className={cx('inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-alt hover:text-ink disabled:opacity-40', className)}
+      className={cx('glow inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-2 transition-colors hover:bg-surface-alt hover:text-ink disabled:opacity-40', className)}
     >
       <Icon name={icon} size={size} />
     </button>
@@ -56,7 +56,7 @@ export function IconButton({ icon, label, className, size = 20, ...rest }: Butto
 
 export function Card({ className, children, ...rest }: { className?: string; children: ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div {...rest} className={cx('rounded-card border border-line bg-surface shadow-card', className)}>
+    <div {...rest} className={cx('glass glow rounded-card border', className)}>
       {children}
     </div>
   );
@@ -88,7 +88,7 @@ export function Textarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
 }
 
 export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select {...props} className={cx(control, 'h-11 appearance-auto', props.className)} />;
+  return <select {...props} className={cx(control, 'h-11 appearance-auto [&>option]:bg-base', props.className)} />;
 }
 
 export function Toggle({ checked, onChange, label, description }: { checked: boolean; onChange: (v: boolean) => void; label: string; description?: string }) {
@@ -126,7 +126,7 @@ export function Chip({ children, active, onClick, tone = 'neutral' }: { children
         !active && tone === 'accent' && 'border-accent/40 bg-transparent text-accent',
         !active && tone === 'warning' && 'border-transparent bg-warning-bg text-warning',
         !active && tone === 'info' && 'border-transparent bg-info-bg text-info',
-        onClick && 'cursor-pointer',
+        onClick && 'glow cursor-pointer',
       )}
     >
       {children}
@@ -195,7 +195,7 @@ export function Modal({ open, onClose, title, children, footer }: { open: boolea
       ref={ref}
       onClose={onClose}
       onClick={(e) => e.target === ref.current && onClose()}
-      className="m-auto w-[min(440px,calc(100vw-32px))] rounded-card border border-line bg-surface p-0 text-ink backdrop:bg-black/40"
+      className="glass m-auto w-[min(440px,calc(100vw-32px))] rounded-card border p-0 text-ink backdrop:bg-black/50 backdrop:backdrop-blur-sm"
     >
       <div className="p-5">
         <h2 className="text-xl font-semibold">{title}</h2>

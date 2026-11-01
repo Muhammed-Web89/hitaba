@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react';
 import useSWR from 'swr';
-import type { AuthTokens, Me } from '@hitaba/shared';
+import type { AuthTokens, Me } from '@hitaba/shared/client';
 import { api, ApiError, tokens } from './api';
 import { disconnectSocket } from './socket';
 

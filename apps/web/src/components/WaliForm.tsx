@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { Relation, RULES } from '@hitaba/shared';
+import { Relation, RULES } from '@hitaba/shared/client';
 import { api } from '@/lib/api';
 import { useErrorText, useRelativeTime } from '@/lib/format';
 import { Button, Card, Field, IconButton, Input, Modal, Notice, Select } from './ui';

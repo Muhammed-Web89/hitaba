@@ -3,7 +3,7 @@
 import { use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { Relation, RULES, scanForContactInfo, type ChatMessage, type ChatSummary } from '@hitaba/shared';
+import { Relation, RULES, scanForContactInfo, type ChatMessage, type ChatSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { MessageList } from '@/components/MessageList';
 import { ReportDialog } from '@/components/ReportDialog';
@@ -147,7 +147,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
           <div className="relative">
             <IconButton icon="more" label={t('menu')} onClick={() => setMenu(!menu)} aria-expanded={menu} />
             {menu && (
-              <div className="absolute end-0 top-11 z-30 w-60 overflow-hidden rounded-card border border-line bg-surface shadow-card" onClick={() => setMenu(false)}>
+              <div className="absolute end-0 top-11 z-30 w-60 overflow-hidden glass rounded-card border" onClick={() => setMenu(false)}>
                 {active && <MenuItem icon="shield" label={t('shareMahram')} onClick={() => setDialog('mahram')} />}
                 {active && (
                   <MenuItem
@@ -207,7 +207,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         <div ref={bottom} />
       </div>
 
-      <footer className="border-t border-line bg-surface px-3 py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
+      <footer className="glass border-t px-3 py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
         {chat.status === 'PAUSED' && (
           <div className="mb-2">
             <Notice tone="warning" icon="pause">
