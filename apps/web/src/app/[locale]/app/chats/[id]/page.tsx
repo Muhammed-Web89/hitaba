@@ -33,6 +33,11 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const { data: chat, mutate: mutateChat, error: chatError } = useSWR<ChatSummary>(`/chats/${id}`);
   const [messages, setMessages] = useState<ChatMessage[] | null>(null);
   const [text, setText] = useState('');
+  const box = useRef<HTMLTextAreaElement>(null);
+  // Gönderince ya da düzenleme iptal edilince kutu tek satıra döner.
+  useEffect(() => {
+    if (!text && box.current) box.current.style.height = '';
+  }, [text]);
   const [editing, setEditing] = useState<ChatMessage | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
@@ -268,10 +273,14 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
           }}
         >
           <textarea
+            ref={box}
             value={text}
             onChange={(e) => {
               setText(e.target.value);
               setWarn(false);
+              // Yazdıkça büyür (en fazla ~6 satır), sonra kendi içinde kaydırılır.
+              e.target.style.height = 'auto';
+              e.target.style.height = `${Math.min(e.target.scrollHeight, 168)}px`;
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -284,13 +293,13 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             maxLength={RULES.messageMaxChars}
             placeholder={active ? t('placeholder') : t('placeholderDisabled')}
             aria-label={t('placeholder')}
-            className="max-h-32 min-h-11 flex-1 resize-none rounded-2xl border border-line bg-base px-4 py-2.5 text-[15px] focus:border-brand-500 focus:outline-none disabled:opacity-60"
+            className="max-h-[168px] min-h-12 flex-1 resize-none rounded-2xl border border-line bg-base px-4 py-3 text-base leading-snug text-ink placeholder:text-ink-3 focus:border-brand-500 focus:outline-none disabled:opacity-60"
           />
           <button
             type="submit"
             disabled={!active || sending || !text.trim()}
             aria-label={t('send')}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-500 text-brand-ink disabled:opacity-40"
+            className="glow flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-500 text-brand-ink disabled:opacity-40"
           >
             <Icon name="send" size={20} className="flip-rtl" />
           </button>

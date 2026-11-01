@@ -110,6 +110,21 @@
     overscroll-behavior: none;
   }
 
+  /* Sayfa yana taşmaz/kaymaz (clip, sticky üst çubuğu bozmaz). */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  /* iOS, 16 pikselden küçük yazı alanına odaklanınca sayfayı yakınlaştırır; dokunmatik ekranda en az 16 px. */
+  @media (pointer: coarse) {
+    input,
+    textarea,
+    select {
+      font-size: max(16px, 1em) !important;
+    }
+  }
+
   /* Uygulama arka plandayken / odak dışındayken içerik bulanıklaşır (uygulama değiştirici önizlemesi, ekran kaydı). */
   html[data-shield] body > * {
     filter: blur(24px);
