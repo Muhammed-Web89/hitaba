@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { ConnectPackageId, ConnectTxType } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
-import { Button, Card, IconButton, Notice, PageLoader, SectionTitle } from '@/components/ui';
+import { Button, Card, cx, IconButton, Notice, PageLoader, SectionTitle } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -14,7 +14,8 @@ import { telegramWebApp } from '@/lib/telegram';
 
 interface WalletData {
   balance: number;
-  packages: { id: ConnectPackageId; connects: number; stars: number }[];
+  /** stars: liste fiyatı, price: ödenecek fiyat (tanışma indirimi varsa düşük). */
+  packages: { id: ConnectPackageId; connects: number; stars: number; price: number }[];
   telegramPayments: boolean;
   transactions: { id: string; amount: number; type: ConnectTxType; note: string | null; createdAt: string }[];
 }
@@ -72,17 +73,33 @@ export default function WalletPage() {
 
       <SectionTitle>{t('packages')}</SectionTitle>
       <div className="grid grid-cols-3 gap-3">
-        {data.packages.map((p) => (
-          <Card key={p.id} className="flex flex-col items-center p-4 text-center">
-            <span className="font-serif text-3xl font-semibold">{p.connects}</span>
-            <span className="text-xs text-ink-3">{t('connects', { n: p.connects })}</span>
-            <span className="mt-2 text-sm font-semibold text-accent">⭐ {p.stars}</span>
-            <Button size="sm" className="mt-3 w-full" loading={busy === p.id} onClick={() => buy(p.id)}>
-              {t('buy')}
-            </Button>
-          </Card>
-        ))}
+        {data.packages.map((p) => {
+          const deal = p.price < p.stars;
+          return (
+            <Card key={p.id} className={cx('relative flex flex-col items-center p-4 pt-5 text-center', deal && 'border-accent/70 shadow-[0_0_24px_-6px_var(--accent-500)]')}>
+              {deal && (
+                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-ink">
+                  {t('introBadge')}
+                </span>
+              )}
+              <span className="font-serif text-3xl font-semibold">{p.connects}</span>
+              <span className="text-xs text-ink-3">{t('connects', { n: p.connects })}</span>
+              <span className="mt-2 flex flex-col items-center leading-tight">
+                {deal && (
+                  <s className="text-xs text-ink-3" aria-label={t('oldPrice', { n: p.stars })}>
+                    ⭐ {p.stars}
+                  </s>
+                )}
+                <span className={cx('font-semibold text-accent', deal ? 'text-lg' : 'text-sm')}>⭐ {p.price}</span>
+              </span>
+              <Button size="sm" className="mt-3 w-full" loading={busy === p.id} onClick={() => buy(p.id)}>
+                {t('buy')}
+              </Button>
+            </Card>
+          );
+        })}
       </div>
+      {data.packages.some((p) => p.price < p.stars) && <p className="mt-3 text-center text-xs text-ink-3">{t('introNote')}</p>}
       {!inTelegram && (
         <div className="mt-3">
           <Notice>{t('devNote')}</Notice>

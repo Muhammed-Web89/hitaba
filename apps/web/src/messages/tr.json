@@ -534,7 +534,10 @@
       "REFUND": "İade",
       "BONUS": "Hediye",
       "PENALTY": "Bakiye sıfırlandı"
-    }
+    },
+    "introBadge": "Tek sefer",
+    "oldPrice": "Eski fiyat: {n} yıldız",
+    "introNote": "Tanışma indirimi: ilk 1 jetonluk alımınızda bir kereye mahsus geçerlidir."
   },
   "notifications": {
     "title": "Bildirimler",

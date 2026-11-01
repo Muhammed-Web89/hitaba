@@ -41,6 +41,9 @@ export const CONNECT_PACKAGES = [
 
 export type ConnectPackageId = (typeof CONNECT_PACKAGES)[number]['id'];
 
+/** Tanışma indirimi: her kullanıcı bu paketi bir kez indirimli fiyatla alabilir. */
+export const INTRO_OFFER = { packageId: 'c1', stars: 20 } as const satisfies { packageId: ConnectPackageId; stars: number };
+
 /**
  * Gizlilik politikası / kullanım koşulları sürümü. Metin değiştiğinde artırılır;
  * kullanıcının hangi sürümü onayladığı Consent tablosunda tutulur.

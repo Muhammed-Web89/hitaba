@@ -534,7 +534,10 @@
       "REFUND": "Qaytarish",
       "BONUS": "Bonus",
       "PENALTY": "Balans nolga tushirildi"
-    }
+    },
+    "introBadge": "Bir martalik",
+    "oldPrice": "Eski narx: {n} yulduz",
+    "introNote": "Tanishuv chegirmasi: birinchi 1 tangalik xaridingizda bir marta amal qiladi."
   },
   "notifications": {
     "title": "Bildirishnomalar",

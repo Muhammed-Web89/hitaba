@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import type { Prisma, User } from '@prisma/client';
-import { CONNECT_PACKAGES, type ConnectPackageId } from '@hitaba/shared';
+import { CONNECT_PACKAGES, INTRO_OFFER, type ConnectPackageId } from '@hitaba/shared';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TelegramService } from '../telegram/telegram.service';
@@ -35,15 +35,31 @@ export class ConnectsService {
     private readonly notifications: NotificationsService,
   ) {}
 
-  async overview(user: User) {
-    const txs = await this.prisma.connectTx.findMany({
-      where: { userId: user.id },
-      orderBy: { createdAt: 'desc' },
-      take: 50,
+  /** Kullanıcı tanışma indirimini daha önce (ödenmiş olarak) kullandı mı? */
+  private async introUsed(userId: string, db: Tx | PrismaService = this.prisma): Promise<boolean> {
+    const n = await db.payment.count({
+      where: { userId, packageId: INTRO_OFFER.packageId, amount: INTRO_OFFER.stars, status: 'PAID' },
     });
+    return n > 0;
+  }
+
+  /** Paketin bu kullanıcı için geçerli fiyatı (indirim sunucuda hesaplanır). */
+  private async priceFor(userId: string, pkg: (typeof CONNECT_PACKAGES)[number]): Promise<number> {
+    return pkg.id === INTRO_OFFER.packageId && !(await this.introUsed(userId)) ? INTRO_OFFER.stars : pkg.stars;
+  }
+
+  async overview(user: User) {
+    const [txs, introUsed] = await Promise.all([
+      this.prisma.connectTx.findMany({ where: { userId: user.id }, orderBy: { createdAt: 'desc' }, take: 50 }),
+      this.introUsed(user.id),
+    ]);
     return {
       balance: user.connectBalance,
-      packages: CONNECT_PACKAGES,
+      // stars: liste fiyatı; price: ödenecek fiyat (indirimliyse daha düşük).
+      packages: CONNECT_PACKAGES.map((p) => ({
+        ...p,
+        price: p.id === INTRO_OFFER.packageId && !introUsed ? INTRO_OFFER.stars : p.stars,
+      })),
       telegramPayments: this.telegram.enabled,
       transactions: txs.map((t) => ({
         id: t.id,
@@ -84,13 +100,14 @@ export class ConnectsService {
     if (!this.telegram.enabled) throw new ServiceUnavailableException({ error: 'telegram_payments_disabled' });
     const pkg = CONNECT_PACKAGES.find((p) => p.id === packageId);
     if (!pkg) throw new NotFoundException();
+    const stars = await this.priceFor(user.id, pkg);
     const payment = await this.prisma.payment.create({
       data: {
         userId: user.id,
         provider: 'TELEGRAM_STARS',
         packageId: pkg.id,
         connects: pkg.connects,
-        amount: pkg.stars,
+        amount: stars,
         currency: 'XTR',
       },
     });
@@ -98,7 +115,7 @@ export class ConnectsService {
       title: `Hitaba · ${connectsLabel(user.locale, pkg.connects)}`,
       description: connectsLabel(user.locale, pkg.connects),
       payload: payment.id,
-      stars: pkg.stars,
+      stars,
     });
     if (!link) throw new ServiceUnavailableException({ error: 'invoice_failed' });
     return { paymentId: payment.id, invoiceLink: link };
@@ -106,7 +123,10 @@ export class ConnectsService {
 
   async validatePreCheckout(paymentId: string, currency: string, amount: number): Promise<boolean> {
     const p = await this.prisma.payment.findUnique({ where: { id: paymentId } });
-    return Boolean(p && p.status === 'PENDING' && p.currency === currency && p.amount === amount);
+    if (!p || p.status !== 'PENDING' || p.currency !== currency || p.amount !== amount) return false;
+    // Birden çok indirimli fatura açılmışsa yalnızca ilki ödenebilir.
+    const isIntro = p.packageId === INTRO_OFFER.packageId && p.amount === INTRO_OFFER.stars;
+    return !(isIntro && (await this.introUsed(p.userId)));
   }
 
   /** Telegram successful_payment — providerChargeId benzersiz olduğu için tekrar gelen webhook çift kredilemez. */

@@ -534,7 +534,10 @@
       "REFUND": "Refund",
       "BONUS": "Bonus",
       "PENALTY": "Balance reset"
-    }
+    },
+    "introBadge": "One-time",
+    "oldPrice": "Old price: {n} stars",
+    "introNote": "Intro offer: valid once, on your first 1-connect purchase."
   },
   "notifications": {
     "title": "Notifications",
