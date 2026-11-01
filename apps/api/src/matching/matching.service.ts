@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Chat, ChatStatus, Match, Prisma, Profile, User } from '@prisma/client';
 import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicProfile } from '@hitaba/shared';
-import { hours } from '../common/time';
+import { hours, startOfLocalDay } from '../common/time';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProfilesService } from '../profiles/profiles.service';
@@ -91,6 +91,7 @@ export class MatchingService {
       if (!left) throw new ForbiddenException({ error: 'daily_like_limit' });
     }
 
+    const alreadyLiked = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: viewer.id, toId: target.id } } });
     await this.prisma.$transaction([
       this.prisma.pass.deleteMany({ where: { fromId: viewer.id, toId: target.id } }),
       this.prisma.like.upsert({
@@ -116,8 +117,49 @@ export class MatchingService {
         this.notifications.notify(maleId, 'mutual_match', { matchId }),
         this.notifications.notify(femaleId, 'mutual_match', { matchId }),
       ]);
+    } else if (!alreadyLiked && !(await this.recentlyNotified(viewer.id, target.id))) {
+      // Tek taraflı yeni beğeni: karşı taraf "Beni beğenenler"de görür. Geri alıp yeniden beğenmek
+      // 7 gün içinde ikinci bildirim üretmez (bildirim yağmuru olmasın).
+      await this.notifications.notify(target.id, 'new_like', { fromId: viewer.id });
     }
     return { mutual: Boolean(reciprocal), matchId, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
+  }
+
+  private async recentlyNotified(fromId: string, toId: string): Promise<boolean> {
+    const n = await this.prisma.notification.count({
+      where: { userId: toId, type: 'new_like', data: { path: ['fromId'], equals: fromId }, createdAt: { gte: new Date(Date.now() - hours(24 * 7)) } },
+    });
+    return n > 0;
+  }
+
+  /** Karşılıksız beğeniyi geri alır. Karşılıklı olmuşsa geri alınamaz (eşleşmede "reddet" kullanılır). */
+  async unlike(viewer: User, targetId: string) {
+    const like = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: viewer.id, toId: targetId } } });
+    if (!like) throw new NotFoundException();
+    const reciprocal = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: targetId, toId: viewer.id } } });
+    if (reciprocal) throw new BadRequestException({ error: 'already_mutual' });
+    await this.withdraw(viewer, [like]);
+    return { ok: true, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
+  }
+
+  /** Tüm karşılıksız beğenilerimi sıfırlar. */
+  async resetLikes(viewer: User) {
+    const likes = await this.prisma.like.findMany({
+      where: { fromId: viewer.id, to: { likesGiven: { none: { toId: viewer.id } } } },
+    });
+    await this.withdraw(viewer, likes);
+    return { removed: likes.length, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
+  }
+
+  private async withdraw(viewer: User, likes: { toId: string; createdAt: Date }[]) {
+    if (!likes.length) return;
+    const today = startOfLocalDay(viewer.timezone);
+    const todays = likes.filter((l) => l.createdAt >= today);
+    await this.prisma.$transaction([
+      this.prisma.like.deleteMany({ where: { fromId: viewer.id, toId: { in: likes.map((l) => l.toId) } } }),
+      // Erkeğin bugün harcadığı hak iade edilmez (bkz. ProfilesService.likesLeftToday); eski beğeniler etkilemez.
+      ...(viewer.gender === 'MALE' && todays.length ? [this.prisma.likeWithdrawal.createMany({ data: todays.map(() => ({ userId: viewer.id })) })] : []),
+    ]);
   }
 
   async pass(viewer: User, targetId: string) {
@@ -166,6 +208,20 @@ export class MatchingService {
       orderBy: { createdAt: 'desc' },
     });
     return Promise.all(rows.map((r) => this.profiles.toPublic(viewer, r.target)));
+  }
+
+  /** Beni beğenenler: henüz karşılık vermediklerim (karşılık verilince "Karşılıklılar"a geçer). */
+  async likedMe(viewer: User): Promise<PublicProfile[]> {
+    const rows = await this.prisma.like.findMany({
+      where: {
+        toId: viewer.id,
+        from: { role: 'USER', status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } } },
+      },
+      include: { from: { include: { profile: true } } },
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    });
+    return Promise.all(rows.map((r) => this.profiles.toPublic(viewer, r.from)));
   }
 
   /** Beğendiklerim (henüz karşılıklı olmayan). */

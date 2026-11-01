@@ -263,6 +263,15 @@ model PhotoView {
 
 // ── Eşleşme ─────────────────────────────────────────────────────────────
 
+/// Geri alınan beğeni: günlük beğeni hakkı iade edilmesin diye o günün sayımına katılır.
+model LikeWithdrawal {
+  id        String   @id @default(cuid())
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
 model Like {
   fromId    String
   toId      String

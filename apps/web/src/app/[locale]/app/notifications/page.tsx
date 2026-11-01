@@ -11,6 +11,7 @@ import { api } from '@/lib/api';
 import { useRelativeTime } from '@/lib/format';
 
 const ICONS: Record<string, IconName> = {
+  new_like: 'heart',
   mutual_match: 'heart',
   photo_approved: 'camera',
   chat_requested: 'chat',
@@ -31,6 +32,7 @@ function hrefFor(n: NotificationItem): string | null {
   if (d.matchId) return `/app/matches/${d.matchId}`;
   if (n.type.startsWith('profile') || n.type === 'photo_rejected') return '/app/profile';
   if (n.type === 'connects_credited') return '/app/wallet';
+  if (n.type === 'new_like') return '/app/likes?tab=received';
   return null;
 }
 

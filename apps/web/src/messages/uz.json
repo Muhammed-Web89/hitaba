@@ -348,6 +348,7 @@
   },
   "likes": {
     "tabs": {
+      "received": "Meni yoqtirganlar",
       "mutual": "Oʻzaro",
       "mine": "Yoqtirganlarim",
       "favorites": "Sevimlilar"
@@ -367,7 +368,17 @@
       "canOpen": "Suhbatni ochishingiz mumkin",
       "canOpenWindow": "Suhbatni ochishingiz mumkin · surat {h} soat koʻrinadi",
       "closed": "Yopilgan"
-    }
+    },
+    "emptyReceived": "Hali sizni hech kim yoqtirmadi",
+    "emptyReceivedText": "Kimdir sizni yoqtirsa, shu yerda koʻrinadi va bildirishnoma olasiz.",
+    "receivedIntro": "Bu insonlar sizni yoqtirdi. Siz ham yoqtirsangiz, oʻzaro qiziqish paydo boʻladi.",
+    "likeBack": "Yoqtirish",
+    "viewProfile": "Anketani koʻrish",
+    "mineIntro": "Javob kutayotgan yoqtirishlaringiz. Istaganingizni qaytarib olishingiz mumkin.",
+    "undoLike": "Qaytarish",
+    "resetAll": "Hammasini bekor qilish",
+    "resetAllTitle": "Barcha yoqtirishlar qaytarilsinmi?",
+    "resetAllText": "{n} ta yoqtirish bekor qilinadi. Bu insonlar anketalaringizda yana chiqishi mumkin. Bugun ishlatilgan yoqtirishlar qaytarilmaydi."
   },
   "match": {
     "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u 24 soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qarorni keyin oʻzgartirib boʻlmaydi.",
@@ -555,7 +566,8 @@
       "silence_reminder": "Suhbatingizda bir muddatdan beri xabar yoʻq.",
       "mahram_approved": "Mahram maʼlumotlari suhbatda eʼlon qilindi.",
       "mahram_rejected": "Mahram maʼlumotlari tasdiqlanmadi.",
-      "connects_credited": "Hisobingizga tanga qoʻshildi."
+      "connects_credited": "Hisobingizga tanga qoʻshildi.",
+      "new_like": "Sizni kimdir yoqtirdi. Kimligini koʻrish uchun bosing."
     }
   },
   "portal": {
@@ -670,7 +682,8 @@
     "ThrottlerException: Too Many Requests": "Urinishlar juda koʻp. Biroz kutib, qaytadan urinib koʻring.",
     "married_female_not_allowed": "Turmushdagi ayollar roʻyxatdan oʻta olmaydi.",
     "current_wives_required": "Iltimos, hozirgi xotinlaringiz sonini tanlang.",
-    "children_living_invalid": "Siz bilan yashaydigan farzandlar soni umumiy sondan koʻp boʻlishi mumkin emas."
+    "children_living_invalid": "Siz bilan yashaydigan farzandlar soni umumiy sondan koʻp boʻlishi mumkin emas.",
+    "already_mutual": "Oʻzaro boʻlgan yoqtirishni qaytarib boʻlmaydi; tanishuvdan chiqishingiz mumkin."
   },
   "admin": {
     "title": "Moderatsiya",

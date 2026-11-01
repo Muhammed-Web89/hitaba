@@ -25,6 +25,16 @@ export class MatchingController {
     return this.matching.like(user, userId);
   }
 
+  @Delete('feed/:userId/like')
+  unlike(@CurrentUser() user: User, @Param('userId') userId: string) {
+    return this.matching.unlike(user, userId);
+  }
+
+  @Post('likes/reset')
+  resetLikes(@CurrentUser() user: User) {
+    return this.matching.resetLikes(user);
+  }
+
   @Post('feed/:userId/pass')
   pass(@CurrentUser() user: User, @Param('userId') userId: string) {
     return this.matching.pass(user, userId);
@@ -54,6 +64,7 @@ export class MatchingController {
   likes(@CurrentUser() user: User, @Query('tab') tab = 'mutual') {
     if (tab === 'favorites') return this.matching.favorites(user);
     if (tab === 'mine') return this.matching.myLikes(user);
+    if (tab === 'received') return this.matching.likedMe(user);
     return this.matching.matches(user);
   }
 

@@ -10,6 +10,7 @@ export type NotificationType =
   | 'profile_approved'
   | 'profile_rejected'
   | 'photo_rejected'
+  | 'new_like'
   | 'mutual_match'
   | 'photo_approved'
   | 'chat_requested'
@@ -27,6 +28,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
   uz: {
     profile_approved: 'Profilingiz tasdiqlandi. Endi anketlarni ko‘rishingiz mumkin.',
     profile_rejected: 'Profilingiz moderatsiyadan o‘tmadi. Iltimos, ilovada tafsilotlarni ko‘ring.',
+    new_like: 'Sizni kimdir yoqtirdi. Kimligini «Qiziqish» boʻlimida koʻring.',
     mutual_match: 'Sizda yangi o‘zaro qiziqish bor.',
     photo_approved: 'Suratingiz tasdiqlandi — endi suhbat boshlashingiz mumkin.',
     chat_requested: 'Sizdan suhbatni boshlashingizni so‘rashdi.',
@@ -39,6 +41,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
   ru: {
     profile_approved: 'Ваш профиль одобрен. Теперь вы можете смотреть анкеты.',
     profile_rejected: 'Профиль не прошёл модерацию. Подробности — в приложении.',
+    new_like: 'Вы кому-то понравились. Посмотрите в разделе «Интерес».',
     mutual_match: 'У вас новая взаимная симпатия.',
     photo_approved: 'Ваше фото одобрено — теперь вы можете начать чат.',
     chat_requested: 'Вас просят начать чат.',
@@ -51,6 +54,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
   tr: {
     profile_approved: 'Profiliniz onaylandı. Artık profilleri görebilirsiniz.',
     profile_rejected: 'Profiliniz moderasyondan geçmedi. Ayrıntılar uygulamada.',
+    new_like: 'Biri sizi beğendi. Kim olduğunu “İlgi” bölümünde görün.',
     mutual_match: 'Yeni bir karşılıklı ilginiz var.',
     photo_approved: 'Fotoğrafınız onaylandı — artık sohbet başlatabilirsiniz.',
     chat_requested: 'Sizden sohbeti başlatmanız isteniyor.',
@@ -63,6 +67,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
   en: {
     profile_approved: 'Your profile is approved. You can now browse profiles.',
     profile_rejected: 'Your profile did not pass moderation. See details in the app.',
+    new_like: 'Someone liked you. See who in the “Interest” tab.',
     mutual_match: 'You have a new mutual interest.',
     photo_approved: 'Your photo was approved — you can now start a chat.',
     chat_requested: 'You have been asked to start a chat.',
@@ -75,6 +80,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
   ar: {
     profile_approved: 'تمت الموافقة على ملفك. يمكنك الآن تصفح الملفات.',
     profile_rejected: 'لم يجتز ملفك المراجعة. التفاصيل في التطبيق.',
+    new_like: 'أُعجب بك أحدهم. اطّلع عليه في قسم «الاهتمام».',
     mutual_match: 'لديك اهتمام متبادل جديد.',
     photo_approved: 'تمت الموافقة على صورتك — يمكنك الآن بدء المحادثة.',
     chat_requested: 'طُلب منك بدء المحادثة.',

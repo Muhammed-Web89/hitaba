@@ -348,6 +348,7 @@
   },
   "likes": {
     "tabs": {
+      "received": "Beni beğenenler",
       "mutual": "Karşılıklılar",
       "mine": "Beğenilerim",
       "favorites": "Favoriler"
@@ -367,7 +368,17 @@
       "canOpen": "Sohbeti açabilirsiniz",
       "canOpenWindow": "Sohbeti açabilirsiniz · fotoğraf {h} saat daha görünür",
       "closed": "Kapandı"
-    }
+    },
+    "emptyReceived": "Henüz sizi beğenen yok",
+    "emptyReceivedText": "Biri sizi beğendiğinde burada görünür ve bildirim alırsınız.",
+    "receivedIntro": "Bu kişiler sizi beğendi. Siz de beğenirseniz karşılıklı ilgi oluşur.",
+    "likeBack": "Beğen",
+    "viewProfile": "Profili gör",
+    "mineIntro": "Karşılık bekleyen beğenileriniz. İstediğinizi geri alabilirsiniz.",
+    "undoLike": "Geri al",
+    "resetAll": "Tümünü sıfırla",
+    "resetAllTitle": "Tüm beğenileri geri al?",
+    "resetAllText": "{n} beğeni geri alınacak. Bu kişiler akışınızda yeniden görünebilir. Bugün kullandığınız beğeni hakları iade edilmez."
   },
   "match": {
     "sisterDecisionText": "Artık bu erkeğin fotoğrafını görebilirsiniz. Onaylarsanız 24 saat boyunca sizin fotoğrafınızı görür ve sohbet açabilir. Bu karar kalıcıdır.",
@@ -555,7 +566,8 @@
       "silence_reminder": "Sohbetinizde bir süredir mesaj yok.",
       "mahram_approved": "Mahrem yakının iletişim bilgisi sohbette paylaşıldı.",
       "mahram_rejected": "Mahrem yakının iletişim bilgisi onaylanmadı.",
-      "connects_credited": "Bakiyenize jeton eklendi."
+      "connects_credited": "Bakiyenize jeton eklendi.",
+      "new_like": "Biri sizi beğendi. Kim olduğunu görmek için dokunun."
     }
   },
   "portal": {
@@ -670,7 +682,8 @@
     "ThrottlerException: Too Many Requests": "Çok fazla deneme yapıldı. Lütfen biraz bekleyip tekrar deneyin.",
     "married_female_not_allowed": "Evli kadınlar kayıt olamaz.",
     "current_wives_required": "Lütfen mevcut eş sayınızı seçin.",
-    "children_living_invalid": "Yanında yaşayan çocuk sayısı toplam çocuk sayısından fazla olamaz."
+    "children_living_invalid": "Yanında yaşayan çocuk sayısı toplam çocuk sayısından fazla olamaz.",
+    "already_mutual": "Karşılıklı olmuş bir beğeni geri alınamaz; eşleşmeden ayrılabilirsiniz."
   },
   "admin": {
     "title": "Moderasyon",

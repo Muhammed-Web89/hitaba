@@ -348,6 +348,7 @@
   },
   "likes": {
     "tabs": {
+      "received": "Liked me",
       "mutual": "Mutual",
       "mine": "My likes",
       "favorites": "Favorites"
@@ -367,7 +368,17 @@
       "canOpen": "You can open the chat",
       "canOpenWindow": "You can open the chat · photo visible {h} h",
       "closed": "Closed"
-    }
+    },
+    "emptyReceived": "No one has liked you yet",
+    "emptyReceivedText": "When someone likes you, they appear here and you get a notification.",
+    "receivedIntro": "These people liked you. Like them back to create a mutual interest.",
+    "likeBack": "Like back",
+    "viewProfile": "View profile",
+    "mineIntro": "Your likes waiting for a reply. You can take any of them back.",
+    "undoLike": "Undo",
+    "resetAll": "Reset all",
+    "resetAllTitle": "Take back all likes?",
+    "resetAllText": "{n} likes will be removed. These people may appear in your feed again. Likes used today are not refunded."
   },
   "match": {
     "sisterDecisionText": "You can now see this man's photo. If you approve, he will see your photo for 24 hours and may open a chat. This decision is final.",
@@ -555,7 +566,8 @@
       "silence_reminder": "Your chat has been quiet for a while.",
       "mahram_approved": "The mahram contact was posted in the chat.",
       "mahram_rejected": "The mahram contact was not approved.",
-      "connects_credited": "Connects were added to your balance."
+      "connects_credited": "Connects were added to your balance.",
+      "new_like": "Someone liked you. Tap to see who."
     }
   },
   "portal": {
@@ -670,7 +682,8 @@
     "ThrottlerException: Too Many Requests": "Too many attempts. Please wait a moment and try again.",
     "married_female_not_allowed": "Married women cannot register.",
     "current_wives_required": "Please select your current number of wives.",
-    "children_living_invalid": "Children living with you cannot exceed the total number of children."
+    "children_living_invalid": "Children living with you cannot exceed the total number of children.",
+    "already_mutual": "A mutual like can’t be undone; you can leave the match instead."
   },
   "admin": {
     "title": "Moderation",
