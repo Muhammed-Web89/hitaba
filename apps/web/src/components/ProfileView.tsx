@@ -25,9 +25,29 @@ function GirihRing({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Hitaba'ya özel kadın amblemi: başörtülü siluet + altın sekiz köşeli yıldız. Kadının küçük avatarında
+ * fotoğraf asla gösterilmez; fotoğraf yalnızca izinle, tam ekran ve tek seferlik açılır.
+ */
+function FemaleEmblem() {
+  return (
+    <svg viewBox="0 0 100 100" className="h-full w-full" aria-hidden="true">
+      <path
+        d="M50 18c-16 0-27 12-27 28v14c0 15 11 25 27 29 16-4 27-14 27-29V46c0-16-11-28-27-28Z"
+        fill="var(--brand-100)"
+        stroke="var(--brand-500)"
+        strokeWidth="3"
+      />
+      <ellipse cx="50" cy="49" rx="12" ry="14.5" fill="var(--bg-base)" stroke="var(--brand-500)" strokeWidth="2.5" />
+      <path d="M50 72l2.2 4.6 4.8.8-3.5 3.4.8 4.8L50 83.3l-4.3 2.3.8-4.8-3.5-3.4 4.8-.8Z" fill="var(--accent-500)" />
+    </svg>
+  );
+}
+
 export function ProfileAvatar({ profile, size = 88, onOpen }: { profile: PublicProfile; size?: number; onOpen?: () => void }) {
   const t = useTranslations('profile');
-  const photo = profile.photoUrls[0];
+  const female = profile.gender === 'FEMALE';
+  const photo = female ? undefined : profile.photoUrls[0];
   const label = photo ? t('openPhoto') : profile.hasPhoto ? t(profile.gender === 'FEMALE' ? 'photoHiddenFemale' : 'photoHiddenMale') : t('noPhoto');
   const inner = Math.round(size * 0.62);
   return (
@@ -45,7 +65,9 @@ export function ProfileAvatar({ profile, size = 88, onOpen }: { profile: PublicP
         className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-full bg-brand-50"
         style={{ width: inner, height: inner }}
       >
-        {photo ? (
+        {female ? (
+          <FemaleEmblem />
+        ) : photo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             loading="lazy"

@@ -421,7 +421,8 @@
       "sisterAsk": "fotoğrafınızı bir kez daha görmek istiyor.",
       "allow": "İzin ver",
       "deny": "Reddet",
-      "onceNote": "Pencereyi kapattığınızda fotoğraf bir daha açılmaz."
+      "onceNote": "Pencereyi kapattığınızda fotoğraf bir daha açılmaz.",
+      "close": "Kapat"
     }
   },
   "chats": {

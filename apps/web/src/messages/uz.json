@@ -421,7 +421,8 @@
       "sisterAsk": "suratingizni yana bir bor koʻrmoqchi.",
       "allow": "Ruxsat berish",
       "deny": "Rad etish",
-      "onceNote": "Oynani yopsangiz, surat boshqa ochilmaydi."
+      "onceNote": "Oynani yopsangiz, surat boshqa ochilmaydi.",
+      "close": "Yopish"
     }
   },
   "chats": {

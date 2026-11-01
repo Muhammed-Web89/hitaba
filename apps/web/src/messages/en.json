@@ -421,7 +421,8 @@
       "sisterAsk": "wants to see your photo once more.",
       "allow": "Allow",
       "deny": "Decline",
-      "onceNote": "Once you close this window, the photo won’t open again."
+      "onceNote": "Once you close this window, the photo won’t open again.",
+      "close": "Close"
     }
   },
   "chats": {

@@ -288,8 +288,7 @@ export class MatchingService {
       data: { malePhotoViewGranted: false, malePhotoAccessUntil: new Date(Date.now() + RULES.photoViewLoadSeconds * 1000) },
     });
     if (res.count === 0) throw new ForbiddenException({ error: 'photo_view_not_granted' });
-    const female = await this.prisma.user.findUniqueOrThrow({ where: { id: m.femaleId }, include: { profile: true } });
-    return { profile: await this.profiles.toPublic(viewer, female), match: await this.match(viewer, id) };
+    return { photoUrls: await this.profiles.femalePhotoUrls(viewer, m.femaleId), match: await this.match(viewer, id) };
   }
 
   /** Görüntüleyici kapandı: erişim hemen biter. */

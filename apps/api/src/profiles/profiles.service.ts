@@ -212,7 +212,8 @@ export class ProfilesService implements OnModuleInit {
     const age = p.birthDate ? ageFromBirthDate(p.birthDate) : RULES.minAge;
     const isFemale = target.gender === 'FEMALE';
     const [photoUrls, photoCount, busy, witnessCount, wali] = await Promise.all([
-      this.photos.urlsFor(viewer, target.id),
+      // Kadının fotoğraf adresi erkeğe profil verisiyle hiç gitmez; yalnızca tek seferlik açılışta verilir.
+      isFemale && viewer.role === 'USER' && viewer.gender === 'MALE' ? Promise.resolve([]) : this.photos.urlsFor(viewer, target.id),
       this.prisma.photo.count({ where: { userId: target.id, status: 'APPROVED' } }),
       isFemale && !p.hideBusyBadge ? this.isBusy(target.id) : Promise.resolve(false),
       isFemale ? this.prisma.witness.count({ where: { femaleId: target.id } }) : Promise.resolve(0),
@@ -246,6 +247,11 @@ export class ProfilesService implements OnModuleInit {
       witnessCount,
       hasWali: Boolean(wali),
     };
+  }
+
+  /** Tek seferlik görüntüleme için kadının fotoğraf adresleri (erişim PhotosService.canView ile denetlenir). */
+  femalePhotoUrls(viewer: User, femaleId: string): Promise<string[]> {
+    return this.photos.urlsFor(viewer, femaleId);
   }
 
   /** Kadının aktif (açık veya duraklatılmış) bir sohbeti var mı. */

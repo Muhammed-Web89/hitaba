@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { RULES, type ChatSummary, type MatchSummary, type PublicProfile } from '@hitaba/shared/client';
+import { RULES, type ChatSummary, type MatchSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
 import { OneTimePhotoViewer } from '@/components/OneTimePhotoViewer';
@@ -38,7 +38,7 @@ function Match({ id }: { id: string }) {
   const [error, setError] = useState<string | null>(null);
   const [confirm, setConfirm] = useState<'approve' | 'declinePhoto' | 'decline' | 'open' | null>(null);
   const [report, setReport] = useState(false);
-  const [photo, setPhoto] = useState<PublicProfile | null>(null);
+  const [photo, setPhoto] = useState<string[] | null>(null);
 
   if (loadError) return <EmptyState icon="heart" title={tc('notFound')} />;
   if (!m || !me) return <PageLoader />;
@@ -63,8 +63,8 @@ function Match({ id }: { id: string }) {
   // Kadın fotoğrafı: her görüntüleme kadının izniyle, bir kez.
   const viewPhoto = () =>
     run(async () => {
-      const res = await api<{ profile: PublicProfile }>(`/matches/${m.id}/photo/open`, { method: 'POST' });
-      setPhoto(res.profile);
+      const res = await api<{ photoUrls: string[] }>(`/matches/${m.id}/photo/open`, { method: 'POST' });
+      setPhoto(res.photoUrls);
     });
   const photoStage = m.stage === 'PHOTO_APPROVED' || m.stage === 'CHAT_OPEN';
   // Görüntüleyici kapandı: erişim sunucuda hemen biter, tekrar görmek yeni izin ister.
@@ -210,10 +210,7 @@ function Match({ id }: { id: string }) {
 
       <ProfileCard profile={m.other} />
 
-      <Modal open={!!photo} onClose={endPhoto} title={m.other.displayName}>
-        {photo && <OneTimePhotoViewer profile={photo} onEnd={endPhoto} />}
-        <p className="mt-3 text-xs text-ink-3">{t('photo.onceNote')}</p>
-      </Modal>
+      {photo && <OneTimePhotoViewer urls={photo} name={m.other.displayName} onEnd={endPhoto} />}
 
       <Modal
         open={confirm !== null}
