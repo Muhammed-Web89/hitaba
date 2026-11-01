@@ -496,6 +496,25 @@
       "note": "Izoh (ixtiyoriy)",
       "submit": "Tekshiruvga yuborish",
       "submitted": "Yuborildi. Moderator tasdiqlagach, suhbatda paydo boʻladi."
+    },
+    "rulesSheet": {
+      "button": "Qoidalar",
+      "title": "Suhbat qoidalari",
+      "footer": "Barcha xabarlarni guvohlar va moderatorlar koʻra oladi. Suhbat odob doirasida va nikoh maqsadida boʻlishi kerak.",
+      "platformRules": "Platforma qoidalari",
+      "gotIt": "Tushunarli",
+      "items": {
+        "wali": "Ayolning valiysi yozishmalardan xabardor boʻlishi kerak. Valiy suhbatga qoʻshilishi shart emas — ayol unga maxfiy havola yuboradi, valiy xohlasa suhbatni oʻqiydi.",
+        "moderators": "Har bir suhbatda biri erkak, biri ayol — ikki moderator boʻlib, qoidalarga rioya qilinishini kuzatadi.",
+        "ai": "Sunʼiy intellekt yordamchisi har bir xabarni kecha-kunduz tekshiradi; shubhali xabarlar moderatorga yuboriladi.",
+        "noOutside": "Telegram, WhatsApp kabi tashqi ilovalarga oʻtish va telefon, foydalanuvchi nomi, havola ulashish taqiqlanadi. Mahramingizning aloqa maʼlumotini faqat ⋮ → “Mahram maʼlumotlarini ulashish” orqali yuborish mumkin.",
+        "noBypass": "Tekshiruvni chetlab oʻtishga urinishlar (raqamlarni soʻz bilan yozish, harflarni ajratish, rasm qilib yuborish) toʻgʻridan-toʻgʻri ulashish deb baholanadi. Buni qarshi tomonga taklif qilish yoki oʻrgatish ham xuddi shunday qoidabuzarlik boʻlib, ikkala hisobning bloklanishiga olib kelishi mumkin.",
+        "adab": "Suhbat maqsadli boʻlsin, behuda gaplardan saqlaning. Odob doirasidagi iliq soʻzlar mumkin, noz-karashma va mahram mavzular mumkin emas.",
+        "noToxic": "Haqorat, bosim va hurmatsiz ohang qatʼiyan taqiqlanadi va hisobning bloklanishiga olib keladi.",
+        "silence": "{remind1} soat yozilmasa, eslatma keladi; {close} soat jim qolgan suhbat oʻz-oʻzidan yopiladi.",
+        "refund": "Suhbatni moderator yopsa yoki qarshi tomon bloklansa yoxud hisobini oʻchirsa, suhbatga sarflangan tanga qaytariladi.",
+        "actions": "Oʻz xabaringizni {editMin} daqiqa ichida tahrirlash yoki oʻchirish mumkin; moderatorlar asl matnni ham koʻradi. Xabarlarga reaksiya qoʻshishingiz mumkin."
+      }
     }
   },
   "report": {

@@ -496,6 +496,25 @@
       "note": "Not (isteğe bağlı)",
       "submit": "İncelemeye gönder",
       "submitted": "Gönderildi. Moderatör onayladığında sohbette görünecek."
+    },
+    "rulesSheet": {
+      "button": "Kurallar",
+      "title": "Sohbet kuralları",
+      "footer": "Tüm mesajlar şahitler ve moderatörler tarafından görülebilir. Konuşma edep çerçevesinde ve nikah hedefine yönelik olmalıdır.",
+      "platformRules": "Platform kuralları",
+      "gotIt": "Anladım",
+      "items": {
+        "wali": "Kadının velisi yazışmalardan haberdar olmalıdır. Velinin sohbete katılması zorunlu değildir — kadın ona gizli bir bağlantı gönderir, veli dilerse sohbeti okur.",
+        "moderators": "Her sohbette biri erkek biri kadın iki moderatör bulunur ve kurallara uyulmasını gözetir.",
+        "ai": "Yapay zekâ asistanı 7/24 her mesajı kontrol eder; şüpheli mesajlar moderatöre gider.",
+        "noOutside": "Telegram, WhatsApp gibi dış uygulamalara geçmek ve telefon, kullanıcı adı, bağlantı paylaşmak yasaktır. Mahreminizin iletişim bilgisini yalnızca ⋮ → “Mahrem yakının iletişim bilgisini paylaş” ile gönderebilirsiniz.",
+        "noBypass": "Kontrolü atlatma girişimleri (rakamları harfle yazmak, harfleri ayırmak, resimle göndermek) doğrudan paylaşım gibi değerlendirilir. Karşı tarafa bunu önermek ya da öğretmek de aynı ihlaldir ve iki hesabın da engellenmesine yol açabilir.",
+        "adab": "Konuşma amaca yönelik olmalı; boş sohbetten kaçının. Edep içindeki nazik sözler serbesttir, flört ve mahrem konular değildir.",
+        "noToxic": "Hakaret, baskı ve saygısız üslup kesinlikle yasaktır ve hesabın engellenmesine yol açar.",
+        "silence": "{remind1} saat yazılmazsa hatırlatma gelir; {close} saat sessiz kalan sohbet kendiliğinden kapanır.",
+        "refund": "Sohbeti moderatör kapatırsa ya da karşı taraf engellenir veya hesabını silerse, sohbet için harcanan jeton iade edilir.",
+        "actions": "Kendi mesajınızı {editMin} dakika içinde düzenleyebilir ya da silebilirsiniz; moderatörler ilk hâlini de görür. Mesajlara tepki ekleyebilirsiniz."
+      }
     }
   },
   "report": {

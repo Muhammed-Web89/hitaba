@@ -152,6 +152,8 @@ model User {
   passwordHash     String?
   telegramId       String?    @unique
   telegramUsername String?
+  /// Bot sohbetinde sabitlenmiş durum mesajının kimliği (sayaçlar bu mesajda güncellenir).
+  tgStatusMessageId Int?
   locale           String     @default("en")
   timezone         String     @default("Asia/Tashkent")
   connectBalance   Int        @default(0)

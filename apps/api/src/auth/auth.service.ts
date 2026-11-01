@@ -6,6 +6,7 @@ import { env } from '../config/env';
 import { hashPassword, randomToken, sha256, verifyPassword } from '../common/crypto';
 import { hours } from '../common/time';
 import { MailService } from '../mail/mail.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { AccessPayload } from './guards';
 import { verifyTelegramInitData } from './telegram-init-data';
@@ -51,6 +52,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
     private readonly mail: MailService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   async register(input: RegisterInput, meta: RequestMeta): Promise<AuthTokens> {
@@ -142,6 +144,7 @@ export class AuthService {
     } else if (tgUser.username && tgUser.username !== user.telegramUsername) {
       user = await this.prisma.user.update({ where: { id: user.id }, data: { telegramUsername: tgUser.username } });
     }
+    void this.notifications.refreshTelegramStatus(user.id);
     return this.issue(user);
   }
 

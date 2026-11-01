@@ -8,6 +8,7 @@ import { Icon, type IconName } from '@/components/icons';
 import { Logo } from '@/components/Logo';
 import { ReviewBadge } from '@/components/StatusGate';
 import { TelegramReopenHint } from '@/components/TelegramReopenHint';
+import { ThemeToggleButton } from '@/components/ThemeToggle';
 import { cx, PageLoader } from '@/components/ui';
 import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
@@ -66,6 +67,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 <span className="tabular-nums">{me.connectBalance}</span>
               </Link>
             )}
+            <ThemeToggleButton />
             <Link href="/app/notifications" className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-2 hover:bg-surface-alt" aria-label={t('notifications')}>
               <Icon name="bell" />
               {!!notes?.unreadCount && (

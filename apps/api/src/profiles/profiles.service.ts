@@ -180,6 +180,7 @@ export class ProfilesService implements OnModuleInit {
       return tx.user.update({ where: { id: user.id }, data: { status: 'PENDING_MODERATION', statusReason: null } });
     });
     await this.enqueueProfile(updated, profile);
+    void this.notifications.refreshTelegramStatus(user.id);
     return this.me(updated);
   }
 

@@ -5,6 +5,7 @@ import { CurrentUser } from '../auth/guards';
 import { PrismaService } from '../prisma/prisma.service';
 import { RealtimeService } from '../realtime/realtime.service';
 import { TelegramService } from '../telegram/telegram.service';
+import { OPEN_APP, tgStatusText } from './tg-status';
 
 export type NotificationType =
   | 'profile_approved'
@@ -148,13 +149,54 @@ export class NotificationsService {
     if (user?.telegramId && text) {
       void this.telegram.sendMessage(user.telegramId, `Hitaba · ${text}`, OPEN_LABEL[user.locale] ?? OPEN_LABEL.en);
     }
+    void this.refreshTelegramStatus(userId);
     return n;
+  }
+
+  /**
+   * Bot sohbetindeki sabitlenmiş durum mesajını günceller (yoksa gönderip sabitler).
+   * Hata olursa sessizce geçer — bildirimler bundan etkilenmez.
+   */
+  async refreshTelegramStatus(userId: string) {
+    try {
+      const user = await this.prisma.user.findUnique({ where: { id: userId } });
+      if (!user?.telegramId || user.role !== 'USER' || !this.telegram.enabled) return;
+      const mine = user.gender === 'MALE' ? { maleId: user.id } : { femaleId: user.id };
+      const [likedMe, matches, chats, unread] = await Promise.all([
+        this.prisma.like.count({ where: { toId: user.id, from: { status: 'APPROVED', likesReceived: { none: { fromId: user.id } } } } }),
+        this.prisma.match.count({ where: { ...mine, stage: { not: 'CLOSED' } } }),
+        this.prisma.chat.count({ where: { status: { in: ['ACTIVE', 'PAUSED'] }, match: mine } }),
+        this.prisma.notification.count({ where: { userId: user.id, readAt: null } }),
+      ]);
+      const text = tgStatusText(user.locale, { status: user.status, gender: user.gender, likedMe, matches, chats, connects: user.connectBalance, unread });
+      const reply_markup = this.telegram.openAppKeyboard(OPEN_APP[user.locale] ?? OPEN_APP.en);
+
+      if (user.tgStatusMessageId) {
+        const r = await this.telegram.callRaw('editMessageText', { chat_id: user.telegramId, message_id: user.tgStatusMessageId, text, reply_markup });
+        if (r.ok || r.description?.includes('not modified')) return;
+      }
+      const sent = await this.telegram.callRaw<{ message_id: number }>('sendMessage', {
+        chat_id: user.telegramId,
+        text,
+        reply_markup,
+        disable_notification: true,
+        protect_content: true,
+      });
+      if (!sent.ok || !sent.result) return;
+      await this.telegram.callRaw('pinChatMessage', { chat_id: user.telegramId, message_id: sent.result.message_id, disable_notification: true });
+      await this.prisma.user.update({ where: { id: user.id }, data: { tgStatusMessageId: sent.result.message_id } });
+    } catch {
+      /* durum satırı isteğe bağlı */
+    }
   }
 }
 
 @Controller('notifications')
 export class NotificationsController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
 
   @Get()
   async list(@CurrentUser() user: User, @Query('unread') unread?: string) {
@@ -171,6 +213,7 @@ export class NotificationsController {
   @HttpCode(204)
   async readAll(@CurrentUser() user: User) {
     await this.prisma.notification.updateMany({ where: { userId: user.id, readAt: null }, data: { readAt: new Date() } });
+    void this.notifications.refreshTelegramStatus(user.id);
   }
 
   @Post(':id/read')

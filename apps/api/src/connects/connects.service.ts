@@ -72,6 +72,11 @@ export class ConnectsService {
     };
   }
 
+  async userIdByTelegram(telegramId: string): Promise<string | null> {
+    const u = await this.prisma.user.findUnique({ where: { telegramId }, select: { id: true } });
+    return u?.id ?? null;
+  }
+
   /** Bakiye yarış koşuluna karşı koşullu güncelleme ile düşülür. */
   async spend(tx: Tx, userId: string, amount: number, chatId: string, note: string) {
     const res = await tx.user.updateMany({

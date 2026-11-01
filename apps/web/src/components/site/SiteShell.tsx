@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { Icon } from '@/components/icons';
 import { LocaleMenu } from '@/components/LocaleMenu';
 import { Logo } from '@/components/Logo';
+import { ThemeToggleButton } from '@/components/ThemeToggle';
 import { getSite, SUPPORT_EMAIL, TELEGRAM_BOT_URL } from '@/content/site';
 import { Link } from '@/i18n/navigation';
 
@@ -34,6 +35,7 @@ export async function SiteShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <div className="flex items-center gap-2">
+            <ThemeToggleButton />
             <div className="hidden sm:block">
               <LocaleMenu />
             </div>

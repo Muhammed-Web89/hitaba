@@ -30,6 +30,25 @@ export class TelegramService {
     }
   }
 
+  /** Hata ayrıntısını da döndürür (ör. "message is not modified" sessizce yok sayılsın diye). */
+  async callRaw<T = unknown>(method: string, body: Record<string, unknown>): Promise<{ ok: boolean; result?: T; description?: string }> {
+    if (!this.enabled) return { ok: false, description: 'disabled' };
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      return (await res.json()) as { ok: boolean; result?: T; description?: string };
+    } catch (e) {
+      return { ok: false, description: (e as Error).message };
+    }
+  }
+
+  openAppKeyboard(label: string) {
+    return { inline_keyboard: [[{ text: label, web_app: { url: `${env.PUBLIC_WEB_URL}/tg` } }]] };
+  }
+
   sendMessage(chatId: string, text: string, openAppLabel?: string) {
     return this.call('sendMessage', {
       chat_id: chatId,

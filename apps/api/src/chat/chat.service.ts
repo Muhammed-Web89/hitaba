@@ -126,6 +126,7 @@ export class ChatService implements OnModuleInit {
     this.emitNew(sys);
 
     await this.notifications.notify(match.femaleId, 'chat_opened', { chatId: chat.id });
+    void this.notifications.refreshTelegramStatus(viewer.id);
     return this.summary(viewer, chat.id);
   }
 
@@ -157,6 +158,7 @@ export class ChatService implements OnModuleInit {
     this.emitNew(sys);
     this.emitStatus(chat.id);
     await this.notifications.notify(chat.match.femaleId, 'chat_opened', { chatId: chat.id });
+    void this.notifications.refreshTelegramStatus(viewer.id);
     return this.summary(viewer, chat.id);
   }
 

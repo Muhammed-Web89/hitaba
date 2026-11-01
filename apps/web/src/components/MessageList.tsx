@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import type { ChatMessage, Relation } from '@hitaba/shared';
+import type { ChatMessage, Relation } from '@hitaba/shared/client';
 import { useRelativeTime } from '@/lib/format';
 import { Icon } from './icons';
 import { cx } from './ui';
@@ -117,7 +117,11 @@ export function MessageList({
                 {time.time(m.createdAt)}
               </span>
             </div>
-            {held && <span className="mt-1 text-xs text-warning">{t('heldNote')}</span>}
+            {held && (
+              <span className="mt-1 inline-flex items-center gap-1 text-xs text-warning">
+                <Icon name="clock" size={12} /> {t('heldNote')}
+              </span>
+            )}
             {rejected && <span className="mt-1 text-xs text-danger">{t('rejectedNote')}</span>}
 
             {m.reactions.length > 0 && (

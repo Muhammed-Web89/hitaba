@@ -18,6 +18,7 @@ import { CONNECT_PACKAGES, type ConnectPackageId } from '@hitaba/shared';
 import { CurrentUser, Public } from '../auth/guards';
 import { ZodPipe } from '../common/zod.pipe';
 import { env } from '../config/env';
+import { NotificationsService } from '../notifications/notifications.service';
 import { TelegramService } from '../telegram/telegram.service';
 import { ConnectsService } from './connects.service';
 
@@ -75,6 +76,7 @@ export class TelegramWebhookController {
   constructor(
     private readonly connects: ConnectsService,
     private readonly telegram: TelegramService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   @Public()
@@ -107,6 +109,9 @@ export class TelegramWebhookController {
       const lang = update.message.from?.language_code?.slice(0, 2) ?? 'en';
       const [text, label] = START_TEXT[lang] ?? START_TEXT.en;
       await this.telegram.sendMessage(String(update.message.chat.id), text, label);
+      // Kayıtlı kullanıcıysa sabitlenmiş durum satırı oluşturulur/güncellenir.
+      const known = await this.connects.userIdByTelegram(String(update.message.chat.id));
+      if (known) await this.notifications.refreshTelegramStatus(known);
     }
     return { ok: true };
   }

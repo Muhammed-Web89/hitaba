@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { Relation, RULES, scanForContactInfo, type ChatMessage, type ChatSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
+import { ChatRulesSheet } from '@/components/ChatRulesSheet';
 import { MessageList } from '@/components/MessageList';
 import { ReportDialog } from '@/components/ReportDialog';
 import { Button, Field, IconButton, Input, Modal, Notice, PageLoader, Select, Textarea } from '@/components/ui';
@@ -33,6 +34,19 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const { data: chat, mutate: mutateChat, error: chatError } = useSWR<ChatSummary>(`/chats/${id}`);
   const [messages, setMessages] = useState<ChatMessage[] | null>(null);
   const [text, setText] = useState('');
+  const [rulesOpen, setRulesOpen] = useState(false);
+  // Kurallar her sohbette ilk açılışta bir kez gösterilir.
+  useEffect(() => {
+    try {
+      const key = `hitaba.chatRules.${id}`;
+      if (!localStorage.getItem(key)) {
+        setRulesOpen(true);
+        localStorage.setItem(key, '1');
+      }
+    } catch {
+      /* yoksay */
+    }
+  }, [id]);
   const box = useRef<HTMLTextAreaElement>(null);
   // Gönderince ya da düzenleme iptal edilince kutu tek satıra döner.
   useEffect(() => {
@@ -167,17 +181,15 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             )}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={() => setWatchersOpen(!watchersOpen)}
-          aria-expanded={watchersOpen}
-          className="flex w-full items-center justify-between bg-brand-50 px-4 py-2 text-xs font-semibold text-brand-600"
-        >
-          <span className="inline-flex items-center gap-1.5">
+        <div className="flex items-center bg-brand-50 text-xs font-semibold text-brand-600">
+          <button type="button" onClick={() => setWatchersOpen(!watchersOpen)} aria-expanded={watchersOpen} className="flex flex-1 items-center gap-1.5 px-4 py-2">
             <Icon name="users" size={14} /> {t('watchers', { n: watcherCount })}
-          </span>
-          <Icon name="forward" size={14} className={watchersOpen ? 'rotate-90' : 'flip-rtl'} />
-        </button>
+            <Icon name="chevronDown" size={14} className={watchersOpen ? 'rotate-180' : ''} />
+          </button>
+          <button type="button" onClick={() => setRulesOpen(true)} className="inline-flex items-center gap-1 px-4 py-2 text-brand-500">
+            <Icon name="shield" size={14} /> {t('rulesSheet.button')}
+          </button>
+        </div>
         {watchersOpen && (
           <ul className="space-y-1 bg-brand-50 px-4 pb-3 text-sm text-ink-2">
             {chat.watchers.maleModerator && <WatcherRow icon="eye" label={t('watcher.maleModerator')} />}
@@ -306,6 +318,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         </form>
       </footer>
 
+      <ChatRulesSheet open={rulesOpen} onClose={() => setRulesOpen(false)} />
       <MahramDialog open={dialog === 'mahram'} onClose={() => setDialog(null)} chatId={id} />
       <ReportDialog open={dialog === 'report'} onClose={() => setDialog(null)} targetUserId={chat.other.userId} chatId={id} />
       <Modal

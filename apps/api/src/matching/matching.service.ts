@@ -140,6 +140,7 @@ export class MatchingService {
     const reciprocal = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: targetId, toId: viewer.id } } });
     if (reciprocal) throw new BadRequestException({ error: 'already_mutual' });
     await this.withdraw(viewer, [like]);
+    void this.notifications.refreshTelegramStatus(targetId);
     return { ok: true, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
   }
 
@@ -149,6 +150,7 @@ export class MatchingService {
       where: { fromId: viewer.id, to: { likesGiven: { none: { toId: viewer.id } } } },
     });
     await this.withdraw(viewer, likes);
+    for (const l of likes) void this.notifications.refreshTelegramStatus(l.toId);
     return { removed: likes.length, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
   }
 

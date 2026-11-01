@@ -496,6 +496,25 @@
       "note": "Note (optional)",
       "submit": "Send for review",
       "submitted": "Sent. It will appear in the chat once a moderator approves it."
+    },
+    "rulesSheet": {
+      "button": "Rules",
+      "title": "Chat rules",
+      "footer": "All messages can be seen by witnesses and moderators. Keep the conversation within adab and focused on nikah.",
+      "platformRules": "Platform rules",
+      "gotIt": "Got it",
+      "items": {
+        "wali": "The sister’s wali should know about her conversations. He does not have to join — she sends him a private link and he can read the chat if he wishes.",
+        "moderators": "Every chat has two moderators, a man and a woman, who make sure the rules are followed.",
+        "ai": "The AI assistant checks every message around the clock; suspicious messages go to a moderator.",
+        "noOutside": "Moving to outside apps like Telegram or WhatsApp and sharing phone numbers, usernames or links is forbidden. A mahram’s contact can be shared only via ⋮ → “Share mahram contact”.",
+        "noBypass": "Attempts to get around the check (writing digits as words, splitting letters, sending as an image) count as direct sharing. Suggesting or teaching it to the other side is the same violation and can lead to both accounts being blocked.",
+        "adab": "Keep the conversation purposeful and avoid idle talk. Kind words within adab are fine; flirting and intimate topics are not.",
+        "noToxic": "Insults, pressure and a disrespectful tone are strictly forbidden and lead to a block.",
+        "silence": "If no one writes for {remind1} hours, you get a reminder; a chat silent for {close} hours closes automatically.",
+        "refund": "If a moderator closes the chat, or the other side is blocked or deletes the account, the connect spent on it is refunded.",
+        "actions": "You can edit or delete your own message within {editMin} minutes; moderators still see the original. You can add reactions to messages."
+      }
     }
   },
   "report": {
