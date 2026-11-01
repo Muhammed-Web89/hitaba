@@ -540,7 +540,13 @@
     "account": "Account",
     "logout": "Sign out",
     "logoutAll": "Sign out on all devices",
-    "logoutAllText": "All sessions, including this one, will be closed."
+    "logoutAllText": "All sessions, including this one, will be closed.",
+    "dangerZone": "Danger zone",
+    "deleteAccountHint": "If you delete your account, your profile, photos and likes are removed permanently.",
+    "deleteAccount": "Delete account",
+    "deleteAccountTitle": "Delete your account?",
+    "deleteAccountText": "Your profile, photos, likes, witnesses and wali link are deleted immediately; open chats are closed and remaining connects are removed. This cannot be undone.",
+    "deleteAccountConfirm": "I understand, delete my account permanently."
   },
   "wallet": {
     "balance": "Balance",

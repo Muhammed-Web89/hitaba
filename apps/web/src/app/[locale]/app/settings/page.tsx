@@ -18,6 +18,9 @@ export default function SettingsPage() {
   const { me, signOut, refreshMe } = useAuth();
   const { data: p, mutate } = useSWR<OwnProfile>('/profile');
   const [confirmAll, setConfirmAll] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [understood, setUnderstood] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   if (!p || !me) return <PageLoader />;
 
   const update = async (body: Record<string, unknown>) => {
@@ -61,6 +64,53 @@ export default function SettingsPage() {
           {t('logoutAll')}
         </Button>
       </Card>
+
+      <SectionTitle>{t('dangerZone')}</SectionTitle>
+      <Card className="space-y-3 border-danger/40 p-4">
+        <p className="text-sm text-ink-2">{t('deleteAccountHint')}</p>
+        <Button variant="danger" className="w-full" icon="trash" onClick={() => setConfirmDelete(true)}>
+          {t('deleteAccount')}
+        </Button>
+      </Card>
+
+      <Modal
+        open={confirmDelete}
+        onClose={() => {
+          setConfirmDelete(false);
+          setUnderstood(false);
+        }}
+        title={t('deleteAccountTitle')}
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setConfirmDelete(false)}>
+              {tc('cancel')}
+            </Button>
+            <Button
+              variant="danger"
+              loading={deleting}
+              disabled={!understood}
+              onClick={async () => {
+                setDeleting(true);
+                try {
+                  await api('/me/delete', { method: 'POST', body: { confirm: true } });
+                  signOut();
+                  router.replace('/');
+                } finally {
+                  setDeleting(false);
+                }
+              }}
+            >
+              {t('deleteAccount')}
+            </Button>
+          </>
+        }
+      >
+        <p>{t('deleteAccountText')}</p>
+        <label className="mt-4 flex items-start gap-3 text-ink">
+          <input type="checkbox" className="mt-1 h-5 w-5 accent-[var(--danger)]" checked={understood} onChange={(e) => setUnderstood(e.target.checked)} />
+          <span className="font-semibold">{t('deleteAccountConfirm')}</span>
+        </label>
+      </Modal>
 
       <Modal
         open={confirmAll}

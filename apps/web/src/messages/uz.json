@@ -540,7 +540,13 @@
     "account": "Hisob",
     "logout": "Chiqish",
     "logoutAll": "Barcha qurilmalardan chiqish",
-    "logoutAllText": "Barcha seanslar, shu jumladan joriysi ham yopiladi."
+    "logoutAllText": "Barcha seanslar, shu jumladan joriysi ham yopiladi.",
+    "dangerZone": "Xavfli boʻlim",
+    "deleteAccountHint": "Hisobni oʻchirsangiz, anketangiz, suratlaringiz va yoqtirishlaringiz butunlay oʻchiriladi.",
+    "deleteAccount": "Hisobni oʻchirish",
+    "deleteAccountTitle": "Hisobingiz oʻchirilsinmi?",
+    "deleteAccountText": "Anketangiz, suratlaringiz, yoqtirishlar, guvohlar va valiy havolasi darhol oʻchiriladi; ochiq suhbatlar yopiladi va qolgan tangalar oʻchadi. Buni ortga qaytarib boʻlmaydi.",
+    "deleteAccountConfirm": "Tushundim, hisobim butunlay oʻchirilsin."
   },
   "wallet": {
     "balance": "Balans",

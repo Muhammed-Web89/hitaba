@@ -540,7 +540,13 @@
     "account": "Hesap",
     "logout": "Çıkış yap",
     "logoutAll": "Tüm cihazlardan çıkış yap",
-    "logoutAllText": "Bu dahil tüm oturumlar kapatılacak."
+    "logoutAllText": "Bu dahil tüm oturumlar kapatılacak.",
+    "dangerZone": "Tehlikeli bölge",
+    "deleteAccountHint": "Hesabınızı silerseniz profiliniz, fotoğraflarınız ve beğenileriniz kalıcı olarak silinir.",
+    "deleteAccount": "Hesabı sil",
+    "deleteAccountTitle": "Hesabınız silinsin mi?",
+    "deleteAccountText": "Profiliniz, fotoğraflarınız, beğenileriniz, şahitler ve veli bağlantısı hemen silinir; açık sohbetler kapanır ve kalan jetonlar silinir. Bu işlem geri alınamaz.",
+    "deleteAccountConfirm": "Anladım, hesabım kalıcı olarak silinsin."
   },
   "wallet": {
     "balance": "Bakiye",

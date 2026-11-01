@@ -6,6 +6,7 @@ import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { Public } from './auth/guards';
 import { ChatModule } from './chat/chat.module';
+import { AccountModule } from './account/account.module';
 import { ConnectsModule } from './connects/connects.module';
 import { MailModule } from './mail/mail.service';
 import { MatchingModule } from './matching/matching.module';
@@ -41,6 +42,7 @@ class HealthController {
     ModerationModule,
     AuthModule,
     ConnectsModule,
+    AccountModule,
     PhotosModule,
     ProfilesModule,
     MatchingModule,
