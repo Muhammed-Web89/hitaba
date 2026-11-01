@@ -130,7 +130,8 @@ export class PhotosService implements OnModuleInit {
    * - Sahibi her zaman görür.
    * - Moderatör/admin yalnızca kendi cinsiyetindeki kullanıcıların fotoğrafını görür.
    * - Kadın erkeğin fotoğrafını: erkek "akışta göster" demişse ya da aralarında açık bir eşleşme varsa.
-   * - Erkek kadının fotoğrafını: yalnızca kadın onayladıktan sonraki 24 saatlik pencerede.
+   * - Erkek kadının fotoğrafını: yalnızca açtığı tek seferlik görüntülemenin birkaç dakikalık süresinde
+   *   (her yeni görüntüleme kadının onayını ister — MatchingService.openPhoto/requestPhotoView).
    */
   async canView(viewer: Pick<User, 'id' | 'role' | 'gender'>, ownerId: string): Promise<boolean> {
     if (viewer.id === ownerId) return true;

@@ -29,7 +29,7 @@ export default function LikesPage() {
 function Likes() {
   const t = useTranslations('likes');
   const initial = useSearchParams().get('tab') as Tab | null;
-  const [tab, setTab] = useState<Tab>(initial && TABS.includes(initial) ? initial : 'received');
+  const [tab, setTab] = useState<Tab>(initial && TABS.includes(initial) ? initial : 'mutual');
   const { data: received } = useSWR<PublicProfile[]>('/likes?tab=received');
   return (
     <div>

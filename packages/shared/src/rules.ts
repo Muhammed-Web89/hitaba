@@ -13,11 +13,15 @@ export const RULES = {
   maxInterests: 10,
 
   maxPhotos: 3,
-  photoViewWindowHours: 24,
+  /** Tek seferlik görüntüleme açıldıktan sonra fotoğrafın yüklenip bakılabileceği süre. */
+  photoViewOpenMinutes: 3,
 
   maleDailyFreeLikes: 10,
 
   maxWitnesses: 2,
+
+  /** Yeni erkek hesaba ilk sohbet için hediye jeton. */
+  welcomeConnects: 1,
 
   chatOpenCost: 1,
   chatReopenCost: 1,

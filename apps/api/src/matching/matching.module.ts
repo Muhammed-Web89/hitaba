@@ -87,6 +87,21 @@ export class MatchingController {
     return this.matching.photoDecision(user, id, body.approve);
   }
 
+  @Post('matches/:id/photo/open')
+  openPhoto(@CurrentUser() user: User, @Param('id') id: string) {
+    return this.matching.openPhoto(user, id);
+  }
+
+  @Post('matches/:id/photo/request')
+  requestPhotoView(@CurrentUser() user: User, @Param('id') id: string) {
+    return this.matching.requestPhotoView(user, id);
+  }
+
+  @Post('matches/:id/photo/decision')
+  decidePhotoView(@CurrentUser() user: User, @Param('id') id: string, @Body(new ZodPipe(decisionSchema)) body: { approve: boolean }) {
+    return this.matching.decidePhotoView(user, id, body.approve);
+  }
+
   @Post('matches/:id/request-chat')
   requestChat(@CurrentUser() user: User, @Param('id') id: string) {
     return this.matching.requestChat(user, id);

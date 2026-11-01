@@ -119,8 +119,12 @@ export interface MatchSummary {
   other: PublicProfile;
   /** Kadın için: erkeğin fotoğrafı hakkında karar vermesi gerekiyor. */
   awaitingMyPhotoDecision: boolean;
-  /** Erkek için: kadının fotoğrafını görme penceresi. */
-  photoAccessUntil: string | null;
+  /** Erkek için: kullanılmamış tek seferlik görme hakkı var. */
+  photoViewAvailable: boolean;
+  /** Erkek için: açılmış görüntülemenin bitiş anı (açık değilse null). */
+  photoViewOpenUntil: string | null;
+  /** Yeniden görme isteği gönderildi, kadının kararı bekleniyor (iki taraf için). */
+  photoViewRequested: boolean;
   chatRequested: boolean;
   chatId: string | null;
   chatStatus: ChatStatus | null;

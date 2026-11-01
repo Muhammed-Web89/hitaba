@@ -3,10 +3,10 @@
 import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { RULES, type ChatSummary, type MatchSummary } from '@hitaba/shared/client';
+import { RULES, type ChatSummary, type MatchSummary, type PublicProfile } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
-import { ProfileCard } from '@/components/ProfileView';
+import { PhotoFrame, ProfileCard } from '@/components/ProfileView';
 import { ReportDialog } from '@/components/ReportDialog';
 import { StatusGate } from '@/components/StatusGate';
 import { Button, Card, Chip, EmptyState, IconButton, Modal, Notice, PageLoader } from '@/components/ui';
@@ -37,6 +37,7 @@ function Match({ id }: { id: string }) {
   const [error, setError] = useState<string | null>(null);
   const [confirm, setConfirm] = useState<'approve' | 'declinePhoto' | 'decline' | 'open' | null>(null);
   const [report, setReport] = useState(false);
+  const [photo, setPhoto] = useState<PublicProfile | null>(null);
 
   if (loadError) return <EmptyState icon="heart" title={tc('notFound')} />;
   if (!m || !me) return <PageLoader />;
@@ -57,6 +58,15 @@ function Match({ id }: { id: string }) {
       setConfirm(null);
     }
   }
+
+  // Kadın fotoğrafı: her görüntüleme kadının izniyle, bir kez.
+  const viewPhoto = () =>
+    run(async () => {
+      const res = await api<{ profile: PublicProfile }>(`/matches/${m.id}/photo/open`, { method: 'POST' });
+      setPhoto(res.profile);
+    });
+  const photoStage = m.stage === 'PHOTO_APPROVED' || m.stage === 'CHAT_OPEN';
+  const openMinutesLeft = m.photoViewOpenUntil ? Math.max(1, Math.ceil((new Date(m.photoViewOpenUntil).getTime() - Date.now()) / 60_000)) : 0;
 
   const openChat = () =>
     run(async () => {
@@ -147,7 +157,63 @@ function Match({ id }: { id: string }) {
         {error && <Notice tone="danger">{error}</Notice>}
       </Card>
 
+      {male && photoStage && (
+        <Card className="space-y-3 p-4">
+          <h2 className="flex items-center gap-2 font-sans text-xs font-bold uppercase tracking-wider text-ink-3">
+            <Icon name="camera" size={15} className="text-brand-500" /> {t('photo.title')}
+          </h2>
+          {m.photoViewOpenUntil ? (
+            <>
+              <Button className="w-full" icon="eye" loading={busy} onClick={viewPhoto}>
+                {t('photo.reopen')}
+              </Button>
+              <p className="text-xs text-ink-3">{t('photo.openUntil', { min: openMinutesLeft })}</p>
+            </>
+          ) : m.photoViewAvailable ? (
+            <>
+              <Button className="w-full" icon="eye" loading={busy} onClick={viewPhoto}>
+                {t('photo.open')}
+              </Button>
+              <p className="text-xs text-ink-3">{t('photo.openHint', { min: RULES.photoViewOpenMinutes })}</p>
+            </>
+          ) : m.photoViewRequested ? (
+            <Notice icon="clock">{t('photo.requested')}</Notice>
+          ) : (
+            <>
+              <p className="text-sm text-ink-2">{t('photo.used')}</p>
+              <Button variant="secondary" className="w-full" icon="send" loading={busy} onClick={() => run(() => api(`/matches/${m.id}/photo/request`, { method: 'POST' }))}>
+                {t('photo.request')}
+              </Button>
+            </>
+          )}
+        </Card>
+      )}
+
+      {!male && m.photoViewRequested && (
+        <Card className="space-y-3 border-accent/50 p-4">
+          <p className="flex items-start gap-2 text-[15px]">
+            <Icon name="eye" size={18} className="mt-0.5 shrink-0 text-accent" />
+            <span>
+              <strong>{m.other.displayName}</strong> {t('photo.sisterAsk')}
+            </span>
+          </p>
+          <div className="flex gap-2">
+            <Button className="flex-1" icon="check" loading={busy} onClick={() => run(() => api(`/matches/${m.id}/photo/decision`, { method: 'POST', body: { approve: true } }))}>
+              {t('photo.allow')}
+            </Button>
+            <Button className="flex-1" variant="secondary" disabled={busy} onClick={() => run(() => api(`/matches/${m.id}/photo/decision`, { method: 'POST', body: { approve: false } }))}>
+              {t('photo.deny')}
+            </Button>
+          </div>
+        </Card>
+      )}
+
       <ProfileCard profile={m.other} />
+
+      <Modal open={!!photo} onClose={() => setPhoto(null)} title={m.other.displayName}>
+        {photo && <PhotoFrame profile={photo} className="aspect-[3/4] w-full" />}
+        {photo && !photo.photoUrls.length && <p>{t('photo.used')}</p>}
+      </Modal>
 
       <Modal
         open={confirm !== null}
@@ -181,7 +247,7 @@ function Match({ id }: { id: string }) {
           </>
         }
       >
-        {confirm && t(`confirm.${confirm}.text`, { cost: RULES.chatOpenCost, hours: RULES.photoViewWindowHours })}
+        {confirm && t(`confirm.${confirm}.text`, { cost: RULES.chatOpenCost })}
       </Modal>
 
       <ReportDialog open={report} onClose={() => setReport(false)} targetUserId={m.other.userId} />

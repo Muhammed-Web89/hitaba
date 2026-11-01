@@ -264,12 +264,52 @@ export class MatchingService {
     const updated = await this.prisma.match.update({
       where: { id },
       data: approve
-        ? { stage: 'PHOTO_APPROVED', femaleApprovedAt: now, malePhotoAccessUntil: new Date(now.getTime() + hours(RULES.photoViewWindowHours)) }
+        ? { stage: 'PHOTO_APPROVED', femaleApprovedAt: now, malePhotoViewGranted: true }
         : { stage: 'CLOSED', closedById: viewer.id, closedAt: now },
       include: { chat: true },
     });
     if (approve) await this.notifications.notify(m.maleId, 'photo_approved', { matchId: id });
     return this.summary(viewer, updated);
+  }
+
+  // ── Kadın fotoğrafı: istek başına tek seferlik görüntüleme ─────────────
+
+  /** Erkek görme hakkını kullanır: fotoğraflar birkaç dakika açık kalır, sonra hak biter. */
+  async openPhoto(viewer: User, id: string) {
+    const m = await this.ownMatch(viewer, id);
+    if (viewer.gender !== 'MALE' || m.stage === 'CLOSED' || m.stage === 'MUTUAL') throw new BadRequestException({ error: 'invalid_stage' });
+    const open = m.malePhotoAccessUntil && m.malePhotoAccessUntil > new Date();
+    if (!open) {
+      // Koşullu güncelleme: aynı hak iki kez kullanılamaz.
+      const res = await this.prisma.match.updateMany({
+        where: { id, malePhotoViewGranted: true },
+        data: { malePhotoViewGranted: false, malePhotoAccessUntil: new Date(Date.now() + RULES.photoViewOpenMinutes * 60_000) },
+      });
+      if (res.count === 0) throw new ForbiddenException({ error: 'photo_view_not_granted' });
+    }
+    const female = await this.prisma.user.findUniqueOrThrow({ where: { id: m.femaleId }, include: { profile: true } });
+    return { profile: await this.profiles.toPublic(viewer, female), match: await this.match(viewer, id) };
+  }
+
+  /** Erkek fotoğrafı yeniden görmek ister; kadına bildirim gider. */
+  async requestPhotoView(viewer: User, id: string) {
+    const m = await this.ownMatch(viewer, id);
+    if (viewer.gender !== 'MALE' || m.stage === 'CLOSED' || m.stage === 'MUTUAL') throw new BadRequestException({ error: 'invalid_stage' });
+    if (m.malePhotoViewGranted) throw new BadRequestException({ error: 'photo_view_already_granted' });
+    if (!m.photoViewRequestedAt) {
+      await this.prisma.match.update({ where: { id }, data: { photoViewRequestedAt: new Date() } });
+      await this.notifications.notify(m.femaleId, 'photo_view_requested', { matchId: id });
+    }
+    return this.match(viewer, id);
+  }
+
+  /** Kadın yeniden görme isteğine karar verir. */
+  async decidePhotoView(viewer: User, id: string, approve: boolean) {
+    const m = await this.ownMatch(viewer, id);
+    if (viewer.gender !== 'FEMALE' || !m.photoViewRequestedAt) throw new BadRequestException({ error: 'invalid_stage' });
+    await this.prisma.match.update({ where: { id }, data: { photoViewRequestedAt: null, ...(approve && { malePhotoViewGranted: true }) } });
+    await this.notifications.notify(m.maleId, approve ? 'photo_view_granted' : 'photo_view_declined', { matchId: id });
+    return this.match(viewer, id);
   }
 
   /** "Sohbeti başlatmasını iste" — kadın için ücretsiz; erkeğe bildirim gider. */
@@ -306,7 +346,9 @@ export class MatchingService {
       stage: m.stage,
       other: await this.profiles.toPublic(viewer, other),
       awaitingMyPhotoDecision: !isMale && m.stage === 'MUTUAL',
-      photoAccessUntil: isMale ? (m.malePhotoAccessUntil?.toISOString() ?? null) : null,
+      photoViewAvailable: isMale && m.malePhotoViewGranted,
+      photoViewOpenUntil: isMale && m.malePhotoAccessUntil && m.malePhotoAccessUntil > new Date() ? m.malePhotoAccessUntil.toISOString() : null,
+      photoViewRequested: Boolean(m.photoViewRequestedAt),
       chatRequested: Boolean(m.chatRequestedAt),
       chatId: m.chat?.id ?? null,
       chatStatus: m.chat?.status ?? null,

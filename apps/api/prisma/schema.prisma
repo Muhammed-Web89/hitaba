@@ -314,8 +314,12 @@ model Match {
   stage                MatchStage @default(MUTUAL)
   /// Kadın erkeğin fotoğrafını onayladığı an.
   femaleApprovedAt     DateTime?
-  /// Erkeğin kadının fotoğrafını görebileceği son an (onay + 24 saat).
+  /// Açılan tek seferlik görüntülemenin bitiş anı (açılıştan birkaç dakika sonra).
   malePhotoAccessUntil DateTime?
+  /// Erkeğin kullanılmamış bir görme hakkı var (kadın onayı ya da onaylanan yeni istek).
+  malePhotoViewGranted Boolean    @default(false)
+  /// Erkek fotoğrafı yeniden görmek için istek gönderdi; kadının kararı bekleniyor.
+  photoViewRequestedAt DateTime?
   /// Kadın "sohbeti başlatmasını iste" dedi.
   chatRequestedAt      DateTime?
   closedById           String?

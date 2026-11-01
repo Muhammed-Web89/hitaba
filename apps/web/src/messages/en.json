@@ -41,7 +41,7 @@
       },
       "privacy": {
         "title": "Photos under her control",
-        "text": "A woman's photo never appears in lists. It opens only by her decision, for 24 hours, with a watermark."
+        "text": "A woman’s photo never appears in lists. It opens only with her permission, once each time, with a watermark."
       },
       "moderation": {
         "title": "Human moderation",
@@ -185,7 +185,7 @@
       "drugs": "Do you use drugs?",
       "relationsOutsideNikah": "Are you currently in a relationship outside nikah?",
       "contagiousDisease": "Do you have a contagious disease?",
-      "photosFemale": "Your photo never appears in lists. A man sees it only after you approve, for 24 hours, with a watermark.",
+      "photosFemale": "Your photo never appears in lists. A man sees it only with your permission, once per permission, with a watermark.",
       "photosMale": "The woman sees your photo first. Showing it in the feed is off by default.",
       "acceptRules": "I have read and accept the rules",
       "currentWives": "Current number of wives",
@@ -366,7 +366,6 @@
       "waitingBrother": "Waiting for the man to open the chat",
       "sisterBusy": "She is in another chat",
       "canOpen": "You can open the chat",
-      "canOpenWindow": "You can open the chat · photo visible {h} h",
       "closed": "Closed"
     },
     "emptyReceived": "No one has liked you yet",
@@ -381,7 +380,7 @@
     "resetAllText": "{n} likes will be removed. These people may appear in your feed again. Likes used today are not refunded."
   },
   "match": {
-    "sisterDecisionText": "You can now see this man's photo. If you approve, he will see your photo for 24 hours and may open a chat. This decision is final.",
+    "sisterDecisionText": "You can now see this man’s photo. If you approve, he can see your photo once and may open a chat. To see it again he must ask you each time. This decision is final.",
     "approvePhoto": "Approve",
     "declinePhoto": "Not suitable",
     "sisterWaitingText": "You approved. He can now open a chat.",
@@ -397,7 +396,7 @@
     "confirm": {
       "approve": {
         "title": "Approve the photo?",
-        "text": "He will see your photo for {hours} hours and may open a chat. This decision is final."
+        "text": "He can see your photo once and may open a chat. To see it again he must ask your permission each time. This decision is final."
       },
       "declinePhoto": {
         "title": "Not suitable?",
@@ -411,6 +410,19 @@
         "title": "Open the chat?",
         "text": "{cost, plural, one {# connect} other {# connects}} will be spent."
       }
+    },
+    "photo": {
+      "title": "Photo",
+      "open": "View photo",
+      "openHint": "Opens once and stays visible for {min} minutes. To see it again you need to ask for permission.",
+      "reopen": "Show photo again",
+      "openUntil": "Open: less than {min} minutes left",
+      "request": "Ask to see it again",
+      "requested": "Permission requested — waiting for approval",
+      "used": "You’ve seen the photo. Ask for permission to see it again.",
+      "sisterAsk": "wants to see your photo once more.",
+      "allow": "Allow",
+      "deny": "Decline"
     }
   },
   "chats": {
@@ -567,7 +579,10 @@
       "mahram_approved": "The mahram contact was posted in the chat.",
       "mahram_rejected": "The mahram contact was not approved.",
       "connects_credited": "Connects were added to your balance.",
-      "new_like": "Someone liked you. Tap to see who."
+      "new_like": "Someone liked you. Tap to see who.",
+      "photo_view_requested": "Asked for permission to see your photo again.",
+      "photo_view_granted": "Photo access granted — you can open it once.",
+      "photo_view_declined": "Your request to see the photo again was declined."
     }
   },
   "portal": {
@@ -683,7 +698,9 @@
     "married_female_not_allowed": "Married women cannot register.",
     "current_wives_required": "Please select your current number of wives.",
     "children_living_invalid": "Children living with you cannot exceed the total number of children.",
-    "already_mutual": "A mutual like can’t be undone; you can leave the match instead."
+    "already_mutual": "A mutual like can’t be undone; you can leave the match instead.",
+    "photo_view_not_granted": "You don’t have access to the photo; ask for permission first.",
+    "photo_view_already_granted": "You already have a view available."
   },
   "admin": {
     "title": "Moderation",
@@ -837,7 +854,7 @@
         },
         "visibility": {
           "title": "Who can see what",
-          "body": "Other members see your profile without surname, exact age or contact details. A woman's photo is shown to a man only after her approval, for 24 hours and with a watermark. Photos are reviewed only by moderators of the same gender. Every chat is visible to moderators; a woman's wali can read her latest chat through a private link she controls."
+          "body": "Other members see your profile without surname, exact age or contact details. A woman's photo is shown to a man only with her permission, once per permission and with a watermark. Photos are reviewed only by moderators of the same gender. Every chat is visible to moderators; a woman's wali can read her latest chat through a private link she controls."
         },
         "processors": {
           "title": "Service providers",

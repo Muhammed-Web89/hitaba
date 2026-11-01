@@ -41,7 +41,7 @@
       },
       "privacy": {
         "title": "Fotoğraf kadının kontrolünde",
-        "text": "Kadının fotoğrafı asla listelerde görünmez. Yalnızca onun kararıyla, 24 saatliğine, filigranlı açılır."
+        "text": "Kadının fotoğrafı asla listelerde görünmez. Yalnızca onun izniyle, her seferinde bir kez ve filigranlı açılır."
       },
       "moderation": {
         "title": "İnsan moderasyonu",
@@ -185,7 +185,7 @@
       "drugs": "Uyuşturucu kullanıyor musunuz?",
       "relationsOutsideNikah": "Şu an nikah dışı bir ilişkiniz var mı?",
       "contagiousDisease": "Bulaşıcı bir hastalığınız var mı?",
-      "photosFemale": "Fotoğrafınız asla listelerde görünmez. Erkek onu yalnızca siz onayladıktan sonra, 24 saat boyunca, filigranlı olarak görür.",
+      "photosFemale": "Fotoğrafınız asla listelerde görünmez. Erkek onu yalnızca sizin izninizle, her izinde bir kez ve filigranlı olarak görür.",
       "photosMale": "Fotoğrafınızı önce kadın görür. Akışta gösterme varsayılan olarak kapalıdır.",
       "acceptRules": "Kuralları okudum ve kabul ediyorum",
       "currentWives": "Mevcut eş sayısı",
@@ -366,7 +366,6 @@
       "waitingBrother": "Erkeğin sohbeti açması bekleniyor",
       "sisterBusy": "Başka bir sohbette",
       "canOpen": "Sohbeti açabilirsiniz",
-      "canOpenWindow": "Sohbeti açabilirsiniz · fotoğraf {h} saat daha görünür",
       "closed": "Kapandı"
     },
     "emptyReceived": "Henüz sizi beğenen yok",
@@ -381,7 +380,7 @@
     "resetAllText": "{n} beğeni geri alınacak. Bu kişiler akışınızda yeniden görünebilir. Bugün kullandığınız beğeni hakları iade edilmez."
   },
   "match": {
-    "sisterDecisionText": "Artık bu erkeğin fotoğrafını görebilirsiniz. Onaylarsanız 24 saat boyunca sizin fotoğrafınızı görür ve sohbet açabilir. Bu karar kalıcıdır.",
+    "sisterDecisionText": "Artık bu erkeğin fotoğrafını görebilirsiniz. Onaylarsanız fotoğrafınızı bir kez görür ve sohbet açabilir. Tekrar görmek isterse sizden yeniden izin ister. Bu karar kalıcıdır.",
     "approvePhoto": "Onayla",
     "declinePhoto": "Uygun değil",
     "sisterWaitingText": "Onayladınız. Artık sohbet açabilir.",
@@ -397,7 +396,7 @@
     "confirm": {
       "approve": {
         "title": "Fotoğrafı onaylıyor musunuz?",
-        "text": "{hours} saat boyunca fotoğrafınızı görür ve sohbet açabilir. Bu karar kalıcıdır."
+        "text": "Fotoğrafınızı bir kez görür ve sohbet açabilir. Tekrar görmek için her seferinde sizden izin ister. Bu karar kalıcıdır."
       },
       "declinePhoto": {
         "title": "Uygun değil mi?",
@@ -411,6 +410,19 @@
         "title": "Sohbet açılsın mı?",
         "text": "{cost} jeton harcanacak."
       }
+    },
+    "photo": {
+      "title": "Fotoğraf",
+      "open": "Fotoğrafı gör",
+      "openHint": "Bir kez açılır ve {min} dakika görünür. Tekrar görmek için izin istemeniz gerekir.",
+      "reopen": "Fotoğrafı tekrar göster",
+      "openUntil": "Açık: {min} dakikadan az kaldı",
+      "request": "Tekrar görmek için izin iste",
+      "requested": "İzin istendi — onay bekleniyor",
+      "used": "Fotoğrafı gördünüz. Tekrar görmek için izin isteyin.",
+      "sisterAsk": "fotoğrafınızı bir kez daha görmek istiyor.",
+      "allow": "İzin ver",
+      "deny": "Reddet"
     }
   },
   "chats": {
@@ -567,7 +579,10 @@
       "mahram_approved": "Mahrem yakının iletişim bilgisi sohbette paylaşıldı.",
       "mahram_rejected": "Mahrem yakının iletişim bilgisi onaylanmadı.",
       "connects_credited": "Bakiyenize jeton eklendi.",
-      "new_like": "Biri sizi beğendi. Kim olduğunu görmek için dokunun."
+      "new_like": "Biri sizi beğendi. Kim olduğunu görmek için dokunun.",
+      "photo_view_requested": "Fotoğrafınızı tekrar görmek için izin istedi.",
+      "photo_view_granted": "Fotoğraf izni verildi — bir kez açabilirsiniz.",
+      "photo_view_declined": "Fotoğrafı tekrar görme isteğiniz reddedildi."
     }
   },
   "portal": {
@@ -683,7 +698,9 @@
     "married_female_not_allowed": "Evli kadınlar kayıt olamaz.",
     "current_wives_required": "Lütfen mevcut eş sayınızı seçin.",
     "children_living_invalid": "Yanında yaşayan çocuk sayısı toplam çocuk sayısından fazla olamaz.",
-    "already_mutual": "Karşılıklı olmuş bir beğeni geri alınamaz; eşleşmeden ayrılabilirsiniz."
+    "already_mutual": "Karşılıklı olmuş bir beğeni geri alınamaz; eşleşmeden ayrılabilirsiniz.",
+    "photo_view_not_granted": "Fotoğrafı görme hakkınız yok; önce izin isteyin.",
+    "photo_view_already_granted": "Zaten bir görme hakkınız var."
   },
   "admin": {
     "title": "Moderasyon",
@@ -837,7 +854,7 @@
         },
         "visibility": {
           "title": "Kim neyi görür",
-          "body": "Diğer üyeler profilinizi soyadınız, tam yaşınız ve iletişim bilgileriniz olmadan görür. Kadının fotoğrafı erkeğe yalnızca kadın onayladıktan sonra, 24 saat ve filigranlı gösterilir. Fotoğrafları yalnızca aynı cinsiyetten moderatörler inceler. Her sohbet moderatörlere açıktır; kadının velisi, kadının kontrol ettiği özel bir bağlantıyla son sohbetini okuyabilir."
+          "body": "Diğer üyeler profilinizi soyadınız, tam yaşınız ve iletişim bilgileriniz olmadan görür. Kadının fotoğrafı erkeğe yalnızca kadının izniyle, her izinde bir kez ve filigranlı gösterilir. Fotoğrafları yalnızca aynı cinsiyetten moderatörler inceler. Her sohbet moderatörlere açıktır; kadının velisi, kadının kontrol ettiği özel bir bağlantıyla son sohbetini okuyabilir."
         },
         "processors": {
           "title": "Hizmet sağlayıcılar",

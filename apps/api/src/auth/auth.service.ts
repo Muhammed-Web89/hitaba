@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { ConsentKind, Prisma, User } from '@prisma/client';
-import { EMAIL_VERIFY_TTL_HOURS, POLICY_VERSION, type AuthTokens, type LoginInput, type RegisterInput, type TelegramAuthInput } from '@hitaba/shared';
+import { EMAIL_VERIFY_TTL_HOURS, POLICY_VERSION, RULES, type AuthTokens, type LoginInput, type RegisterInput, type TelegramAuthInput } from '@hitaba/shared';
 import { env } from '../config/env';
 import { hashPassword, randomToken, sha256, verifyPassword } from '../common/crypto';
 import { hours } from '../common/time';
@@ -9,6 +9,15 @@ import { MailService } from '../mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { AccessPayload } from './guards';
 import { verifyTelegramInitData } from './telegram-init-data';
+
+/** Hoş geldin: yeni erkek hesaba ilk sohbet için 1 ücretsiz jeton (kadınlar jeton harcamaz). */
+function welcomeBonus(gender: User['gender']): Pick<Prisma.UserCreateInput, 'connectBalance' | 'connectTxs'> {
+  if (gender !== 'MALE') return {};
+  return {
+    connectBalance: RULES.welcomeConnects,
+    connectTxs: { create: { amount: RULES.welcomeConnects, type: 'BONUS', note: 'welcome' } },
+  };
+}
 
 interface RefreshPayload {
   sub: string;
@@ -53,6 +62,7 @@ export class AuthService {
         passwordHash: await hashPassword(input.password),
         gender: input.gender,
         locale: normalizeLocale(input.locale),
+        ...welcomeBonus(input.gender),
         profile: { create: {} },
         consents: { create: consentRows(meta) },
       },
@@ -122,6 +132,7 @@ export class AuthService {
           telegramUsername: tgUser.username ?? null,
           gender: input.gender,
           locale: normalizeLocale(tgUser.language_code),
+          ...welcomeBonus(input.gender),
           profile: { create: {} },
           consents: { create: consentRows(meta) },
         },

@@ -41,7 +41,7 @@
       },
       "privacy": {
         "title": "Surat ayolning ixtiyorida",
-        "text": "Ayolning surati hech qachon roʻyxatlarda koʻrinmaydi. Faqat uning qarori bilan, 24 soatga, suv belgisi bilan ochiladi."
+        "text": "Ayolning surati hech qachon roʻyxatlarda koʻrinmaydi. Faqat uning ruxsati bilan, har safar bir marta va suv belgisi bilan ochiladi."
       },
       "moderation": {
         "title": "Inson moderatsiyasi",
@@ -185,7 +185,7 @@
       "drugs": "Giyohvand modda isteʼmol qilasizmi?",
       "relationsOutsideNikah": "Hozir nikohsiz munosabatdamisiz?",
       "contagiousDisease": "Yuqumli kasalligingiz bormi?",
-      "photosFemale": "Suratingiz hech qachon roʻyxatlarda koʻrinmaydi. Erkak uni faqat siz tasdiqlaganingizdan soʻng, 24 soat davomida, suv belgisi bilan koʻradi.",
+      "photosFemale": "Suratingiz hech qachon roʻyxatlarda koʻrinmaydi. Erkak uni faqat sizning ruxsatingiz bilan, har ruxsatda bir marta va suv belgisi bilan koʻradi.",
       "photosMale": "Suratingizni avval ayol koʻradi. Lentada koʻrsatish dastlab oʻchiq turadi.",
       "acceptRules": "Qoidalarni oʻqidim va qabul qilaman",
       "currentWives": "Hozirgi xotinlar soni",
@@ -366,7 +366,6 @@
       "waitingBrother": "Erkak suhbatni ochishi kutilmoqda",
       "sisterBusy": "Boshqa suhbatda",
       "canOpen": "Suhbatni ochishingiz mumkin",
-      "canOpenWindow": "Suhbatni ochishingiz mumkin · surat {h} soat koʻrinadi",
       "closed": "Yopilgan"
     },
     "emptyReceived": "Hali sizni hech kim yoqtirmadi",
@@ -381,7 +380,7 @@
     "resetAllText": "{n} ta yoqtirish bekor qilinadi. Bu insonlar anketalaringizda yana chiqishi mumkin. Bugun ishlatilgan yoqtirishlar qaytarilmaydi."
   },
   "match": {
-    "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u 24 soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qarorni keyin oʻzgartirib boʻlmaydi.",
+    "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u suratingizni bir marta koʻradi va suhbat ochishi mumkin. Qayta koʻrmoqchi boʻlsa, sizdan yana ruxsat soʻraydi. Bu qarorni keyin oʻzgartirib boʻlmaydi.",
     "approvePhoto": "Tasdiqlash",
     "declinePhoto": "Mos emas",
     "sisterWaitingText": "Siz tasdiqladingiz. Endi u suhbatni ochishi mumkin.",
@@ -397,7 +396,7 @@
     "confirm": {
       "approve": {
         "title": "Suratni tasdiqlaysizmi?",
-        "text": "U {hours} soat davomida suratingizni koʻradi va suhbat ochishi mumkin. Bu qarorni keyin oʻzgartirib boʻlmaydi."
+        "text": "U suratingizni bir marta koʻradi va suhbat ochishi mumkin. Qayta koʻrish uchun har safar sizdan ruxsat soʻraydi. Bu qarorni keyin oʻzgartirib boʻlmaydi."
       },
       "declinePhoto": {
         "title": "Mos emasmi?",
@@ -411,6 +410,19 @@
         "title": "Suhbatni ochasizmi?",
         "text": "{cost} ta tanga sarflanadi."
       }
+    },
+    "photo": {
+      "title": "Surat",
+      "open": "Suratni koʻrish",
+      "openHint": "Bir marta ochiladi va {min} daqiqa koʻrinadi. Qayta koʻrish uchun ruxsat soʻrash kerak.",
+      "reopen": "Suratni yana koʻrsatish",
+      "openUntil": "Ochiq: {min} daqiqadan kam qoldi",
+      "request": "Qayta koʻrish uchun ruxsat soʻrash",
+      "requested": "Ruxsat soʻraldi — javob kutilmoqda",
+      "used": "Suratni koʻrdingiz. Qayta koʻrish uchun ruxsat soʻrang.",
+      "sisterAsk": "suratingizni yana bir bor koʻrmoqchi.",
+      "allow": "Ruxsat berish",
+      "deny": "Rad etish"
     }
   },
   "chats": {
@@ -567,7 +579,10 @@
       "mahram_approved": "Mahram maʼlumotlari suhbatda eʼlon qilindi.",
       "mahram_rejected": "Mahram maʼlumotlari tasdiqlanmadi.",
       "connects_credited": "Hisobingizga tanga qoʻshildi.",
-      "new_like": "Sizni kimdir yoqtirdi. Kimligini koʻrish uchun bosing."
+      "new_like": "Sizni kimdir yoqtirdi. Kimligini koʻrish uchun bosing.",
+      "photo_view_requested": "Suratingizni qayta koʻrish uchun ruxsat soʻradi.",
+      "photo_view_granted": "Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.",
+      "photo_view_declined": "Suratni qayta koʻrish soʻrovingiz rad etildi."
     }
   },
   "portal": {
@@ -683,7 +698,9 @@
     "married_female_not_allowed": "Turmushdagi ayollar roʻyxatdan oʻta olmaydi.",
     "current_wives_required": "Iltimos, hozirgi xotinlaringiz sonini tanlang.",
     "children_living_invalid": "Siz bilan yashaydigan farzandlar soni umumiy sondan koʻp boʻlishi mumkin emas.",
-    "already_mutual": "Oʻzaro boʻlgan yoqtirishni qaytarib boʻlmaydi; tanishuvdan chiqishingiz mumkin."
+    "already_mutual": "Oʻzaro boʻlgan yoqtirishni qaytarib boʻlmaydi; tanishuvdan chiqishingiz mumkin.",
+    "photo_view_not_granted": "Suratni koʻrish huquqingiz yoʻq; avval ruxsat soʻrang.",
+    "photo_view_already_granted": "Sizda allaqachon koʻrish huquqi bor."
   },
   "admin": {
     "title": "Moderatsiya",
@@ -837,7 +854,7 @@
         },
         "visibility": {
           "title": "Kim nimani koʻradi",
-          "body": "Boshqa aʼzolar anketangizni familiya, aniq yosh va aloqa maʼlumotlarisiz koʻradi. Ayolning surati erkakka faqat ayol tasdiqlaganidan soʻng, 24 soatga va suv belgisi bilan koʻrsatiladi. Suratlarni faqat bir xil jinsdagi moderatorlar tekshiradi. Har bir suhbat moderatorlarga ochiq; ayolning valiysi ayol boshqaradigan maxfiy havola orqali soʻnggi suhbatni oʻqiy oladi."
+          "body": "Boshqa aʼzolar anketangizni familiya, aniq yosh va aloqa maʼlumotlarisiz koʻradi. Ayolning surati erkakka faqat ayolning ruxsati bilan, har ruxsatda bir marta va suv belgisi bilan koʻrsatiladi. Suratlarni faqat bir xil jinsdagi moderatorlar tekshiradi. Har bir suhbat moderatorlarga ochiq; ayolning valiysi ayol boshqaradigan maxfiy havola orqali soʻnggi suhbatni oʻqiy oladi."
         },
         "processors": {
           "title": "Xizmat koʻrsatuvchilar",

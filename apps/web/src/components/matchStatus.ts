@@ -7,7 +7,6 @@ import type { IconName } from './icons';
 
 export function useMatchStatus() {
   const t = useTranslations('likes.status');
-  const time = useHoursLeft();
   const { me } = useAuth();
   return (m: MatchSummary): { text: string; tone: 'info' | 'warning' | 'brand' | 'neutral'; icon: IconName } => {
     const male = me?.gender === 'MALE';
@@ -16,16 +15,8 @@ export function useMatchStatus() {
     if (m.stage === 'PHOTO_APPROVED') {
       if (!male) return { text: m.chatRequested ? t('requested') : t('waitingBrother'), tone: 'info', icon: 'clock' };
       if (m.other.busy) return { text: t('sisterBusy'), tone: 'neutral', icon: 'pause' };
-      return {
-        text: m.photoAccessUntil && time(m.photoAccessUntil) > 0 ? t('canOpenWindow', { h: time(m.photoAccessUntil) }) : t('canOpen'),
-        tone: 'warning',
-        icon: 'chat',
-      };
+      return { text: t('canOpen'), tone: 'warning', icon: 'chat' };
     }
     return { text: t('closed'), tone: 'neutral', icon: 'x' };
   };
-}
-
-function useHoursLeft() {
-  return (iso: string) => Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / 3_600_000));
 }
