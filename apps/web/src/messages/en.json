@@ -579,9 +579,10 @@
       "mahram_rejected": "The mahram contact was not approved.",
       "connects_credited": "Connects were added to your balance.",
       "new_like": "Someone liked you. Tap to see who.",
-      "photo_view_requested": "Asked for permission to see your photo again.",
+      "photo_view_requested": "He asks for permission to see your photo once more. It’s your decision.",
       "photo_view_granted": "Photo access granted — you can open it once.",
-      "photo_view_declined": "Your request to see the photo again was declined."
+      "photo_view_declined": "Your request to see the photo again was declined.",
+      "photo_view_first_request": "A man wants to see your photo. Look at his photo first, then decide."
     }
   },
   "portal": {

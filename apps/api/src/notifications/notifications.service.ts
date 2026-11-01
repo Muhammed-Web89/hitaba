@@ -13,6 +13,7 @@ export type NotificationType =
   | 'new_like'
   | 'mutual_match'
   | 'photo_approved'
+  | 'photo_view_first_request'
   | 'photo_view_requested'
   | 'photo_view_granted'
   | 'photo_view_declined'
@@ -35,6 +36,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     photo_view_requested: 'Sizdan suratingizni yana bir bor koʻrish uchun ruxsat soʻrashdi.',
     photo_view_granted: 'Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.',
     photo_view_declined: 'Suratni qayta koʻrish soʻrovi rad etildi.',
+    photo_view_first_request: 'Oʻzaro qiziqish: bir erkak suratingizni koʻrishni soʻramoqda. Avval uning suratini koʻrib, qaror qiling.',
     mutual_match: 'Sizda yangi o‘zaro qiziqish bor.',
     photo_approved: 'Suratingiz tasdiqlandi — endi suhbat boshlashingiz mumkin.',
     chat_requested: 'Sizdan suhbatni boshlashingizni so‘rashdi.',
@@ -51,6 +53,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     photo_view_requested: 'Вас просят разрешить ещё раз посмотреть ваше фото.',
     photo_view_granted: 'Разрешение получено — фото можно открыть один раз.',
     photo_view_declined: 'Запрос на повторный просмотр фото отклонён.',
+    photo_view_first_request: 'Взаимная симпатия: мужчина просит посмотреть ваше фото. Сначала посмотрите его фото и решите.',
     mutual_match: 'У вас новая взаимная симпатия.',
     photo_approved: 'Ваше фото одобрено — теперь вы можете начать чат.',
     chat_requested: 'Вас просят начать чат.',
@@ -67,6 +70,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     photo_view_requested: 'Fotoğrafınızı bir kez daha görmek için izin istendi.',
     photo_view_granted: 'Fotoğraf izni verildi — bir kez açabilirsiniz.',
     photo_view_declined: 'Fotoğrafı tekrar görme isteğiniz reddedildi.',
+    photo_view_first_request: 'Karşılıklı ilgi: bir erkek fotoğrafınızı görmek istiyor. Önce onun fotoğrafına bakıp karar verin.',
     mutual_match: 'Yeni bir karşılıklı ilginiz var.',
     photo_approved: 'Fotoğrafınız onaylandı — artık sohbet başlatabilirsiniz.',
     chat_requested: 'Sizden sohbeti başlatmanız isteniyor.',
@@ -83,6 +87,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     photo_view_requested: 'Someone asked to see your photo once more.',
     photo_view_granted: 'Photo access granted — you can open it once.',
     photo_view_declined: 'Your request to see the photo again was declined.',
+    photo_view_first_request: 'Mutual interest: a man is asking to see your photo. Look at his photo first, then decide.',
     mutual_match: 'You have a new mutual interest.',
     photo_approved: 'Your photo was approved — you can now start a chat.',
     chat_requested: 'You have been asked to start a chat.',
@@ -99,6 +104,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     photo_view_requested: 'طُلب منك السماح برؤية صورتك مرة أخرى.',
     photo_view_granted: 'تم منح الإذن — يمكنك فتح الصورة مرة واحدة.',
     photo_view_declined: 'رُفض طلبك لرؤية الصورة مرة أخرى.',
+    photo_view_first_request: 'اهتمام متبادل: رجل يطلب رؤية صورتك. اطّلعي على صورته أولًا ثم قرّري.',
     mutual_match: 'لديك اهتمام متبادل جديد.',
     photo_approved: 'تمت الموافقة على صورتك — يمكنك الآن بدء المحادثة.',
     chat_requested: 'طُلب منك بدء المحادثة.',

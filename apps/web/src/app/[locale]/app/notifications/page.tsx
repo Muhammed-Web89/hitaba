@@ -14,6 +14,7 @@ const ICONS: Record<string, IconName> = {
   new_like: 'heart',
   mutual_match: 'heart',
   photo_approved: 'camera',
+  photo_view_first_request: 'eye',
   photo_view_requested: 'eye',
   photo_view_granted: 'camera',
   photo_view_declined: 'lock',

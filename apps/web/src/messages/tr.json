@@ -579,9 +579,10 @@
       "mahram_rejected": "Mahrem yakının iletişim bilgisi onaylanmadı.",
       "connects_credited": "Bakiyenize jeton eklendi.",
       "new_like": "Biri sizi beğendi. Kim olduğunu görmek için dokunun.",
-      "photo_view_requested": "Fotoğrafınızı tekrar görmek için izin istedi.",
+      "photo_view_requested": "Fotoğrafınızı bir kez daha görmek için izin istiyor. Karar sizde.",
       "photo_view_granted": "Fotoğraf izni verildi — bir kez açabilirsiniz.",
-      "photo_view_declined": "Fotoğrafı tekrar görme isteğiniz reddedildi."
+      "photo_view_declined": "Fotoğrafı tekrar görme isteğiniz reddedildi.",
+      "photo_view_first_request": "Bir erkek fotoğrafınızı görmek istiyor. Önce onun fotoğrafına bakıp karar verin."
     }
   },
   "portal": {

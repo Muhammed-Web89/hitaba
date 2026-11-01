@@ -115,7 +115,8 @@ export class MatchingService {
       matchId = match.id;
       await Promise.all([
         this.notifications.notify(maleId, 'mutual_match', { matchId }),
-        this.notifications.notify(femaleId, 'mutual_match', { matchId }),
+        // Kadın için karşılıklı ilgi = erkek fotoğrafını görmek istiyor; karar onda.
+        this.notifications.notify(femaleId, 'photo_view_first_request', { matchId }),
       ]);
     } else if (!alreadyLiked && !(await this.recentlyNotified(viewer.id, target.id))) {
       // Tek taraflı yeni beğeni: karşı taraf "Beni beğenenler"de görür. Geri alıp yeniden beğenmek

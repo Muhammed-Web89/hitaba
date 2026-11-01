@@ -579,9 +579,10 @@
       "mahram_rejected": "Mahram maʼlumotlari tasdiqlanmadi.",
       "connects_credited": "Hisobingizga tanga qoʻshildi.",
       "new_like": "Sizni kimdir yoqtirdi. Kimligini koʻrish uchun bosing.",
-      "photo_view_requested": "Suratingizni qayta koʻrish uchun ruxsat soʻradi.",
+      "photo_view_requested": "Suratingizni yana bir bor koʻrish uchun ruxsat soʻramoqda. Qaror sizda.",
       "photo_view_granted": "Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.",
-      "photo_view_declined": "Suratni qayta koʻrish soʻrovingiz rad etildi."
+      "photo_view_declined": "Suratni qayta koʻrish soʻrovingiz rad etildi.",
+      "photo_view_first_request": "Bir erkak suratingizni koʻrmoqchi. Avval uning suratini koʻrib, qaror qiling."
     }
   },
   "portal": {
