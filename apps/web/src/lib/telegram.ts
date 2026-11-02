@@ -3,6 +3,7 @@ import { TELEGRAM_SDK_URL } from './telegram-sdk';
 /** Telegram Mini App WebApp API'sinin kullandığımız kısmı. */
 export interface TelegramWebApp {
   initData: string;
+  initDataUnsafe?: { user?: { id: number } };
   colorScheme?: 'light' | 'dark';
   ready(): void;
   expand(): void;
@@ -19,6 +20,40 @@ export interface TelegramWebApp {
 declare global {
   interface Window {
     Telegram?: { WebApp?: TelegramWebApp };
+  }
+}
+
+/**
+ * Mini App'i açan Telegram kullanıcısının kimliği. Telegram bunu adresin `#tgWebAppData`
+ * kısmında verir; SDK yüklenmeden okunabildiği için açılışta hızlı yönlendirmeye yarar.
+ * Yalnızca "bu cihazda son giren hesap mı" kıyası içindir, kimlik doğrulaması sunucudadır.
+ */
+export function telegramUserId(): string | undefined {
+  if (typeof window === 'undefined') return undefined;
+  const fromSdk = window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+  if (fromSdk) return String(fromSdk);
+  try {
+    const data = new URLSearchParams(window.location.hash.slice(1)).get('tgWebAppData');
+    const user = data && new URLSearchParams(data).get('user');
+    return user ? String(JSON.parse(user).id) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const LAST_TG_USER = 'hitaba.tgUser';
+export function lastTelegramUser(): string | null {
+  try {
+    return localStorage.getItem(LAST_TG_USER);
+  } catch {
+    return null;
+  }
+}
+export function rememberTelegramUser(id: string | undefined) {
+  try {
+    if (id) localStorage.setItem(LAST_TG_USER, id);
+  } catch {
+    /* yoksay */
   }
 }
 

@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, u
 import useSWR from 'swr';
 import type { AuthTokens, Me } from '@hitaba/shared/client';
 import { api, ApiError, tokens } from './api';
+import { cachedMe, clearPersistedCache } from './cache';
 import { disconnectSocket } from './socket';
 
 interface AuthContextValue {
@@ -13,6 +14,14 @@ interface AuthContextValue {
   signIn: (t: AuthTokens) => Promise<void>;
   signOut: () => void;
   refreshMe: () => Promise<Me | undefined>;
+}
+
+function tokenSubject(jwt: string): string | undefined {
+  try {
+    return JSON.parse(atob(jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).sub;
+  } catch {
+    return undefined;
+  }
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -43,6 +52,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(
     async (t: AuthTokens) => {
+      // Başka bir hesaba geçiliyorsa önceki hesabın önbelleği bir an bile görünmesin.
+      if (cachedMe<Me>()?.id !== tokenSubject(t.accessToken)) clearPersistedCache();
       tokens.set(t);
       await mutate();
     },
@@ -63,7 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [me]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ me, loading: !hydrated || (signedIn && isLoading), signedIn, signIn, signOut, refreshMe: () => mutate() }),
+    // Önbellekteki kullanıcı yalnızca hidrasyondan sonra verilir (sunucu HTML'iyle uyuşsun).
+    () => ({ me: hydrated ? me : undefined, loading: !hydrated || (signedIn && isLoading && !me), signedIn, signIn, signOut, refreshMe: () => mutate() }),
     [me, hydrated, isLoading, signedIn, signIn, signOut, mutate],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

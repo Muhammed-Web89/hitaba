@@ -1,4 +1,5 @@
 import type { AuthTokens } from '@hitaba/shared/client';
+import { clearPersistedCache } from './cache';
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
@@ -50,6 +51,7 @@ export const tokens = {
   },
   clear() {
     memoryAccess = null;
+    clearPersistedCache();
     write(ACCESS, null);
     write(REFRESH, null);
     listeners.forEach((l) => l());

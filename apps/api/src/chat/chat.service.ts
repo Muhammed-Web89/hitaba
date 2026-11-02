@@ -215,14 +215,20 @@ export class ChatService implements OnModuleInit {
   // ── Mesajlar ──────────────────────────────────────────────────────────
 
   async send(viewer: User, chatId: string, text: string, clientId?: string): Promise<ChatMessage> {
-    const chat = await this.participantChat(viewer, chatId);
-    if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
-    if (chat.status === 'PAUSED') throw new BadRequestException({ error: 'chat_paused' });
     const trimmed = text.trim().slice(0, RULES.messageMaxChars);
     if (!trimmed) throw new BadRequestException({ error: 'empty_message' });
+    // Sohbet kontrolü ile tekrar gönderim kontrolü aynı anda: istemci "tekrar dene" dediğinde
+    // ilk deneme aslında ulaşmışsa aynı mesaj ikinci kez yazılmaz.
+    const [chat, existing] = await Promise.all([
+      this.participantChat(viewer, chatId),
+      clientId ? this.prisma.message.findFirst({ where: { chatId, senderId: viewer.id, clientId }, include: { reactions: true } }) : null,
+    ]);
+    if (existing) return toChatMessage(existing);
+    if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
+    if (chat.status === 'PAUSED') throw new BadRequestException({ error: 'chat_paused' });
 
     const scan = scanForContactInfo(trimmed);
-    const msg = await this.prisma.message.create({
+    const created = this.prisma.message.create({
       data: {
         chatId,
         senderId: viewer.id,
@@ -235,14 +241,19 @@ export class ChatService implements OnModuleInit {
     });
 
     if (scan.blocked) {
+      const msg = await created;
       await this.holdForModeration(viewer, chat, msg, scan.signals);
-    } else {
-      await this.prisma.chat.update({
+      return toChatMessage(msg);
+    }
+    // Mesaj kaydı ile sohbet etkinliği güncellemesi birbirini beklemez.
+    const [msg] = await Promise.all([
+      created,
+      this.prisma.chat.update({
         where: { id: chatId },
         data: { lastActivityAt: new Date(), reminder1SentAt: null, reminder2SentAt: null },
-      });
-      this.realtime.toChat(chatId, 'message:new', toChatMessage(msg));
-    }
+      }),
+    ]);
+    this.realtime.toChat(chatId, 'message:new', toChatMessage(msg));
     return toChatMessage(msg);
   }
 

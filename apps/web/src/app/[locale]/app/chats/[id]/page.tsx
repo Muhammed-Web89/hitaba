@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import { Relation, RULES, scanForContactInfo, type ChatMessage, type ChatSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
 import { ChatRulesSheet } from '@/components/ChatRulesSheet';
-import { MessageList } from '@/components/MessageList';
+import { MessageList, type ListMessage } from '@/components/MessageList';
 import { ReportDialog } from '@/components/ReportDialog';
 import { Button, Field, IconButton, Input, Modal, Notice, PageLoader, Select, Textarea } from '@/components/ui';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -15,7 +15,10 @@ import { useAuth } from '@/lib/auth';
 import { useErrorText } from '@/lib/format';
 import { getSocket } from '@/lib/socket';
 
-function upsert(list: ChatMessage[], m: ChatMessage): ChatMessage[] {
+// Sohbete geri dönünce mesajlar sunucuyu beklemeden hemen görünsün (yalnızca bellekte, oturum boyunca).
+const messageCache = new Map<string, ListMessage[]>();
+
+function upsert(list: ListMessage[], m: ListMessage): ListMessage[] {
   const i = list.findIndex((x) => x.id === m.id || (m.clientId && x.clientId === m.clientId));
   if (i === -1) return [...list, m];
   const copy = list.slice();
@@ -32,7 +35,10 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const router = useRouter();
   const { me, refreshMe } = useAuth();
   const { data: chat, mutate: mutateChat, error: chatError } = useSWR<ChatSummary>(`/chats/${id}`);
-  const [messages, setMessages] = useState<ChatMessage[] | null>(null);
+  const [messages, setMessages] = useState<ListMessage[] | null>(() => messageCache.get(id) ?? null);
+  useEffect(() => {
+    if (messages) messageCache.set(id, messages);
+  }, [id, messages]);
   const [text, setText] = useState('');
   const [rulesOpen, setRulesOpen] = useState(false);
   // Kurallar her sohbette ilk açılışta bir kez gösterilir.
@@ -54,14 +60,17 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   }, [text]);
   const [editing, setEditing] = useState<ChatMessage | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [sending, setSending] = useState(false);
   const [warn, setWarn] = useState(false);
   const [menu, setMenu] = useState(false);
   const [watchersOpen, setWatchersOpen] = useState(false);
   const [dialog, setDialog] = useState<'mahram' | 'close' | 'report' | 'reopen' | null>(null);
   const bottom = useRef<HTMLDivElement>(null);
 
-  const load = useCallback(async () => setMessages(await api<ChatMessage[]>(`/chats/${id}/messages`)), [id]);
+  const load = useCallback(async () => {
+    const fresh = await api<ChatMessage[]>(`/chats/${id}/messages`);
+    // Yolda olan ya da gönderilemeyen yerel mesajlar kaybolmasın.
+    setMessages((l) => (l ?? []).filter((m) => (m.pending || m.failed) && !fresh.some((f) => f.clientId === m.clientId)).reduce(upsert, fresh));
+  }, [id]);
 
   useEffect(() => {
     void load();
@@ -96,7 +105,8 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
   useLayoutEffect(() => {
     bottom.current?.scrollIntoView({ block: 'end' });
-  }, [messages?.length]);
+    // Hata kutusu açılınca alt çubuk büyür; son mesaj görünür kalsın.
+  }, [messages?.length, error]);
 
   if (chatError) {
     return (
@@ -111,43 +121,70 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const watcherCount =
     Number(chat.watchers.maleModerator) + Number(chat.watchers.femaleModerator) + 1 + chat.watchers.witnesses.length + Number(chat.watchers.hasWali);
 
-  async function send(force = false) {
-    const body = text.trim();
+  /** Mesaj hemen ekrana konur; sunucu onayı arkadan gelir (iyimser gönderim). */
+  function send(force = false, retryOf?: ListMessage) {
+    const body = (retryOf?.text ?? text).trim();
     if (!body) return;
     // İstemci tarafı ön uyarı; sunucu yine de otoritedir (§5.5 "Yine de gönder").
-    if (!force && scanForContactInfo(body).blocked) return setWarn(true);
+    if (!force && !retryOf && scanForContactInfo(body).blocked) return setWarn(true);
     setWarn(false);
-    setSending(true);
     setError(null);
-    try {
-      if (editing) {
-        const m = await api<ChatMessage>(`/messages/${editing.id}`, { method: 'PATCH', body: { text: body } });
-        setMessages((l) => (l ? upsert(l, m) : l));
-        setEditing(null);
-      } else {
-        const clientId = crypto.randomUUID();
-        const viaRest = () => api<ChatMessage>(`/chats/${id}/messages`, { method: 'POST', body: { text: body, clientId } });
-        const s = getSocket();
-        // Önce socket; bağlantı yoksa ya da zaman aşımında REST'e düşer. Sunucu hatası olduğu gibi gösterilir.
-        const m = s?.connected
-          ? await new Promise<ChatMessage>((resolve, reject) =>
-              s.timeout(10_000).emit('message:send', { chatId: id, text: body, clientId }, (err, res) => {
-                if (err) return viaRest().then(resolve, reject);
-                if (res.ok && res.message) return resolve(res.message);
-                reject(new ApiError(400, res.error ?? 'failed'));
-              }),
-            )
-          : await viaRest();
+    if (!retryOf) setText('');
+
+    if (editing && !retryOf) {
+      const before = editing;
+      setEditing(null);
+      setMessages((l) => (l ? upsert(l, { ...before, text: body, editedAt: new Date().toISOString() }) : l));
+      api<ChatMessage>(`/messages/${before.id}`, { method: 'PATCH', body: { text: body } }).then(
+        (m) => setMessages((l) => (l ? upsert(l, m) : l)),
+        (e) => {
+          setMessages((l) => (l ? upsert(l, before) : l));
+          setError(errorText(e));
+        },
+      );
+      return;
+    }
+
+    const clientId = retryOf?.clientId ?? crypto.randomUUID();
+    const local: ListMessage = {
+      id: retryOf?.id ?? `local-${clientId}`,
+      chatId: id,
+      senderId: me!.id,
+      kind: 'TEXT',
+      state: 'DELIVERED',
+      text: body,
+      editedAt: null,
+      deleted: false,
+      createdAt: retryOf?.createdAt ?? new Date().toISOString(),
+      reactions: [],
+      clientId,
+      pending: true,
+    };
+    setMessages((l) => (l ? upsert(l, local) : [local]));
+
+    const viaRest = () => api<ChatMessage>(`/chats/${id}/messages`, { method: 'POST', body: { text: body, clientId } });
+    const s = getSocket();
+    // Önce socket; bağlantı yoksa ya da zaman aşımında REST'e düşer. Sunucu hatası olduğu gibi gösterilir.
+    const sent = s?.connected
+      ? new Promise<ChatMessage>((resolve, reject) =>
+          s.timeout(10_000).emit('message:send', { chatId: id, text: body, clientId }, (err, res) => {
+            if (err) return viaRest().then(resolve, reject);
+            if (res.ok && res.message) return resolve(res.message);
+            reject(new ApiError(400, res.error ?? 'failed'));
+          }),
+        )
+      : viaRest();
+    sent.then(
+      (m) => {
         setMessages((l) => (l ? upsert(l, m) : l));
         if (m.state === 'HELD') void mutateChat();
-      }
-      setText('');
-    } catch (e) {
-      setError(errorText(e));
-      void mutateChat();
-    } finally {
-      setSending(false);
-    }
+      },
+      (e) => {
+        setMessages((l) => (l ? upsert(l, { ...local, pending: false, failed: true }) : l));
+        setError(errorText(e));
+        void mutateChat();
+      },
+    );
   }
 
   const canEdit = (m: ChatMessage) => Date.now() - new Date(m.createdAt).getTime() < RULES.messageEditWindowMinutes * 60_000;
@@ -217,6 +254,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
                 setEditing(m);
                 setText(m.text);
               },
+              onRetry: (m) => send(true, m),
               onDelete: (m) => api<ChatMessage>(`/messages/${m.id}`, { method: 'DELETE' }).then((x) => setMessages((l) => (l ? upsert(l, x) : l))),
             }}
           />
@@ -281,7 +319,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
           className="flex items-end gap-2"
           onSubmit={(e) => {
             e.preventDefault();
-            void send();
+            send();
           }}
         >
           <textarea
@@ -297,7 +335,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
                 e.preventDefault();
-                void send();
+                send();
               }
             }}
             disabled={!active}
@@ -309,8 +347,11 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
           />
           <button
             type="submit"
-            disabled={!active || sending || !text.trim()}
+            disabled={!active || !text.trim()}
             aria-label={t('send')}
+            // Dokununca yazı kutusu odağını kaybetmesin: klavye kapanıp açılmaz, ekran zıplamaz.
+            onPointerDown={(e) => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             className="glow flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-500 text-brand-ink disabled:opacity-40"
           >
             <Icon name="send" size={20} className="flip-rtl" />

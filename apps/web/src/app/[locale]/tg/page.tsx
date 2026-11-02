@@ -8,11 +8,12 @@ import { allConsented, ConsentChecklist, EMPTY_CONSENTS } from '@/components/Con
 import { GenderPicker } from '@/components/GenderPicker';
 import { Button, Notice, PageLoader } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
-import { api, ApiError } from '@/lib/api';
+import { api, ApiError, tokens } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useErrorText } from '@/lib/format';
 import { homeFor } from '@/lib/routing';
-import { loadTelegramSdk } from '@/lib/telegram';
+import { cachedMe } from '@/lib/cache';
+import { lastTelegramUser, loadTelegramSdk, rememberTelegramUser, telegramUserId } from '@/lib/telegram';
 
 /** Telegram Mini App girişi: initData sunucuda HMAC-SHA256 ile doğrulanır. */
 export default function TelegramEntry() {
@@ -30,9 +31,10 @@ export default function TelegramEntry() {
       const wa = window.Telegram?.WebApp;
       if (!wa?.initData) return setState('notTelegram');
       try {
-        const tokens = await api<AuthTokens>('/auth/telegram', { method: 'POST', body: { initData: wa.initData, gender: g, consents }, auth: false });
-        await signIn(tokens);
-        router.replace(homeFor(await api<Me>('/me')));
+        const t = await api<AuthTokens>('/auth/telegram', { method: 'POST', body: { initData: wa.initData, gender: g, consents }, auth: false });
+        await signIn(t);
+        rememberTelegramUser(telegramUserId());
+        router.replace(homeFor(cachedMe<Me>() ?? (await api<Me>('/me'))));
       } catch (e) {
         if (e instanceof ApiError && e.code === 'signup_required') return setState('signup');
         setError(errorText(e));
@@ -43,8 +45,16 @@ export default function TelegramEntry() {
   );
 
   useEffect(() => {
+    // Bu cihazda aynı Telegram hesabıyla daha önce girildiyse sunucuyu beklemeden son ekrana geç;
+    // oturum arka planda tazelenir (süresi dolmuşsa yenileme belirteci zaten devreye girer).
+    const known = cachedMe<Me>();
+    const tgId = telegramUserId();
+    if (known && tokens.refresh && tgId && tgId === lastTelegramUser()) {
+      router.replace(homeFor(known));
+      return;
+    }
     void loadTelegramSdk().then(() => authenticate());
-  }, [authenticate]);
+  }, [authenticate, router]);
 
   return (
     <>

@@ -11,7 +11,11 @@ export interface MessageActions {
   onEdit?: (m: ChatMessage) => void;
   onDelete?: (m: ChatMessage) => void;
   canEdit?: (m: ChatMessage) => boolean;
+  onRetry?: (m: ListMessage) => void;
 }
+
+/** Sunucu onayı gelmeden ekrana konan mesaj: `pending` yolda, `failed` gönderilemedi. */
+export type ListMessage = ChatMessage & { pending?: boolean; failed?: boolean };
 
 /**
  * Mesaj listesi — katılımcı sohbeti ve salt-okunur veli portalı ortak kullanır.
@@ -24,7 +28,7 @@ export function MessageList({
   actions,
   labels,
 }: {
-  messages: ChatMessage[];
+  messages: ListMessage[];
   mineId: string | null;
   reactions?: readonly string[];
   actions?: MessageActions;
@@ -105,6 +109,7 @@ export function MessageList({
                 'relative max-w-[82%] rounded-2xl px-3.5 py-2 text-[15px] leading-relaxed',
                 mine ? 'rounded-ee-sm bg-bubble' : 'rounded-es-sm bg-surface-alt',
                 (held || rejected) && 'border border-dashed border-warning bg-warning-bg',
+                m.failed && 'border border-dashed border-danger',
               )}
             >
               {m.deleted ? (
@@ -115,6 +120,7 @@ export function MessageList({
               <span className="ms-2 inline-flex translate-y-0.5 items-center gap-1 text-[11px] text-ink-3">
                 {m.editedAt && !m.deleted && t('edited')}
                 {time.time(m.createdAt)}
+                {m.pending && <Icon name="clock" size={11} aria-label={t('sendingNote')} />}
               </span>
             </div>
             {held && (
@@ -123,6 +129,11 @@ export function MessageList({
               </span>
             )}
             {rejected && <span className="mt-1 text-xs text-danger">{t('rejectedNote')}</span>}
+            {m.failed && (
+              <button type="button" onClick={() => actions?.onRetry?.(m)} className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-danger">
+                <Icon name="undo" size={12} /> {t('failedNote')} · {t('retry')}
+              </button>
+            )}
 
             {m.reactions.length > 0 && (
               <div className="-mt-1.5 flex gap-0.5 rounded-full border border-line bg-surface px-1.5 text-sm">
@@ -132,7 +143,7 @@ export function MessageList({
               </div>
             )}
 
-            {actions && !m.deleted && m.state === 'DELIVERED' && (
+            {actions && !m.deleted && !m.pending && !m.failed && m.state === 'DELIVERED' && (
               <div className="mt-1 flex gap-1 opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
                 {!mine &&
                   reactions.map((r) => {

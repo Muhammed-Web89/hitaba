@@ -11,6 +11,7 @@ import { Button, IconButton, Modal, Notice, PageLoader } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
+import { readFeedCard, writeFeedCard } from '@/lib/cache';
 import { useErrorText } from '@/lib/format';
 
 // Yalnızca açıldıklarında indirilir (ilk açılış hafifler).
@@ -55,16 +56,29 @@ function Feed() {
 
   useEffect(() => setFilter(loadFilter()), []);
 
-  const load = useCallback(async (f: FeedFilter, at = 0) => {
-    setCard(undefined);
-    setFavorited(false);
-    const res = await api<{ profile: PublicProfile | null; remaining: number }>('/feed/next', { method: 'POST', body: at ? { ...f, offset: at } : f });
-    setCard(res.profile ? (res as FeedCard) : null);
-    window.scrollTo({ top: 0 });
-  }, []);
+  // Son gösterilen kart cihazda saklanır: açılışta hemen görünür, sonra sunucudan tazelenir.
+  // Fotoğraf bağlantıları kısa ömürlü olduğundan saklanmaz.
+  const scope = `${me?.id}:${JSON.stringify(filter)}`;
+  const load = useCallback(
+    async (f: FeedFilter, at = 0, fromCache = false) => {
+      const cached = fromCache && !at ? readFeedCard<FeedCard>(scope) : undefined;
+      setCard(cached);
+      setFavorited(false);
+      const res = await api<{ profile: PublicProfile | null; remaining: number }>('/feed/next', { method: 'POST', body: at ? { ...f, offset: at } : f });
+      const next = res.profile ? (res as FeedCard) : null;
+      setCard(next);
+      if (!at) writeFeedCard(scope, next && { ...next, profile: { ...next.profile, photoUrls: [] } });
+      if (!cached || cached.profile.userId !== next?.profile.userId) window.scrollTo({ top: 0 });
+    },
+    [scope],
+  );
+  const [first, setFirst] = useState(true);
 
   useEffect(() => {
-    if (filter) void load(filter, offset);
+    if (!filter) return;
+    void load(filter, offset, first);
+    setFirst(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `first` yalnızca ilk yüklemeyi işaretler
   }, [filter, offset, load]);
 
   async function act(kind: 'like' | 'pass') {

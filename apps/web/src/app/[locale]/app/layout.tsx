@@ -14,6 +14,7 @@ import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/lib/auth';
 import { getSocket } from '@/lib/socket';
+import { telegramUserId } from '@/lib/telegram';
 
 const NAV: Array<{ href: string; key: 'feed' | 'likes' | 'chats' | 'profile'; icon: IconName }> = [
   { href: '/app/feed', key: 'feed', icon: 'compass' },
@@ -32,7 +33,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    if (!loading && !signedIn) router.replace('/login');
+    // Telegram içindeyse oturum düştüğünde e-posta girişine değil Telegram girişine dönülür.
+    if (!loading && !signedIn) router.replace(telegramUserId() ? '/tg' : '/login');
     else if (me && me.role !== 'USER') router.replace('/admin');
     else if (me && (me.status === 'ONBOARDING' || me.status === 'REJECTED')) router.replace('/onboarding');
   }, [loading, signedIn, me, router]);
