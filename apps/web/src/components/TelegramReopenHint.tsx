@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Icon } from './icons';
 
 const SEEN_KEY = 'hitaba.tgReopenHintSeen';
-const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'Hitaba_AP_bot';
+const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'HitabaBot';
 
 /**
  * Telegram'da ilk açılışta bir kez: uygulamayı kapattıktan sonra bot sohbetindeki menü düğmesiyle

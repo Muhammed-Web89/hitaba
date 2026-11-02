@@ -33,6 +33,6 @@ export const SITE_VARS: Record<string, number> = {
 
 export const fill = (s: string, vars: Record<string, number | string> = SITE_VARS) => s.replace(/\{(\w+)\}/g, (m, k: string) => String(vars[k] ?? m));
 
-export const TELEGRAM_BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'Hitaba_AP_bot'}`;
+export const TELEGRAM_BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'HitabaBot'}`;
 /** Destek e-postası tanımlıysa alt bilgide ve belgelerde gösterilir. */
 export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? '';

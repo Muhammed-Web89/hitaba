@@ -136,6 +136,16 @@ Tap the button below to begin 👇`,
   ],
 };
 
+/** Eski bot (@Hitaba_AP_bot) kapanmadı: ona yazan herkes yeni bota yönlendirilir. */
+const MOVED_TEXT: Record<string, [string, string]> = {
+  uz: ['Assalomu alaykum! Hitaba yangi manzilga ko‘chdi: @HitabaBot\nHisobingiz va ma’lumotlaringiz o‘z joyida — pastdagi tugmani bosib, davom eting.', 'Hitaba’ga o‘tish'],
+  ru: ['Ассаляму алейкум! Hitaba переехала: @HitabaBot\nВаш аккаунт и данные сохранены — нажмите кнопку ниже, чтобы продолжить.', 'Перейти в Hitaba'],
+  tr: ['Esselâmü aleyküm! Hitaba yeni adresine taşındı: @HitabaBot\nHesabınız ve bilgileriniz yerinde — devam etmek için aşağıdaki düğmeye dokunun.', 'Hitaba’ya geç'],
+  en: ['Assalamu alaykum! Hitaba has moved: @HitabaBot\nYour account and data are safe — tap the button below to continue.', 'Go to Hitaba'],
+  ar: ['السلام عليكم! انتقلت هِتابة إلى: @HitabaBot\nحسابك وبياناتك محفوظة — اضغط الزر أدناه للمتابعة.', 'الانتقال إلى هِتابة'],
+};
+export const BOT_URL = 'https://t.me/HitabaBot';
+
 @Controller('telegram')
 @SkipThrottle()
 export class TelegramWebhookController {
@@ -144,6 +154,24 @@ export class TelegramWebhookController {
     private readonly telegram: TelegramService,
     private readonly notifications: NotificationsService,
   ) {}
+
+  /**
+   * Eski botun webhook'u. Yanıtın kendisi Bot API çağrısıdır (Telegram bunu yürütür),
+   * böylece eski botun token'ı sunucuda tutulmaz.
+   */
+  @Public()
+  @Post('legacy-webhook')
+  @HttpCode(200)
+  legacyWebhook(@Headers('x-telegram-bot-api-secret-token') secret: string | undefined, @Body() update: TelegramUpdate) {
+    if (!env.TELEGRAM_WEBHOOK_SECRET || !secret || !safeEqual(secret, env.TELEGRAM_WEBHOOK_SECRET)) {
+      throw new ForbiddenException();
+    }
+    const chatId = update.message?.chat.id;
+    if (!chatId) return {};
+    const lang = update.message?.from?.language_code?.slice(0, 2) ?? 'en';
+    const [text, label] = MOVED_TEXT[lang] ?? MOVED_TEXT.en;
+    return { method: 'sendMessage', chat_id: chatId, text, reply_markup: { inline_keyboard: [[{ text: label, url: BOT_URL }]] } };
+  }
 
   @Public()
   @Post('webhook')
