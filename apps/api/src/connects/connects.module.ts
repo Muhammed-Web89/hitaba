@@ -62,12 +62,78 @@ interface TelegramUpdate {
   };
 }
 
-const START_TEXT: Record<string, [string, string]> = {
-  uz: ['Assalomu alaykum! Hitaba — nikoh niyatidagi, guvohli va valiy nazoratidagi tanishuv.', 'Hitaba’ni ochish'],
-  ru: ['Ассаляму алейкум! Hitaba — знакомства с намерением никаха, под наблюдением свидетелей и вали.', 'Открыть Hitaba'],
-  tr: ['Esselamü aleyküm! Hitaba — nikah niyetli, şahitli ve veli gözetimli tanışma.', 'Hitaba’yı aç'],
-  en: ['Assalamu alaykum! Hitaba — marriage-minded introductions with witnesses and wali oversight.', 'Open Hitaba'],
-  ar: ['السلام عليكم! هِتابة — تعارف بنية الزواج بحضور الشهود وإشراف الولي.', 'افتح هِتابة'],
+/** /start karşılaması: [mesaj, düğme yazısı, menü düğmesi yazısı]. */
+const START_TEXT: Record<string, [string, string, string]> = {
+  uz: [
+    `Assalomu alaykum va rohmatullohi va barakatuh! 🌿
+
+Hitaba — nikoh niyatidagi musulmon erkak va ayollar uchun tanishuv.
+
+👥 Har bir suhbat guvohlar ishtirokida
+🛡 Valiy suhbatni kuzatib borishi mumkin
+🔒 Ayollarning suratlari faqat ruxsat bilan ko‘rinadi
+✅ Har bir anketa moderator tomonidan tekshiriladi
+
+Boshlash uchun pastdagi tugmani bosing 👇`,
+    'Hitaba’ni ochish',
+    'Ochish',
+  ],
+  ru: [
+    `Ассаляму алейкум ва рахматуллахи ва баракятух! 🌿
+
+Hitaba — знакомства для мусульман и мусульманок с намерением никаха.
+
+👥 Каждый чат — в присутствии свидетелей
+🛡 Вали может следить за перепиской
+🔒 Фото женщин видны только с их разрешения
+✅ Каждую анкету проверяет модератор
+
+Чтобы начать, нажмите кнопку ниже 👇`,
+    'Открыть Hitaba',
+    'Открыть',
+  ],
+  tr: [
+    `Esselâmü aleyküm ve rahmetullâhi ve berakâtüh! 🌿
+
+Hitaba — nikâh niyetiyle tanışmak isteyen Müslüman kadın ve erkekler için.
+
+👥 Her sohbet şahitler huzurunda
+🛡 Veli sohbeti takip edebilir
+🔒 Kadınların fotoğrafı yalnızca izinleriyle görünür
+✅ Her profil moderatör tarafından incelenir
+
+Başlamak için aşağıdaki düğmeye dokunun 👇`,
+    'Hitaba’yı aç',
+    'Aç',
+  ],
+  en: [
+    `Assalamu alaykum wa rahmatullahi wa barakatuh! 🌿
+
+Hitaba is where Muslim men and women meet with the intention of nikah.
+
+👥 Every conversation is witnessed
+🛡 The wali can follow the conversation
+🔒 Women's photos are shown only with their permission
+✅ Every profile is reviewed by a moderator
+
+Tap the button below to begin 👇`,
+    'Open Hitaba',
+    'Open',
+  ],
+  ar: [
+    `السلام عليكم ورحمة الله وبركاته! 🌿
+
+هِتابة — تعارف للمسلمين والمسلمات بنية الزواج.
+
+👥 كل محادثة بحضور شهود
+🛡 يمكن للولي متابعة المحادثة
+🔒 صور النساء لا تظهر إلا بإذنهن
+✅ كل ملف يراجعه مشرف
+
+اضغط الزر أدناه للبدء 👇`,
+    'افتح هِتابة',
+    'فتح',
+  ],
 };
 
 @Controller('telegram')
@@ -107,10 +173,11 @@ export class TelegramWebhookController {
 
     if (update.message?.text?.startsWith('/start')) {
       const lang = update.message.from?.language_code?.slice(0, 2) ?? 'en';
-      const [text, label] = START_TEXT[lang] ?? START_TEXT.en;
-      await this.telegram.sendMessage(String(update.message.chat.id), text, label);
+      const [text, label, menu] = START_TEXT[lang] ?? START_TEXT.en;
+      const chatId = String(update.message.chat.id);
+      await Promise.all([this.telegram.sendMessage(chatId, text, label), this.telegram.setMenuButton(chatId, menu)]);
       // Kayıtlı kullanıcıysa sabitlenmiş durum satırı oluşturulur/güncellenir.
-      const known = await this.connects.userIdByTelegram(String(update.message.chat.id));
+      const known = await this.connects.userIdByTelegram(chatId);
       if (known) await this.notifications.refreshTelegramStatus(known);
     }
     return { ok: true };

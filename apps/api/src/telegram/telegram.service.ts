@@ -1,10 +1,23 @@
-import { Global, Injectable, Logger, Module } from '@nestjs/common';
+import { Global, Injectable, Logger, Module, type OnModuleInit } from '@nestjs/common';
 import { env } from '../config/env';
 
 /** Telegram Bot API için ince istemci. Token yoksa tüm çağrılar sessizce atlanır. */
 @Injectable()
-export class TelegramService {
+export class TelegramService implements OnModuleInit {
   private readonly log = new Logger(TelegramService.name);
+
+  /** Yazı kutusunun solundaki menü düğmesi uygulamayı açsın (komut listesi yerine). */
+  onModuleInit() {
+    if (this.enabled && env.PUBLIC_WEB_URL.startsWith('https://')) void this.setMenuButton(undefined, 'Hitaba');
+  }
+
+  /** `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). */
+  setMenuButton(chatId: string | undefined, label: string) {
+    return this.call('setChatMenuButton', {
+      ...(chatId && { chat_id: chatId }),
+      menu_button: { type: 'web_app', text: label, web_app: { url: `${env.PUBLIC_WEB_URL}/tg` } },
+    });
+  }
 
   get enabled(): boolean {
     return Boolean(env.TELEGRAM_BOT_TOKEN);
