@@ -27,6 +27,12 @@ export class ProfilesController {
     return this.profiles.own(user);
   }
 
+  @Get('profile/preview')
+  @AllowPendingReview()
+  preview(@CurrentUser() user: User) {
+    return this.profiles.previewOwn(user);
+  }
+
   @Put('profile/steps/:step')
   saveStep(@CurrentUser() user: User, @Param('step') step: string, @Body() body: unknown) {
     return this.profiles.saveStep(user, step, body);

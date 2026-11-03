@@ -542,6 +542,18 @@
       "PENDING": "İnceleniyor",
       "APPROVED": "Onaylı",
       "REJECTED": "Değişiklik gerekli"
+    },
+    "preview": {
+      "button": "Profilim nasıl görünüyor?",
+      "buttonHint": "Başkalarının gördüğü haliyle bakın",
+      "title": "Profilim nasıl görünüyor",
+      "bannerMale": "Kadınlar profilinizi böyle görür",
+      "bannerFemale": "Erkekler profilinizi böyle görür",
+      "photosFemale": "Fotoğraflarınız erkeklere gösterilmez. Karşılıklı ilgiden sonra yalnızca sizin izninizle ve tek seferlik açılır.",
+      "photosMaleShown": "Fotoğraflarınız akışta görünüyor.",
+      "photosMaleHidden": "Fotoğraflarınız akışta gizli; kadınlar onları karşılıklı ilgiden sonra görür.",
+      "changeInSettings": "Ayarlardan değiştir",
+      "edit": "Profili düzenle"
     }
   },
   "settings": {

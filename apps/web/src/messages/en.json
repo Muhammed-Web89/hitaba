@@ -542,6 +542,18 @@
       "PENDING": "Under review",
       "APPROVED": "Approved",
       "REJECTED": "Needs changes"
+    },
+    "preview": {
+      "button": "How does my profile look?",
+      "buttonHint": "See it the way others do",
+      "title": "How my profile looks",
+      "bannerMale": "This is how sisters see your profile",
+      "bannerFemale": "This is how brothers see your profile",
+      "photosFemale": "Your photos are not shown to brothers. After mutual interest they open only with your permission, and only once.",
+      "photosMaleShown": "Your photos are shown in the feed.",
+      "photosMaleHidden": "Your photos are hidden in the feed; sisters see them after mutual interest.",
+      "changeInSettings": "Change in settings",
+      "edit": "Edit profile"
     }
   },
   "settings": {

@@ -208,6 +208,20 @@ export class ProfilesService implements OnModuleInit {
     return this.toPublic(viewer, target);
   }
 
+  /**
+   * "Profilim nasıl görünüyor": karşı cinsten, henüz eşleşmesi olmayan birinin göreceği hal.
+   * Görünürlük o kişiye göre hesaplanır; görünen fotoğraflar sahibinin kendi adına imzalanır
+   * (fotoğraf ucu gerçek bir görüntüleyen ister).
+   */
+  async previewOwn(user: User): Promise<{ profile: PublicProfile; photosVisible: boolean }> {
+    const target = await this.prisma.user.findUniqueOrThrow({ where: { id: user.id }, include: { profile: true } });
+    if (!target.profile) throw new NotFoundException();
+    const stranger = { id: 'preview', role: 'USER' as const, gender: user.gender === 'MALE' ? ('FEMALE' as const) : ('MALE' as const) };
+    const profile = await this.toPublic(stranger, target);
+    const photosVisible = profile.photoUrls.length > 0;
+    return { profile: { ...profile, photoUrls: photosVisible ? await this.photos.urlsFor(user, user.id) : [] }, photosVisible };
+  }
+
   async toPublic(viewer: Pick<User, 'id' | 'role' | 'gender'>, target: UserWithProfile): Promise<PublicProfile> {
     const p = target.profile!;
     const age = p.birthDate ? ageFromBirthDate(p.birthDate) : RULES.minAge;

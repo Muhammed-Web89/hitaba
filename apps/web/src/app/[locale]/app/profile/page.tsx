@@ -43,6 +43,20 @@ export default function MyProfilePage() {
         </div>
       </div>
 
+      <Link
+        href="/app/profile/preview"
+        className="glass glow mt-4 flex items-center gap-3 rounded-card border border-accent/40 px-4 py-3 transition-colors hover:bg-surface-alt"
+      >
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-accent">
+          <Icon name="eye" size={20} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">{t('preview.button')}</span>
+          <span className="block text-xs text-ink-3">{t('preview.buttonHint')}</span>
+        </span>
+        <Icon name="forward" size={18} className="flip-rtl text-ink-3" />
+      </Link>
+
       {p.moderationStatus === 'PENDING' && me.status === 'APPROVED' && (
         <div className="mt-4">
           <Notice icon="clock">{t('remoderation')}</Notice>

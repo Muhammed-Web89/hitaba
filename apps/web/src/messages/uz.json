@@ -542,6 +542,18 @@
       "PENDING": "Tekshirilmoqda",
       "APPROVED": "Tasdiqlangan",
       "REJECTED": "Oʻzgartirish kerak"
+    },
+    "preview": {
+      "button": "Anketam qanday koʻrinadi?",
+      "buttonHint": "Boshqalar koʻradigan holatda koʻring",
+      "title": "Anketam qanday koʻrinadi",
+      "bannerMale": "Ayollar anketangizni shunday koʻradi",
+      "bannerFemale": "Erkaklar anketangizni shunday koʻradi",
+      "photosFemale": "Suratlaringiz erkaklarga koʻrsatilmaydi. Oʻzaro qiziqishdan soʻng faqat sizning ruxsatingiz bilan va bir marta ochiladi.",
+      "photosMaleShown": "Suratlaringiz lentada koʻrinadi.",
+      "photosMaleHidden": "Suratlaringiz lentada yashirin; ayollar ularni oʻzaro qiziqishdan soʻng koʻradi.",
+      "changeInSettings": "Sozlamalarda oʻzgartirish",
+      "edit": "Anketani tahrirlash"
     }
   },
   "settings": {
