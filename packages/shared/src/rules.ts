@@ -19,7 +19,9 @@ export const RULES = {
    */
   photoViewLoadSeconds: 60,
 
-  maleDailyFreeLikes: 10,
+  /** Günlük beğeni hakkı; geri alınan beğeni o günün hakkını geri vermez. */
+  maleDailyFreeLikes: 15,
+  femaleDailyLikes: 5,
 
   maxWitnesses: 2,
 

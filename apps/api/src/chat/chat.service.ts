@@ -191,6 +191,15 @@ export class ChatService implements OnModuleInit {
         .filter((u) => u !== closedById)
         .map((u) => this.notifications.notify(u, 'chat_closed', { chatId: chat.id, reason })),
     );
+    await this.releaseHeldLikes(chat.match.femaleId);
+  }
+
+  /** Kadının açık sohbeti kalmadıysa, sohbet sürerken bekletilen beğeniler ona iletilir (tek toplu bildirim). */
+  private async releaseHeldLikes(femaleId: string) {
+    const open = await this.prisma.chat.count({ where: { status: { in: [...OPEN_STATUSES] }, match: { femaleId } } });
+    if (open) return;
+    const { count } = await this.prisma.like.updateMany({ where: { toId: femaleId, held: true }, data: { held: false } });
+    if (count) await this.notifications.notify(femaleId, 'likes_released', { count });
   }
 
   /** Ban: kullanıcının tüm açık sohbetleri kapanır; karşı taraf açtıysa ona iade yapılır. */

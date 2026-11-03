@@ -69,7 +69,7 @@ const uz: SiteContent = {
     pricingTitle: 'Oddiy va halol narxlar',
     pricingLead: 'Muhim narsalarning hammasi bepul. Erkaklar faqat suhbat ochish uchun toʻlaydi — Telegram yulduzlari bilan, Telegram ichida.',
     freeTitle: 'Hamma uchun bepul',
-    free: ['Anketa va moderatsiya', 'Koʻrish va filtrlar', 'Yoqtirishlar (erkaklar: kuniga {likes} ta)', 'Guvohlar va valiy havolasi', 'Ochiq suhbatdagi barcha xabarlar'],
+    free: ['Anketa va moderatsiya', 'Koʻrish va filtrlar', 'Yoqtirishlar (kuniga: erkaklar {likes}, ayollar {femaleLikes} ta)', 'Guvohlar va valiy havolasi', 'Ochiq suhbatdagi barcha xabarlar'],
     connectsTitle: 'Erkaklar uchun tangalar',
     connectsNote: '1 tanga = 1 suhbat. Tangalarning muddati tugamaydi va boshqaga oʻtkazilmaydi.',
     perConnect: 'tanga',
@@ -152,7 +152,7 @@ const uz: SiteContent = {
         id: 'matching',
         title: 'Yoqtirishlar va tanishuvlar',
         items: [
-          { title: 'Kunlik yoqtirishlar', text: 'Erkaklarda kuniga {likes} ta bepul yoqtirish bor; hisob oʻz vaqt mintaqasida yarim tunda yangilanadi. Ayollar uchun cheklov yoʻq.', tag: 'info' },
+          { title: 'Kunlik yoqtirishlar', text: 'Erkaklarda kuniga {likes} ta, ayollarda {femaleLikes} ta yoqtirish bor; hisob oʻz vaqt mintaqangiz boʻyicha yarim tunda yangilanadi. Qaytarib olingan yoqtirish oʻsha kungi limitni qaytarmaydi.', tag: 'info' },
           { title: 'Sizni kim yoqtirdi', text: 'Kimdir sizni yoqtirsa, bildirishnoma olasiz; uni “Meni yoqtirganlar”da koʻrasiz va siz ham yoqtirishingiz mumkin.', tag: 'info' },
           { title: 'Yoqtirishni qaytarib olish', text: 'Javob olmagan yoqtirishni istalgan payt qaytarib olish mumkin. Bugun ishlatilgan yoqtirish kunlik limitga qaytmaydi.', tag: 'allowed' },
           { title: 'Oʻzaro qiziqish', text: 'Ikki tomon bir-birini yoqtirsa, tanishuv boshlanadi. Shundan soʻng ayol erkakning suratini koʻrib, qaror qiladi.', tag: 'info' },
@@ -178,6 +178,7 @@ const uz: SiteContent = {
         title: 'Suhbat muddatlari va cheklovlar',
         items: [
           { title: 'Ayol uchun bir vaqtda bitta suhbat', text: 'Ayolning faqat bitta faol suhbati boʻlishi mumkin. U suhbatdaligida boshqalar uning band ekanini koʻrishi mumkin.', tag: 'info' },
+          { title: 'Suhbat paytida yoqtirish bildirishnomasi kelmaydi', text: 'Ayol biror kishi bilan suhbatdaligida boshqa erkaklarning yoqtirishlari unga koʻrsatilmaydi; suhbat tugasa, yetkaziladi. Uni yoqtirmoqchi boʻlgan erkak bu haqda oldindan ogohlantiriladi.', tag: 'info' },
           { title: 'Jimlik eslatmalari', text: '{remind1} soat hech kim yozmasa, ikki tomonga eslatma boradi; {remind2} soatda yana bir marta.', tag: 'info' },
           { title: 'Avtomatik yopilish', text: '{close} soat davomida xabar yozilmagan suhbat oʻz-oʻzidan yopiladi.', tag: 'info' },
           { title: 'Bir marta qayta ochish', text: 'Jimlik sababli yoki erkakning oʻzi yopgan suhbatni erkak bir marta, {chatCost} ta tanga evaziga qayta ochishi mumkin. Ayol yoki moderator yopgan boʻlsa, qayta ochilmaydi.', tag: 'info' },
@@ -263,7 +264,7 @@ const uz: SiteContent = {
       {
         title: 'Erkaklar uchun',
         items: [
-          { q: 'Kunlik yoqtirish limiti nega bor?', a: 'Kuniga {likes} ta yoqtirish hammani yoqtirish oʻrniga anketalarni diqqat bilan oʻqishga undaydi.' },
+          { q: 'Kunlik yoqtirish limiti nega bor?', a: 'Erkaklar uchun kuniga {likes} ta, ayollar uchun {femaleLikes} ta yoqtirish hammani yoqtirish oʻrniga anketalarni diqqat bilan oʻqishga undaydi.' },
           { q: 'Suhbat ochish nega pullik?', a: 'Kichik toʻlov jiddiy boʻlmaganlarni saralaydi va ayollarni himoya qiladi. Birinchi suhbatingiz bepul — yangi hisoblarga {welcome} ta tanga beriladi.' },
           { q: 'Suhbat yopilsa, tangam nima boʻladi?', a: 'Suhbatni moderator yopsa, ayol bloklansa yoki hisobini oʻchirsa, tanga avtomatik qaytariladi.' },
           { q: 'Uning suratini keyin yana koʻra olamanmi?', a: 'Har bir koʻrish uning ruxsatini talab qiladi. Tanishuv sahifasida “Qayta koʻrish uchun ruxsat soʻrash”ni bosing; unga bildirishnoma boradi va u qaror qiladi.' },

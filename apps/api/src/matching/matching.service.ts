@@ -86,20 +86,23 @@ export class MatchingService {
 
   async like(viewer: User, targetId: string) {
     const target = await this.assertCandidate(viewer, targetId);
-    if (viewer.gender === 'MALE') {
-      const left = await this.profiles.likesLeftToday(viewer);
-      if (!left) throw new ForbiddenException({ error: 'daily_like_limit' });
-    }
+    const [left, alreadyLiked, busy] = await Promise.all([
+      this.profiles.likesLeftToday(viewer),
+      this.prisma.like.findUnique({ where: { fromId_toId: { fromId: viewer.id, toId: target.id } } }),
+      // Kadın başka biriyle sohbetteyse beğeni bekletilir: bildirim gitmez, sohbet bitince iletilir.
+      target.gender === 'FEMALE' ? this.profiles.isBusy(target.id) : Promise.resolve(false),
+    ]);
+    if (!left && !alreadyLiked) throw new ForbiddenException({ error: 'daily_like_limit' });
 
-    const alreadyLiked = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: viewer.id, toId: target.id } } });
     await this.prisma.$transaction([
       this.prisma.pass.deleteMany({ where: { fromId: viewer.id, toId: target.id } }),
       this.prisma.like.upsert({
         where: { fromId_toId: { fromId: viewer.id, toId: target.id } },
-        create: { fromId: viewer.id, toId: target.id },
+        create: { fromId: viewer.id, toId: target.id, held: busy },
         update: {},
       }),
     ]);
+    const held = alreadyLiked ? alreadyLiked.held : busy;
 
     const reciprocal = await this.prisma.like.findUnique({
       where: { fromId_toId: { fromId: target.id, toId: viewer.id } },
@@ -116,14 +119,15 @@ export class MatchingService {
       await Promise.all([
         this.notifications.notify(maleId, 'mutual_match', { matchId }),
         // Kadın için karşılıklı ilgi = erkek fotoğrafını görmek istiyor; karar onda.
-        this.notifications.notify(femaleId, 'photo_view_first_request', { matchId }),
+        // Sohbetteyse bu da bekletilir (sohbet bitince toplu bildirimde sayılır).
+        held ? null : this.notifications.notify(femaleId, 'photo_view_first_request', { matchId }),
       ]);
-    } else if (!alreadyLiked && !(await this.recentlyNotified(viewer.id, target.id))) {
+    } else if (!alreadyLiked && !held && !(await this.recentlyNotified(viewer.id, target.id))) {
       // Tek taraflı yeni beğeni: karşı taraf "Beni beğenenler"de görür. Geri alıp yeniden beğenmek
       // 7 gün içinde ikinci bildirim üretmez (bildirim yağmuru olmasın).
       await this.notifications.notify(target.id, 'new_like', { fromId: viewer.id });
     }
-    return { mutual: Boolean(reciprocal), matchId, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
+    return { mutual: Boolean(reciprocal), matchId, held, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
   }
 
   private async recentlyNotified(fromId: string, toId: string): Promise<boolean> {
@@ -160,8 +164,8 @@ export class MatchingService {
     const todays = likes.filter((l) => l.createdAt >= today);
     await this.prisma.$transaction([
       this.prisma.like.deleteMany({ where: { fromId: viewer.id, toId: { in: likes.map((l) => l.toId) } } }),
-      // Erkeğin bugün harcadığı hak iade edilmez (bkz. ProfilesService.likesLeftToday); eski beğeniler etkilemez.
-      ...(viewer.gender === 'MALE' && todays.length ? [this.prisma.likeWithdrawal.createMany({ data: todays.map(() => ({ userId: viewer.id })) })] : []),
+      // Bugün harcanan hak iade edilmez (bkz. ProfilesService.likesLeftToday); eski beğeniler etkilemez.
+      ...(todays.length ? [this.prisma.likeWithdrawal.createMany({ data: todays.map(() => ({ userId: viewer.id })) })] : []),
     ]);
   }
 
@@ -218,6 +222,7 @@ export class MatchingService {
     const rows = await this.prisma.like.findMany({
       where: {
         toId: viewer.id,
+        held: false,
         from: { role: 'USER', status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } } },
       },
       include: { from: { include: { profile: true } } },

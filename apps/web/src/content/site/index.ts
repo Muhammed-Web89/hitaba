@@ -17,6 +17,7 @@ export function getSite(locale: string): SiteContent {
 /** Metinlerdeki {yer tutucu}lar — rakamlar tek kaynaktan (@hitaba/shared) gelir, metne elle yazılmaz. */
 export const SITE_VARS: Record<string, number> = {
   likes: RULES.maleDailyFreeLikes,
+  femaleLikes: RULES.femaleDailyLikes,
   chatCost: RULES.chatOpenCost,
   welcome: RULES.welcomeConnects,
   witnesses: RULES.maxWitnesses,

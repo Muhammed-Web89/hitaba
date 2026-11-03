@@ -69,7 +69,7 @@ const en: SiteContent = {
     pricingTitle: 'Simple, honest pricing',
     pricingLead: 'Everything that matters is free. Brothers pay only to open a chat — paid with Telegram Stars, inside Telegram.',
     freeTitle: 'Free for everyone',
-    free: ['Profile and moderation', 'Browsing and filters', 'Likes (brothers: {likes} a day)', 'Witnesses and wali link', 'Messages inside an open chat'],
+    free: ['Profile and moderation', 'Browsing and filters', 'Likes (a day: brothers {likes}, sisters {femaleLikes})', 'Witnesses and wali link', 'Messages inside an open chat'],
     connectsTitle: 'Connects for brothers',
     connectsNote: '1 connect = 1 chat. Connects never expire and cannot be transferred.',
     perConnect: 'connect',
@@ -152,7 +152,7 @@ const en: SiteContent = {
         id: 'matching',
         title: 'Likes and matches',
         items: [
-          { title: 'Daily likes', text: 'Brothers have {likes} free likes a day; the counter resets at midnight in their time zone. Sisters have no limit.', tag: 'info' },
+          { title: 'Daily likes', text: 'Brothers have {likes} likes a day and sisters {femaleLikes}; the counter resets at midnight in your time zone. Withdrawing a like does not give that day’s like back.', tag: 'info' },
           { title: 'Who liked you', text: 'You are notified when someone likes you, and you can see them in “Liked me” and like them back.', tag: 'info' },
           { title: 'Taking a like back', text: 'A like that has not been answered can be taken back at any time. A like already used today is not returned to the daily limit.', tag: 'allowed' },
           { title: 'Mutual interest', text: 'When both sides like each other, a match is formed. The sister then sees the brother’s photo and decides.', tag: 'info' },
@@ -178,6 +178,7 @@ const en: SiteContent = {
         title: 'Chat timing and limits',
         items: [
           { title: 'One chat at a time for sisters', text: 'A sister can have only one active chat. While she is chatting, others may see that she is busy.', tag: 'info' },
+          { title: 'No like notifications during a chat', text: 'While a sister is in a chat, likes from other brothers are not shown to her; they are passed on if the chat ends. A brother who wants to like her is told this first.', tag: 'info' },
           { title: 'Silence reminders', text: 'If no one writes for {remind1} hours, both sides are reminded; again after {remind2} hours.', tag: 'info' },
           { title: 'Automatic closing', text: 'A chat with no messages for {close} hours closes automatically.', tag: 'info' },
           { title: 'Reopening once', text: 'A chat closed by silence, or closed by the brother himself, can be reopened by him once for {chatCost} connect. If she or a moderator closed it, it cannot be reopened.', tag: 'info' },
@@ -263,7 +264,7 @@ const en: SiteContent = {
       {
         title: 'For brothers',
         items: [
-          { q: 'Why is there a daily like limit?', a: '{likes} likes a day encourage you to read profiles carefully instead of liking everyone.' },
+          { q: 'Why is there a daily like limit?', a: '{likes} likes a day for brothers and {femaleLikes} for sisters encourage reading profiles carefully instead of liking everyone.' },
           { q: 'Why do I have to pay to open a chat?', a: 'A small cost filters out people who are not serious and keeps sisters safe. Your first chat is free — new accounts receive {welcome} connect.' },
           { q: 'What happens to my connect if the chat closes?', a: 'If a moderator closes the chat, or the sister is blocked or deletes her account, the connect is refunded automatically.' },
           { q: 'Can I see her photo again later?', a: 'Each viewing needs her permission. Tap “Ask to see it again” in the match; she gets a notification and decides.' },

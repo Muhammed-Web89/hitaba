@@ -12,6 +12,7 @@ export type NotificationType =
   | 'profile_rejected'
   | 'photo_rejected'
   | 'new_like'
+  | 'likes_released'
   | 'mutual_match'
   | 'photo_approved'
   | 'photo_view_first_request'
@@ -34,6 +35,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     profile_approved: 'Profilingiz tasdiqlandi. Endi anketlarni ko‘rishingiz mumkin.',
     profile_rejected: 'Profilingiz moderatsiyadan o‘tmadi. Iltimos, ilovada tafsilotlarni ko‘ring.',
     new_like: 'Sizni kimdir yoqtirdi. Kimligini «Qiziqish» boʻlimida koʻring.',
+    likes_released: 'Suhbatingiz davomida sizni yoqtirganlar bor. Ularni «Qiziqish» boʻlimida koʻring.',
     photo_view_requested: 'Sizdan suratingizni yana bir bor koʻrish uchun ruxsat soʻrashdi.',
     photo_view_granted: 'Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.',
     photo_view_declined: 'Suratni qayta koʻrish soʻrovi rad etildi.',
@@ -51,6 +53,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     profile_approved: 'Ваш профиль одобрен. Теперь вы можете смотреть анкеты.',
     profile_rejected: 'Профиль не прошёл модерацию. Подробности — в приложении.',
     new_like: 'Вы кому-то понравились. Посмотрите в разделе «Интерес».',
+    likes_released: 'Пока шёл ваш чат, вы понравились другим. Посмотрите в разделе «Интерес».',
     photo_view_requested: 'Вас просят разрешить ещё раз посмотреть ваше фото.',
     photo_view_granted: 'Разрешение получено — фото можно открыть один раз.',
     photo_view_declined: 'Запрос на повторный просмотр фото отклонён.',
@@ -68,6 +71,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     profile_approved: 'Profiliniz onaylandı. Artık profilleri görebilirsiniz.',
     profile_rejected: 'Profiliniz moderasyondan geçmedi. Ayrıntılar uygulamada.',
     new_like: 'Biri sizi beğendi. Kim olduğunu “İlgi” bölümünde görün.',
+    likes_released: 'Sohbetiniz sürerken sizi beğenenler oldu. “İlgi” bölümünde görün.',
     photo_view_requested: 'Fotoğrafınızı bir kez daha görmek için izin istendi.',
     photo_view_granted: 'Fotoğraf izni verildi — bir kez açabilirsiniz.',
     photo_view_declined: 'Fotoğrafı tekrar görme isteğiniz reddedildi.',
@@ -85,6 +89,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     profile_approved: 'Your profile is approved. You can now browse profiles.',
     profile_rejected: 'Your profile did not pass moderation. See details in the app.',
     new_like: 'Someone liked you. See who in the “Interest” tab.',
+    likes_released: 'While your chat was open, others liked you. See them in the “Interest” tab.',
     photo_view_requested: 'Someone asked to see your photo once more.',
     photo_view_granted: 'Photo access granted — you can open it once.',
     photo_view_declined: 'Your request to see the photo again was declined.',
@@ -102,6 +107,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     profile_approved: 'تمت الموافقة على ملفك. يمكنك الآن تصفح الملفات.',
     profile_rejected: 'لم يجتز ملفك المراجعة. التفاصيل في التطبيق.',
     new_like: 'أُعجب بك أحدهم. اطّلع عليه في قسم «الاهتمام».',
+    likes_released: 'أُعجب بك آخرون أثناء محادثتك. اطّلع عليهم في قسم «الاهتمام».',
     photo_view_requested: 'طُلب منك السماح برؤية صورتك مرة أخرى.',
     photo_view_granted: 'تم منح الإذن — يمكنك فتح الصورة مرة واحدة.',
     photo_view_declined: 'رُفض طلبك لرؤية الصورة مرة أخرى.',
@@ -163,7 +169,7 @@ export class NotificationsService {
       if (!user?.telegramId || user.role !== 'USER' || !this.telegram.enabled) return;
       const mine = user.gender === 'MALE' ? { maleId: user.id } : { femaleId: user.id };
       const [likedMe, matches, chats, unread] = await Promise.all([
-        this.prisma.like.count({ where: { toId: user.id, from: { status: 'APPROVED', likesReceived: { none: { fromId: user.id } } } } }),
+        this.prisma.like.count({ where: { toId: user.id, held: false, from: { status: 'APPROVED', likesReceived: { none: { fromId: user.id } } } } }),
         this.prisma.match.count({ where: { ...mine, stage: { not: 'CLOSED' } } }),
         this.prisma.chat.count({ where: { status: { in: ['ACTIVE', 'PAUSED'] }, match: mine } }),
         this.prisma.notification.count({ where: { userId: user.id, readAt: null } }),

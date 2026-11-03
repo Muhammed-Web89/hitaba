@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { RULES, type FeedCard, type FeedFilter, type PublicProfile } from '@hitaba/shared/client';
+import { BusyLikeDialog } from '@/components/BusyLikeDialog';
 import { Icon } from '@/components/icons';
 import { ProfileCard } from '@/components/ProfileView';
 import { StatusGate } from '@/components/StatusGate';
@@ -50,6 +51,7 @@ function Feed() {
   const [favorited, setFavorited] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
+  const [busyAsk, setBusyAsk] = useState(false);
   // İnceleme bekleyen kullanıcı salt okunur gezinir: beğenemez, sıra kaydırmayla ilerler.
   const readOnly = me?.status === 'PENDING_MODERATION';
   const [offset, setOffset] = useState(0);
@@ -81,8 +83,11 @@ function Feed() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `first` yalnızca ilk yüklemeyi işaretler
   }, [filter, offset, load]);
 
-  async function act(kind: 'like' | 'pass') {
+  async function act(kind: 'like' | 'pass', confirmed = false) {
     if (!card) return;
+    // Başka biriyle sohbetteki kadına beğeni: önce uyar (beğeni bekletilir, sohbet bitince iletilir).
+    if (kind === 'like' && card.profile.busy && !confirmed) return setBusyAsk(true);
+    setBusyAsk(false);
     setBusy(true);
     setError(null);
     try {
@@ -129,7 +134,8 @@ function Feed() {
   };
 
   const isMale = me?.gender === 'MALE';
-  const outOfLikes = isMale && me.likesLeftToday === 0;
+  const outOfLikes = me?.likesLeftToday === 0;
+  const dailyLikes = isMale ? RULES.maleDailyFreeLikes : RULES.femaleDailyLikes;
   const activeFilters = filter ? countActive(filter) : 0;
 
   return (
@@ -231,7 +237,7 @@ function Feed() {
               <Icon name="x" size={22} />
             </button>
             <span className="px-2 text-center text-xs font-semibold text-ink-3">
-              {isMale ? t('likesLeftShort', { n: me.likesLeftToday ?? 0, max: RULES.maleDailyFreeLikes }) : t('remaining', { n: card.remaining })}
+              {t('likesLeftShort', { n: me?.likesLeftToday ?? 0, max: dailyLikes })}
             </span>
             <button
               type="button"
@@ -246,6 +252,7 @@ function Feed() {
         </div>
       )}
 
+      <BusyLikeDialog open={busyAsk} onClose={() => setBusyAsk(false)} onConfirm={() => act('like', true)} loading={busy} />
       <Modal
         open={!!mutual}
         onClose={() => setMutual(null)}

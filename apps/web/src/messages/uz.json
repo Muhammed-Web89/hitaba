@@ -616,7 +616,8 @@
       "photo_view_requested": "Suratingizni yana bir bor koʻrish uchun ruxsat soʻramoqda. Qaror sizda.",
       "photo_view_granted": "Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.",
       "photo_view_declined": "Suratni qayta koʻrish soʻrovingiz rad etildi.",
-      "photo_view_first_request": "Bir erkak suratingizni koʻrmoqchi. Avval uning suratini koʻrib, qaror qiling."
+      "photo_view_first_request": "Bir erkak suratingizni koʻrmoqchi. Avval uning suratini koʻrib, qaror qiling.",
+      "likes_released": "Suhbatingiz davomida {count} kishi sizni yoqtirdi. Koʻrish uchun bosing."
     }
   },
   "portal": {
@@ -1046,5 +1047,16 @@
       "MALAY": "Malay",
       "INDONESIAN": "Indonez"
     }
+  },
+  "busyLike": {
+    "title": "Hozir u suhbatda",
+    "text": "Bu opa-singlimiz hozir guvohlar ishtirokida boshqa birov bilan tanishmoqda va bu vaqtda yoqtirish bildirishnomalarini olmaydi. Yoqtirishingiz saqlanadi va suhbat tugasa, unga yetkaziladi. Baribir yoqtirasizmi?",
+    "stepsLabel": "Yoqtirishingiz yoʻli",
+    "step1": "Yoqtirish saqlanadi",
+    "step2": "Suhbat tugasa",
+    "step3": "Unga yetkaziladi",
+    "note": "Bu yoqtirish bugungi limitingizdan hisoblanadi.",
+    "confirm": "Baribir yoqtirish",
+    "cancel": "Hozir emas"
   }
 }

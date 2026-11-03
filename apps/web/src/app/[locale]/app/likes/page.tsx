@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { MatchSummary, PublicProfile } from '@hitaba/shared/client';
+import { BusyLikeDialog } from '@/components/BusyLikeDialog';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
 import { ProfileAvatar } from '@/components/ProfileView';
@@ -67,10 +68,14 @@ function ReceivedList() {
   const { data, mutate } = useSWR<PublicProfile[]>('/likes?tab=received');
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [busyAsk, setBusyAsk] = useState<string | null>(null);
   if (!data) return <PageLoader />;
   if (!data.length) return <EmptyState icon="heart" title={t('emptyReceived')} text={t('emptyReceivedText')} />;
 
-  async function likeBack(userId: string) {
+  async function likeBack(userId: string, confirmed = false) {
+    // Kadın şu an başka biriyle sohbetteyse önce uyar.
+    if (!confirmed && data!.find((p) => p.userId === userId)?.busy) return setBusyAsk(userId);
+    setBusyAsk(null);
     setBusy(userId);
     setError(null);
     try {
@@ -121,6 +126,7 @@ function ReceivedList() {
           </li>
         ))}
       </ul>
+      <BusyLikeDialog open={!!busyAsk} onClose={() => setBusyAsk(null)} onConfirm={() => busyAsk && likeBack(busyAsk, true)} loading={!!busy} />
     </>
   );
 }

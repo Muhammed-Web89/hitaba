@@ -616,7 +616,8 @@
       "photo_view_requested": "Fotoğrafınızı bir kez daha görmek için izin istiyor. Karar sizde.",
       "photo_view_granted": "Fotoğraf izni verildi — bir kez açabilirsiniz.",
       "photo_view_declined": "Fotoğrafı tekrar görme isteğiniz reddedildi.",
-      "photo_view_first_request": "Bir erkek fotoğrafınızı görmek istiyor. Önce onun fotoğrafına bakıp karar verin."
+      "photo_view_first_request": "Bir erkek fotoğrafınızı görmek istiyor. Önce onun fotoğrafına bakıp karar verin.",
+      "likes_released": "Sohbetiniz sürerken {count} kişi sizi beğendi. Görmek için dokunun."
     }
   },
   "portal": {
@@ -1046,5 +1047,16 @@
       "MALAY": "Malay",
       "INDONESIAN": "Endonezyalı"
     }
+  },
+  "busyLike": {
+    "title": "Şu an bir tanışma sohbetinde",
+    "text": "Bu kardeşimiz şu anda başka biriyle şahitler huzurunda tanışıyor ve bu süre içinde beğeni bildirimi almıyor. Beğeniniz saklanır; sohbeti biterse kendisine iletilir. Yine de beğenmek ister misiniz?",
+    "stepsLabel": "Beğeninizin yolu",
+    "step1": "Beğeniniz saklanır",
+    "step2": "Sohbeti biterse",
+    "step3": "Kendisine iletilir",
+    "note": "Bu beğeni bugünkü hakkınızdan düşer.",
+    "confirm": "Yine de beğen",
+    "cancel": "Vazgeç"
   }
 }

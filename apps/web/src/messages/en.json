@@ -616,7 +616,8 @@
       "photo_view_requested": "He asks for permission to see your photo once more. It’s your decision.",
       "photo_view_granted": "Photo access granted — you can open it once.",
       "photo_view_declined": "Your request to see the photo again was declined.",
-      "photo_view_first_request": "A man wants to see your photo. Look at his photo first, then decide."
+      "photo_view_first_request": "A man wants to see your photo. Look at his photo first, then decide.",
+      "likes_released": "{count, plural, one {# person} other {# people}} liked you while your chat was open. Tap to see."
     }
   },
   "portal": {
@@ -1046,5 +1047,16 @@
       "MALAY": "Malay",
       "INDONESIAN": "Indonesian"
     }
+  },
+  "busyLike": {
+    "title": "She is in a conversation right now",
+    "text": "This sister is currently getting to know someone, with witnesses present, and doesn’t receive like notifications during this time. Your like will be kept and passed on to her if that conversation ends. Would you still like to send it?",
+    "stepsLabel": "What happens to your like",
+    "step1": "Your like is kept",
+    "step2": "If the chat ends",
+    "step3": "She is notified",
+    "note": "This like counts toward today’s limit.",
+    "confirm": "Like anyway",
+    "cancel": "Not now"
   }
 }

@@ -86,14 +86,14 @@ export class ProfilesService implements OnModuleInit {
   }
 
   async likesLeftToday(user: User): Promise<number | null> {
-    if (user.gender === 'FEMALE') return null;
     const since = startOfLocalDay(user.timezone);
     // Bugün geri alınan beğeniler de sayılır: beğen/geri al döngüsüyle sınır aşılamaz.
     const [likes, withdrawn] = await Promise.all([
       this.prisma.like.count({ where: { fromId: user.id, createdAt: { gte: since } } }),
       this.prisma.likeWithdrawal.count({ where: { userId: user.id, createdAt: { gte: since } } }),
     ]);
-    return Math.max(0, RULES.maleDailyFreeLikes - likes - withdrawn);
+    const limit = user.gender === 'FEMALE' ? RULES.femaleDailyLikes : RULES.maleDailyFreeLikes;
+    return Math.max(0, limit - likes - withdrawn);
   }
 
   async own(user: User): Promise<OwnProfile> {

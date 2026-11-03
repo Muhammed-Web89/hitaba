@@ -280,6 +280,8 @@ model Like {
   from      User     @relation("likeFrom", fields: [fromId], references: [id], onDelete: Cascade)
   to        User     @relation("likeTo", fields: [toId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  /// Kadın başka biriyle sohbetteyken gelen beğeni: ona bildirilmez, listesinde görünmez; sohbet bitince serbest kalır.
+  held      Boolean  @default(false)
 
   @@id([fromId, toId])
   @@index([toId])

@@ -69,7 +69,7 @@ const tr: SiteContent = {
     pricingTitle: 'Sade ve dürüst fiyatlar',
     pricingLead: 'Önemli olan her şey ücretsiz. Erkekler yalnızca sohbet açmak için ödeme yapar — Telegram Yıldızları ile, Telegram içinde.',
     freeTitle: 'Herkes için ücretsiz',
-    free: ['Profil ve moderasyon', 'Göz atma ve filtreler', 'Beğeniler (erkekler: günde {likes})', 'Şahitler ve veli bağlantısı', 'Açık sohbet içindeki tüm mesajlar'],
+    free: ['Profil ve moderasyon', 'Göz atma ve filtreler', 'Beğeniler (günde erkekler {likes}, kadınlar {femaleLikes})', 'Şahitler ve veli bağlantısı', 'Açık sohbet içindeki tüm mesajlar'],
     connectsTitle: 'Erkekler için jetonlar',
     connectsNote: '1 jeton = 1 sohbet. Jetonların süresi dolmaz, başkasına devredilemez.',
     perConnect: 'jeton',
@@ -152,7 +152,7 @@ const tr: SiteContent = {
         id: 'matching',
         title: 'Beğeniler ve eşleşmeler',
         items: [
-          { title: 'Günlük beğeni', text: 'Erkeklerin günde {likes} ücretsiz beğenisi vardır; sayaç kendi saat dilimlerinde gece yarısı yenilenir. Kadınlar için sınır yoktur.', tag: 'info' },
+          { title: 'Günlük beğeni', text: 'Erkeklerin günde {likes}, kadınların {femaleLikes} beğenisi vardır; sayaç kendi saat diliminizde gece yarısı yenilenir. Geri alınan beğeni o günün hakkını geri vermez.', tag: 'info' },
           { title: 'Sizi kimin beğendiği', text: 'Biri sizi beğendiğinde bildirim alırsınız; onu “Beni beğenenler”de görür, siz de beğenebilirsiniz.', tag: 'info' },
           { title: 'Beğeniyi geri almak', text: 'Karşılık bulmamış bir beğeni her zaman geri alınabilir. Bugün kullanılmış beğeni hakkı günlük sınıra geri eklenmez.', tag: 'allowed' },
           { title: 'Karşılıklı ilgi', text: 'İki taraf da birbirini beğenince eşleşme oluşur. Ardından kadın erkeğin fotoğrafını görür ve karar verir.', tag: 'info' },
@@ -178,6 +178,7 @@ const tr: SiteContent = {
         title: 'Sohbet süreleri ve sınırlar',
         items: [
           { title: 'Kadın için aynı anda tek sohbet', text: 'Bir kadının yalnızca bir aktif sohbeti olabilir. Sohbetteyken diğerleri onun meşgul olduğunu görebilir.', tag: 'info' },
+          { title: 'Sohbetteyken beğeni bildirimi gelmez', text: 'Bir kadın biriyle sohbetteyken başka erkeklerden gelen beğeniler ona bildirilmez; sohbeti biterse iletilir. Beğenmek isteyen erkek bunu önceden görür.', tag: 'info' },
           { title: 'Sessizlik hatırlatmaları', text: '{remind1} saat kimse yazmazsa iki tarafa hatırlatma gider; {remind2} saatte bir kez daha.', tag: 'info' },
           { title: 'Otomatik kapanma', text: '{close} saat boyunca mesaj yazılmayan sohbet kendiliğinden kapanır.', tag: 'info' },
           { title: 'Bir kez yeniden açma', text: 'Sessizlik yüzünden ya da erkeğin kendisi tarafından kapatılan sohbeti erkek bir kez, {chatCost} jetonla yeniden açabilir. Kadın ya da moderatör kapattıysa yeniden açılamaz.', tag: 'info' },
@@ -263,7 +264,7 @@ const tr: SiteContent = {
       {
         title: 'Erkekler için',
         items: [
-          { q: 'Günlük beğeni sınırı neden var?', a: 'Günde {likes} beğeni, herkesi beğenmek yerine profilleri dikkatle okumaya teşvik eder.' },
+          { q: 'Günlük beğeni sınırı neden var?', a: 'Erkekler için günde {likes}, kadınlar için {femaleLikes} beğeni; herkesi beğenmek yerine profilleri dikkatle okumaya teşvik eder.' },
           { q: 'Sohbet açmak neden ücretli?', a: 'Küçük bir ücret ciddi olmayanları eler ve kadınları korur. İlk sohbetiniz ücretsiz — yeni hesaplara {welcome} jeton verilir.' },
           { q: 'Sohbet kapanırsa jetonum ne olur?', a: 'Sohbeti moderatör kapatırsa, kadın engellenirse ya da hesabını silerse jeton otomatik olarak iade edilir.' },
           { q: 'Fotoğrafını daha sonra tekrar görebilir miyim?', a: 'Her görüntüleme onun iznini ister. Eşleşmede “Tekrar görmek için izin iste”ye dokunun; ona bildirim gider ve karar verir.' },

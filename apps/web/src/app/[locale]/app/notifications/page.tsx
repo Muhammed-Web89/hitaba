@@ -12,6 +12,7 @@ import { useRelativeTime } from '@/lib/format';
 
 const ICONS: Record<string, IconName> = {
   new_like: 'heart',
+  likes_released: 'heart',
   mutual_match: 'heart',
   photo_approved: 'camera',
   photo_view_first_request: 'eye',
@@ -30,13 +31,18 @@ const ICONS: Record<string, IconName> = {
   connects_credited: 'wallet',
 };
 
+/** Bildirim verisindeki sayı/metin alanları çeviriye aktarılır (ör. {count}). */
+function textValues(data: Record<string, unknown>): Record<string, string | number> {
+  return Object.fromEntries(Object.entries(data).filter((e): e is [string, string | number] => typeof e[1] === 'string' || typeof e[1] === 'number'));
+}
+
 function hrefFor(n: NotificationItem): string | null {
   const d = n.data as { matchId?: string; chatId?: string };
   if (d.chatId) return `/app/chats/${d.chatId}`;
   if (d.matchId) return `/app/matches/${d.matchId}`;
   if (n.type.startsWith('profile') || n.type === 'photo_rejected') return '/app/profile';
   if (n.type === 'connects_credited') return '/app/wallet';
-  if (n.type === 'new_like') return '/app/likes?tab=received';
+  if (n.type === 'new_like' || n.type === 'likes_released') return '/app/likes?tab=received';
   return null;
 }
 
@@ -62,7 +68,7 @@ export default function NotificationsPage() {
             <div className={cx('flex gap-3 px-4 py-3', !n.readAt && 'bg-brand-50')}>
               <Icon name={ICONS[n.type] ?? 'bell'} className="mt-0.5 shrink-0 text-brand-500" />
               <div className="min-w-0 flex-1">
-                <p className="text-[15px]">{t.has(`types.${n.type}` as never) ? t(`types.${n.type}` as never) : n.type}</p>
+                <p className="text-[15px]">{t.has(`types.${n.type}` as never) ? t(`types.${n.type}` as never, textValues(n.data) as never) : n.type}</p>
                 {typeof n.data.reason === 'string' && n.data.reason && <p className="text-sm text-ink-3">{n.data.reason}</p>}
                 <p className="mt-0.5 text-xs text-ink-3">{time.ago(n.createdAt)}</p>
               </div>
