@@ -40,6 +40,11 @@ export class ConnectsController {
     return this.connects.createTelegramInvoice(user, body.packageId);
   }
 
+  @Post('claim-free')
+  claimFree(@CurrentUser() user: User, @Body(new ZodPipe(packageSchema)) body: { packageId: ConnectPackageId }) {
+    return this.connects.claimFree(user, body.packageId);
+  }
+
   @Post('dev-credit')
   devCredit(@CurrentUser() user: User, @Body(new ZodPipe(packageSchema)) body: { packageId: ConnectPackageId }) {
     if (!env.DEV_PAYMENTS) throw new NotFoundException();

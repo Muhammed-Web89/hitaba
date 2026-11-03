@@ -589,7 +589,12 @@
     "introBadge": "Tek sefer",
     "oldPrice": "Eski fiyat: {n} yıldız",
     "introNote": "Tanışma indirimi: ilk 1 jetonluk alımınızda bir kereye mahsus geçerlidir.",
-    "paymentFailed": "Ödeme tamamlanamadı. Yıldızlarınız düşülmediyse tekrar deneyebilirsiniz."
+    "paymentFailed": "Ödeme tamamlanamadı. Yıldızlarınız düşülmediyse tekrar deneyebilirsiniz.",
+    "launchBadge": "Sınırlı süre",
+    "free": "Ücretsiz",
+    "claimFree": "Al",
+    "claimed": "1 jeton hesabınıza eklendi.",
+    "launchNote": "Lansmana özel: 1 jetonluk paket sınırlı bir süre için %100 indirimli. Jetonunuz bittiğinde yeniden alabilirsiniz."
   },
   "notifications": {
     "title": "Bildirimler",
@@ -729,7 +734,10 @@
     "children_living_invalid": "Yanında yaşayan çocuk sayısı toplam çocuk sayısından fazla olamaz.",
     "already_mutual": "Karşılıklı olmuş bir beğeni geri alınamaz; eşleşmeden ayrılabilirsiniz.",
     "photo_view_not_granted": "Fotoğrafı görme hakkınız yok; önce izin isteyin.",
-    "photo_view_already_granted": "Zaten bir görme hakkınız var."
+    "photo_view_already_granted": "Zaten bir görme hakkınız var.",
+    "free_claim_has_balance": "Ücretsiz paketi jetonunuz bittiğinde alabilirsiniz.",
+    "offer_unavailable": "Bu kampanya şu an geçerli değil.",
+    "use_free_claim": "Bu paket şu an ücretsiz; sayfayı yenileyip tekrar deneyin."
   },
   "admin": {
     "title": "Moderasyon",

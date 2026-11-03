@@ -14,8 +14,8 @@ import { telegramWebApp } from '@/lib/telegram';
 
 interface WalletData {
   balance: number;
-  /** stars: liste fiyatı, price: ödenecek fiyat (tanışma indirimi varsa düşük). */
-  packages: { id: ConnectPackageId; connects: number; stars: number; price: number }[];
+  /** stars: liste fiyatı, price: ödenecek fiyat; promo: indirimin kaynağı (lansman ya da tanışma). */
+  packages: { id: ConnectPackageId; connects: number; stars: number; price: number; promo: 'launch' | 'intro' | null }[];
   telegramPayments: boolean;
   transactions: { id: string; amount: number; type: ConnectTxType; note: string | null; createdAt: string }[];
 }
@@ -30,6 +30,7 @@ export default function WalletPage() {
   const { data, mutate } = useSWR<WalletData>('/connects');
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [claimed, setClaimed] = useState(false);
   if (!data) return <PageLoader />;
 
   const tg = telegramWebApp();
@@ -38,8 +39,14 @@ export default function WalletPage() {
   async function buy(packageId: ConnectPackageId) {
     setBusy(packageId);
     setError(null);
+    setClaimed(false);
     try {
-      if (data!.telegramPayments && inTelegram) {
+      // Lansman kampanyası: ücretsiz paket fatura açılmadan hesaba eklenir.
+      if (data!.packages.find((p) => p.id === packageId)?.price === 0) {
+        await api('/connects/claim-free', { method: 'POST', body: { packageId } });
+        await Promise.all([mutate(), refreshMe()]);
+        setClaimed(true);
+      } else if (data!.telegramPayments && inTelegram) {
         const { invoiceLink } = await api<{ invoiceLink: string }>('/connects/invoice', { method: 'POST', body: { packageId } });
         tg!.openInvoice?.(invoiceLink, (status) => {
           if (status === 'failed') setError(t('paymentFailed'));
@@ -80,11 +87,12 @@ export default function WalletPage() {
       <div className="grid grid-cols-3 gap-3">
         {data.packages.map((p) => {
           const deal = p.price < p.stars;
+          const free = p.price === 0;
           return (
             <Card key={p.id} className={cx('relative flex flex-col items-center p-4 pt-5 text-center', deal && 'border-accent/70 shadow-[0_0_24px_-6px_var(--accent-500)]')}>
               {deal && (
                 <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-ink">
-                  {t('introBadge')}
+                  {p.promo === 'launch' ? t('launchBadge') : t('introBadge')}
                 </span>
               )}
               <span className="font-serif text-3xl font-semibold">{p.connects}</span>
@@ -95,16 +103,27 @@ export default function WalletPage() {
                     ⭐ {p.stars}
                   </s>
                 )}
-                <span className={cx('font-semibold text-accent', deal ? 'text-lg' : 'text-sm')}>⭐ {p.price}</span>
+                <span className={cx('font-semibold text-accent', deal ? 'text-lg' : 'text-sm')}>{free ? t('free') : `⭐ ${p.price}`}</span>
               </span>
               <Button size="sm" className="mt-3 w-full" loading={busy === p.id} onClick={() => buy(p.id)}>
-                {t('buy')}
+                {free ? t('claimFree') : t('buy')}
               </Button>
             </Card>
           );
         })}
       </div>
-      {data.packages.some((p) => p.price < p.stars) && <p className="mt-3 text-center text-xs text-ink-3">{t('introNote')}</p>}
+      {data.packages.some((p) => p.promo === 'launch') ? (
+        <p className="mt-3 text-center text-xs text-ink-3">{t('launchNote')}</p>
+      ) : (
+        data.packages.some((p) => p.promo === 'intro') && <p className="mt-3 text-center text-xs text-ink-3">{t('introNote')}</p>
+      )}
+      {claimed && (
+        <div className="mt-3">
+          <Notice tone="success" icon="check">
+            {t('claimed')}
+          </Notice>
+        </div>
+      )}
       {!inTelegram && (
         <div className="mt-3">
           <Notice>{t('devNote')}</Notice>

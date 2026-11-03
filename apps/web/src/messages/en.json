@@ -589,7 +589,12 @@
     "introBadge": "One-time",
     "oldPrice": "Old price: {n} stars",
     "introNote": "Intro offer: valid once, on your first 1-connect purchase.",
-    "paymentFailed": "The payment didn’t go through. If no Stars were charged, you can try again."
+    "paymentFailed": "The payment didn’t go through. If no Stars were charged, you can try again.",
+    "launchBadge": "Limited time",
+    "free": "Free",
+    "claimFree": "Get",
+    "claimed": "1 connect added to your balance.",
+    "launchNote": "Launch offer: the 1-connect package is 100% off for a limited time. You can claim it again once your balance runs out."
   },
   "notifications": {
     "title": "Notifications",
@@ -729,7 +734,10 @@
     "children_living_invalid": "Children living with you cannot exceed the total number of children.",
     "already_mutual": "A mutual like can’t be undone; you can leave the match instead.",
     "photo_view_not_granted": "You don’t have access to the photo; ask for permission first.",
-    "photo_view_already_granted": "You already have a view available."
+    "photo_view_already_granted": "You already have a view available.",
+    "free_claim_has_balance": "You can claim the free package once your balance runs out.",
+    "offer_unavailable": "This offer is not available right now.",
+    "use_free_claim": "This package is free right now; refresh the page and try again."
   },
   "admin": {
     "title": "Moderation",

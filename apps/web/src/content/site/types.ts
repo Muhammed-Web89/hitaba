@@ -77,6 +77,9 @@ export interface SiteContent {
     connectsTitle: string;
     connectsNote: string;
     perConnect: string;
+    launchBadge: string;
+    launchNote: string;
+    freePrice: string;
     introBadge: string;
     introNote: string;
     welcomeNote: string;

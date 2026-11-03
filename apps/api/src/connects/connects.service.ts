@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import type { Prisma, User } from '@prisma/client';
-import { CONNECT_PACKAGES, INTRO_OFFER, type ConnectPackageId } from '@hitaba/shared';
+import { CONNECT_PACKAGES, INTRO_OFFER, LAUNCH_OFFER, type ConnectPackageId } from '@hitaba/shared';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { TelegramService } from '../telegram/telegram.service';
@@ -43,9 +43,34 @@ export class ConnectsService {
     return n > 0;
   }
 
-  /** Paketin bu kullanıcı için geçerli fiyatı (indirim sunucuda hesaplanır). */
+  /** Paketin bu kullanıcı için geçerli fiyatı ve hangi kampanyadan geldiği (indirim sunucuda hesaplanır). */
+  private offerFor(pkg: (typeof CONNECT_PACKAGES)[number], introUsed: boolean): { price: number; promo: 'launch' | 'intro' | null } {
+    if (LAUNCH_OFFER.active && pkg.id === LAUNCH_OFFER.packageId) return { price: 0, promo: 'launch' };
+    if (pkg.id === INTRO_OFFER.packageId && !introUsed) return { price: INTRO_OFFER.stars, promo: 'intro' };
+    return { price: pkg.stars, promo: null };
+  }
+
   private async priceFor(userId: string, pkg: (typeof CONNECT_PACKAGES)[number]): Promise<number> {
-    return pkg.id === INTRO_OFFER.packageId && !(await this.introUsed(userId)) ? INTRO_OFFER.stars : pkg.stars;
+    return this.offerFor(pkg, await this.introUsed(userId)).price;
+  }
+
+  /**
+   * Lansman kampanyası: ücretsiz paket fatura açılmadan verilir (Telegram 0 Yıldızlık fatura kabul etmez).
+   * Koşullu güncelleme: yalnızca bakiyesi 0 olan alır, aynı anda iki istek gelse bile bir kez verilir.
+   */
+  async claimFree(user: User, packageId: ConnectPackageId) {
+    const pkg = CONNECT_PACKAGES.find((p) => p.id === packageId);
+    if (!pkg) throw new NotFoundException();
+    if (this.offerFor(pkg, true).price !== 0) throw new BadRequestException({ error: 'offer_unavailable' });
+    if (user.gender !== 'MALE') throw new BadRequestException({ error: 'offer_unavailable' });
+    const balance = await this.prisma.$transaction(async (tx) => {
+      const res = await tx.user.updateMany({ where: { id: user.id, connectBalance: 0 }, data: { connectBalance: { increment: pkg.connects } } });
+      if (res.count === 0) throw new BadRequestException({ error: 'free_claim_has_balance' });
+      await tx.connectTx.create({ data: { userId: user.id, amount: pkg.connects, type: 'BONUS', note: 'launch_free' } });
+      return pkg.connects;
+    });
+    void this.notifications.refreshTelegramStatus(user.id);
+    return { ok: true, balance };
   }
 
   async overview(user: User) {
@@ -56,10 +81,8 @@ export class ConnectsService {
     return {
       balance: user.connectBalance,
       // stars: liste fiyatı; price: ödenecek fiyat (indirimliyse daha düşük).
-      packages: CONNECT_PACKAGES.map((p) => ({
-        ...p,
-        price: p.id === INTRO_OFFER.packageId && !introUsed ? INTRO_OFFER.stars : p.stars,
-      })),
+      // promo: hangi kampanya (rozet ve açıklama metni için).
+      packages: CONNECT_PACKAGES.map((p) => ({ ...p, ...this.offerFor(p, introUsed) })),
       telegramPayments: this.telegram.enabled,
       transactions: txs.map((t) => ({
         id: t.id,
@@ -106,6 +129,7 @@ export class ConnectsService {
     const pkg = CONNECT_PACKAGES.find((p) => p.id === packageId);
     if (!pkg) throw new NotFoundException();
     const stars = await this.priceFor(user.id, pkg);
+    if (stars === 0) throw new BadRequestException({ error: 'use_free_claim' });
     const payment = await this.prisma.payment.create({
       data: {
         userId: user.id,

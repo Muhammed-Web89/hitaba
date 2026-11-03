@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { CONNECT_PACKAGES, INTRO_OFFER } from '@hitaba/shared/client';
+import { CONNECT_PACKAGES, INTRO_OFFER, LAUNCH_OFFER } from '@hitaba/shared/client';
 import { Icon, type IconName } from '@/components/icons';
 import { LandingCta } from '@/components/LandingCta';
 import { FaqList } from '@/components/site/FaqList';
@@ -160,12 +160,14 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
             <p className="mt-1 text-sm text-ink-3">{L.connectsNote}</p>
             <div className="mt-5 grid grid-cols-3 gap-3">
               {CONNECT_PACKAGES.map((p) => {
-                const intro = p.id === INTRO_OFFER.packageId;
+                // Lansman kampanyası açıkken tanışma indirimi yerine o gösterilir.
+                const launch = LAUNCH_OFFER.active && p.id === LAUNCH_OFFER.packageId;
+                const intro = launch || (!LAUNCH_OFFER.active && p.id === INTRO_OFFER.packageId);
                 return (
                   <div key={p.id} className={`relative rounded-card border p-4 pt-5 text-center ${intro ? 'border-accent/70 shadow-[0_0_24px_-8px_var(--accent-500)]' : 'border-line'}`}>
                     {intro && (
                       <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-ink">
-                        {L.introBadge}
+                        {launch ? L.launchBadge : L.introBadge}
                       </span>
                     )}
                     <div className="font-serif text-3xl font-semibold">{p.connects}</div>
@@ -173,7 +175,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
                     {intro ? (
                       <div className="mt-2 leading-tight">
                         <s className="text-xs text-ink-3">⭐ {p.stars}</s>
-                        <div className="text-lg font-semibold text-accent">⭐ {INTRO_OFFER.stars}</div>
+                        <div className="text-lg font-semibold text-accent">{launch ? L.freePrice : `⭐ ${INTRO_OFFER.stars}`}</div>
                       </div>
                     ) : (
                       <div className="mt-2 font-semibold text-accent">⭐ {p.stars}</div>
@@ -182,7 +184,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
                 );
               })}
             </div>
-            <p className="mt-4 text-xs text-ink-3">{fill(L.introNote)}</p>
+            <p className="mt-4 text-xs text-ink-3">{fill(LAUNCH_OFFER.active ? L.launchNote : L.introNote)}</p>
             <p className="mt-1 text-xs text-ink-3">{fill(L.welcomeNote)}</p>
           </div>
         </div>

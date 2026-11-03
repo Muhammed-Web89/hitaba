@@ -589,7 +589,12 @@
     "introBadge": "Bir martalik",
     "oldPrice": "Eski narx: {n} yulduz",
     "introNote": "Tanishuv chegirmasi: birinchi 1 tangalik xaridingizda bir marta amal qiladi.",
-    "paymentFailed": "Toʻlov amalga oshmadi. Yulduzlaringiz yechilmagan boʻlsa, qayta urinib koʻring."
+    "paymentFailed": "Toʻlov amalga oshmadi. Yulduzlaringiz yechilmagan boʻlsa, qayta urinib koʻring.",
+    "launchBadge": "Cheklangan muddat",
+    "free": "Bepul",
+    "claimFree": "Olish",
+    "claimed": "Hisobingizga 1 tanga qo‘shildi.",
+    "launchNote": "Ishga tushirish munosabati bilan: 1 tangalik paket cheklangan muddatga 100% chegirmada. Tangangiz tugaganda yana olishingiz mumkin."
   },
   "notifications": {
     "title": "Bildirishnomalar",
@@ -729,7 +734,10 @@
     "children_living_invalid": "Siz bilan yashaydigan farzandlar soni umumiy sondan koʻp boʻlishi mumkin emas.",
     "already_mutual": "Oʻzaro boʻlgan yoqtirishni qaytarib boʻlmaydi; tanishuvdan chiqishingiz mumkin.",
     "photo_view_not_granted": "Suratni koʻrish huquqingiz yoʻq; avval ruxsat soʻrang.",
-    "photo_view_already_granted": "Sizda allaqachon koʻrish huquqi bor."
+    "photo_view_already_granted": "Sizda allaqachon koʻrish huquqi bor.",
+    "free_claim_has_balance": "Bepul paketni tangangiz tugaganda olishingiz mumkin.",
+    "offer_unavailable": "Bu taklif hozir amalda emas.",
+    "use_free_claim": "Bu paket hozir bepul — sahifani yangilab, qayta urinib ko‘ring."
   },
   "admin": {
     "title": "Moderatsiya",

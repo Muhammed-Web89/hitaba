@@ -40,15 +40,22 @@ export const RULES = {
 
 export type Reaction = (typeof RULES.reactions)[number];
 
+/** Çok alan daha uygun alır: jeton başı 400 → 350 → 300 Yıldız. */
 export const CONNECT_PACKAGES = [
-  { id: 'c1', connects: 1, stars: 150 },
-  { id: 'c3', connects: 3, stars: 400 },
-  { id: 'c10', connects: 10, stars: 1100 },
+  { id: 'c1', connects: 1, stars: 400 },
+  { id: 'c3', connects: 3, stars: 1050 },
+  { id: 'c10', connects: 10, stars: 3000 },
 ] as const;
 
 export type ConnectPackageId = (typeof CONNECT_PACKAGES)[number]['id'];
 
-/** Tanışma indirimi: her kullanıcı bu paketi bir kez indirimli fiyatla alabilir. */
+/**
+ * Lansman kampanyası: açıkken bu paket herkese ücretsizdir (%100 indirim). Bitiş tarihi yoktur;
+ * kapatmak için `active: false`. Stoklanmasın diye yalnızca bakiyesi 0 olan alabilir.
+ */
+export const LAUNCH_OFFER = { active: true, packageId: 'c1' } as const satisfies { active: boolean; packageId: ConnectPackageId };
+
+/** Tanışma indirimi: her kullanıcı bu paketi bir kez indirimli fiyatla alabilir (lansman kampanyası kapalıyken). */
 export const INTRO_OFFER = { packageId: 'c1', stars: 20 } as const satisfies { packageId: ConnectPackageId; stars: number };
 
 /**
