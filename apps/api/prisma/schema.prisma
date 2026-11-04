@@ -274,6 +274,13 @@ model LikeWithdrawal {
   @@index([userId, createdAt])
 }
 
+/// Kullanıcı metinlerinin çeviri önbelleği: anahtar = sha256(hedef dil + metin). Aynı metin aynı dile bir kez çevrilir.
+model Translation {
+  key       String   @id
+  text      String
+  createdAt DateTime @default(now())
+}
+
 model Like {
   fromId    String
   toId      String

@@ -21,6 +21,8 @@ export interface AuthTokens {
 
 export interface Me {
   id: string;
+  /** Kullanıcı metinlerinin çevirisi açık mı (sunucuda Claude anahtarı tanımlı). */
+  translation?: boolean;
   role: Role;
   gender: Gender;
   status: UserStatus;

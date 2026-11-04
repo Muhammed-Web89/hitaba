@@ -1,4 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { env } from '../config/env';
 import type { Prisma, Profile, User } from '@prisma/client';
 import {
   ageFromBirthDate,
@@ -82,6 +83,7 @@ export class ProfilesService implements OnModuleInit {
       displayName: profile?.displayName ?? null,
       completedSteps: profile?.completedSteps ?? [],
       likesLeftToday: await this.likesLeftToday(user),
+      translation: Boolean(env.ANTHROPIC_API_KEY),
     };
   }
 

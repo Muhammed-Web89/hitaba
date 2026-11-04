@@ -15,6 +15,7 @@ import { NotificationsModule } from './notifications/notifications.service';
 import { PhotosModule } from './photos/photos.module';
 import { PrismaModule } from './prisma/prisma.service';
 import { ProfilesModule } from './profiles/profiles.module';
+import { TranslationModule } from './translation/translation.module';
 import { RealtimeModule } from './realtime/realtime.service';
 import { StorageModule } from './storage/storage.service';
 import { TelegramModule } from './telegram/telegram.service';
@@ -47,6 +48,7 @@ class HealthController {
     ProfilesModule,
     MatchingModule,
     ChatModule,
+    TranslationModule,
     WaliModule,
     AdminModule,
   ],

@@ -249,6 +249,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             reactions={RULES.reactions}
             actions={{
               canEdit,
+              translate: Boolean(me.translation),
               onReact: (m, r) => api<ChatMessage>(`/messages/${m.id}/reaction`, { method: 'PUT', body: { reaction: r } }).then((x) => setMessages((l) => (l ? upsert(l, x) : l))),
               onEdit: (m) => {
                 setEditing(m);

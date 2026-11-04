@@ -750,7 +750,10 @@
     "photo_view_already_granted": "Zaten bir görme hakkınız var.",
     "free_claim_has_balance": "Ücretsiz paketi jetonunuz bittiğinde alabilirsiniz.",
     "offer_unavailable": "Bu kampanya şu an geçerli değil.",
-    "use_free_claim": "Bu paket şu an ücretsiz; sayfayı yenileyip tekrar deneyin."
+    "use_free_claim": "Bu paket şu an ücretsiz; sayfayı yenileyip tekrar deneyin.",
+    "translation_unavailable": "Çeviri şu an kullanılamıyor.",
+    "translation_failed": "Çeviri yapılamadı. Biraz sonra tekrar deneyin.",
+    "translation_blocked": "Bu mesajın çevirisi gösterilemiyor."
   },
   "admin": {
     "title": "Moderasyon",
@@ -908,7 +911,7 @@
         },
         "processors": {
           "title": "Hizmet sağlayıcılar",
-          "body": "Barındırma, veritabanı, özel dosya depolama, e-posta gönderimi ve (kullanıyorsanız) Telegram. Bu sağlayıcılar verileri yalnızca talimatımızla işler. Bazıları yurt dışında olabilir; sözleşmesel güvenceler kullanırız."
+          "body": "Barındırma, veritabanı, özel dosya depolama, e-posta gönderimi ve (kullanıyorsanız) Telegram. Bu sağlayıcılar verileri yalnızca talimatımızla işler. Bazıları yurt dışında olabilir; sözleşmesel güvenceler kullanırız. Bir metnin yanındaki “Çevir”e dokunduğunuzda o metin, yalnızca çeviri için Anthropic’in Claude hizmetine gönderilir; çeviri, aynı metin yeniden çevrilmesin diye bizde saklanır."
         },
         "retention": {
           "title": "Saklama süresi",
@@ -1078,5 +1081,11 @@
     "notFoundTitle": "Sayfa bulunamadı",
     "notFoundText": "Aradığınız sayfa kaldırılmış ya da adresi değişmiş olabilir.",
     "home": "Ana sayfaya dön"
+  },
+  "translate": {
+    "translate": "Çevir",
+    "original": "Aslını göster",
+    "busy": "Çevriliyor…",
+    "note": "Otomatik çeviri"
   }
 }

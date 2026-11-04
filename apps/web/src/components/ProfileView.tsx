@@ -4,9 +4,11 @@ import { useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import type { PublicProfile } from '@hitaba/shared/client';
 import { mediaUrl } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 import { INTEREST_ICONS, useCatalog } from '@/lib/catalog';
 import { useDisplayNames } from '@/lib/format';
 import { Icon, type IconName } from './icons';
+import { TranslatableText } from './Translatable';
 import { Chip, cx, Modal } from './ui';
 
 /**
@@ -158,6 +160,10 @@ export function ProfileCard({ profile, actions }: { profile: PublicProfile; acti
   const te = useTranslations('enums');
   const names = useDisplayNames();
   const [photoOpen, setPhotoOpen] = useState(false);
+  const { me } = useAuth();
+  // Çeviri: başkasının profilinde ve sunucuda açıksa (kendi önizlemende ve yöneticide yok).
+  const translatePath = (field: string) =>
+    me?.translation && me.role === 'USER' && me.id !== profile.userId ? `/translate/profile/${profile.userId}/${field}` : undefined;
   const catalog = useCatalog();
   // Kısa bilgiler ikonla: milliyet · boy · kilo.
   const facts: Array<{ icon: IconName; text: string }> = [
@@ -263,13 +269,13 @@ export function ProfileCard({ profile, actions }: { profile: PublicProfile; acti
       </SectionCard>
 
       <SectionCard icon="shield" title={t('beliefs')} accent>
-        <p className="whitespace-pre-line text-[15px] leading-relaxed">{profile.beliefsManhaj}</p>
+        <TranslatableText text={profile.beliefsManhaj} path={translatePath('beliefsManhaj')} className="whitespace-pre-line text-[15px] leading-relaxed" />
       </SectionCard>
       <SectionCard icon="user" title={t('aboutMe')}>
-        <p className="whitespace-pre-line text-[15px] leading-relaxed">{profile.aboutMe}</p>
+        <TranslatableText text={profile.aboutMe} path={translatePath('aboutMe')} className="whitespace-pre-line text-[15px] leading-relaxed" />
       </SectionCard>
       <SectionCard icon="heart" title={t('aboutSpouse')}>
-        <p className="whitespace-pre-line text-[15px] leading-relaxed">{profile.aboutSpouse}</p>
+        <TranslatableText text={profile.aboutSpouse} path={translatePath('aboutSpouse')} className="whitespace-pre-line text-[15px] leading-relaxed" />
       </SectionCard>
       {profile.interests.length > 0 && (
         <SectionCard icon="sparkle" title={t('interests')}>

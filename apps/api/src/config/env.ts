@@ -39,6 +39,10 @@ export const envSchema = z.object({
   TELEGRAM_BOT_USERNAME: z.string().optional().default(''),
   TELEGRAM_WEBHOOK_SECRET: z.string().optional().default(''),
   DEV_PAYMENTS: bool,
+
+  // Kullanıcı metinlerinin isteğe bağlı çevirisi (Claude). Anahtar yoksa çeviri kapalıdır.
+  ANTHROPIC_API_KEY: z.string().optional().default(''),
+  TRANSLATE_MODEL: z.string().optional().default('claude-haiku-5-5'),
 });
 
 const parsed = envSchema.safeParse(process.env);

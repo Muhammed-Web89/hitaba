@@ -750,7 +750,10 @@
     "photo_view_already_granted": "You already have a view available.",
     "free_claim_has_balance": "You can claim the free package once your balance runs out.",
     "offer_unavailable": "This offer is not available right now.",
-    "use_free_claim": "This package is free right now; refresh the page and try again."
+    "use_free_claim": "This package is free right now; refresh the page and try again.",
+    "translation_unavailable": "Translation is not available right now.",
+    "translation_failed": "Could not translate. Try again in a moment.",
+    "translation_blocked": "The translation of this message cannot be shown."
   },
   "admin": {
     "title": "Moderation",
@@ -908,7 +911,7 @@
         },
         "processors": {
           "title": "Service providers",
-          "body": "Hosting, database, private file storage, email delivery and (if you use it) Telegram. These providers process data only on our instructions. Some may be located outside your country; we use contractual safeguards."
+          "body": "Hosting, database, private file storage, email delivery and (if you use it) Telegram. These providers process data only on our instructions. Some may be located outside your country; we use contractual safeguards. When you tap “Translate” next to a text, that text is sent to Anthropic’s Claude service for translation only; the translation is stored by us so the same text is not translated again."
         },
         "retention": {
           "title": "Retention",
@@ -1078,5 +1081,11 @@
     "notFoundTitle": "Page not found",
     "notFoundText": "The page you are looking for may have been removed or moved.",
     "home": "Go to the home page"
+  },
+  "translate": {
+    "translate": "Translate",
+    "original": "Show original",
+    "busy": "Translating…",
+    "note": "Automatic translation"
   }
 }

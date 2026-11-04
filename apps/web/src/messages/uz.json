@@ -750,7 +750,10 @@
     "photo_view_already_granted": "Sizda allaqachon koʻrish huquqi bor.",
     "free_claim_has_balance": "Bepul paketni tangangiz tugaganda olishingiz mumkin.",
     "offer_unavailable": "Bu taklif hozir amalda emas.",
-    "use_free_claim": "Bu paket hozir bepul — sahifani yangilab, qayta urinib ko‘ring."
+    "use_free_claim": "Bu paket hozir bepul — sahifani yangilab, qayta urinib ko‘ring.",
+    "translation_unavailable": "Tarjima hozir mavjud emas.",
+    "translation_failed": "Tarjima qilib boʻlmadi. Birozdan keyin urinib koʻring.",
+    "translation_blocked": "Bu xabarning tarjimasini koʻrsatib boʻlmaydi."
   },
   "admin": {
     "title": "Moderatsiya",
@@ -908,7 +911,7 @@
         },
         "processors": {
           "title": "Xizmat koʻrsatuvchilar",
-          "body": "Xosting, maʼlumotlar bazasi, maxfiy fayl ombori, email yuborish va (agar foydalansangiz) Telegram. Ular maʼlumotlarni faqat bizning koʻrsatmamiz bilan qayta ishlaydi. Baʼzilari xorijda boʻlishi mumkin; shartnomaviy kafolatlardan foydalanamiz."
+          "body": "Xosting, maʼlumotlar bazasi, maxfiy fayl ombori, email yuborish va (agar foydalansangiz) Telegram. Ular maʼlumotlarni faqat bizning koʻrsatmamiz bilan qayta ishlaydi. Baʼzilari xorijda boʻlishi mumkin; shartnomaviy kafolatlardan foydalanamiz. Matn yonidagi “Tarjima qilish”ni bossangiz, o‘sha matn faqat tarjima uchun Anthropic kompaniyasining Claude xizmatiga yuboriladi; bir xil matn qayta tarjima qilinmasligi uchun tarjima bizda saqlanadi."
         },
         "retention": {
           "title": "Saqlash muddati",
@@ -1078,5 +1081,11 @@
     "notFoundTitle": "Sahifa topilmadi",
     "notFoundText": "Siz izlagan sahifa oʻchirilgan yoki manzili oʻzgargan boʻlishi mumkin.",
     "home": "Bosh sahifaga qaytish"
+  },
+  "translate": {
+    "translate": "Tarjima qilish",
+    "original": "Asl matnni koʻrsatish",
+    "busy": "Tarjima qilinmoqda…",
+    "note": "Avtomatik tarjima"
   }
 }

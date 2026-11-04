@@ -78,3 +78,6 @@ services:
         sync: false
       - key: TELEGRAM_WEBHOOK_SECRET
         generateValue: true
+      # Kullanıcı metinlerinin isteğe bağlı çevirisi (Claude). Boşsa çeviri kapalıdır.
+      - key: ANTHROPIC_API_KEY
+        sync: false
