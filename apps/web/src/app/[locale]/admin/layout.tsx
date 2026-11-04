@@ -44,6 +44,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
         <div className="flex items-center gap-3">
           <LocaleMenu />
+          <Link
+            href="/admin/profile"
+            aria-current={pathname.startsWith('/admin/profile') ? 'page' : undefined}
+            className={cx('text-sm font-semibold hover:text-ink', pathname.startsWith('/admin/profile') ? 'text-ink' : 'text-ink-3')}
+          >
+            {t('profile.link')}
+          </Link>
           <button
             type="button"
             className="text-sm font-semibold text-ink-3 hover:text-ink"

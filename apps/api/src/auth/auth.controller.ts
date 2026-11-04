@@ -14,11 +14,11 @@ import {
 } from '@hitaba/shared';
 import { ZodPipe } from '../common/zod.pipe';
 import { AuthService, type RequestMeta } from './auth.service';
-import { CurrentUser, Public } from './guards';
+import { CurrentSession, CurrentUser, Public } from './guards';
 
 const refreshSchema = z.object({ refreshToken: z.string().min(1) });
 
-const metaOf = (req: Request): RequestMeta => ({ ip: req.ip, userAgent: req.headers['user-agent'] });
+export const metaOf = (req: Request): RequestMeta => ({ ip: req.ip, userAgent: req.headers['user-agent'] });
 
 @Controller('auth')
 @Throttle({ default: { limit: 10, ttl: 60_000 } })
@@ -34,8 +34,8 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(200)
-  login(@Body(new ZodPipe(loginSchema)) body: LoginInput) {
-    return this.auth.login(body);
+  login(@Body(new ZodPipe(loginSchema)) body: LoginInput, @Req() req: Request) {
+    return this.auth.login(body, metaOf(req));
   }
 
   @Public()
@@ -66,8 +66,14 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(200)
   @Throttle({ default: { limit: 30, ttl: 60_000 } })
-  refresh(@Body(new ZodPipe(refreshSchema)) body: { refreshToken: string }) {
-    return this.auth.refresh(body.refreshToken);
+  refresh(@Body(new ZodPipe(refreshSchema)) body: { refreshToken: string }, @Req() req: Request) {
+    return this.auth.refresh(body.refreshToken, metaOf(req));
+  }
+
+  @Post('logout')
+  @HttpCode(204)
+  async logout(@CurrentSession() sessionId: string | undefined) {
+    await this.auth.logout(sessionId);
   }
 
   @Post('logout-all')

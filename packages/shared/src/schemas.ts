@@ -32,6 +32,8 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export const loginSchema = z.object({
   email: z.string().trim().toLowerCase().email(),
   password: z.string().min(1).max(128),
+  /** İki adımlı doğrulaması açık personel hesabı için 6 haneli kod. */
+  otp: z.string().trim().regex(/^\d{6}$/).optional(),
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 

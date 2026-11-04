@@ -169,6 +169,12 @@ model User {
   updatedAt        DateTime   @updatedAt
   /// Dahili — kullanıcılara gösterilmez.
   lastLoginAt      DateTime?
+  /// Personel iki adımlı doğrulama (TOTP). Gizli anahtar şifreli; totpEnabledAt null ise kurulum bitmemiştir.
+  totpSecretEnc    String?
+  totpEnabledAt    DateTime?
+  /// Son kabul edilen kodun 30 sn'lik adımı: aynı kod ikinci kez kullanılamaz.
+  totpLastStep     Int?
+  passwordChangedAt DateTime?
 
   profile         Profile?
   photos          Photo[]
@@ -192,6 +198,8 @@ model User {
   photoViews      PhotoView[]
   consents        Consent[]
   emailTokens     EmailToken[]
+  staffSessions   StaffSession[]
+  loginEvents     LoginEvent[]
 
   @@index([role, gender, status])
 }
@@ -582,4 +590,33 @@ model AuditLog {
 
   @@index([targetType, targetId])
   @@index([actorId, createdAt])
+}
+
+/// Personel (yönetici/moderatör) oturumu: her cihaz ayrı satır; profil sayfasından tek tek kapatılabilir.
+model StaffSession {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime  @default(now())
+  revokedAt  DateTime?
+
+  @@index([userId, revokedAt])
+}
+
+/// Personel giriş denemeleri (başarılı ve başarısız).
+model LoginEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ok        Boolean
+  /// Başarısızlık nedeni: password | otp
+  reason    String?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
 }

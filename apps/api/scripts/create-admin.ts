@@ -32,7 +32,7 @@ async function main() {
     const u = await prisma.user.upsert({
       where: { email },
       // Var olan hesapta şifre yenilenir ve tüm oturumları kapatılır.
-      update: { role, passwordHash, tokenVersion: { increment: 1 } },
+      update: { role, passwordHash, passwordChangedAt: new Date(), tokenVersion: { increment: 1 } },
       create: {
         email,
         emailVerifiedAt: new Date(),

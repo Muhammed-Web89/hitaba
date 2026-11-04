@@ -3,8 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import type { ConsentKind, Prisma, User } from '@prisma/client';
 import { EMAIL_VERIFY_TTL_HOURS, POLICY_VERSION, RULES, type AuthTokens, type LoginInput, type RegisterInput, type TelegramAuthInput } from '@hitaba/shared';
 import { env } from '../config/env';
-import { hashPassword, randomToken, sha256, verifyPassword } from '../common/crypto';
+import { decrypt, hashPassword, randomToken, sha256, verifyPassword } from '../common/crypto';
 import { hours } from '../common/time';
+import { verifyTotp } from '../common/totp';
 import { MailService } from '../mail/mail.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -23,7 +24,12 @@ function welcomeBonus(gender: User['gender']): Pick<Prisma.UserCreateInput, 'con
 interface RefreshPayload {
   sub: string;
   tv: number;
+  /** Personel oturumu (StaffSession). Eski token'larda yoktur; ilk yenilemede oluşturulur. */
+  sid?: string;
 }
+
+/** Yönetici ve moderatörlerin oturumları ve girişleri ayrıca kaydedilir. */
+export const isStaff = (u: Pick<User, 'role'>) => u.role !== 'USER';
 
 const SUPPORTED_LOCALES = new Set(['uz', 'ru', 'tr', 'en', 'ar']);
 const CONSENT_KINDS: ConsentKind[] = ['PRIVACY', 'TERMS', 'SENSITIVE_DATA', 'ADULT'];
@@ -108,15 +114,45 @@ export class AuthService {
     return { ok: true };
   }
 
-  async login(input: LoginInput): Promise<AuthTokens> {
+  async login(input: LoginInput, meta: RequestMeta = {}): Promise<AuthTokens> {
     const user = await this.prisma.user.findUnique({ where: { email: input.email } });
     // Kullanıcı yoksa da hash doğrulaması yapılır: zamanlama ile e-posta tespiti engellenir.
     const ok = await verifyPassword(input.password, user?.passwordHash ?? DUMMY_HASH);
-    if (!user || !ok) throw new UnauthorizedException({ error: 'invalid_credentials' });
+    if (!user || !ok) {
+      if (user && isStaff(user)) await this.recordLogin(user.id, false, 'password', meta);
+      throw new UnauthorizedException({ error: 'invalid_credentials' });
+    }
     if (user.status === 'BANNED' || user.status === 'DELETED') {
       throw new UnauthorizedException({ error: 'account_blocked' });
     }
-    return this.issue(user);
+    if (user.totpEnabledAt) {
+      // Şifre doğruysa kod istenir; istemci kod alanını gösterip aynı isteği tekrarlar.
+      if (!input.otp) throw new UnauthorizedException({ error: 'otp_required' });
+      if (!(await this.consumeTotp(user, input.otp))) {
+        await this.recordLogin(user.id, false, 'otp', meta);
+        throw new UnauthorizedException({ error: 'invalid_otp' });
+      }
+    }
+    if (isStaff(user)) await this.recordLogin(user.id, true, null, meta);
+    return this.issue(user, true, meta);
+  }
+
+  /** Kodu doğrular ve adımını kaydeder: aynı kod (ör. omuz üstünden görülmüş) ikinci kez geçmez. */
+  async consumeTotp(user: User, code: string, secretEnc = user.totpSecretEnc): Promise<boolean> {
+    if (!secretEnc) return false;
+    const step = verifyTotp(decrypt(secretEnc), code);
+    if (step === null) return false;
+    const res = await this.prisma.user.updateMany({
+      where: { id: user.id, OR: [{ totpLastStep: null }, { totpLastStep: { lt: step } }] },
+      data: { totpLastStep: step },
+    });
+    return res.count > 0;
+  }
+
+  private async recordLogin(userId: string, ok: boolean, reason: string | null, meta: RequestMeta) {
+    await this.prisma.loginEvent.create({
+      data: { userId, ok, reason, ip: meta.ip ?? null, userAgent: meta.userAgent?.slice(0, 300) ?? null },
+    });
   }
 
   async telegram(input: TelegramAuthInput, meta: RequestMeta): Promise<AuthTokens> {
@@ -148,7 +184,7 @@ export class AuthService {
     return this.issue(user);
   }
 
-  async refresh(refreshToken: string): Promise<AuthTokens> {
+  async refresh(refreshToken: string, meta: RequestMeta = {}): Promise<AuthTokens> {
     let payload: RefreshPayload;
     try {
       payload = await this.jwt.verifyAsync<RefreshPayload>(refreshToken, { secret: env.JWT_REFRESH_SECRET });
@@ -159,7 +195,25 @@ export class AuthService {
     if (!user || user.tokenVersion !== payload.tv || user.status === 'BANNED' || user.status === 'DELETED') {
       throw new UnauthorizedException();
     }
-    return this.issue(user, false);
+    if (payload.sid) {
+      const session = await this.prisma.staffSession.findUnique({ where: { id: payload.sid } });
+      if (!session || session.userId !== user.id || session.revokedAt) throw new UnauthorizedException();
+      if (Date.now() - session.lastUsedAt.getTime() > 60_000) {
+        await this.prisma.staffSession.update({
+          where: { id: session.id },
+          data: { lastUsedAt: new Date(), ip: meta.ip ?? session.ip, userAgent: meta.userAgent?.slice(0, 300) ?? session.userAgent },
+        });
+      }
+      return this.issue(user, false, meta, session.id);
+    }
+    // Oturum kimliği olmayan eski personel token'ı: oturum kapanmaz, şimdi kayda alınır.
+    return this.issue(user, false, meta);
+  }
+
+  /** Bu cihazın oturumunu kapat (çıkış). */
+  async logout(sessionId: string | undefined): Promise<void> {
+    if (!sessionId) return;
+    await this.prisma.staffSession.updateMany({ where: { id: sessionId, revokedAt: null }, data: { revokedAt: new Date() } });
   }
 
   /** Tüm oturumları kapat. */
@@ -167,12 +221,20 @@ export class AuthService {
     await this.prisma.user.update({ where: { id: userId }, data: { tokenVersion: { increment: 1 } } });
   }
 
-  private async issue(user: User, touchLogin = true): Promise<AuthTokens> {
+  /** Token çifti üretir. Personel için oturum yoksa yeni bir StaffSession açılır. */
+  async issue(user: User, touchLogin = true, meta: RequestMeta = {}, sessionId?: string): Promise<AuthTokens> {
     if (touchLogin) {
       await this.prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
     }
-    const access: AccessPayload = { sub: user.id, role: user.role };
-    const refresh: RefreshPayload = { sub: user.id, tv: user.tokenVersion };
+    let sid = sessionId;
+    if (!sid && isStaff(user)) {
+      const session = await this.prisma.staffSession.create({
+        data: { userId: user.id, ip: meta.ip ?? null, userAgent: meta.userAgent?.slice(0, 300) ?? null },
+      });
+      sid = session.id;
+    }
+    const access: AccessPayload = { sub: user.id, role: user.role, ...(sid && { sid }) };
+    const refresh: RefreshPayload = { sub: user.id, tv: user.tokenVersion, ...(sid && { sid }) };
     return {
       accessToken: await this.jwt.signAsync(access, { secret: env.JWT_ACCESS_SECRET, expiresIn: '15m' }),
       refreshToken: await this.jwt.signAsync(refresh, { secret: env.JWT_REFRESH_SECRET, expiresIn: '30d' }),

@@ -16,6 +16,8 @@ import { PrismaService } from '../prisma/prisma.service';
 export interface AccessPayload {
   sub: string;
   role: Role;
+  /** Personel oturumu; kapatılan oturumun token'ı hemen geçersiz olur. */
+  sid?: string;
 }
 
 const IS_PUBLIC = 'isPublic';
@@ -33,6 +35,11 @@ export const AllowPendingReview = () => SetMetadata(REQUIRE_APPROVED, 'pending')
 
 export const CurrentUser = createParamDecorator((_: unknown, ctx: ExecutionContext): User => {
   return ctx.switchToHttp().getRequest().user;
+});
+
+/** Personel isteğinin oturum kimliği (yoksa undefined). */
+export const CurrentSession = createParamDecorator((_: unknown, ctx: ExecutionContext): string | undefined => {
+  return ctx.switchToHttp().getRequest().sessionId;
 });
 
 const BLOCKED_STATUSES = new Set(['BANNED', 'DELETED']);
@@ -54,8 +61,9 @@ export class AuthGuard implements CanActivate {
     const token = header?.startsWith('Bearer ') ? header.slice(7) : undefined;
     if (!token) throw new UnauthorizedException();
 
-    const user = await this.userFromToken(token);
+    const { user, sid } = await this.verify(token);
     req.user = user;
+    req.sessionId = sid;
 
     const roles = this.reflector.getAllAndOverride<Role[] | undefined>(ROLES, targets);
     if (roles && !roles.includes(user.role)) throw new ForbiddenException();
@@ -69,6 +77,10 @@ export class AuthGuard implements CanActivate {
   }
 
   async userFromToken(token: string): Promise<User> {
+    return (await this.verify(token)).user;
+  }
+
+  private async verify(token: string): Promise<{ user: User; sid?: string }> {
     let payload: AccessPayload;
     try {
       payload = await this.jwt.verifyAsync<AccessPayload>(token, { secret: env.JWT_ACCESS_SECRET });
@@ -77,6 +89,10 @@ export class AuthGuard implements CanActivate {
     }
     const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
     if (!user || BLOCKED_STATUSES.has(user.status)) throw new UnauthorizedException({ error: 'account_blocked' });
-    return user;
+    if (payload.sid) {
+      const session = await this.prisma.staffSession.findUnique({ where: { id: payload.sid }, select: { userId: true, revokedAt: true } });
+      if (!session || session.userId !== user.id || session.revokedAt) throw new UnauthorizedException();
+    }
+    return { user, sid: payload.sid };
   }
 }

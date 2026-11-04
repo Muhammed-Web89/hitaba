@@ -96,6 +96,13 @@ DATABASE_URL=... ADMIN_EMAIL=... ADMIN_PASSWORD='en-az-14-karakter' ADMIN_GENDER
   npm run create-admin -w @hitaba/api
 ```
 
+**Personel güvenliği** (yönetim panelinde *Profilim*): şifre değiştirme (en az 14 karakter, diğer cihazlar çıkış yapar), iki adımlı doğrulama (Google/Microsoft Authenticator), açık oturumlar ve son girişler. E-posta değişikliği ve e-postayla şifre sıfırlama personel için bilerek yok. Kurtarma sunucudan yapılır:
+
+```bash
+ADMIN_EMAIL=... npm run reset-2fa -w @hitaba/api        # telefon kaybolduysa: 2FA kapanır, tüm oturumlar düşer
+ADMIN_EMAIL=... ADMIN_PASSWORD='...' ADMIN_GENDER=MALE npm run create-admin -w @hitaba/api   # şifre unutulduysa
+```
+
 ## 7. Yayın öncesi kontrol listesi
 
 - [ ] Gizlilik politikası ve kullanım koşulları hukukçu tarafından incelendi; şirket unvanı ve iletişim adresi dolduruldu (`legal.*` çevirileri), `POLICY_VERSION` güncellendi
@@ -103,6 +110,7 @@ DATABASE_URL=... ADMIN_EMAIL=... ADMIN_PASSWORD='en-az-14-karakter' ADMIN_GENDER
 - [ ] R2 bucket public erişime kapalı
 - [ ] Resend alan adı doğrulandı; doğrulama e-postası gerçek bir adrese ulaştı
 - [ ] `ENCRYPTION_KEY` güvenli bir yerde yedeklendi
+- [ ] Her yönetici ve moderatör *Profilim*'den iki adımlı doğrulamayı açtı
 - [ ] En az 1 erkek + 1 kadın moderatör oluşturuldu
 - [ ] Staging'de: `npm run smoke`, `npm run ratelimit`, `npm run loadtest` geçti (aşağıya bakın)
 

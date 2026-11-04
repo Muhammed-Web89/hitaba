@@ -61,6 +61,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signOut = useCallback(() => {
+    // Personel oturumu sunucuda da kapanır (profil sayfasındaki cihaz listesinden düşer).
+    if (tokens.access) void api('/auth/logout', { method: 'POST' }).catch(() => {});
     tokens.clear();
     disconnectSocket();
     void mutate(undefined, { revalidate: false });
