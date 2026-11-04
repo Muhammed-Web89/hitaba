@@ -1,59 +1,67 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import useSWR from 'swr';
 import { api } from '@/lib/api';
-import { useErrorText } from '@/lib/format';
 import { Icon } from './icons';
 
-/** Kullanıcının yazdığı metni isteğe bağlı olarak görüntüleyenin diline çevirir; asıl metne dönülebilir. */
-export function useTranslation(path: string) {
-  const locale = useLocale();
-  const errorText = useErrorText();
-  const [translated, setTranslated] = useState<string | null>(null);
-  const [showing, setShowing] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+/**
+ * Kullanıcıların yazdığı metinler, uygulamada seçilen dile (cihaz dili değil) otomatik çevrilir.
+ * Çeviri sunucuda saklanır; aynı metin aynı dile bir kez çevrilir.
+ */
 
-  async function toggle() {
-    if (showing) return setShowing(false);
-    if (translated !== null) return setShowing(true);
-    setBusy(true);
-    setError(null);
-    try {
-      const res = await api<{ text: string }>(path, { method: 'POST', body: { lang: locale } });
-      setTranslated(res.text);
-      setShowing(true);
-    } catch (e) {
-      setError(errorText(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-  return { translated: showing ? translated : null, showing, busy, error, toggle };
+/** Profilin üç serbest metni tek istekte, görüntüleyenin dilinde. */
+export function useProfileTranslation(userId: string, enabled: boolean) {
+  const locale = useLocale();
+  const { data } = useSWR(
+    enabled ? [`/translate/profile/${userId}`, locale] : null,
+    ([path, lang]: [string, string]) => api<Record<string, string>>(path, { method: 'POST', body: { lang } }),
+    { revalidateOnFocus: false, shouldRetryOnError: false },
+  );
+  return data;
 }
 
-export function TranslateButton({ showing, busy, error, onClick, className = '' }: { showing: boolean; busy: boolean; error: string | null; onClick: () => void; className?: string }) {
+const same = (a: string, b: string) => a.trim() === b.trim();
+
+/** Çevrilmiş metni gösterir; "Aslını göster" ile asıl metne dönülür. Çeviri asılla aynıysa hiçbir şey eklenmez. */
+export function AutoTranslatedText({ text, translated, className }: { text: string; translated?: string; className?: string }) {
+  const [original, setOriginal] = useState(false);
+  const differs = Boolean(translated) && !same(translated!, text);
+  return (
+    <>
+      <p className={className}>{differs && !original ? translated : text}</p>
+      {differs && <TranslationNote original={original} onToggle={() => setOriginal(!original)} className="mt-2" />}
+    </>
+  );
+}
+
+export function TranslationNote({ original, onToggle, className = '' }: { original: boolean; onToggle: () => void; className?: string }) {
   const t = useTranslations('translate');
   return (
-    <span className={`inline-flex flex-wrap items-center gap-2 text-xs ${className}`}>
-      <button type="button" onClick={onClick} disabled={busy} className="inline-flex items-center gap-1 font-semibold text-brand-500 disabled:opacity-60">
-        <Icon name="translate" size={14} />
-        {busy ? t('busy') : showing ? t('original') : t('translate')}
+    <span className={`inline-flex flex-wrap items-center gap-1.5 text-xs ${className}`}>
+      <Icon name="translate" size={13} className="text-brand-500" />
+      <span className="text-ink-3">{original ? t('originalNote') : t('note')}</span>
+      <span className="text-ink-3" aria-hidden="true">
+        ·
+      </span>
+      <button type="button" onClick={onToggle} className="font-semibold text-brand-500">
+        {original ? t('showTranslation') : t('original')}
       </button>
-      {showing && <span className="text-ink-3">{t('note')}</span>}
-      {error && <span className="text-danger">{error}</span>}
     </span>
   );
 }
 
-/** Profildeki serbest metin + çeviri bağlantısı. `path` yoksa yalnızca metin gösterilir. */
-export function TranslatableText({ text, path, className }: { text: string; path?: string; className?: string }): ReactNode {
-  const tr = useTranslation(path ?? '');
+/** Sohbet balonu: çeviri varsa çeviriyi, dokununca aslını gösterir. */
+export function TranslatedBubbleText({ text, translated }: { text: string; translated: string }) {
+  const [original, setOriginal] = useState(false);
+  if (same(text, translated)) return <span className="whitespace-pre-wrap break-words">{text}</span>;
   return (
     <>
-      <p className={className}>{tr.translated ?? text}</p>
-      {path && <TranslateButton className="mt-2" showing={tr.showing} busy={tr.busy} error={tr.error} onClick={tr.toggle} />}
+      <span className="whitespace-pre-wrap break-words">{original ? text : translated}</span>
+      <span className="mt-1 block">
+        <TranslationNote original={original} onToggle={() => setOriginal(!original)} />
+      </span>
     </>
   );
 }

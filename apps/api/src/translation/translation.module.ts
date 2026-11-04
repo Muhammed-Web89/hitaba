@@ -49,6 +49,7 @@ Translate the text inside <text> into the target language you are given.
 Reply with the translation only, without quotes, notes or tags.`;
 
 const langSchema = z.object({ lang: z.enum(LOCALES) });
+const messagesSchema = z.object({ chatId: z.string().min(1), ids: z.array(z.string().min(1)).min(1).max(60), lang: z.enum(LOCALES) });
 
 @Injectable()
 export class TranslationService {
@@ -128,7 +129,40 @@ export class TranslationController {
     if (scanForContactInfo(text).blocked) throw new BadRequestException({ error: 'translation_blocked' });
     return { text };
   }
+
+  /** Profilin üç serbest metni tek istekte (keşifte otomatik çeviri için). */
+  @Post('profile/:userId')
+  async profileAll(@CurrentUser() viewer: User, @Param('userId') userId: string, @Body(new ZodPipe(langSchema)) body: { lang: Locale }) {
+    const profile = await this.profiles.publicProfile(viewer, userId);
+    const texts = await Promise.all(PROFILE_FIELDS.map((f) => this.translation.translate(profile[f] ?? '', body.lang)));
+    return Object.fromEntries(PROFILE_FIELDS.map((f, i) => [f, texts[i]])) as Record<ProfileField, string>;
+  }
+
+  /**
+   * Sohbetteki karşı tarafın mesajları toplu (sohbet çeviri düğmesi). Yalnızca taraflar; teslim edilmiş metin
+   * mesajları. İletişim bilgisi ortaya çıkaran çeviri döndürülmez (asıl metin gösterilir).
+   */
+  @Post('messages')
+  async messages(@CurrentUser() viewer: User, @Body(new ZodPipe(messagesSchema)) body: z.infer<typeof messagesSchema>) {
+    await this.chats.participantChat(viewer, body.chatId);
+    const rows = await this.prisma.message.findMany({
+      where: { id: { in: body.ids }, chatId: body.chatId, kind: 'TEXT', state: 'DELIVERED', deletedAt: null, senderId: { not: viewer.id } },
+      select: { id: true, text: true },
+    });
+    const out: Record<string, string> = {};
+    // Aynı anda en çok 6 çeviri: hız ile sağlayıcı sınırları arasında denge.
+    for (let i = 0; i < rows.length; i += 6) {
+      await Promise.all(
+        rows.slice(i, i + 6).map(async (m) => {
+          const text = await this.translation.translate(m.text, body.lang).catch(() => null);
+          if (text && !scanForContactInfo(text).blocked) out[m.id] = text;
+        }),
+      );
+    }
+    return out;
+  }
 }
+
 
 @Module({
   imports: [ProfilesModule, ChatModule],

@@ -1170,6 +1170,10 @@
     "translate": "Çevir",
     "original": "Aslını göster",
     "busy": "Çevriliyor…",
-    "note": "Otomatik çeviri"
+    "note": "Otomatik çeviri",
+    "originalNote": "Asıl metin",
+    "showTranslation": "Çeviriyi göster",
+    "chatOn": "Mesajları dilime çevir",
+    "chatOff": "Çeviriyi kapat"
   }
 }

@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import type { ChatMessage, Relation } from '@hitaba/shared/client';
 import { useRelativeTime } from '@/lib/format';
 import { Icon } from './icons';
-import { TranslateButton, useTranslation } from './Translatable';
+import { TranslatedBubbleText } from './Translatable';
 import { cx } from './ui';
 
 export interface MessageActions {
@@ -13,8 +13,8 @@ export interface MessageActions {
   onDelete?: (m: ChatMessage) => void;
   canEdit?: (m: ChatMessage) => boolean;
   onRetry?: (m: ListMessage) => void;
-  /** Karşı tarafın mesajlarında "Çevir" bağlantısı gösterilsin mi. */
-  translate?: boolean;
+  /** Sohbet çevirisi açıkken karşı tarafın mesajlarının çevirileri (mesaj kimliği → metin). */
+  translations?: Record<string, string>;
 }
 
 /** Sunucu onayı gelmeden ekrana konan mesaj: `pending` yolda, `failed` gönderilemedi. */
@@ -117,8 +117,8 @@ export function MessageList({
             >
               {m.deleted ? (
                 <span className="italic text-ink-3">{t('deleted')}</span>
-              ) : actions?.translate && !mine && m.state === 'DELIVERED' && !m.pending ? (
-                <TranslatableBubbleText m={m} />
+              ) : !mine && actions?.translations?.[m.id] ? (
+                <TranslatedBubbleText text={m.text} translated={actions.translations[m.id]} />
               ) : (
                 <span className="whitespace-pre-wrap break-words">{m.text}</span>
               )}
@@ -192,15 +192,3 @@ export function MessageList({
   );
 }
 
-/** Karşı tarafın mesajı: isteğe bağlı çeviri, "Aslını göster" ile geri dönülür. */
-function TranslatableBubbleText({ m }: { m: ListMessage }) {
-  const tr = useTranslation(`/translate/message/${m.id}`);
-  return (
-    <>
-      <span className="whitespace-pre-wrap break-words">{tr.translated ?? m.text}</span>
-      <span className="mt-1 block">
-        <TranslateButton showing={tr.showing} busy={tr.busy} error={tr.error} onClick={tr.toggle} />
-      </span>
-    </>
-  );
-}

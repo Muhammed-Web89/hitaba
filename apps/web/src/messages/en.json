@@ -1170,6 +1170,10 @@
     "translate": "Translate",
     "original": "Show original",
     "busy": "Translating…",
-    "note": "Automatic translation"
+    "note": "Auto-translated",
+    "originalNote": "Original",
+    "showTranslation": "Show translation",
+    "chatOn": "Translate messages into my language",
+    "chatOff": "Turn off translation"
   }
 }

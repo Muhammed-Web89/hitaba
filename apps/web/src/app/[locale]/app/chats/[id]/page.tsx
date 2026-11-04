@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { Relation, RULES, scanForContactInfo, type ChatMessage, type ChatSummary } from '@hitaba/shared/client';
 import { Icon } from '@/components/icons';
@@ -65,6 +65,49 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   const [watchersOpen, setWatchersOpen] = useState(false);
   const [dialog, setDialog] = useState<'mahram' | 'close' | 'report' | 'reopen' | null>(null);
   const bottom = useRef<HTMLDivElement>(null);
+
+  // Sohbet çevirisi: açıkken karşı tarafın mesajları uygulamada seçilen dile çevrilir (tercih sohbet başına hatırlanır).
+  const locale = useLocale();
+  const tt = useTranslations('translate');
+  const translateKey = `hitaba.chatTranslate.${id}`;
+  const [translateOn, setTranslateOn] = useState(false);
+  const [translations, setTranslations] = useState<Record<string, string>>({});
+  const requested = useRef(new Set<string>());
+  useEffect(() => {
+    try {
+      setTranslateOn(localStorage.getItem(translateKey) === '1');
+    } catch {
+      /* yoksay */
+    }
+  }, [translateKey]);
+  function toggleTranslate() {
+    const next = !translateOn;
+    setTranslateOn(next);
+    try {
+      localStorage.setItem(translateKey, next ? '1' : '0');
+    } catch {
+      /* yoksay */
+    }
+  }
+  useEffect(() => {
+    // Dil değişirse eski çeviriler geçersiz.
+    requested.current = new Set();
+    setTranslations({});
+  }, [locale]);
+  useEffect(() => {
+    if (!translateOn || !me?.translation || !messages) return;
+    const ids = messages
+      .filter((m) => m.senderId !== me.id && m.kind === 'TEXT' && m.state === 'DELIVERED' && !m.deleted && !m.pending && !requested.current.has(m.id))
+      .map((m) => m.id);
+    if (!ids.length) return;
+    ids.forEach((x) => requested.current.add(x));
+    for (let i = 0; i < ids.length; i += 60) {
+      api<Record<string, string>>('/translate/messages', { method: 'POST', body: { chatId: id, ids: ids.slice(i, i + 60), lang: locale } }).then(
+        (res) => setTranslations((cur) => ({ ...cur, ...res })),
+        () => ids.slice(i, i + 60).forEach((x) => requested.current.delete(x)),
+      );
+    }
+  }, [translateOn, messages, me, id, locale]);
 
   const load = useCallback(async () => {
     const fresh = await api<ChatMessage[]>(`/chats/${id}/messages`);
@@ -200,6 +243,15 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
               {chat.other.ageRange} · {chat.other.city}
             </p>
           </Link>
+          {me.translation && (
+            <IconButton
+              icon="translate"
+              label={translateOn ? tt('chatOff') : tt('chatOn')}
+              aria-pressed={translateOn}
+              onClick={toggleTranslate}
+              className={translateOn ? '!text-brand-500 bg-brand-50 shadow-[0_0_18px_-6px_var(--brand-500)]' : ''}
+            />
+          )}
           <div className="relative">
             <IconButton icon="more" label={t('menu')} onClick={() => setMenu(!menu)} aria-expanded={menu} />
             {menu && (
@@ -249,7 +301,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             reactions={RULES.reactions}
             actions={{
               canEdit,
-              translate: Boolean(me.translation),
+              translations: translateOn ? translations : undefined,
               onReact: (m, r) => api<ChatMessage>(`/messages/${m.id}/reaction`, { method: 'PUT', body: { reaction: r } }).then((x) => setMessages((l) => (l ? upsert(l, x) : l))),
               onEdit: (m) => {
                 setEditing(m);

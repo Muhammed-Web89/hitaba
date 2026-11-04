@@ -1170,6 +1170,10 @@
     "translate": "Tarjima qilish",
     "original": "Asl matnni koʻrsatish",
     "busy": "Tarjima qilinmoqda…",
-    "note": "Avtomatik tarjima"
+    "note": "Avtomatik tarjima",
+    "originalNote": "Asl matn",
+    "showTranslation": "Tarjimani koʻrsatish",
+    "chatOn": "Xabarlarni tilimga tarjima qilish",
+    "chatOff": "Tarjimani oʻchirish"
   }
 }
