@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { OwnProfile } from '@hitaba/shared/client';
 import { LocaleMenu } from '@/components/LocaleMenu';
+import { TelegramDiagnostics } from '@/components/TelegramDiagnostics';
 import { ThemeSelector } from '@/components/ThemeToggle';
 import { Button, Card, IconButton, Modal, PageLoader, SectionTitle, Toggle } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
@@ -136,6 +137,7 @@ export default function SettingsPage() {
       >
         {t('logoutAllText')}
       </Modal>
+      <TelegramDiagnostics />
     </div>
   );
 }
