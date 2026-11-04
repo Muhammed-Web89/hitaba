@@ -38,9 +38,10 @@ const themeScript = `var d=document.documentElement;d.dataset.theme='dark';try{i
 
 /**
  * Telegram Mini App içinde mi? Açılış adresindeki tgWebAppData ya da Telegram'ın mobil köprüsü (TelegramWebviewProxy)
- * oturum boyunca hatırlanır (sayfa geçişlerinde ve yönlendirmelerde hash kaybolabilir). Telegram'daysa SDK, React yüklenmeyi beklemeden hemen indirilmeye başlar.
+ * oturum boyunca hatırlanır (sayfa geçişlerinde ve yönlendirmelerde hash kaybolabilir). Telefonda, React ve SDK
+ * yüklenmeyi beklemeden uygulama tam boya açılır ve aşağı çekince küçülme/kapanma kapatılır (yarım açılış görünmesin). Telegram'daysa SDK, React yüklenmeyi beklemeden hemen indirilmeye başlar.
  */
-const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1||window.TelegramWebviewProxy)sessionStorage.setItem('hitaba.tg','1');if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
+const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1||window.TelegramWebviewProxy)sessionStorage.setItem('hitaba.tg','1');if(window.TelegramWebviewProxy){var P=window.TelegramWebviewProxy;P.postEvent('web_app_expand');P.postEvent('web_app_setup_swipe_behavior','{"allow_vertical_swipe":false}')}if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
