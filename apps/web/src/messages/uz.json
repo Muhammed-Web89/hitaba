@@ -126,7 +126,7 @@
       },
       "about": {
         "title": "Men haqimda",
-        "why": "Fe’lingiz, ishingiz va rejalaringiz haqida yozing. Kamida 100 belgi."
+        "why": "Fe’lingiz, ishingiz va rejalaringiz haqida yozing. Kamida 20 belgi."
       },
       "spouse": {
         "title": "Izlayotgan turmush oʻrtogʻim",
@@ -1070,5 +1070,13 @@
     "note": "Bu yoqtirish bugungi limitingizdan hisoblanadi.",
     "confirm": "Baribir yoqtirish",
     "cancel": "Hozir emas"
+  },
+  "screens": {
+    "errorTitle": "Nimadir xato ketdi",
+    "errorText": "Sahifani qayta yuklang. Muammo takrorlansa, birozdan keyin urinib koʻring.",
+    "reload": "Qayta yuklash",
+    "notFoundTitle": "Sahifa topilmadi",
+    "notFoundText": "Siz izlagan sahifa oʻchirilgan yoki manzili oʻzgargan boʻlishi mumkin.",
+    "home": "Bosh sahifaga qaytish"
   }
 }

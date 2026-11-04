@@ -5,7 +5,10 @@
 export const RULES = {
   minAge: 18,
   maxAge: 80,
-  aboutMinChars: 100,
+  /** Serbest metin alanlarının en az uzunluğu: kendini anlatma, aradığı kişi, itikad. */
+  aboutMinChars: 20,
+  spouseMinChars: 20,
+  beliefsMinChars: 30,
   aboutMaxChars: 2000,
   maxNikahCount: 20,
   /** Evli erkeğin mevcut eş sayısı (en fazla 4 eşten biri olacağı için 1–3). */

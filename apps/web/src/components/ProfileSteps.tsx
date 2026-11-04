@@ -323,7 +323,7 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
     case 'spouse':
     case 'beliefs': {
       const key = step === 'about' ? 'aboutMe' : step === 'spouse' ? 'aboutSpouse' : 'beliefsManhaj';
-      const min = step === 'about' ? RULES.aboutMinChars : 30;
+      const min = step === 'about' ? RULES.aboutMinChars : step === 'spouse' ? RULES.spouseMinChars : RULES.beliefsMinChars;
       const len = (draft[key] as string).trim().length;
       return (
         <>

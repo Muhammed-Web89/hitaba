@@ -40,6 +40,8 @@ export class AuthController {
 
   @Public()
   @Post('telegram')
+  // Girişi Telegram imzası korur; aynı operatör IP'sini paylaşan çok kullanıcı engellenmesin.
+  @Throttle({ default: { limit: 60, ttl: 60_000 } })
   @HttpCode(200)
   telegram(@Body(new ZodPipe(telegramAuthSchema)) body: TelegramAuthInput, @Req() req: Request) {
     return this.auth.telegram(body, metaOf(req));

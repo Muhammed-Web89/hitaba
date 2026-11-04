@@ -126,7 +126,7 @@
       },
       "about": {
         "title": "Hakkımda",
-        "why": "Karakterinizi, işinizi ve planlarınızı anlatın. En az 100 karakter."
+        "why": "Karakterinizi, işinizi ve planlarınızı anlatın. En az 20 karakter."
       },
       "spouse": {
         "title": "Aradığım eş",
@@ -1070,5 +1070,13 @@
     "note": "Bu beğeni bugünkü hakkınızdan düşer.",
     "confirm": "Yine de beğen",
     "cancel": "Vazgeç"
+  },
+  "screens": {
+    "errorTitle": "Bir şeyler ters gitti",
+    "errorText": "Sayfayı yeniden yükleyin. Sorun sürerse biraz sonra tekrar deneyin.",
+    "reload": "Yeniden yükle",
+    "notFoundTitle": "Sayfa bulunamadı",
+    "notFoundText": "Aradığınız sayfa kaldırılmış ya da adresi değişmiş olabilir.",
+    "home": "Ana sayfaya dön"
   }
 }

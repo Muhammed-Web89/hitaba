@@ -37,10 +37,10 @@ export const viewport: Viewport = {
 const themeScript = `var d=document.documentElement;d.dataset.theme='dark';try{if(localStorage.getItem('hitaba.theme')==='light')d.dataset.theme='light'}catch(e){}`;
 
 /**
- * Telegram Mini App içinde mi? Açılış adresindeki tgWebAppData oturum boyunca hatırlanır (sayfa geçişlerinde
- * hash kaybolur). Telegram'daysa SDK, React yüklenmeyi beklemeden hemen indirilmeye başlar.
+ * Telegram Mini App içinde mi? Açılış adresindeki tgWebAppData ya da Telegram'ın mobil köprüsü (TelegramWebviewProxy)
+ * oturum boyunca hatırlanır (sayfa geçişlerinde ve yönlendirmelerde hash kaybolabilir). Telegram'daysa SDK, React yüklenmeyi beklemeden hemen indirilmeye başlar.
  */
-const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1)sessionStorage.setItem('hitaba.tg','1');if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
+const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1||window.TelegramWebviewProxy)sessionStorage.setItem('hitaba.tg','1');if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;

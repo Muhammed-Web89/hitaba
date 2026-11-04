@@ -126,7 +126,7 @@
       },
       "about": {
         "title": "About me",
-        "why": "Describe your character, work and plans. At least 100 characters."
+        "why": "Describe your character, work and plans. At least 20 characters."
       },
       "spouse": {
         "title": "The spouse I seek",
@@ -1070,5 +1070,13 @@
     "note": "This like counts toward today’s limit.",
     "confirm": "Like anyway",
     "cancel": "Not now"
+  },
+  "screens": {
+    "errorTitle": "Something went wrong",
+    "errorText": "Reload the page. If it happens again, try a little later.",
+    "reload": "Reload",
+    "notFoundTitle": "Page not found",
+    "notFoundText": "The page you are looking for may have been removed or moved.",
+    "home": "Go to the home page"
   }
 }

@@ -95,10 +95,10 @@ export const profileSteps = {
     interests: z.array(z.enum(INTEREST_CODES)).max(RULES.maxInterests).optional(),
   }),
   spouse: z.object({
-    aboutSpouse: z.string().trim().min(30).max(RULES.aboutMaxChars),
+    aboutSpouse: z.string().trim().min(RULES.spouseMinChars).max(RULES.aboutMaxChars),
   }),
   beliefs: z.object({
-    beliefsManhaj: z.string().trim().min(30).max(RULES.aboutMaxChars),
+    beliefsManhaj: z.string().trim().min(RULES.beliefsMinChars).max(RULES.aboutMaxChars),
   }),
   /** Yalnızca moderatöre görünür, şifreli saklanır. */
   screening: z.object({

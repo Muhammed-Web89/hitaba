@@ -18,8 +18,10 @@ function readStored(): Array<[string, State]> {
   }
 }
 
+// En son kurulan önbellek (cachedMe/flush bunu okur).
 let map: Map<string, State> | null = null;
 let timer: ReturnType<typeof setTimeout> | undefined;
+let listening = false;
 
 function flush() {
   if (!map) return;
@@ -32,11 +34,16 @@ function flush() {
   }
 }
 
-/** SWRConfig `provider` olarak verilir. */
+/**
+ * SWRConfig `provider` olarak verilir. Her çağrıda YENİ bir Map döner: dil değişince sağlayıcı
+ * yeniden kurulur ve SWR eski sağlayıcıyı kapatırken onun önbelleğini kendi kaydından siler.
+ * Aynı Map paylaşılırsa yeni sağlayıcının kaydı da silinir ve uygulama çöker
+ * ("undefined is not iterable"). Veriler yeni Map'e kopyalanır, kaybolmaz.
+ */
 export function persistentCache(): Cache {
-  if (map) return map;
-  map = new Map(typeof window === 'undefined' ? [] : readStored());
-  const m = map;
+  const seed: Array<[string, State]> = map ? [...map] : typeof window === 'undefined' ? [] : readStored();
+  const m = new Map(seed);
+  map = m;
   const set = m.set.bind(m);
   m.set = (k, v) => {
     set(k, v);
@@ -46,7 +53,8 @@ export function persistentCache(): Cache {
     }
     return m;
   };
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && !listening) {
+    listening = true;
     window.addEventListener('pagehide', flush);
     document.addEventListener('visibilitychange', () => document.visibilityState === 'hidden' && flush());
   }
@@ -67,7 +75,8 @@ export function clearPersistedCache() {
 
 /** Önbellekteki son kullanıcı (açılışta yönlendirme için). */
 export function cachedMe<T>(): T | undefined {
-  return persistentCache().get('/me')?.data as T | undefined;
+  if (map) return map.get('/me')?.data as T | undefined;
+  return (typeof window === 'undefined' ? undefined : new Map(readStored()).get('/me')?.data) as T | undefined;
 }
 
 // Akışta en son gösterilen kart: açılışta hemen gösterilir, sonra sunucudan tazelenir.

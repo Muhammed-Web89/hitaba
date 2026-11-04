@@ -19,7 +19,7 @@ export interface TelegramWebApp {
 
 declare global {
   interface Window {
-    Telegram?: { WebApp?: TelegramWebApp };
+    Telegram?: { WebApp?: TelegramWebApp; WebView?: { postEvent?(event: string, callback: unknown, data?: unknown): void } };
   }
 }
 
@@ -82,7 +82,11 @@ export function loadTelegramSdk(): Promise<TelegramWebApp | undefined> {
 export function setupTelegramWebApp(wa: TelegramWebApp) {
   wa.ready();
   wa.expand();
+  // Aşağı kaydırma uygulamayı küçültmesin/kapatmasın. Açılış parametreleri kaybolursa (yönlendirme, dil
+  // değişimi) SDK kendini 6.0 sanar ve disableVerticalSwipes'ı sessizce atlar; o durumda olay doğrudan
+  // gönderilir (Telegram tanımadığı olayı yok sayar, zararı yok).
   if (wa.isVersionAtLeast?.('7.7')) wa.disableVerticalSwipes?.();
+  else window.Telegram?.WebView?.postEvent?.('web_app_setup_swipe_behavior', false, { allow_vertical_swipe: false });
   if (wa.isVersionAtLeast?.('6.1')) {
     const bg = getComputedStyle(document.body).backgroundColor;
     wa.setHeaderColor?.(bg);
