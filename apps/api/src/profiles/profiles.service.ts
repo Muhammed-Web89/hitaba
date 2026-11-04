@@ -1,4 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { canMeet } from '../common/sandbox';
 import { env } from '../config/env';
 import type { Prisma, Profile, User } from '@prisma/client';
 import {
@@ -204,7 +205,7 @@ export class ProfilesService implements OnModuleInit {
   /** Başka bir kullanıcının profili; yalnızca karşı cinsten, onaylı kullanıcılar arasında. */
   async publicProfile(viewer: User, userId: string): Promise<PublicProfile> {
     const target = await this.prisma.user.findUnique({ where: { id: userId }, include: { profile: true } });
-    if (!target || target.status !== 'APPROVED' || target.gender === viewer.gender || target.role !== 'USER' || target.isSandbox !== viewer.isSandbox) {
+    if (!target || target.status !== 'APPROVED' || target.gender === viewer.gender || target.role !== 'USER' || !canMeet(viewer, target)) {
       throw new NotFoundException();
     }
     return this.toPublic(viewer, target);

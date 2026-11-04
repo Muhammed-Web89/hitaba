@@ -148,6 +148,8 @@ model User {
   status           UserStatus @default(ONBOARDING)
   /// Deneme hesabı: yalnızca diğer deneme hesaplarıyla karşılaşır, gerçek kullanıcılar onu hiç görmez.
   isSandbox        Boolean    @default(false)
+  /// Yöneticinin verdiği yetki: hem gerçek hem deneme profillerini görür, deneme hesapları da onu görür.
+  sandboxTester    Boolean    @default(false)
   email            String?    @unique
   /// E-posta ile kayıtta doğrulanana kadar null. Telegram hesaplarında kullanılmaz.
   emailVerifiedAt  DateTime?

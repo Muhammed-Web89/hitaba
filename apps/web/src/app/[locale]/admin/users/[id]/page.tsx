@@ -14,6 +14,8 @@ interface AdminUser {
   gender: string;
   status: string;
   statusReason: string | null;
+  isSandbox?: boolean;
+  sandboxTester?: boolean;
   email: string | null;
   telegramUsername: string | null;
   connectBalance: number;
@@ -124,6 +126,19 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
           {error && <Notice tone="danger">{error}</Notice>}
           <p className="text-xs text-ink-3">{t('banNote')}</p>
         </Card>
+        {me?.role === 'ADMIN' && u.role === 'USER' && !u.isSandbox && (
+          <Card className="space-y-2 p-4">
+            <h3 className="font-semibold">{t('sandboxTester.title')}</h3>
+            <p className="text-xs text-ink-3">{t('sandboxTester.hint')}</p>
+            <Button
+              variant={u.sandboxTester ? 'secondary' : 'primary'}
+              className="w-full"
+              onClick={() => run('sandbox-tester', { enabled: !u.sandboxTester })}
+            >
+              {u.sandboxTester ? t('sandboxTester.off') : t('sandboxTester.on')}
+            </Button>
+          </Card>
+        )}
       </aside>
 
       <Modal

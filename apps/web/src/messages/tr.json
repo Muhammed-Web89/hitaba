@@ -875,6 +875,13 @@
       "MODERATOR_MALE": "Erkek moderatör",
       "ADMIN_FEMALE": "Yönetici",
       "ADMIN_MALE": "Yönetici"
+    },
+    "sandboxTester": {
+      "title": "Deneme profilleri",
+      "hint": "Açıkken bu hesap gerçek profillerin yanında deneme profillerini de görür; deneme hesapları da onu görür. Diğer kullanıcılar deneme hesaplarını görmez.",
+      "on": "Deneme profillerini görebilsin",
+      "off": "Yetkiyi kaldır",
+      "chip": "Deneme görüyor"
     }
   },
   "consent": {

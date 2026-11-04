@@ -85,6 +85,7 @@ export class AdminService {
         gender: true,
         status: true,
         isSandbox: true,
+        sandboxTester: true,
         email: true,
         telegramUsername: true,
         connectBalance: true,
@@ -136,6 +137,15 @@ export class AdminService {
     await this.moderation.audit(mod.id, 'user.view', { targetType: 'USER', targetId: id });
     const { passwordHash: _pw, ...safe } = user;
     return safe;
+  }
+
+  /** "Deneme profillerini görebilir" yetkisi (yalnızca yönetici). */
+  async setSandboxTester(admin: User, id: string, enabled: boolean) {
+    const target = await this.prisma.user.findUnique({ where: { id } });
+    if (!target || target.role !== 'USER' || target.isSandbox) throw new BadRequestException({ error: 'forbidden_target' });
+    await this.prisma.user.update({ where: { id }, data: { sandboxTester: enabled } });
+    await this.moderation.audit(admin.id, enabled ? 'user.sandbox_tester.on' : 'user.sandbox_tester.off', { targetType: 'USER', targetId: id });
+    return { ok: true };
   }
 
   /** Ban: tüm oturumlar kapanır, bakiye sıfırlanır, açık sohbetler kapanır (karşı tarafa iade). */
@@ -271,6 +281,12 @@ export class AdminController {
   @Roles('ADMIN')
   ban(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(reasonSchema)) body: { reason: string }) {
     return this.admin.ban(mod, id, body.reason);
+  }
+
+  @Post('users/:id/sandbox-tester')
+  @Roles('ADMIN')
+  sandboxTester(@CurrentUser() admin: User, @Param('id') id: string, @Body(new ZodPipe(z.object({ enabled: z.boolean() }))) body: { enabled: boolean }) {
+    return this.admin.setSandboxTester(admin, id, body.enabled);
   }
 
   @Post('users/:id/freeze')

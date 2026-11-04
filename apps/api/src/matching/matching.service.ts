@@ -1,4 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { canMeet, meetableWhere } from '../common/sandbox';
 import type { Chat, ChatStatus, Match, Prisma, Profile, User } from '@prisma/client';
 import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicProfile } from '@hitaba/shared';
 import { hours, startOfLocalDay } from '../common/time';
@@ -74,8 +75,8 @@ export class MatchingService {
       id: { not: viewer.id },
       role: 'USER',
       status: 'APPROVED',
-      // Deneme hesapları ile gerçek kullanıcılar birbirini hiç görmez.
-      isSandbox: viewer.isSandbox,
+      // Deneme hesapları ile gerçek kullanıcılar birbirini görmez (yetkili deneme hesabı hariç).
+      AND: [meetableWhere(viewer)],
       gender: viewer.gender === 'MALE' ? 'FEMALE' : 'MALE',
       profile: { is: profile },
       likesReceived: { none: { fromId: viewer.id } },
@@ -388,7 +389,7 @@ export class MatchingService {
 
   private async assertCandidate(viewer: User, targetId: string) {
     const target = await this.prisma.user.findUnique({ where: { id: targetId } });
-    if (!target || target.role !== 'USER' || target.status !== 'APPROVED' || target.gender === viewer.gender || target.isSandbox !== viewer.isSandbox) {
+    if (!target || target.role !== 'USER' || target.status !== 'APPROVED' || target.gender === viewer.gender || !canMeet(viewer, target)) {
       throw new NotFoundException();
     }
     return target;
