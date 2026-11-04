@@ -229,13 +229,14 @@ export class ProfilesService implements OnModuleInit {
     const p = target.profile!;
     const age = p.birthDate ? ageFromBirthDate(p.birthDate) : RULES.minAge;
     const isFemale = target.gender === 'FEMALE';
-    const [photoUrls, photoCount, busy, witnessCount, wali] = await Promise.all([
+    const [photoUrls, photoCount, busy, witnessCount, wali, favorite] = await Promise.all([
       // Kadının fotoğraf adresi erkeğe profil verisiyle hiç gitmez; yalnızca tek seferlik açılışta verilir.
       isFemale && viewer.role === 'USER' && viewer.gender === 'MALE' ? Promise.resolve([]) : this.photos.urlsFor(viewer, target.id),
       this.prisma.photo.count({ where: { userId: target.id, status: 'APPROVED' } }),
       isFemale && !p.hideBusyBadge ? this.isBusy(target.id) : Promise.resolve(false),
       isFemale ? this.prisma.witness.count({ where: { femaleId: target.id } }) : Promise.resolve(0),
       isFemale ? this.prisma.waliLink.findUnique({ where: { femaleId: target.id }, select: { id: true } }) : null,
+      viewer.role === 'USER' ? this.prisma.favorite.findUnique({ where: { userId_targetId: { userId: viewer.id, targetId: target.id } }, select: { userId: true } }) : null,
     ]);
     return {
       userId: target.id,
@@ -262,6 +263,7 @@ export class ProfilesService implements OnModuleInit {
       photoUrls,
       hasPhoto: photoCount > 0,
       busy,
+      favorited: Boolean(favorite),
       witnessCount,
       hasWali: Boolean(wali),
     };

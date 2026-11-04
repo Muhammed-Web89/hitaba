@@ -318,7 +318,8 @@
     "next": "Next",
     "readOnly": "Browse only",
     "revisitTitle": "Someone you passed earlier",
-    "revisitText": "There are no new profiles. Would you like to look again at the ones you passed?"
+    "revisitText": "There are no new profiles. Would you like to look again at the ones you passed?",
+    "unfavorite": "Remove from saved"
   },
   "profile": {
     "ageRange": "{range} years",

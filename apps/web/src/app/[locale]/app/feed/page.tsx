@@ -66,10 +66,11 @@ function Feed() {
     async (f: FeedFilter, at = 0, fromCache = false) => {
       const cached = fromCache && !at ? readFeedCard<FeedCard>(scope) : undefined;
       setCard(cached);
-      setFavorited(false);
+      setFavorited(Boolean(cached?.profile.favorited));
       const res = await api<{ profile: PublicProfile | null; remaining: number }>('/feed/next', { method: 'POST', body: at ? { ...f, offset: at } : f });
       const next = res.profile ? (res as FeedCard) : null;
       setCard(next);
+      setFavorited(Boolean(next?.profile.favorited));
       if (!at) writeFeedCard(scope, next && { ...next, profile: { ...next.profile, photoUrls: [] } });
       if (!cached || cached.profile.userId !== next?.profile.userId) scrollToTop();
     },
@@ -107,7 +108,10 @@ function Feed() {
 
   async function undo() {
     const res = await api<{ profile: PublicProfile | null }>('/feed/undo', { method: 'POST' });
-    if (res.profile) setCard({ profile: res.profile, remaining: (card?.remaining ?? 0) + 1 });
+    if (res.profile) {
+      setCard({ profile: res.profile, remaining: (card?.remaining ?? 0) + 1 });
+      setFavorited(Boolean(res.profile.favorited));
+    }
   }
 
   async function resetPasses() {
@@ -119,8 +123,10 @@ function Feed() {
 
   async function toggleFavorite() {
     if (!card) return;
-    await api(`/favorites/${card.profile.userId}`, { method: favorited ? 'DELETE' : 'POST' });
-    setFavorited(!favorited);
+    // Yıldız hemen dolsun/boşalsın; istek başarısız olursa eski haline döner.
+    const next = !favorited;
+    setFavorited(next);
+    await api(`/favorites/${card.profile.userId}`, { method: next ? 'POST' : 'DELETE' }).catch(() => setFavorited(!next));
   }
 
   const applyFilter = (f: FeedFilter) => {
@@ -201,7 +207,13 @@ function Feed() {
           actions={
             !readOnly && (
               <>
-              <IconButton icon="star" label={t('favorite')} onClick={toggleFavorite} className={favorited ? 'text-accent' : ''} />
+              <IconButton
+                icon="star"
+                label={favorited ? t('unfavorite') : t('favorite')}
+                aria-pressed={favorited}
+                onClick={toggleFavorite}
+                className={favorited ? '!text-accent [&_svg]:fill-current' : ''}
+              />
               <IconButton icon="flag" label={t('report')} onClick={() => setReportOpen(true)} />
               </>
             )

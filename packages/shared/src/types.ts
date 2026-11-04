@@ -106,6 +106,8 @@ export interface PublicProfile {
   photoUrls: string[];
   hasPhoto: boolean;
   busy: boolean;
+  /** Görüntüleyen bu profili kaydetmiş mi (yıldız). */
+  favorited?: boolean;
   witnessCount: number;
   hasWali: boolean;
 }

@@ -318,7 +318,8 @@
     "next": "Sonraki",
     "readOnly": "Yalnızca göz atma",
     "revisitTitle": "Daha önce geçtiğiniz bir aday",
-    "revisitText": "Yeni aday kalmadı. Geçtiklerinizi tekrar değerlendirmek ister misiniz?"
+    "revisitText": "Yeni aday kalmadı. Geçtiklerinizi tekrar değerlendirmek ister misiniz?",
+    "unfavorite": "Favorilerden çıkar"
   },
   "profile": {
     "ageRange": "{range} yaş",

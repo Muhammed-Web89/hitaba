@@ -318,7 +318,8 @@
     "next": "Keyingi",
     "readOnly": "Faqat koʻrish",
     "revisitTitle": "Avval oʻtkazib yuborgan anketangiz",
-    "revisitText": "Yangi anketa qolmadi. Oʻtkazib yuborganlaringizni qayta koʻrib chiqasizmi?"
+    "revisitText": "Yangi anketa qolmadi. Oʻtkazib yuborganlaringizni qayta koʻrib chiqasizmi?",
+    "unfavorite": "Saqlanganlardan olib tashlash"
   },
   "profile": {
     "ageRange": "{range} yosh",
