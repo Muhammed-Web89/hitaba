@@ -34,7 +34,7 @@ const uz: SiteContent = {
     pathLead: 'Samimiy anketadan oila bosqichigacha olti qadam. Hech bir qadam tashlab ketilmaydi, hech narsa yopiq eshiklar ortida boʻlmaydi.',
     path: [
       { title: 'Samimiy anketa', text: 'Anketangizni rostgoʻylik bilan toʻldirasiz. Uni hech kim koʻrishidan oldin siz bilan bir jinsdagi moderator tekshiradi.' },
-      { title: 'Oʻzaro qiziqish', text: 'Anketalarni suratsiz koʻrasiz. Ikki tomon ham bir-birini yoqtirsa, tanishuv boshlanadi.' },
+      { title: 'Oʻzaro qiziqish', text: 'Anketalarni suratsiz koʻrasiz. Ikki tomon ham bir-biriga qiziqish bildirsa, tanishuv boshlanadi.' },
       { title: 'Avval uning surati', text: 'Ayol avval erkakning suratini koʻradi va qaror qiladi. Uning roziligisiz hech narsa oldinga siljimaydi.' },
       { title: 'Ruxsat bilan — ayolning surati', text: 'Erkak ayolning suratini bir marta, toʻliq ekranda va suv belgisi bilan koʻradi. Qayta koʻrish uchun undan ruxsat soʻraydi.' },
       { title: 'Guvohli suhbat', text: 'Suhbatni erkak ochadi. Moderatorlar, sunʼiy intellekt yordamchisi va ayolning guvohlari ishtirok etadi; valiysi kuzatishi mumkin.' },
@@ -43,7 +43,7 @@ const uz: SiteContent = {
     forHer: {
       title: 'Ayollar uchun',
       points: [
-        'Bepul va cheklovsiz — yoqtirish ham, suhbat ham sizga hech narsaga tushmaydi.',
+        'Bepul va cheklovsiz — qiziqish bildirish ham, suhbat ham sizga hech narsaga tushmaydi.',
         'Suratingiz hech bir roʻyxatda koʻrinmaydi. Har bir koʻrish faqat sizning ruxsatingiz bilan va bir marta ochiladi.',
         '{witnesses} nafargacha guvoh qoʻshing, valiyingizga suhbatni kuzatish uchun maxfiy havola bering.',
         'Bir vaqtda faqat bitta suhbat — hech kim siz bilan bir nechta suhbatni “yigʻib” ololmaydi.',
@@ -52,7 +52,7 @@ const uz: SiteContent = {
     forHim: {
       title: 'Erkaklar uchun',
       points: [
-        'Har kuni {likes} ta bepul yoqtirish; hisob oʻz vaqt mintaqangiz boʻyicha yarim tunda yangilanadi.',
+        'Har kuni {likes} marta bepul qiziqish bildirish mumkin; hisob oʻz vaqt mintaqangiz boʻyicha yarim tunda yangilanadi.',
         'Suhbat ochish — {chatCost} ta tanga. Jiddiy boʻlmaganlarni saralaydigan kichik qadam.',
         'Birinchi suhbat bizdan: yangi hisoblarga {welcome} ta tanga sovgʻa qilinadi.',
         'Suhbatni moderator yopsa yoki qarshi tomon bloklansa, tangangiz qaytariladi.',
@@ -69,7 +69,7 @@ const uz: SiteContent = {
     pricingTitle: 'Oddiy va halol narxlar',
     pricingLead: 'Muhim narsalarning hammasi bepul. Erkaklar faqat suhbat ochish uchun toʻlaydi — Telegram yulduzlari bilan, Telegram ichida.',
     freeTitle: 'Hamma uchun bepul',
-    free: ['Anketa va moderatsiya', 'Koʻrish va filtrlar', 'Yoqtirishlar (kuniga: erkaklar {likes}, ayollar {femaleLikes} ta)', 'Guvohlar va valiy havolasi', 'Ochiq suhbatdagi barcha xabarlar'],
+    free: ['Anketa va moderatsiya', 'Koʻrish va filtrlar', 'Qiziqish bildirish (kuniga: erkaklar {likes}, ayollar {femaleLikes} marta)', 'Guvohlar va valiy havolasi', 'Ochiq suhbatdagi barcha xabarlar'],
     connectsTitle: 'Erkaklar uchun tangalar',
     connectsNote: '1 tanga = 1 suhbat. Tangalarning muddati tugamaydi va boshqaga oʻtkazilmaydi.',
     perConnect: 'tanga',
@@ -150,12 +150,12 @@ const uz: SiteContent = {
       },
       {
         id: 'matching',
-        title: 'Yoqtirishlar va tanishuvlar',
+        title: 'Qiziqish va tanishuvlar',
         items: [
-          { title: 'Kunlik yoqtirishlar', text: 'Erkaklarda kuniga {likes} ta, ayollarda {femaleLikes} ta yoqtirish bor; hisob oʻz vaqt mintaqangiz boʻyicha yarim tunda yangilanadi. Qaytarib olingan yoqtirish oʻsha kungi limitni qaytarmaydi.', tag: 'info' },
-          { title: 'Sizni kim yoqtirdi', text: 'Kimdir sizni yoqtirsa, bildirishnoma olasiz; uni “Meni yoqtirganlar”da koʻrasiz va siz ham yoqtirishingiz mumkin.', tag: 'info' },
-          { title: 'Yoqtirishni qaytarib olish', text: 'Javob olmagan yoqtirishni istalgan payt qaytarib olish mumkin. Bugun ishlatilgan yoqtirish kunlik limitga qaytmaydi.', tag: 'allowed' },
-          { title: 'Oʻzaro qiziqish', text: 'Ikki tomon bir-birini yoqtirsa, tanishuv boshlanadi. Shundan soʻng ayol erkakning suratini koʻrib, qaror qiladi.', tag: 'info' },
+          { title: 'Kunlik qiziqishlar', text: 'Erkaklar kuniga {likes} marta, ayollar {femaleLikes} marta qiziqish bildira oladi; hisob oʻz vaqt mintaqangiz boʻyicha yarim tunda yangilanadi. Qaytarib olingan qiziqish oʻsha kungi imkoniyatni qaytarmaydi.', tag: 'info' },
+          { title: 'Sizga kim qiziqdi', text: 'Kimdir sizga qiziqish bildirsa, bildirishnoma olasiz; uni “Menga qiziqqanlar”da koʻrasiz va siz ham qiziqish bildirishingiz mumkin.', tag: 'info' },
+          { title: 'Qiziqishni qaytarib olish', text: 'Javob olmagan qiziqishni istalgan payt qaytarib olish mumkin. Bugun ishlatilgan imkoniyat kunlik limitga qaytmaydi.', tag: 'allowed' },
+          { title: 'Oʻzaro qiziqish', text: 'Ikki tomon bir-biriga qiziqish bildirsa, tanishuv boshlanadi. Shundan soʻng ayol erkakning suratini koʻrib, qaror qiladi.', tag: 'info' },
           { title: 'Ayolning qarori qatʼiy', text: 'Ayol rad etsa, tanishuv yopiladi va qayta ochilmaydi.', tag: 'info' },
           { title: 'Bosim oʻtkazish mumkin emas', text: 'Javob berishni talab qilish, rad javobidan keyin turib olish yoki boshqalar orqali bogʻlanishga urinish mumkin emas.', tag: 'forbidden' },
         ],
@@ -178,7 +178,7 @@ const uz: SiteContent = {
         title: 'Suhbat muddatlari va cheklovlar',
         items: [
           { title: 'Ayol uchun bir vaqtda bitta suhbat', text: 'Ayolning faqat bitta faol suhbati boʻlishi mumkin. U suhbatdaligida boshqalar uning band ekanini koʻrishi mumkin.', tag: 'info' },
-          { title: 'Suhbat paytida yoqtirish bildirishnomasi kelmaydi', text: 'Ayol biror kishi bilan suhbatdaligida boshqa erkaklarning yoqtirishlari unga koʻrsatilmaydi; suhbat tugasa, yetkaziladi. Uni yoqtirmoqchi boʻlgan erkak bu haqda oldindan ogohlantiriladi.', tag: 'info' },
+          { title: 'Suhbat paytida qiziqish bildirishnomasi kelmaydi', text: 'Ayol biror kishi bilan suhbatdaligida boshqa erkaklarning qiziqishlari unga koʻrsatilmaydi; suhbat tugasa, yetkaziladi. Unga qiziqish bildirmoqchi boʻlgan erkak bu haqda oldindan ogohlantiriladi.', tag: 'info' },
           { title: 'Jimlik eslatmalari', text: '{remind1} soat hech kim yozmasa, ikki tomonga eslatma boradi; {remind2} soatda yana bir marta.', tag: 'info' },
           { title: 'Avtomatik yopilish', text: '{close} soat davomida xabar yozilmagan suhbat oʻz-oʻzidan yopiladi.', tag: 'info' },
           { title: 'Bir marta qayta ochish', text: 'Jimlik sababli yoki erkakning oʻzi yopgan suhbatni erkak bir marta, {chatCost} ta tanga evaziga qayta ochishi mumkin. Ayol yoki moderator yopgan boʻlsa, qayta ochilmaydi.', tag: 'info' },
@@ -216,7 +216,7 @@ const uz: SiteContent = {
         id: 'payments',
         title: 'Tangalar va toʻlovlar',
         items: [
-          { title: 'Nimalar bepul', text: 'Anketa, koʻrish, filtrlar, yoqtirishlar, guvohlar, valiy havolasi va ochiq suhbatdagi barcha xabarlar.', tag: 'info' },
+          { title: 'Nimalar bepul', text: 'Anketa, koʻrish, filtrlar, qiziqishlar, guvohlar, valiy havolasi va ochiq suhbatdagi barcha xabarlar.', tag: 'info' },
           { title: 'Tanga nima uchun', text: 'Erkak suhbat ochish uchun {chatCost} ta tanga sarflaydi. Ayollar hech qachon toʻlamaydi.', tag: 'info' },
           { title: 'Qanday toʻlanadi', text: 'Tangalar Telegram mini-ilovasida Telegram yulduzlari bilan sotib olinadi. Narx tasdiqlashdan oldin koʻrsatiladi.', tag: 'info' },
           { title: 'Sovgʻalar va chegirmalar', text: 'Yangi erkak aʼzolarga birinchi suhbat uchun {welcome} ta tanga beriladi. Vaqti-vaqti bilan chegirmali yoki bepul paket aksiyalari boʻladi; amaldagi narx har doim xariddan oldin koʻrsatiladi.', tag: 'info' },
@@ -240,7 +240,7 @@ const uz: SiteContent = {
   },
   faq: {
     title: 'Koʻp beriladigan savollar',
-    description: 'Hitaba qanday ishlashi haqida javoblar: suratlar, guvohlar, valiy havolasi, yoqtirishlar, tangalar, xavfsizlik va hisobingiz.',
+    description: 'Hitaba qanday ishlashi haqida javoblar: suratlar, guvohlar, valiy havolasi, qiziqishlar, tangalar, xavfsizlik va hisobingiz.',
     intro: 'Javob topa olmadingizmi? Ilovadan yordam xizmatiga yozing — har bir xabarni oʻqiymiz.',
     groups: [
       {
@@ -249,7 +249,7 @@ const uz: SiteContent = {
           { q: 'Hitaba nima?', a: 'Nikoh niyatidagi musulmon erkak va ayollar tanishadigan platforma — guvohli suhbatlar, valiyning kuzatuvi va ayollar uchun qatʼiy maxfiylik bilan.' },
           { q: 'Qayerda foydalansam boʻladi?', a: 'Telegram mini-ilovasi sifatida (eng tez yoʻl) yoki istalgan brauzerda hitaba.me manzili orqali. Ilova oʻzbek, rus, turk, ingliz va arab tillarida ishlaydi.' },
           { q: 'Pullikmi?', a: 'Ayollar uchun toʻliq bepul. Erkaklar uchun ham suhbat ochishdan ({chatCost} ta tanga) boshqa hamma narsa bepul.' },
-          { q: 'Moderatsiya qancha davom etadi?', a: 'Odatda bir kun ichida. Anketangiz tekshirilayotganda anketalarni koʻrishingiz mumkin; yoqtirish va suhbat tasdiqdan keyin ochiladi.' },
+          { q: 'Moderatsiya qancha davom etadi?', a: 'Odatda bir kun ichida. Anketangiz tekshirilayotganda anketalarni koʻrishingiz mumkin; qiziqish bildirish va suhbat tasdiqdan keyin ochiladi.' },
         ],
       },
       {
@@ -264,7 +264,7 @@ const uz: SiteContent = {
       {
         title: 'Erkaklar uchun',
         items: [
-          { q: 'Kunlik yoqtirish limiti nega bor?', a: 'Erkaklar uchun kuniga {likes} ta, ayollar uchun {femaleLikes} ta yoqtirish hammani yoqtirish oʻrniga anketalarni diqqat bilan oʻqishga undaydi.' },
+          { q: 'Kunlik qiziqish limiti nega bor?', a: 'Erkaklar uchun kuniga {likes} marta, ayollar uchun {femaleLikes} marta qiziqish bildirish imkoniyati hammaga qiziqish bildirish oʻrniga anketalarni diqqat bilan oʻqishga undaydi.' },
           { q: 'Suhbat ochish nega pullik?', a: 'Kichik toʻlov jiddiy boʻlmaganlarni saralaydi va ayollarni himoya qiladi. Birinchi suhbatingiz bepul — yangi hisoblarga {welcome} ta tanga beriladi.' },
           { q: 'Suhbat yopilsa, tangam nima boʻladi?', a: 'Suhbatni moderator yopsa, ayol bloklansa yoki hisobini oʻchirsa, tanga avtomatik qaytariladi.' },
           { q: 'Uning suratini keyin yana koʻra olamanmi?', a: 'Har bir koʻrish uning ruxsatini talab qiladi. Tanishuv sahifasida “Qayta koʻrish uchun ruxsat soʻrash”ni bosing; unga bildirishnoma boradi va u qaror qiladi.' },
@@ -282,7 +282,7 @@ const uz: SiteContent = {
         title: 'Hisob',
         items: [
           { q: 'Anketamni oʻzgartirsam boʻladimi?', a: 'Ha, “Profil” boʻlimida. Matnlardagi oʻzgarishlarni moderator qayta tekshiradi.' },
-          { q: 'Hisobimni qanday oʻchiraman?', a: 'Ilovada: Sozlamalar → Hisobni oʻchirish. Anketangiz, suratlaringiz va yoqtirishlaringiz darhol oʻchiriladi, ochiq suhbatlar yopiladi.' },
+          { q: 'Hisobimni qanday oʻchiraman?', a: 'Ilovada: Sozlamalar → Hisobni oʻchirish. Anketangiz, suratlaringiz va qiziqishlaringiz darhol oʻchiriladi, ochiq suhbatlar yopiladi.' },
         ],
       },
     ],
@@ -319,7 +319,7 @@ const uz: SiteContent = {
       steps: ['Hitaba’ni oching (Telegram yoki hitaba.me) va kiring.', 'Profil → Sozlamalar boʻlimiga oʻting.', '“Hisobni oʻchirish”ni bosing va tasdiqlang.'],
       inAppButton: 'Sozlamalarni ochish',
       sections: [
-        { title: 'Darhol oʻchiriladi', body: 'Anketangiz va uning matnlari, suratlaringiz, yoqtirishlar va saralanganlar, guvohlar va valiy havolasi, kirish maʼlumotlaringiz va qolgan tangalaringiz.' },
+        { title: 'Darhol oʻchiriladi', body: 'Anketangiz va uning matnlari, suratlaringiz, qiziqishlar va saqlanganlar, guvohlar va valiy havolasi, kirish maʼlumotlaringiz va qolgan tangalaringiz.' },
         { title: 'Suhbatlar bilan nima boʻladi', body: 'Ochiq suhbatlar yopiladi. Xabarlar yozuvi xavfsizlik va moderatsiya uchun cheklangan muddat shaxsingizsiz saqlanadi, soʻng Maxfiylik siyosatida aytilganidek oʻchiriladi.' },
         { title: 'Saqlashimiz shart boʻlganlar', body: 'Toʻlov yozuvlari qonun talab qilgan muddatgacha, xavfsizlik yozuvlari bir yilgacha saqlanadi.' },
         { title: 'Telegram', body: 'Hitaba hisobini oʻchirish Telegram hisobingizni oʻchirmaydi. Telegramda botni toʻxtatib, bloklashingiz mumkin.' },

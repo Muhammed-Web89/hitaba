@@ -87,11 +87,11 @@
     "registerLink": "Anketa yaratish",
     "haveAccount": "Roʻyxatdan oʻtganmisiz?",
     "loginLink": "Kirish",
-    "genderQuestion": "Jinsim",
+    "genderQuestion": "Jinsingiz",
     "brother": "Erkak",
-    "brotherHint": "Turmush oʻrtoq (ayol) izlayapman",
+    "brotherHint": "Uylanish niyatidaman",
     "sister": "Ayol",
-    "sisterHint": "Turmush oʻrtoq (erkak) izlayapman",
+    "sisterHint": "Turmushga chiqish niyatidaman",
     "genderPermanent": "Buni keyin oʻzgartirib boʻlmaydi.",
     "genderRequired": "Iltimos, erkak yoki ayolni tanlang.",
     "adultsOnly": "Faqat nikoh niyatidagi voyaga yetganlar (18+) uchun.",
@@ -117,28 +117,28 @@
         "why": "Sizga yaqin yoki koʻchishga tayyor insonlarni topishga yordam beradi."
       },
       "body": {
-        "title": "Tashqi koʻrinish",
-        "why": "Taxminiy qiymatlar kifoya."
+        "title": "Boʻy va vazn",
+        "why": "Taxminiy raqamlar yetarli."
       },
       "family": {
         "title": "Oilaviy holat",
         "why": "Boshidan ochiqlik ishonchni mustahkamlaydi."
       },
       "about": {
-        "title": "Men haqimda",
-        "why": "Fe’lingiz, ishingiz va rejalaringiz haqida yozing. Kamida 20 belgi."
+        "title": "Oʻzim haqimda",
+        "why": "Oʻzingizni oʻz soʻzlaringiz bilan tanishtiring: kasbingiz, fe’l-atvoringiz, kundalik hayotingiz, rejalaringiz. Kamida 20 ta harf."
       },
       "spouse": {
-        "title": "Izlayotgan turmush oʻrtogʻim",
-        "why": "Turmush oʻrtogʻingizda nima muhim?"
+        "title": "Qanday turmush oʻrtoq izlayapman",
+        "why": "Siz uchun nima muhim: dindorlik, fe’l-atvor, oilaga munosabat, yashash joyi."
       },
       "beliefs": {
-        "title": "Aqida, manhaj va ulamolar",
-        "why": "Diniy tushunchadagi muvofiqlik — oila poydevori."
+        "title": "Aqida, mazhab va ustozlar",
+        "why": "Dinni qanday tushunishingiz va kimdan oʻrganishingizni yozing — diniy qarashlar mosligi oila uchun muhim."
       },
       "screening": {
-        "title": "Tekshiruv savollari",
-        "why": "Faqat moderator koʻradi — boshqa foydalanuvchilarga hech qachon koʻrsatilmaydi."
+        "title": "Maxfiy savollar",
+        "why": "Bu javoblarni faqat moderator koʻradi — boshqa hech kimga koʻrsatilmaydi. Iltimos, rost javob bering."
       },
       "photos": {
         "title": "Suratlar",
@@ -146,7 +146,7 @@
       },
       "wali": {
         "title": "Valiy va guvohlar",
-        "why": "Valiyingiz maxfiy havola orqali suhbatlaringizni kuzata oladi."
+        "why": "Valiy — nikohda sizning vakilingiz (odatda otangiz yoki akangiz). U maxfiy havola orqali suhbatlaringizni faqat kuzatadi. Guvohlar — suhbatni siz bilan birga kuzatadigan ishonchli yaqinlaringiz."
       },
       "rules": {
         "title": "Platforma qoidalari",
@@ -161,32 +161,32 @@
       "country": "Mamlakat",
       "city": "Shahar",
       "nationality": "Millat",
-      "nationalityHint": "Ota tomonidan",
+      "nationalityHint": "Otangiz tomonidagi millat",
       "languages": "Biladigan tillaringiz",
-      "relocate": "Koʻchishga tayyorman",
+      "relocate": "Nikohdan keyin boshqa joyga koʻchishga tayyorman",
       "height": "Boʻy (sm)",
       "weight": "Vazn (kg)",
       "bodyHint": "Taxminiy qiymatlar yetarli.",
       "maritalStatus": "Oilaviy holat",
-      "nikahCount": "Tugagan avvalgi nikohlar soni",
-      "childrenCount": "Farzandlar",
+      "nikahCount": "Avval necha marta nikohda boʻlgansiz?",
+      "childrenCount": "Farzandlaringiz soni",
       "polygamy": "Ikkinchi xotin boʻlishga rozimisiz?",
       "polygamyHint": "Javobingizni faqat shu filtrni tanlagan erkaklar koʻradi.",
-      "aboutMe": "Men haqimda",
-      "aboutMeHint": "Fe’l-atvor, ish, kundalik hayot, rejalar.",
-      "aboutSpouse": "Izlayotgan turmush oʻrtogʻim",
-      "aboutSpouseHint": "Dindorlik, fe’l-atvor, kutganlaringiz.",
-      "beliefsManhaj": "Aqida, manhaj va ulamolar",
-      "beliefsManhajHint": "Qaysi ulamolarga ergashasiz, dinni qanday tushunasiz?",
+      "aboutMe": "Oʻzim haqimda",
+      "aboutMeHint": "Masalan: “Oʻqituvchiman. Oilamda tarbiya olganman, Qurʼon oʻrganyapman. Tinch, mehribon oila qurmoqchiman.”",
+      "aboutSpouse": "Qanday turmush oʻrtoq izlayapman",
+      "aboutSpouseHint": "Masalan: “Namozxon, mehribon, ota-onasini hurmat qiladigan va oila qurishga jiddiy qaraydigan inson.”",
+      "beliefsManhaj": "Aqida, mazhab va ustozlar",
+      "beliefsManhajHint": "Masalan: “Ahli sunna val-jamoa aqidasidaman, hanafiy mazhabiga amal qilaman, dinni ishonchli ustozlardan oʻrganaman.”",
       "screeningPrivacy": "Bu javoblar shifrlanadi va faqat moderatorga koʻrinadi.",
       "prayer": "Besh vaqt namozni oʻqiysizmi?",
       "hijab": "Hijob",
       "alcohol": "Spirtli ichimlik ichasizmi?",
       "drugs": "Giyohvand modda isteʼmol qilasizmi?",
-      "relationsOutsideNikah": "Hozir nikohsiz munosabatdamisiz?",
+      "relationsOutsideNikah": "Hozir kimdir bilan nikohsiz munosabatingiz bormi?",
       "contagiousDisease": "Yuqumli kasalligingiz bormi?",
       "photosFemale": "Suratingiz hech qachon roʻyxatlarda koʻrinmaydi. Erkak uni faqat sizning ruxsatingiz bilan, har ruxsatda bir marta va suv belgisi bilan koʻradi.",
-      "photosMale": "Suratingizni avval ayol koʻradi. Lentada koʻrsatish dastlab oʻchiq turadi.",
+      "photosMale": "Suratingizni avval ayol koʻradi. Anketalar roʻyxatida koʻrsatish dastlab oʻchiq turadi.",
       "acceptRules": "Qoidalarni oʻqidim va qabul qilaman",
       "currentWives": "Hozirgi xotinlar soni",
       "currentWivesHint": "Uylangan ekaningiz va nechta xotiningiz borligini ochiq koʻrsatish shart; ayollar buni anketangizda koʻradi.",
@@ -209,7 +209,7 @@
     "main": "Asosiy",
     "makeMain": "Asosiy qilish",
     "delete": "Suratni oʻchirish",
-    "hint": "{max} tagacha surat. Metamaʼlumotlar (joylashuv ham) avtomatik oʻchiriladi.",
+    "hint": "{max} tagacha surat. Rasm ichidagi qoʻshimcha maʼlumotlar (masalan, olingan joyi) avtomatik oʻchiriladi.",
     "status": {
       "PENDING": "Tekshirilmoqda",
       "APPROVED": "Tasdiqlangan",
@@ -220,7 +220,7 @@
     "title": "Valiy va guvohlar",
     "intro": "Valiyingiz soʻnggi suhbatingizni kuzatishi uchun maxfiy havola oladi — u faqat kuzata oladi. Guvohlaringiz ismi qarshi tomonga hech qachon koʻrsatilmaydi — faqat soni va qarindoshligi.",
     "waliName": "Valiyning ismi",
-    "relation": "Qarindoshlik",
+    "relation": "Sizga kimligi",
     "witnesses": "Guvohlar ({max} tagacha)",
     "addWitness": "Qoʻshish",
     "witnessName": "Guvoh ismi",
@@ -249,24 +249,24 @@
     "frozenTitle": "Anketangiz vaqtincha toʻxtatilgan",
     "frozenText": "Tafsilotlar uchun qoʻllab-quvvatlash xizmatiga murojaat qiling.",
     "pendingLockedTitle": "Anketangiz tasdiqlangach ochiladi",
-    "pendingLockedText": "Tekshiruv davomida anketalarni koʻrib chiqishingiz mumkin. Yoqtirish va suhbat tasdiqdan keyin ochiladi.",
+    "pendingLockedText": "Tekshiruv davomida anketalarni koʻrib chiqishingiz mumkin. Qiziqish bildirish va suhbat anketangiz tasdiqlangach ochiladi.",
     "browseProfiles": "Anketalarni koʻrish",
     "pendingBadge": "Tekshirilmoqda"
   },
   "feed": {
-    "likesLeft": "Bugun {max} tadan {n} ta yoqtirish qoldi",
-    "unlimited": "Cheksiz yoqtirish",
+    "likesLeft": "Bugun {max} tadan {n} ta qiziqish bildirish imkoniyati qoldi",
+    "unlimited": "Cheklovsiz qiziqish bildirish",
     "remaining": "{n} ta qoldi",
     "undo": "Oxirgi oʻtkazib yuborilganni qaytarish",
     "filters": "Filtrlar",
     "resetFilters": "Filtrlarni tozalash",
-    "favorite": "Sevimlilarga qoʻshish",
+    "favorite": "Saqlab qoʻyish",
     "report": "Shikoyat",
     "like": "Qiziqaman",
     "pass": "Oʻtkazib yuborish",
     "emptyTitle": "Hozircha boshqa anketa yoʻq",
     "emptyText": "Keyinroq qayting yoki filtrlarni kengaytiring.",
-    "limitReached": "Bugungi yoqtirishlar tugadi. Ular sizning vaqtingiz boʻyicha yarim tunda yangilanadi.",
+    "limitReached": "Bugungi qiziqish bildirish imkoniyatlaringiz tugadi. Ular oʻz vaqtingiz boʻyicha yarim tunda yangilanadi.",
     "mutualTitle": "Oʻzaro qiziqish",
     "mutualTextSister": "Ikkalangiz ham qiziqish bildirdingiz. Endi uning suratini koʻrib, qaror qilishingiz mumkin.",
     "mutualTextBrother": "Ikkalangiz ham qiziqish bildirdingiz. Ayol suratingizni koʻrib, qaror qiladi.",
@@ -286,7 +286,7 @@
       "neverMarried": "Turmush qurmaganlar",
       "noChildren": "Farzandsizlar",
       "relocate": "Koʻchishga tayyorlar",
-      "polygamy": "Koʻp xotinlikka rozilar",
+      "polygamy": "Ikkinchi xotin boʻlishga rozilar",
       "clear": "Tozalash",
       "where": "Qayerda yashaydi?",
       "pickCountryFirst": "Avval mamlakatni tanlang",
@@ -297,11 +297,11 @@
       "weight": "Vazn",
       "profile": "Anketa xususiyatlari",
       "relocateHint": "Nikoh uchun koʻchishga tayyorlar",
-      "withPhotoHint": "Faqat surat yuklaganlar (surat baribir tasdiq tartibida ochiladi)",
+      "withPhotoHint": "Surat yuklaganlar (surat baribir faqat ruxsat bilan ochiladi)",
       "noChildrenHint": "Farzandi yoʻqlar",
       "neverMarriedHint": "Avval hech turmush qurmaganlar",
-      "polygamyHint": "Koʻp xotinlikka \"Ha\" deganlar",
-      "notBusy": "Hozir suhbatda emaslar",
+      "polygamyHint": "“Ikkinchi xotin boʻlishga rozimisiz?” savoliga “Ha” deganlar",
+      "notBusy": "Hozir suhbatda boʻlmaganlar",
       "notBusyHint": "Boshqa birov bilan suhbatlashayotgan ayollarni yashirish",
       "applyHint": "Filtr keyingi anketadan boshlab qoʻllanadi",
       "anyCity": "Barcha shaharlar"
@@ -309,7 +309,7 @@
     "title": "Anketalar",
     "changeFilters": "Filtrlarni oʻzgartirish",
     "resetPasses": "Oʻtkazib yuborilganlarni qayta koʻrsatish",
-    "likesLeftShort": "Bugun {n}/{max} yoqtirish",
+    "likesLeftShort": "Bugun {n}/{max} qiziqish",
     "close": "Yopish",
     "browseFromStart": "Boshidan koʻrish",
     "previous": "Oldingi",
@@ -327,9 +327,9 @@
     "relocate": "Koʻchishga tayyor",
     "witnesses": "{n} ta guvoh",
     "wali": "Valiy ulangan",
-    "aboutMe": "Men haqimda",
-    "aboutSpouse": "Izlayotganim",
-    "beliefs": "Aqida va manhaj",
+    "aboutMe": "Oʻzi haqida",
+    "aboutSpouse": "Izlayotgan turmush oʻrtogʻi",
+    "beliefs": "Aqida va mazhab",
     "nationality": "Millat",
     "languages": "Tillar",
     "height": "Boʻy",
@@ -348,15 +348,15 @@
   },
   "likes": {
     "tabs": {
-      "received": "Meni yoqtirganlar",
+      "received": "Menga qiziqqanlar",
       "mutual": "Oʻzaro",
-      "mine": "Yoqtirganlarim",
-      "favorites": "Sevimlilar"
+      "mine": "Men qiziqqanlar",
+      "favorites": "Saqlanganlar"
     },
     "emptyMutual": "Hozircha oʻzaro qiziqish yoʻq",
-    "emptyMutualText": "Siz yoqtirgan inson ham sizni yoqtirsa, shu yerda paydo boʻladi.",
-    "emptyMine": "Hali hech kimni yoqtirmadingiz",
-    "emptyFavorites": "Sevimlilar roʻyxati boʻsh",
+    "emptyMutualText": "Siz qiziqish bildirgan inson ham sizga qiziqish bildirsa, shu yerda paydo boʻladi.",
+    "emptyMine": "Hali hech kimga qiziqish bildirmadingiz",
+    "emptyFavorites": "Saqlanganlar roʻyxati boʻsh",
     "status": {
       "inChat": "Suhbatda",
       "chatClosed": "Suhbat yopilgan",
@@ -368,16 +368,16 @@
       "canOpen": "Suhbatni ochishingiz mumkin",
       "closed": "Yopilgan"
     },
-    "emptyReceived": "Hali sizni hech kim yoqtirmadi",
-    "emptyReceivedText": "Kimdir sizni yoqtirsa, shu yerda koʻrinadi va bildirishnoma olasiz.",
-    "receivedIntro": "Bu insonlar sizni yoqtirdi. Siz ham yoqtirsangiz, oʻzaro qiziqish paydo boʻladi.",
-    "likeBack": "Yoqtirish",
+    "emptyReceived": "Hali hech kim sizga qiziqish bildirmadi",
+    "emptyReceivedText": "Kimdir sizga qiziqish bildirsa, shu yerda koʻrinadi va bildirishnoma olasiz.",
+    "receivedIntro": "Bu insonlar sizga qiziqish bildirdi. Siz ham qiziqish bildirsangiz, oʻzaro qiziqish paydo boʻladi.",
+    "likeBack": "Men ham qiziqaman",
     "viewProfile": "Anketani koʻrish",
-    "mineIntro": "Javob kutayotgan yoqtirishlaringiz. Istaganingizni qaytarib olishingiz mumkin.",
+    "mineIntro": "Siz qiziqish bildirgan, lekin hali javob bermaganlar. Istaganingizni qaytarib olishingiz mumkin.",
     "undoLike": "Qaytarish",
     "resetAll": "Hammasini bekor qilish",
-    "resetAllTitle": "Barcha yoqtirishlar qaytarilsinmi?",
-    "resetAllText": "{n} ta yoqtirish bekor qilinadi. Bu insonlar anketalaringizda yana chiqishi mumkin. Bugun ishlatilgan yoqtirishlar qaytarilmaydi."
+    "resetAllTitle": "Barcha qiziqishlaringiz qaytarib olinsinmi?",
+    "resetAllText": "{n} ta qiziqish bekor qilinadi. Bu insonlar anketalar roʻyxatida yana chiqishi mumkin. Bugun ishlatilgan imkoniyatlar qaytarilmaydi."
   },
   "match": {
     "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u suratingizni bir marta koʻradi va suhbat ochishi mumkin. Qayta koʻrmoqchi boʻlsa, sizdan yana ruxsat soʻraydi. Bu qarorni keyin oʻzgartirib boʻlmaydi.",
@@ -432,15 +432,15 @@
     "paused": "Toʻxtatilgan",
     "closed": "Yopilgan",
     "witnessed": "Guvohli",
-    "mahramShared": "Mahram maʼlumotlari ulashildi"
+    "mahramShared": "Mahram raqami ulashildi"
   },
   "chat": {
     "menu": "Menyu",
-    "shareMahram": "Mahram maʼlumotlarini ulashish",
-    "extend": "Suhbatni uzaytirish",
+    "shareMahram": "Mahram (ota yoki aka) raqamini ulashish",
+    "extend": "Suhbat muddatini uzaytirish",
     "report": "Shikoyat",
     "close": "Suhbatni yakunlash",
-    "watchers": "Guvohlar: {n}",
+    "watchers": "Kuzatuvchilar: {n}",
     "watcher": {
       "maleModerator": "Moderator (erkak)",
       "femaleModerator": "Moderator (ayol)",
@@ -471,7 +471,7 @@
     "reopenText": "{cost} ta tanga sarflanadi. Suhbatni faqat bir marta qayta ochish mumkin.",
     "closeTitle": "Suhbatni yakunlaysizmi?",
     "closeText": "Suhbat ikki tomon uchun ham yopiladi.",
-    "mahramCard": "Mahram maʼlumotlari",
+    "mahramCard": "Mahramning aloqa maʼlumotlari",
     "closedBanner": {
       "USER": "Bu suhbat yakunlangan.",
       "SILENCE": "72 soatlik sukutdan soʻng suhbat avtomatik yopildi.",
@@ -491,8 +491,8 @@
       "chat_closed_ban": "Suhbat yopildi."
     },
     "mahram": {
-      "title": "Mahram maʼlumotlarini ulashish",
-      "intro": "Maʼlumotlar avval moderator tomonidan tekshiriladi, soʻng suhbatda avtomatik eʼlon qilinadi.",
+      "title": "Mahram (ota yoki aka) raqamini ulashish",
+      "intro": "Bu oila bosqichi: otangiz yoki akangiz kabi mahramingizning raqamini ulashasiz. Avval moderator tekshiradi, soʻng suhbatda koʻrinadi.",
       "name": "Ism",
       "relation": "Qarindoshlik",
       "contact": "Telefon yoki aloqa",
@@ -510,7 +510,7 @@
         "wali": "Ayolning valiysi yozishmalardan xabardor boʻlishi kerak. Valiy suhbatga qoʻshilishi shart emas — ayol unga maxfiy havola yuboradi, valiy xohlasa suhbatni oʻqiydi.",
         "moderators": "Har bir suhbatda biri erkak, biri ayol — ikki moderator boʻlib, qoidalarga rioya qilinishini kuzatadi.",
         "ai": "Sunʼiy intellekt yordamchisi har bir xabarni kecha-kunduz tekshiradi; shubhali xabarlar moderatorga yuboriladi.",
-        "noOutside": "Telegram, WhatsApp kabi tashqi ilovalarga oʻtish va telefon, foydalanuvchi nomi, havola ulashish taqiqlanadi. Mahramingizning aloqa maʼlumotini faqat ⋮ → “Mahram maʼlumotlarini ulashish” orqali yuborish mumkin.",
+        "noOutside": "Telegram, WhatsApp kabi tashqi ilovalarga oʻtish va telefon, foydalanuvchi nomi, havola ulashish taqiqlanadi. Mahramingizning aloqa maʼlumotini faqat ⋮ → “Mahram (ota yoki aka) raqamini ulashish” orqali yuborish mumkin.",
         "noBypass": "Tekshiruvni chetlab oʻtishga urinishlar (raqamlarni soʻz bilan yozish, harflarni ajratish, rasm qilib yuborish) toʻgʻridan-toʻgʻri ulashish deb baholanadi. Buni qarshi tomonga taklif qilish yoki oʻrgatish ham xuddi shunday qoidabuzarlik boʻlib, ikkala hisobning bloklanishiga olib kelishi mumkin.",
         "adab": "Suhbat maqsadli boʻlsin, behuda gaplardan saqlaning. Odob doirasidagi iliq soʻzlar mumkin, noz-karashma va mahram mavzular mumkin emas.",
         "noToxic": "Haqorat, bosim va hurmatsiz ohang qatʼiyan taqiqlanadi va hisobning bloklanishiga olib keladi.",
@@ -528,7 +528,7 @@
     "thanks": "Rahmat. Xavfsizlik jamoasi koʻrib chiqadi."
   },
   "myProfile": {
-    "quick": "Tezkor kirish",
+    "quick": "Tezkor havolalar",
     "wali": "Valiy va guvohlar",
     "waliHint": "Havola va guvohlar",
     "wallet": "Tangalar",
@@ -550,8 +550,8 @@
       "bannerMale": "Ayollar anketangizni shunday koʻradi",
       "bannerFemale": "Erkaklar anketangizni shunday koʻradi",
       "photosFemale": "Suratlaringiz erkaklarga koʻrsatilmaydi. Oʻzaro qiziqishdan soʻng faqat sizning ruxsatingiz bilan va bir marta ochiladi.",
-      "photosMaleShown": "Suratlaringiz lentada koʻrinadi.",
-      "photosMaleHidden": "Suratlaringiz lentada yashirin; ayollar ularni oʻzaro qiziqishdan soʻng koʻradi.",
+      "photosMaleShown": "Suratlaringiz anketalar roʻyxatida koʻrinadi.",
+      "photosMaleHidden": "Suratlaringiz anketalar roʻyxatida yashirin; ayollar ularni oʻzaro qiziqishdan soʻng koʻradi.",
       "changeInSettings": "Sozlamalarda oʻzgartirish",
       "edit": "Anketani tahrirlash"
     }
@@ -559,7 +559,7 @@
   "settings": {
     "title": "Sozlamalar",
     "appearance": "Koʻrinish",
-    "theme": "Mavzu",
+    "theme": "Rang rejimi",
     "themes": {
       "system": "Tizim",
       "light": "Yorugʻ",
@@ -567,24 +567,24 @@
     },
     "language": "Til",
     "privacy": "Maxfiylik",
-    "showPhotoInFeed": "Suratimni lentada koʻrsatish",
+    "showPhotoInFeed": "Suratimni anketalar roʻyxatida koʻrsatish",
     "showPhotoInFeedHint": "Dastlab oʻchiq. Ayollar oʻzaro qiziqishdan soʻng suratingizni baribir koʻradi.",
     "hideBusyBadge": "\"Hozir suhbatda\" belgisini yashirish",
     "hideBusyBadgeHint": "Erkaklar suhbatda ekaningizni koʻrmaydi.",
     "account": "Hisob",
     "logout": "Chiqish",
     "logoutAll": "Barcha qurilmalardan chiqish",
-    "logoutAllText": "Barcha seanslar, shu jumladan joriysi ham yopiladi.",
-    "dangerZone": "Xavfli boʻlim",
-    "deleteAccountHint": "Hisobni oʻchirsangiz, anketangiz, suratlaringiz va yoqtirishlaringiz butunlay oʻchiriladi.",
+    "logoutAllText": "Barcha qurilmalardagi kirishlar, shu jumladan hozirgisi ham yopiladi.",
+    "dangerZone": "Ehtiyot boʻling",
+    "deleteAccountHint": "Hisobni oʻchirsangiz, anketangiz, suratlaringiz va qiziqishlaringiz butunlay oʻchiriladi.",
     "deleteAccount": "Hisobni oʻchirish",
     "deleteAccountTitle": "Hisobingiz oʻchirilsinmi?",
-    "deleteAccountText": "Anketangiz, suratlaringiz, yoqtirishlar, guvohlar va valiy havolasi darhol oʻchiriladi; ochiq suhbatlar yopiladi va qolgan tangalar oʻchadi. Buni ortga qaytarib boʻlmaydi.",
+    "deleteAccountText": "Anketangiz, suratlaringiz, qiziqishlar, guvohlar va valiy havolasi darhol oʻchiriladi; ochiq suhbatlar yopiladi va qolgan tangalar oʻchadi. Buni ortga qaytarib boʻlmaydi.",
     "deleteAccountConfirm": "Tushundim, hisobim butunlay oʻchirilsin."
   },
   "wallet": {
     "balance": "Balans",
-    "explain": "1 tanga = 1 ta suhbat ochish. Tangalarning muddati tugamaydi va ularni boshqaga oʻtkazib boʻlmaydi. Suhbatni moderator yopsa yoki qarshi tomonning hisobi bloklansa, tanga qaytariladi.",
+    "explain": "Tanga — suhbat ochish uchun ichki hisob birligi: 1 tanga = 1 ta suhbat. Tangalarning muddati tugamaydi va ularni boshqaga oʻtkazib boʻlmaydi. Suhbatni moderator yopsa yoki qarshi tomonning hisobi bloklansa, tanga qaytariladi.",
     "packages": "Paketlar",
     "connects": "tanga",
     "buy": "Sotib olish",
@@ -624,12 +624,12 @@
       "mahram_approved": "Mahram maʼlumotlari suhbatda eʼlon qilindi.",
       "mahram_rejected": "Mahram maʼlumotlari tasdiqlanmadi.",
       "connects_credited": "Hisobingizga tanga qoʻshildi.",
-      "new_like": "Sizni kimdir yoqtirdi. Kimligini koʻrish uchun bosing.",
+      "new_like": "Kimdir sizga qiziqish bildirdi. Kimligini koʻrish uchun bosing.",
       "photo_view_requested": "Suratingizni yana bir bor koʻrish uchun ruxsat soʻramoqda. Qaror sizda.",
       "photo_view_granted": "Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.",
       "photo_view_declined": "Suratni qayta koʻrish soʻrovingiz rad etildi.",
       "photo_view_first_request": "Bir erkak suratingizni koʻrmoqchi. Avval uning suratini koʻrib, qaror qiling.",
-      "likes_released": "Suhbatingiz davomida {count} kishi sizni yoqtirdi. Koʻrish uchun bosing."
+      "likes_released": "Suhbatingiz davomida {count} kishi sizga qiziqish bildirdi. Koʻrish uchun bosing."
     }
   },
   "portal": {
@@ -653,7 +653,7 @@
     "marital": {
       "NEVER_MARRIED": "{gender, select, FEMALE {Turmushga chiqmagan} other {Uylanmagan}}",
       "DIVORCED": "{gender, select, other {Ajrashgan}}",
-      "WIDOWED": "{gender, select, FEMALE {Beva} other {Tul}}",
+      "WIDOWED": "{gender, select, FEMALE {Beva} other {Rafiqasi vafot etgan}}",
       "MARRIED": "{gender, select, FEMALE {Turmushda} other {Uylangan}}"
     },
     "polygamy": {
@@ -705,7 +705,7 @@
     "steps_incomplete": "Baʼzi qadamlar hali tugallanmagan.",
     "already_submitted": "Anketangiz allaqachon yuborilgan.",
     "profile_not_approved": "Anketangiz hali tasdiqlanmagan.",
-    "daily_like_limit": "Bugungi yoqtirishlar tugadi.",
+    "daily_like_limit": "Bugungi qiziqish bildirish imkoniyatlaringiz tugadi.",
     "insufficient_connects": "Tangangiz yetarli emas.",
     "sister_busy": "U hozir boshqa suhbatda.",
     "invalid_stage": "Bu bosqichda bu amal mavjud emas.",
@@ -745,7 +745,7 @@
     "married_female_not_allowed": "Turmushdagi ayollar roʻyxatdan oʻta olmaydi.",
     "current_wives_required": "Iltimos, hozirgi xotinlaringiz sonini tanlang.",
     "children_living_invalid": "Siz bilan yashaydigan farzandlar soni umumiy sondan koʻp boʻlishi mumkin emas.",
-    "already_mutual": "Oʻzaro boʻlgan yoqtirishni qaytarib boʻlmaydi; tanishuvdan chiqishingiz mumkin.",
+    "already_mutual": "Oʻzaro boʻlgan qiziqishni qaytarib olib boʻlmaydi; tanishuvni yakunlashingiz mumkin.",
     "photo_view_not_granted": "Suratni koʻrish huquqingiz yoʻq; avval ruxsat soʻrang.",
     "photo_view_already_granted": "Sizda allaqachon koʻrish huquqi bor.",
     "free_claim_has_balance": "Bepul paketni tangangiz tugaganda olishingiz mumkin.",
@@ -1065,13 +1065,13 @@
   },
   "busyLike": {
     "title": "Hozir u suhbatda",
-    "text": "Bu opa-singlimiz hozir guvohlar ishtirokida boshqa birov bilan tanishmoqda va bu vaqtda yoqtirish bildirishnomalarini olmaydi. Yoqtirishingiz saqlanadi va suhbat tugasa, unga yetkaziladi. Baribir yoqtirasizmi?",
-    "stepsLabel": "Yoqtirishingiz yoʻli",
-    "step1": "Yoqtirish saqlanadi",
+    "text": "Bu opa-singlimiz hozir guvohlar ishtirokida boshqa birov bilan tanishmoqda va bu vaqtda qiziqish bildirishnomalarini olmaydi. Qiziqishingiz saqlanadi va suhbat tugasa, unga yetkaziladi. Baribir qiziqish bildirasizmi?",
+    "stepsLabel": "Qiziqishingiz yoʻli",
+    "step1": "Qiziqishingiz saqlanadi",
     "step2": "Suhbat tugasa",
     "step3": "Unga yetkaziladi",
-    "note": "Bu yoqtirish bugungi limitingizdan hisoblanadi.",
-    "confirm": "Baribir yoqtirish",
+    "note": "Bu bugungi imkoniyatlaringizdan biri hisoblanadi.",
+    "confirm": "Baribir qiziqish bildirish",
     "cancel": "Hozir emas"
   },
   "screens": {

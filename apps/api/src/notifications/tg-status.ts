@@ -13,7 +13,7 @@ export interface TgStatusCounts {
 
 const PROFILE: Record<string, string> = { uz: 'Anketa', ru: 'Анкета', tr: 'Profil', en: 'Profile', ar: 'الملف' };
 const LEGEND: Record<string, string> = {
-  uz: '❤️ sizni yoqtirganlar · 🤝 oʻzaro · 💬 suhbatlar · 🔔 yangi',
+  uz: '❤️ sizga qiziqqanlar · 🤝 oʻzaro · 💬 suhbatlar · 🔔 yangi',
   ru: '❤️ симпатии вам · 🤝 взаимные · 💬 чаты · 🔔 новое',
   tr: '❤️ sizi beğenenler · 🤝 karşılıklı · 💬 sohbetler · 🔔 yeni',
   en: '❤️ liked you · 🤝 mutual · 💬 chats · 🔔 new',

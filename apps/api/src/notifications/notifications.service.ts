@@ -34,8 +34,8 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
   uz: {
     profile_approved: 'Profilingiz tasdiqlandi. Endi anketlarni ko‘rishingiz mumkin.',
     profile_rejected: 'Profilingiz moderatsiyadan o‘tmadi. Iltimos, ilovada tafsilotlarni ko‘ring.',
-    new_like: 'Sizni kimdir yoqtirdi. Kimligini «Qiziqish» boʻlimida koʻring.',
-    likes_released: 'Suhbatingiz davomida sizni yoqtirganlar bor. Ularni «Qiziqish» boʻlimida koʻring.',
+    new_like: 'Kimdir sizga qiziqish bildirdi. Kimligini «Qiziqish» boʻlimida koʻring.',
+    likes_released: 'Suhbatingiz davomida sizga qiziqish bildirganlar bor. Ularni «Qiziqish» boʻlimida koʻring.',
     photo_view_requested: 'Sizdan suratingizni yana bir bor koʻrish uchun ruxsat soʻrashdi.',
     photo_view_granted: 'Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.',
     photo_view_declined: 'Suratni qayta koʻrish soʻrovi rad etildi.',
