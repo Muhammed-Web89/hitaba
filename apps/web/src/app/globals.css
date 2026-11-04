@@ -110,6 +110,45 @@
     overscroll-behavior: none;
   }
 
+  /*
+   * Güvenli alanlar. Telegram tam ekranındayken üstte Telegram'ın kapat/menü düğmeleri durur:
+   * SDK'nın verdiği --tg-* ölçüleri kadar boşluk bırakılır. Tarayıcıda üst boşluk 0 (eski davranış).
+   */
+  :root {
+    --app-safe-top: 0px;
+    --app-safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html[data-tg-fs] {
+    --app-safe-top: calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
+    --app-safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px));
+  }
+
+  /*
+   * Telegram içinde sayfanın kendisi kaymaz: iOS'taki esneme (lastik etkisi) ve aşağı çekince
+   * küçülme hissi olmaz. Kaydırma gövdenin içinde, esnemeden yapılır.
+   */
+  html[data-tg='1'] {
+    height: 100%;
+    overflow: hidden;
+  }
+  html[data-tg='1'] body {
+    height: 100%;
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior: none;
+    padding-top: var(--app-safe-top);
+  }
+  /* Tam ekranda üstteki Telegram düğmelerinin arkası: kayan içerik onların altında görünmez. */
+  html[data-tg-fs] body::after {
+    content: '';
+    position: fixed;
+    inset: 0 0 auto;
+    height: var(--app-safe-top);
+    background: var(--bg-base);
+    z-index: 40;
+    pointer-events: none;
+  }
+
   /* Sayfa yana taşmaz/kaymaz (clip, sticky üst çubuğu bozmaz). */
   html,
   body {
@@ -252,4 +291,16 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/*
+ * Telegram tam ekranı: gövde üstte Telegram düğmeleri kadar boşlukla başlar; "ekran boyu" kapsayıcılar
+ * o boşluk kadar kısalır ki sayfa taşıp kendi kendine kaymasın. (Yapışkan başlıklar top-0 kalır:
+ * gövdenin iç boşluğu zaten onları düğmelerin altına indirir.)
+ */
+html[data-tg-fs] .min-h-dvh {
+  min-height: calc(100dvh - var(--app-safe-top));
+}
+html[data-tg-fs] .h-dvh {
+  height: calc(100dvh - var(--app-safe-top));
 }

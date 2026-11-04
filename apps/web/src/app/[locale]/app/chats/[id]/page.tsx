@@ -262,7 +262,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
         <div ref={bottom} />
       </div>
 
-      <footer className="glass border-t px-3 py-2" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
+      <footer className="glass border-t px-3 py-2" style={{ paddingBottom: 'max(8px, var(--app-safe-bottom))' }}>
         {chat.status === 'PAUSED' && (
           <div className="mb-2">
             <Notice tone="warning" icon="pause">

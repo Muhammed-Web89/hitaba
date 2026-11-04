@@ -39,14 +39,14 @@ export function ChatRulesSheet({ open, onClose }: { open: boolean; onClose: () =
 
   if (!open) return null;
   return createPortal(
-    <div className="fixed inset-0 z-[90] flex flex-col justify-end bg-black/55 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[90] flex flex-col justify-end bg-black/55 pt-[var(--app-safe-top)] backdrop-blur-sm" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="chat-rules-title"
         onClick={(e) => e.stopPropagation()}
         className="glass mx-auto flex max-h-[88dvh] w-full max-w-lg flex-col rounded-t-[24px] border border-b-0"
-        style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
+        style={{ paddingBottom: 'max(16px, var(--app-safe-bottom))' }}
       >
         <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-line" aria-hidden="true" />
         <h2 id="chat-rules-title" className="flex items-center gap-2.5 px-5 pt-4 font-sans text-xl font-bold">

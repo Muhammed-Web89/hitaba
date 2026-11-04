@@ -12,6 +12,7 @@ import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { useRouter } from '@/i18n/navigation';
 import { api, ApiError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
+import { scrollToTop } from '@/lib/telegram';
 import { useErrorText } from '@/lib/format';
 
 export default function OnboardingPage() {
@@ -66,7 +67,7 @@ export default function OnboardingPage() {
       }
       await mutate();
       setIndex(index + 1);
-      window.scrollTo({ top: 0 });
+      scrollToTop();
     } catch (e) {
       if (e instanceof ApiError && e.code === 'steps_incomplete' && Array.isArray(e.details)) {
         const missing = steps.findIndex((s) => (e.details as string[]).includes(s));
@@ -115,7 +116,7 @@ export default function OnboardingPage() {
         )}
       </main>
 
-      <footer className="fixed inset-x-0 bottom-0 glass border-t px-4 py-3" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+      <footer className="fixed inset-x-0 bottom-0 glass border-t px-4 py-3" style={{ paddingBottom: 'max(12px, var(--app-safe-bottom))' }}>
         <div className="mx-auto flex max-w-lg gap-3">
           <Button variant="secondary" disabled={index === 0 || busy} onClick={() => setIndex(index - 1)} aria-label={tc('back')}>
             <Icon name="back" size={18} className="flip-rtl" />

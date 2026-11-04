@@ -13,6 +13,7 @@ import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { readFeedCard, writeFeedCard } from '@/lib/cache';
+import { scrollToTop } from '@/lib/telegram';
 import { useErrorText } from '@/lib/format';
 
 // Yalnızca açıldıklarında indirilir (ilk açılış hafifler).
@@ -70,7 +71,7 @@ function Feed() {
       const next = res.profile ? (res as FeedCard) : null;
       setCard(next);
       if (!at) writeFeedCard(scope, next && { ...next, profile: { ...next.profile, photoUrls: [] } });
-      if (!cached || cached.profile.userId !== next?.profile.userId) window.scrollTo({ top: 0 });
+      if (!cached || cached.profile.userId !== next?.profile.userId) scrollToTop();
     },
     [scope],
   );
@@ -212,7 +213,7 @@ function Feed() {
 
       {/* Salt okunur gezinme çubuğu: önceki · bilgi · sonraki */}
       {card && readOnly && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-10 flex justify-center px-4" style={{ marginBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-10 flex justify-center px-4" style={{ marginBottom: 'var(--app-safe-bottom)' }}>
           <div className="glass pointer-events-auto flex w-full max-w-sm items-center justify-between rounded-full border p-1.5">
             <IconButton icon="back" label={t('previous')} disabled={offset === 0} onClick={() => setOffset(offset - 1)} className="flip-rtl h-12 w-12 bg-surface-alt" />
             <span className="flex items-center gap-1.5 px-2 text-center text-xs font-semibold text-info">
@@ -225,7 +226,7 @@ function Feed() {
 
       {/* Karar çubuğu: geç · kalan · ilgileniyorum */}
       {card && !readOnly && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-10 flex justify-center px-4" style={{ marginBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="pointer-events-none fixed inset-x-0 bottom-20 z-10 flex justify-center px-4" style={{ marginBottom: 'var(--app-safe-bottom)' }}>
           <div className="glass pointer-events-auto flex w-full max-w-sm items-center justify-between rounded-full border p-1.5">
             <button
               type="button"

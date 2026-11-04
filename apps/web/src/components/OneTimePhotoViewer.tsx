@@ -33,8 +33,8 @@ export function OneTimePhotoViewer({ urls, name, onEnd }: { urls: string[]; name
 
   // Sayfa katmanlarının (cam yüzeyler, menü çubuğu) üstünde kalsın diye doğrudan <body> altına çizilir.
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex h-dvh select-none flex-col bg-black" role="dialog" aria-modal="true" aria-label={name}>
-      <div className="relative z-10 flex items-center justify-between px-3 pt-[max(12px,env(safe-area-inset-top))]">
+    <div className="fixed inset-0 z-[100] flex select-none flex-col bg-black" role="dialog" aria-modal="true" aria-label={name}>
+      <div className="relative z-10 flex items-center justify-between px-3 pt-[max(12px,env(safe-area-inset-top),var(--app-safe-top))]">
         <span className="font-semibold text-white">{name}</span>
         <button type="button" onClick={onEnd} aria-label={t('close')} className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white">
           <Icon name="x" size={22} />
@@ -60,7 +60,7 @@ export function OneTimePhotoViewer({ urls, name, onEnd }: { urls: string[]; name
           />
         ))}
       </div>
-      <p className="px-4 pb-[max(16px,env(safe-area-inset-bottom))] pt-3 text-center text-xs text-white/60">{t('onceNote')}</p>
+      <p className="px-4 pb-[max(16px,var(--app-safe-bottom))] pt-3 text-center text-xs text-white/60">{t('onceNote')}</p>
     </div>,
     document.body,
   );

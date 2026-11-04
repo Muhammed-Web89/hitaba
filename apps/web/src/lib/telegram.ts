@@ -8,12 +8,16 @@ export interface TelegramWebApp {
   ready(): void;
   expand(): void;
   version?: string;
+  platform?: string;
   isExpanded?: boolean;
+  isFullscreen?: boolean;
+  requestFullscreen?(): void;
+  lockOrientation?(): void;
   isVersionAtLeast?(v: string): boolean;
   disableVerticalSwipes?(): void;
   setHeaderColor?(color: string): void;
   setBackgroundColor?(color: string): void;
-  onEvent?(event: 'viewportChanged' | 'activated' | 'deactivated' | 'invoiceClosed', cb: () => void): void;
+  onEvent?(event: 'viewportChanged' | 'activated' | 'deactivated' | 'invoiceClosed' | 'fullscreenChanged' | 'fullscreenFailed', cb: () => void): void;
   openInvoice?(url: string, callback: (status: 'paid' | 'cancelled' | 'failed' | 'pending') => void): void;
 }
 
@@ -57,6 +61,12 @@ export function rememberTelegramUser(id: string | undefined) {
   }
 }
 
+/** Sayfayı başa kaydırır. Telegram'da kaydırılan şey sayfa değil gövdedir (bkz. globals.css). */
+export function scrollToTop() {
+  window.scrollTo({ top: 0 });
+  document.body.scrollTo?.({ top: 0 });
+}
+
 let sdk: Promise<TelegramWebApp | undefined> | undefined;
 
 /** Telegram SDK'sını tek seferlik yükler; tüm çağıranlar aynı sözü bekler (çift yükleme/kaçan geri çağrı olmaz). */
@@ -95,6 +105,17 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
   wa.onEvent?.('viewportChanged', () => {
     if (!wa.isExpanded) wa.expand();
   });
+
+  // Telefonda tam ekran (Telegram başlığı kalkar, yalnızca köşedeki kapat/menü düğmeleri kalır) ve
+  // dikey kilit. Masaüstünde pencere tam ekrana geçmesin diye yalnızca iOS/Android.
+  const root = document.documentElement;
+  const markFullscreen = () => (wa.isFullscreen ? (root.dataset.tgFs = '1') : delete root.dataset.tgFs);
+  wa.onEvent?.('fullscreenChanged', markFullscreen);
+  if ((wa.platform === 'ios' || wa.platform === 'android') && wa.isVersionAtLeast?.('8.0')) {
+    if (!wa.isFullscreen) wa.requestFullscreen?.();
+    wa.lockOrientation?.();
+  }
+  markFullscreen();
 }
 
 export const telegramWebApp = (): TelegramWebApp | undefined =>

@@ -43,7 +43,7 @@ export function FilterSheet({ onClose, value, onApply }: { onClose: () => void; 
   }, []);
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col bg-base/95 backdrop-blur-xl" role="dialog" aria-modal="true" aria-labelledby="filters-title">
+    <div className="fixed inset-0 z-[45] flex flex-col bg-base/95 pt-[var(--app-safe-top)] backdrop-blur-xl" role="dialog" aria-modal="true" aria-labelledby="filters-title">
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-line px-2">
         <IconButton icon="x" label={tf('close')} onClick={onClose} />
         <h2 id="filters-title" className="text-lg font-semibold">
@@ -131,7 +131,7 @@ export function FilterSheet({ onClose, value, onApply }: { onClose: () => void; 
         </FilterSection>
       </div>
 
-      <footer className="shrink-0 glass border-t px-4 py-3" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+      <footer className="shrink-0 glass border-t px-4 py-3" style={{ paddingBottom: 'max(12px, var(--app-safe-bottom))' }}>
         <div className="mx-auto max-w-lg">
           <Button size="lg" className="w-full" onClick={() => onApply(f)}>
             {t('apply')}

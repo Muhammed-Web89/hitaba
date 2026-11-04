@@ -95,7 +95,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       {!inChat && (
         <nav
           className="glass fixed inset-x-0 bottom-0 z-20 border-t"
-          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          style={{ paddingBottom: 'var(--app-safe-bottom)' }}
           aria-label={t('main')}
         >
           <ul className="mx-auto grid max-w-lg grid-cols-4">
