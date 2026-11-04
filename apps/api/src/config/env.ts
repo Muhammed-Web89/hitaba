@@ -12,7 +12,11 @@ export const envSchema = z.object({
   PORT: z.coerce.number().default(4000),
   DATABASE_URL: z.string().min(1),
   WEB_ORIGIN: z.string().default('http://localhost:3737'),
-  PUBLIC_WEB_URL: z.string().default('http://localhost:3737'),
+  // Tek adres beklenir; yanlışlıkla virgülle birden çok yazılırsa ilki kullanılır (bot düğmeleri bozulmasın).
+  PUBLIC_WEB_URL: z
+    .string()
+    .default('http://localhost:3737')
+    .transform((v) => v.split(',')[0].trim().replace(/\/+$/, '')),
   /** Express "trust proxy": loopback (yerel proxy), sayı (bilinen hop sayısı) ya da IP listesi. */
   TRUST_PROXY: z.string().default('loopback'),
   JWT_ACCESS_SECRET: z.string().min(16),

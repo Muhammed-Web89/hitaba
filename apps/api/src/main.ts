@@ -9,7 +9,7 @@ import { PrismaService } from './prisma/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors({ origin: env.WEB_ORIGIN.split(','), credentials: true });
+  app.enableCors({ origin: env.WEB_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean), credentials: true });
   // Hız sınırı gerçek istemci IP'sine göre işlesin diye yalnızca bilinen proxy'lere güvenilir.
   // Yerelde/tünelde "loopback"; Railway/Fly/Render gibi tek hop'lu platformlarda "1".
   app.set('trust proxy', /^\d+$/.test(env.TRUST_PROXY) ? Number(env.TRUST_PROXY) : env.TRUST_PROXY);

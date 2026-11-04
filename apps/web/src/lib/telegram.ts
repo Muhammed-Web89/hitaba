@@ -111,9 +111,18 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
   const root = document.documentElement;
   const markFullscreen = () => (wa.isFullscreen ? (root.dataset.tgFs = '1') : delete root.dataset.tgFs);
   wa.onEvent?.('fullscreenChanged', markFullscreen);
-  if ((wa.platform === 'ios' || wa.platform === 'android') && wa.isVersionAtLeast?.('8.0')) {
-    if (!wa.isFullscreen) wa.requestFullscreen?.();
-    wa.lockOrientation?.();
+  // Açılış parametreleri kaybolursa SDK platformu "unknown", sürümü 6.0 sanır ve isteği atlar; telefonda
+  // olduğumuzu Telegram'ın yerel köprüsünden (TelegramWebviewProxy) anlayıp olayı doğrudan göndeririz.
+  // 8.0 öncesi Telegram bu olayları tanımaz ve yok sayar (tam ekran yalnızca 8.0+ uygulamalarda var).
+  const mobile = ['ios', 'android', 'android_x'].includes(wa.platform ?? '') || 'TelegramWebviewProxy' in window;
+  if (mobile && !wa.isFullscreen) {
+    if (wa.isVersionAtLeast?.('8.0')) {
+      wa.requestFullscreen?.();
+      wa.lockOrientation?.();
+    } else {
+      window.Telegram?.WebView?.postEvent?.('web_app_request_fullscreen', false);
+      window.Telegram?.WebView?.postEvent?.('web_app_toggle_orientation_lock', false, { locked: true });
+    }
   }
   markFullscreen();
 }
