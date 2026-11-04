@@ -382,7 +382,12 @@
     "undoLike": "Undo",
     "resetAll": "Reset all",
     "resetAllTitle": "Take back all likes?",
-    "resetAllText": "{n} likes will be removed. These people may appear in your feed again. Likes used today are not refunded."
+    "resetAllText": "{n} likes will be removed. These people may appear in your feed again. Likes used today are not refunded.",
+    "favoritesIntro": "People you save while out of likes wait here. Like them from here once your likes refresh.",
+    "favoritesOut": "You're out of likes for today. They refresh tomorrow; your favorites will be waiting here.",
+    "likesLeft": "{n}/{max} likes left today",
+    "like": "Like",
+    "unfavorite": "Remove from favorites"
   },
   "match": {
     "sisterDecisionText": "You can now see this man’s photo. If you approve, he can see your photo once and may open a chat. To see it again he must ask you each time. This decision is final.",

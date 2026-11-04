@@ -382,7 +382,12 @@
     "undoLike": "Geri al",
     "resetAll": "Tümünü sıfırla",
     "resetAllTitle": "Tüm beğenileri geri al?",
-    "resetAllText": "{n} beğeni geri alınacak. Bu kişiler akışınızda yeniden görünebilir. Bugün kullandığınız beğeni hakları iade edilmez."
+    "resetAllText": "{n} beğeni geri alınacak. Bu kişiler akışınızda yeniden görünebilir. Bugün kullandığınız beğeni hakları iade edilmez.",
+    "favoritesIntro": "Beğeni hakkınız bittiğinde favoriye aldıklarınız burada bekler. Hakkınız yenilenince buradan beğenebilirsiniz.",
+    "favoritesOut": "Bugünkü beğenileriniz bitti. Hakkınız yarın yenilenir; favorileriniz burada sizi bekliyor.",
+    "likesLeft": "Bugün {n}/{max} beğeni hakkınız var",
+    "like": "Beğen",
+    "unfavorite": "Favoriden çıkar"
   },
   "match": {
     "sisterDecisionText": "Artık bu erkeğin fotoğrafını görebilirsiniz. Onaylarsanız fotoğrafınızı bir kez görür ve sohbet açabilir. Tekrar görmek isterse sizden yeniden izin ister. Bu karar kalıcıdır.",

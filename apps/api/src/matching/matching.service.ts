@@ -110,6 +110,8 @@ export class MatchingService {
 
     await this.prisma.$transaction([
       this.prisma.pass.deleteMany({ where: { fromId: viewer.id, toId: target.id } }),
+      // Favoriye alınıp sonradan beğenilen kişi "Beğenilerim"e geçer; favoride kalmaz.
+      this.prisma.favorite.deleteMany({ where: { userId: viewer.id, targetId: target.id } }),
       this.prisma.like.upsert({
         where: { fromId_toId: { fromId: viewer.id, toId: target.id } },
         create: { fromId: viewer.id, toId: target.id, held: busy },
@@ -224,7 +226,8 @@ export class MatchingService {
 
   async favorites(viewer: User): Promise<PublicProfile[]> {
     const rows = await this.prisma.favorite.findMany({
-      where: { userId: viewer.id, target: { status: 'APPROVED' } },
+      // Zaten beğenilmiş (veya eşleşmiş) kişiler favorilerde gösterilmez.
+      where: { userId: viewer.id, target: { status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } } } },
       include: { target: { include: { profile: true } } },
       orderBy: { createdAt: 'desc' },
     });

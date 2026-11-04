@@ -382,7 +382,12 @@
     "undoLike": "Qaytarish",
     "resetAll": "Hammasini bekor qilish",
     "resetAllTitle": "Barcha qiziqishlaringiz qaytarib olinsinmi?",
-    "resetAllText": "{n} ta qiziqish bekor qilinadi. Bu insonlar anketalar roʻyxatida yana chiqishi mumkin. Bugun ishlatilgan imkoniyatlar qaytarilmaydi."
+    "resetAllText": "{n} ta qiziqish bekor qilinadi. Bu insonlar anketalar roʻyxatida yana chiqishi mumkin. Bugun ishlatilgan imkoniyatlar qaytarilmaydi.",
+    "favoritesIntro": "Imkoniyatingiz tugaganda saqlab qoʻyganlaringiz shu yerda turadi. Imkoniyat yangilangach, shu yerdan qiziqish bildirishingiz mumkin.",
+    "favoritesOut": "Bugungi imkoniyatlaringiz tugadi. Ertaga yangilanadi; saqlanganlaringiz shu yerda kutib turadi.",
+    "likesLeft": "Bugun {n}/{max} ta imkoniyat qoldi",
+    "like": "Qiziqaman",
+    "unfavorite": "Saqlanganlardan olib tashlash"
   },
   "match": {
     "sisterDecisionText": "Endi bu erkakning suratini koʻrishingiz mumkin. Tasdiqlasangiz, u suratingizni bir marta koʻradi va suhbat ochishi mumkin. Qayta koʻrmoqchi boʻlsa, sizdan yana ruxsat soʻraydi. Bu qarorni keyin oʻzgartirib boʻlmaydi.",

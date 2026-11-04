@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import type { MatchSummary, PublicProfile } from '@hitaba/shared/client';
+import { RULES, type MatchSummary, type PublicProfile } from '@hitaba/shared/client';
 import { BusyLikeDialog } from '@/components/BusyLikeDialog';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
@@ -53,7 +53,7 @@ function Likes() {
           </button>
         ))}
       </div>
-      {tab === 'received' ? <ReceivedList /> : tab === 'mutual' ? <MutualList /> : <ProfileList tab={tab} />}
+      {tab === 'received' ? <ReceivedList /> : tab === 'mutual' ? <MutualList /> : tab === 'favorites' ? <FavoritesList /> : <ProfileList tab={tab} />}
     </div>
   );
 }
@@ -168,7 +168,106 @@ function MutualList() {
   );
 }
 
-function ProfileList({ tab }: { tab: 'mine' | 'favorites' }) {
+/**
+ * Favoriler: günlük beğeni hakkı bitince kaydedilen kişiler. Hak yenilenince buradan beğenilir;
+ * beğenilen kişi favorilerden çıkıp "Beğenilerim"e geçer (sunucu tarafı).
+ */
+function FavoritesList() {
+  const t = useTranslations('likes');
+  const names = useDisplayNames();
+  const errorText = useErrorText();
+  const router = useRouter();
+  const { me, refreshMe } = useAuth();
+  const { data, mutate } = useSWR<PublicProfile[]>('/likes?tab=favorites');
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [busyAsk, setBusyAsk] = useState<string | null>(null);
+  if (!data) return <PageLoader />;
+  if (!data.length) return <EmptyState icon="star" title={t('emptyFavorites')} text={t('favoritesIntro')} />;
+
+  const left = me?.likesLeftToday ?? 0;
+  const max = me?.gender === 'MALE' ? RULES.maleDailyFreeLikes : RULES.femaleDailyLikes;
+  const outOfLikes = me?.likesLeftToday === 0;
+
+  async function like(userId: string, confirmed = false) {
+    if (!confirmed && data!.find((p) => p.userId === userId)?.busy) return setBusyAsk(userId);
+    setBusyAsk(null);
+    setBusy(userId);
+    setError(null);
+    try {
+      const res = await api<{ mutual: boolean; matchId: string | null }>(`/feed/${userId}/like`, { method: 'POST' });
+      void refreshMe();
+      if (res.matchId) return router.push(`/app/matches/${res.matchId}`);
+      await mutate();
+    } catch (e) {
+      setError(errorText(e));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function remove(userId: string) {
+    setBusy(`x:${userId}`);
+    await api(`/favorites/${userId}`, { method: 'DELETE' }).catch(() => {});
+    await mutate();
+    setBusy(null);
+  }
+
+  return (
+    <>
+      <p className="mb-2 text-sm text-ink-2">{t('favoritesIntro')}</p>
+      <div className="mb-3">
+        {outOfLikes ? <Notice tone="info">{t('favoritesOut')}</Notice> : <Chip tone="brand"><Icon name="heart" size={12} /> {t('likesLeft', { n: left, max })}</Chip>}
+      </div>
+      {error && (
+        <div className="mb-3">
+          <Notice tone="warning">{error}</Notice>
+        </div>
+      )}
+      <ul className="grid grid-cols-2 gap-3">
+        {data.map((p) => (
+          <li key={p.userId}>
+            <Card className="relative flex h-full flex-col items-center p-3 text-center">
+              <button
+                type="button"
+                aria-label={t('unfavorite')}
+                title={t('unfavorite')}
+                disabled={busy === `x:${p.userId}`}
+                onClick={() => remove(p.userId)}
+                className="glow absolute end-2 top-2 flex h-8 w-8 items-center justify-center rounded-full text-accent disabled:opacity-50 [&_svg]:fill-current"
+              >
+                <Icon name="star" size={16} />
+              </button>
+              <Link href={`/app/profiles/${p.userId}`} className="flex w-full flex-col items-center">
+                <ProfileAvatar profile={p} size={80} />
+                <p className="mt-1 w-full truncate font-semibold">{p.displayName}</p>
+                <p className="w-full truncate text-xs text-ink-3">
+                  {p.ageRange} · {p.city || names.country(p.country)}
+                </p>
+              </Link>
+              <div className="mt-3 grid w-full grid-cols-[auto_1fr] gap-1.5">
+                <Link
+                  href={`/app/profiles/${p.userId}`}
+                  aria-label={t('viewProfile')}
+                  title={t('viewProfile')}
+                  className="glow flex h-9 w-9 items-center justify-center rounded-control border border-line text-ink-2"
+                >
+                  <Icon name="eye" size={17} />
+                </Link>
+                <Button size="sm" icon="heart" disabled={outOfLikes} loading={busy === p.userId} onClick={() => like(p.userId)}>
+                  {t('like')}
+                </Button>
+              </div>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      <BusyLikeDialog open={!!busyAsk} onClose={() => setBusyAsk(null)} onConfirm={() => busyAsk && like(busyAsk, true)} loading={!!busy} />
+    </>
+  );
+}
+
+function ProfileList({ tab }: { tab: 'mine' }) {
   const t = useTranslations('likes');
   const tc = useTranslations('common');
   const names = useDisplayNames();
@@ -179,8 +278,8 @@ function ProfileList({ tab }: { tab: 'mine' | 'favorites' }) {
   const [error, setError] = useState<string | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
   if (!data) return <PageLoader />;
-  if (!data.length) return <EmptyState icon={tab === 'mine' ? 'heart' : 'star'} title={t(tab === 'mine' ? 'emptyMine' : 'emptyFavorites')} />;
-  const mine = tab === 'mine';
+  if (!data.length) return <EmptyState icon="heart" title={t('emptyMine')} />;
+  const mine = true;
 
   async function run(key: string, fn: () => Promise<unknown>) {
     setBusy(key);
