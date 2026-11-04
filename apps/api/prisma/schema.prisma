@@ -146,6 +146,8 @@ model User {
   role             Role       @default(USER)
   gender           Gender
   status           UserStatus @default(ONBOARDING)
+  /// Deneme hesabı: yalnızca diğer deneme hesaplarıyla karşılaşır, gerçek kullanıcılar onu hiç görmez.
+  isSandbox        Boolean    @default(false)
   email            String?    @unique
   /// E-posta ile kayıtta doğrulanana kadar null. Telegram hesaplarında kullanılmaz.
   emailVerifiedAt  DateTime?

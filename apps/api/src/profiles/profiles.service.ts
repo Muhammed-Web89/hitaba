@@ -204,7 +204,7 @@ export class ProfilesService implements OnModuleInit {
   /** Başka bir kullanıcının profili; yalnızca karşı cinsten, onaylı kullanıcılar arasında. */
   async publicProfile(viewer: User, userId: string): Promise<PublicProfile> {
     const target = await this.prisma.user.findUnique({ where: { id: userId }, include: { profile: true } });
-    if (!target || target.status !== 'APPROVED' || target.gender === viewer.gender || target.role !== 'USER') {
+    if (!target || target.status !== 'APPROVED' || target.gender === viewer.gender || target.role !== 'USER' || target.isSandbox !== viewer.isSandbox) {
       throw new NotFoundException();
     }
     return this.toPublic(viewer, target);

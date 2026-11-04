@@ -74,6 +74,8 @@ export class MatchingService {
       id: { not: viewer.id },
       role: 'USER',
       status: 'APPROVED',
+      // Deneme hesapları ile gerçek kullanıcılar birbirini hiç görmez.
+      isSandbox: viewer.isSandbox,
       gender: viewer.gender === 'MALE' ? 'FEMALE' : 'MALE',
       profile: { is: profile },
       likesReceived: { none: { fromId: viewer.id } },
@@ -386,7 +388,7 @@ export class MatchingService {
 
   private async assertCandidate(viewer: User, targetId: string) {
     const target = await this.prisma.user.findUnique({ where: { id: targetId } });
-    if (!target || target.role !== 'USER' || target.status !== 'APPROVED' || target.gender === viewer.gender) {
+    if (!target || target.role !== 'USER' || target.status !== 'APPROVED' || target.gender === viewer.gender || target.isSandbox !== viewer.isSandbox) {
       throw new NotFoundException();
     }
     return target;
