@@ -864,7 +864,18 @@
       "quality_low_resolution": "Düşük çözünürlük"
     },
     "yes": "Evet",
-    "no": "Hayır"
+    "no": "Hayır",
+    "sandbox": "Deneme hesabı",
+    "decided": {
+      "APPROVED": "Onaylayan",
+      "REJECTED": "Reddeden"
+    },
+    "staff": {
+      "MODERATOR_FEMALE": "Kadın moderatör",
+      "MODERATOR_MALE": "Erkek moderatör",
+      "ADMIN_FEMALE": "Yönetici",
+      "ADMIN_MALE": "Yönetici"
+    }
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

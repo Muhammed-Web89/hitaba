@@ -66,9 +66,9 @@ export class AdminService {
     return r;
   }
 
-  users(q?: string) {
+  async users(viewer: User, q?: string) {
     const term = q?.trim();
-    return this.prisma.user.findMany({
+    const users = await this.prisma.user.findMany({
       where: term
         ? {
             OR: [
@@ -84,6 +84,7 @@ export class AdminService {
         role: true,
         gender: true,
         status: true,
+        isSandbox: true,
         email: true,
         telegramUsername: true,
         connectBalance: true,
@@ -93,6 +94,31 @@ export class AdminService {
       },
       orderBy: { createdAt: 'desc' },
       take: 100,
+    });
+    if (viewer.role !== 'ADMIN') return users;
+
+    // Yalnızca yönetici: profili son onaylayan/reddeden personel (moderatörler birbirinin kararını görmez).
+    const decisions = await this.prisma.moderationItem.findMany({
+      where: { targetType: 'PROFILE', subjectUserId: { in: users.map((u) => u.id) }, status: { in: ['APPROVED', 'REJECTED'] }, decidedById: { not: null } },
+      orderBy: { decidedAt: 'desc' },
+      select: { subjectUserId: true, status: true, decidedById: true, decidedAt: true },
+    });
+    const latest = new Map<string, (typeof decisions)[number]>();
+    for (const d of decisions) if (!latest.has(d.subjectUserId)) latest.set(d.subjectUserId, d);
+    const staff = await this.prisma.user.findMany({
+      where: { id: { in: [...new Set([...latest.values()].map((d) => d.decidedById!))] } },
+      select: { id: true, role: true, gender: true, email: true, profile: { select: { displayName: true } } },
+    });
+    const byId = new Map(staff.map((m) => [m.id, m]));
+    return users.map((u) => {
+      const d = latest.get(u.id);
+      const m = d && byId.get(d.decidedById!);
+      return {
+        ...u,
+        decidedBy: m
+          ? { status: d!.status, at: d!.decidedAt, role: m.role, gender: m.gender, name: m.email?.split('@')[0] ?? m.profile?.displayName ?? '—' }
+          : null,
+      };
     });
   }
 
@@ -232,8 +258,8 @@ export class AdminController {
   }
 
   @Get('users')
-  users(@Query('q') q?: string) {
-    return this.admin.users(q);
+  users(@CurrentUser() viewer: User, @Query('q') q?: string) {
+    return this.admin.users(viewer, q);
   }
 
   @Get('users/:id')

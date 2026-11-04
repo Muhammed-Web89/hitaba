@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import useSWR from 'swr';
+import { Icon } from '@/components/icons';
 import { Card, Chip, EmptyState, Input, PageLoader } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 
@@ -11,6 +12,9 @@ interface UserRow {
   role: string;
   gender: string;
   status: string;
+  isSandbox?: boolean;
+  /** Yalnızca yöneticiye: profili son onaylayan/reddeden personel. */
+  decidedBy?: { status: 'APPROVED' | 'REJECTED'; at: string; role: 'MODERATOR' | 'ADMIN'; gender: 'MALE' | 'FEMALE'; name: string } | null;
   email: string | null;
   telegramUsername: string | null;
   profile: { displayName: string | null; city: string | null; country: string | null } | null;
@@ -19,6 +23,7 @@ interface UserRow {
 
 export default function AdminUsersPage() {
   const t = useTranslations('admin');
+  const locale = useLocale();
   const [q, setQ] = useState('');
   const [query, setQuery] = useState('');
   const { data } = useSWR<UserRow[]>(`/admin/users${query ? `?q=${encodeURIComponent(query)}` : ''}`);
@@ -46,6 +51,16 @@ export default function AdminUsersPage() {
               <Chip>{t(`gender.${u.gender as 'MALE' | 'FEMALE'}`)}</Chip>
               {u.role !== 'USER' && <Chip tone="accent">{t(`role.${u.role as 'MODERATOR' | 'ADMIN' | 'USER'}`)}</Chip>}
               <Chip tone={u.status === 'APPROVED' ? 'brand' : u.status === 'BANNED' ? 'warning' : 'info'}>{t(`userStatus.${u.status}` as never)}</Chip>
+              {u.isSandbox && <Chip tone="info">{t('sandbox')}</Chip>}
+              {u.decidedBy && (
+                <span
+                  title={`${t(`decided.${u.decidedBy.status}`)} · ${new Date(u.decidedBy.at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })}`}
+                  className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold ${u.decidedBy.status === 'APPROVED' ? 'border-brand-500/40 text-brand-500' : 'border-warning/50 text-warning'}`}
+                >
+                  <Icon name={u.decidedBy.status === 'APPROVED' ? 'check' : 'x'} size={13} />
+                  {t(`staff.${u.decidedBy.role}_${u.decidedBy.gender}`)} · {u.decidedBy.name}
+                </span>
+              )}
               {u._count.reportsAgainst > 0 && <Chip tone="warning">⚑ {u._count.reportsAgainst}</Chip>}
             </Link>
           ))}

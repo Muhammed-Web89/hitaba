@@ -864,7 +864,18 @@
       "quality_low_resolution": "دقة منخفضة"
     },
     "yes": "نعم",
-    "no": "لا"
+    "no": "لا",
+    "sandbox": "حساب تجريبي",
+    "decided": {
+      "APPROVED": "وافق عليه",
+      "REJECTED": "رفضه"
+    },
+    "staff": {
+      "MODERATOR_FEMALE": "مشرفة",
+      "MODERATOR_MALE": "مشرف",
+      "ADMIN_FEMALE": "مسؤول",
+      "ADMIN_MALE": "مسؤول"
+    }
   },
   "consent": {
     "title": "الموافقات (إلزامية)",

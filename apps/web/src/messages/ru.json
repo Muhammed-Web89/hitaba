@@ -864,7 +864,18 @@
       "quality_low_resolution": "Низкое разрешение"
     },
     "yes": "Да",
-    "no": "Нет"
+    "no": "Нет",
+    "sandbox": "Тестовый аккаунт",
+    "decided": {
+      "APPROVED": "Одобрил(а)",
+      "REJECTED": "Отклонил(а)"
+    },
+    "staff": {
+      "MODERATOR_FEMALE": "Модератор (жен.)",
+      "MODERATOR_MALE": "Модератор (муж.)",
+      "ADMIN_FEMALE": "Администратор",
+      "ADMIN_MALE": "Администратор"
+    }
   },
   "consent": {
     "title": "Согласия (обязательно)",

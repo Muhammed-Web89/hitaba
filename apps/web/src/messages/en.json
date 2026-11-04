@@ -864,7 +864,18 @@
       "quality_low_resolution": "Low resolution"
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "sandbox": "Sandbox account",
+    "decided": {
+      "APPROVED": "Approved by",
+      "REJECTED": "Rejected by"
+    },
+    "staff": {
+      "MODERATOR_FEMALE": "Female moderator",
+      "MODERATOR_MALE": "Male moderator",
+      "ADMIN_FEMALE": "Admin",
+      "ADMIN_MALE": "Admin"
+    }
   },
   "consent": {
     "title": "Consents (required)",

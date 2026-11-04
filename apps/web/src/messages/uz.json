@@ -864,7 +864,18 @@
       "quality_low_resolution": "Sifati past"
     },
     "yes": "Ha",
-    "no": "Yoʻq"
+    "no": "Yoʻq",
+    "sandbox": "Sinov hisobi",
+    "decided": {
+      "APPROVED": "Tasdiqlagan",
+      "REJECTED": "Rad etgan"
+    },
+    "staff": {
+      "MODERATOR_FEMALE": "Ayol moderator",
+      "MODERATOR_MALE": "Erkak moderator",
+      "ADMIN_FEMALE": "Administrator",
+      "ADMIN_MALE": "Administrator"
+    }
   },
   "consent": {
     "title": "Roziliklar (majburiy)",
