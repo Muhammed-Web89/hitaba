@@ -314,7 +314,9 @@
     "browseFromStart": "التصفح من البداية",
     "previous": "السابق",
     "next": "التالي",
-    "readOnly": "تصفح فقط"
+    "readOnly": "تصفح فقط",
+    "revisitTitle": "ملف تجاوزته سابقًا",
+    "revisitText": "لا توجد ملفات جديدة. هل تودّ إعادة النظر في الملفات التي تجاوزتها؟"
   },
   "profile": {
     "ageRange": "{range} سنة",

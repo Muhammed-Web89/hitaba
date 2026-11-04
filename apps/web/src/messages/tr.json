@@ -314,7 +314,9 @@
     "browseFromStart": "Baştan göz at",
     "previous": "Önceki",
     "next": "Sonraki",
-    "readOnly": "Yalnızca göz atma"
+    "readOnly": "Yalnızca göz atma",
+    "revisitTitle": "Daha önce geçtiğiniz bir aday",
+    "revisitText": "Yeni aday kalmadı. Geçtiklerinizi tekrar değerlendirmek ister misiniz?"
   },
   "profile": {
     "ageRange": "{range} yaş",

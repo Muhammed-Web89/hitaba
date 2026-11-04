@@ -314,7 +314,9 @@
     "browseFromStart": "Browse from the start",
     "previous": "Previous",
     "next": "Next",
-    "readOnly": "Browse only"
+    "readOnly": "Browse only",
+    "revisitTitle": "Someone you passed earlier",
+    "revisitText": "There are no new profiles. Would you like to look again at the ones you passed?"
   },
   "profile": {
     "ageRange": "{range} years",

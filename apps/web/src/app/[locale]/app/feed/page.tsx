@@ -184,6 +184,17 @@ function Feed() {
         </div>
       )}
 
+      {card?.revisit && (
+        <div className="glass mb-3 flex items-start gap-3 rounded-card border border-accent/40 px-4 py-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-accent">
+            <Icon name="undo" size={18} />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold">{t('revisitTitle')}</p>
+            <p className="text-xs text-ink-3">{t('revisitText')}</p>
+          </div>
+        </div>
+      )}
       {card && (
         <ProfileCard
           profile={card.profile}

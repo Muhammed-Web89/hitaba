@@ -113,6 +113,8 @@ export interface PublicProfile {
 export interface FeedCard {
   profile: PublicProfile;
   remaining: number;
+  /** Yeni aday kalmadı: daha önce geçilen biri yeniden değerlendirme için gösteriliyor. */
+  revisit?: boolean;
 }
 
 export interface MatchSummary {

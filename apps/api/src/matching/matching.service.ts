@@ -28,8 +28,19 @@ export class MatchingService {
       }),
       this.prisma.user.count({ where }),
     ]);
-    if (!target) return null;
-    return { profile: await this.profiles.toPublic(viewer, target), remaining: remaining - (filter.offset ?? 0) };
+    if (target) return { profile: await this.profiles.toPublic(viewer, target), remaining: remaining - (filter.offset ?? 0) };
+
+    // Yeni aday kalmadı: filtreye uyan, daha önce geçilenler en eski geçilenden başlayarak yeniden gelir.
+    // Yeniden geçilen sıranın sonuna gider (pass() zamanı günceller); beğenilen listeden çıkar.
+    const { passesReceived: _, ...passedWhere } = where;
+    const revisitWhere: Prisma.PassWhereInput = { fromId: viewer.id, to: passedWhere };
+    const skip = Math.max(0, (filter.offset ?? 0) - remaining);
+    const [pass, passed] = await Promise.all([
+      this.prisma.pass.findFirst({ where: revisitWhere, orderBy: { createdAt: 'asc' }, skip, include: { to: { include: { profile: true } } } }),
+      this.prisma.pass.count({ where: revisitWhere }),
+    ]);
+    if (!pass) return null;
+    return { profile: await this.profiles.toPublic(viewer, pass.to), remaining: passed - skip, revisit: true };
   }
 
   private candidateWhere(viewer: User, f: FeedFilter, viewerPolygamy: Profile['polygamyAnswer']): Prisma.UserWhereInput {

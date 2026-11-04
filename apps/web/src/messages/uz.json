@@ -314,7 +314,9 @@
     "browseFromStart": "Boshidan koʻrish",
     "previous": "Oldingi",
     "next": "Keyingi",
-    "readOnly": "Faqat koʻrish"
+    "readOnly": "Faqat koʻrish",
+    "revisitTitle": "Avval oʻtkazib yuborgan anketangiz",
+    "revisitText": "Yangi anketa qolmadi. Oʻtkazib yuborganlaringizni qayta koʻrib chiqasizmi?"
   },
   "profile": {
     "ageRange": "{range} yosh",
