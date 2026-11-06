@@ -58,14 +58,20 @@ export class TranslationService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  /** Önbellekten, Azure Translator ya da Claude ile çeviri. Aynı metin aynı dile bir kez çevrilir. */
-  async translate(text: string, target: Locale): Promise<string> {
+  /**
+   * Önbellekten, Claude ya da Azure Translator ile çeviri. Aynı metin aynı dile bir kez çevrilir.
+   * Profil metinleri (hakkımda, inanç) dini terimler ve üslup için Claude'la; kısa sohbet mesajları
+   * Azure'la çevrilir. Biri yapılandırılmamışsa diğeri kullanılır.
+   */
+  async translate(text: string, target: Locale, kind: 'profile' | 'message'): Promise<string> {
     const source = text.trim();
     if (!source) return '';
-    const key = createHash('sha256').update(`${target}\n${source}`).digest('hex');
+    const useClaude = kind === 'profile' ? Boolean(this.client) : !env.AZURE_TRANSLATOR_KEY;
+    // Sağlayıcı anahtara dahil: sağlayıcı değişince önceki çeviriler (ör. Azure'un profil çevirileri) kullanılmaz.
+    const key = createHash('sha256').update(`${useClaude ? 'claude' : 'azure'}\n${target}\n${source}`).digest('hex');
     const cached = await this.prisma.translation.findUnique({ where: { key } });
     if (cached) return cached.text;
-    const out = env.AZURE_TRANSLATOR_KEY ? await this.viaAzure(source, target) : await this.viaClaude(source, target);
+    const out = useClaude ? await this.viaClaude(source, target) : await this.viaAzure(source, target);
     await this.prisma.translation.upsert({ where: { key }, create: { key, text: out }, update: {} });
     return out;
   }
@@ -148,7 +154,7 @@ export class TranslationController {
   ) {
     if (!PROFILE_FIELDS.includes(field as ProfileField)) throw new NotFoundException();
     const profile = await this.profiles.publicProfile(viewer, userId);
-    return { text: await this.translation.translate(profile[field as ProfileField] ?? '', body.lang) };
+    return { text: await this.translation.translate(profile[field as ProfileField] ?? '', body.lang, 'profile') };
   }
 
   /** Sohbet mesajı: yalnızca sohbetin tarafları, yalnızca teslim edilmiş metin mesajları. */
@@ -157,7 +163,7 @@ export class TranslationController {
     const msg = await this.prisma.message.findUnique({ where: { id: messageId } });
     if (!msg || msg.kind !== 'TEXT' || msg.state !== 'DELIVERED' || msg.deletedAt) throw new NotFoundException();
     await this.chats.participantChat(viewer, msg.chatId);
-    const text = await this.translation.translate(msg.text, body.lang);
+    const text = await this.translation.translate(msg.text, body.lang, 'message');
     // Çeviri, moderasyonu dolanmanın yolu olmasın (ör. yazıyla yazılmış telefon numarası rakama dönerse).
     if (scanForContactInfo(text).blocked) throw new BadRequestException({ error: 'translation_blocked' });
     return { text };
@@ -167,7 +173,7 @@ export class TranslationController {
   @Post('profile/:userId')
   async profileAll(@CurrentUser() viewer: User, @Param('userId') userId: string, @Body(new ZodPipe(langSchema)) body: { lang: Locale }) {
     const profile = await this.profiles.publicProfile(viewer, userId);
-    const texts = await Promise.all(PROFILE_FIELDS.map((f) => this.translation.translate(profile[f] ?? '', body.lang)));
+    const texts = await Promise.all(PROFILE_FIELDS.map((f) => this.translation.translate(profile[f] ?? '', body.lang, 'profile')));
     return Object.fromEntries(PROFILE_FIELDS.map((f, i) => [f, texts[i]])) as Record<ProfileField, string>;
   }
 
@@ -187,7 +193,7 @@ export class TranslationController {
     for (let i = 0; i < rows.length; i += 6) {
       await Promise.all(
         rows.slice(i, i + 6).map(async (m) => {
-          const text = await this.translation.translate(m.text, body.lang).catch(() => null);
+          const text = await this.translation.translate(m.text, body.lang, 'message').catch(() => null);
           if (text && !scanForContactInfo(text).blocked) out[m.id] = text;
         }),
       );
