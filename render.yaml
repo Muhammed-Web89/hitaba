@@ -78,10 +78,10 @@ services:
         sync: false
       - key: TELEGRAM_WEBHOOK_SECRET
         generateValue: true
-      # Kullanıcı metinlerinin çevirisi: AZURE_TRANSLATOR_KEY varsa Azure, yoksa Claude. İkisi de boşsa kapalı.
+      # Çeviri: profil metinleri Claude (Opus 5.5), sohbet mesajları Azure. Biri boşsa diğeri ikisini de üstlenir.
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: AZURE_TRANSLATOR_KEY
         sync: false
       - key: AZURE_TRANSLATOR_REGION
-        value: westeurope
+        value: northeurope

@@ -113,8 +113,8 @@ export class TranslationService {
       response = await this.client.messages.create({
         model: env.TRANSLATE_MODEL,
         max_tokens: 4000,
-        // Düz çeviri: düşünmeye gerek yok, yanıt hızlı gelsin.
-        thinking: { type: 'disabled' },
+        // Düz çeviri: düşük effort yeterli. Opus 5.5'te düşünme kapatılamaz (disabled 400 döner).
+        output_config: { effort: 'low' },
         system: SYSTEM,
         messages: [{ role: 'user', content: `Target language: ${LANG_NAME[target]}\n\n<text>\n${source}\n</text>` }],
       });
