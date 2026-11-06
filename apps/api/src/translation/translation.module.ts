@@ -58,13 +58,47 @@ export class TranslationService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  /** Önbellekten ya da Claude'dan çeviri. Aynı metin aynı dile bir kez çevrilir. */
+  /** Önbellekten, Azure Translator ya da Claude ile çeviri. Aynı metin aynı dile bir kez çevrilir. */
   async translate(text: string, target: Locale): Promise<string> {
     const source = text.trim();
     if (!source) return '';
     const key = createHash('sha256').update(`${target}\n${source}`).digest('hex');
     const cached = await this.prisma.translation.findUnique({ where: { key } });
     if (cached) return cached.text;
+    const out = env.AZURE_TRANSLATOR_KEY ? await this.viaAzure(source, target) : await this.viaClaude(source, target);
+    await this.prisma.translation.upsert({ where: { key }, create: { key, text: out }, update: {} });
+    return out;
+  }
+
+  /** Azure Translator v3. Ücretsiz katmanda kota dolarsa 429/403 döner; kullanıcı asıl metni görür. */
+  private async viaAzure(source: string, target: Locale): Promise<string> {
+    let res: Response;
+    try {
+      res = await fetch(`https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=${target}`, {
+        method: 'POST',
+        headers: {
+          'Ocp-Apim-Subscription-Key': env.AZURE_TRANSLATOR_KEY,
+          'Ocp-Apim-Subscription-Region': env.AZURE_TRANSLATOR_REGION,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([{ Text: source }]),
+        signal: AbortSignal.timeout(15_000),
+      });
+    } catch (e) {
+      this.log.warn(`azure translate error: ${(e as Error).message}`);
+      throw new ServiceUnavailableException({ error: 'translation_failed' });
+    }
+    if (!res.ok) {
+      this.log.warn(`azure translate failed: ${res.status} ${(await res.text().catch(() => '')).slice(0, 200)}`);
+      throw new ServiceUnavailableException({ error: 'translation_failed' });
+    }
+    const data = (await res.json()) as { translations?: { text: string }[] }[];
+    const out = data[0]?.translations?.[0]?.text?.trim();
+    if (!out) throw new ServiceUnavailableException({ error: 'translation_failed' });
+    return out;
+  }
+
+  private async viaClaude(source: string, target: Locale): Promise<string> {
     if (!this.client) throw new ServiceUnavailableException({ error: 'translation_unavailable' });
 
     let response: Anthropic.Message;
@@ -89,8 +123,6 @@ export class TranslationService {
       .join('')
       .trim();
     if (!out) throw new ServiceUnavailableException({ error: 'translation_failed' });
-
-    await this.prisma.translation.upsert({ where: { key }, create: { key, text: out }, update: {} });
     return out;
   }
 }

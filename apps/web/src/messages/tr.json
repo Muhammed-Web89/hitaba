@@ -995,7 +995,7 @@
         },
         "processors": {
           "title": "Hizmet sağlayıcılar",
-          "body": "Barındırma, veritabanı, özel dosya depolama, e-posta gönderimi ve (kullanıyorsanız) Telegram. Bu sağlayıcılar verileri yalnızca talimatımızla işler. Bazıları yurt dışında olabilir; sözleşmesel güvenceler kullanırız. Bir metnin yanındaki “Çevir”e dokunduğunuzda o metin, yalnızca çeviri için Anthropic’in Claude hizmetine gönderilir; çeviri, aynı metin yeniden çevrilmesin diye bizde saklanır."
+          "body": "Barındırma, veritabanı, özel dosya depolama, e-posta gönderimi ve (kullanıyorsanız) Telegram. Bu sağlayıcılar verileri yalnızca talimatımızla işler. Bazıları yurt dışında olabilir; sözleşmesel güvenceler kullanırız. Üyelerin yazdığı metinler uygulama dilinize çevrilirken metin, yalnızca çeviri için Microsoft’un Azure Translator ya da Anthropic’in Claude hizmetine gönderilir; çeviri, aynı metin yeniden çevrilmesin diye bizde saklanır."
         },
         "retention": {
           "title": "Saklama süresi",

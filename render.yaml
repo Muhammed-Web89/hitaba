@@ -78,6 +78,10 @@ services:
         sync: false
       - key: TELEGRAM_WEBHOOK_SECRET
         generateValue: true
-      # Kullanıcı metinlerinin isteğe bağlı çevirisi (Claude). Boşsa çeviri kapalıdır.
+      # Kullanıcı metinlerinin çevirisi: AZURE_TRANSLATOR_KEY varsa Azure, yoksa Claude. İkisi de boşsa kapalı.
       - key: ANTHROPIC_API_KEY
         sync: false
+      - key: AZURE_TRANSLATOR_KEY
+        sync: false
+      - key: AZURE_TRANSLATOR_REGION
+        value: westeurope

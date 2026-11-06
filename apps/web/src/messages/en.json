@@ -995,7 +995,7 @@
         },
         "processors": {
           "title": "Service providers",
-          "body": "Hosting, database, private file storage, email delivery and (if you use it) Telegram. These providers process data only on our instructions. Some may be located outside your country; we use contractual safeguards. When you tap “Translate” next to a text, that text is sent to Anthropic’s Claude service for translation only; the translation is stored by us so the same text is not translated again."
+          "body": "Hosting, database, private file storage, email delivery and (if you use it) Telegram. These providers process data only on our instructions. Some may be located outside your country; we use contractual safeguards. When member texts are translated into your app language, the text is sent only for translation to Microsoft’s Azure Translator or Anthropic’s Claude service; the translation is stored by us so the same text is not translated again."
         },
         "retention": {
           "title": "Retention",

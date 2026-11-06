@@ -995,7 +995,7 @@
         },
         "processors": {
           "title": "Xizmat koʻrsatuvchilar",
-          "body": "Xosting, maʼlumotlar bazasi, maxfiy fayl ombori, email yuborish va (agar foydalansangiz) Telegram. Ular maʼlumotlarni faqat bizning koʻrsatmamiz bilan qayta ishlaydi. Baʼzilari xorijda boʻlishi mumkin; shartnomaviy kafolatlardan foydalanamiz. Matn yonidagi “Tarjima qilish”ni bossangiz, o‘sha matn faqat tarjima uchun Anthropic kompaniyasining Claude xizmatiga yuboriladi; bir xil matn qayta tarjima qilinmasligi uchun tarjima bizda saqlanadi."
+          "body": "Xosting, maʼlumotlar bazasi, maxfiy fayl ombori, email yuborish va (agar foydalansangiz) Telegram. Ular maʼlumotlarni faqat bizning koʻrsatmamiz bilan qayta ishlaydi. Baʼzilari xorijda boʻlishi mumkin; shartnomaviy kafolatlardan foydalanamiz. A’zolar yozgan matnlar ilova tilingizga tarjima qilinganda, matn faqat tarjima uchun Microsoft kompaniyasining Azure Translator yoki Anthropic kompaniyasining Claude xizmatiga yuboriladi; bir xil matn qayta tarjima qilinmasligi uchun tarjima bizda saqlanadi."
         },
         "retention": {
           "title": "Saqlash muddati",

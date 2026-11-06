@@ -47,6 +47,9 @@ export const envSchema = z.object({
   // Kullanıcı metinlerinin isteğe bağlı çevirisi (Claude). Anahtar yoksa çeviri kapalıdır.
   ANTHROPIC_API_KEY: z.string().optional().default(''),
   TRANSLATE_MODEL: z.string().optional().default('claude-haiku-5-5'),
+  // Azure Translator (ücretsiz F0 katmanı: ayda 2M karakter). Anahtar varsa çeviri Claude yerine Azure ile yapılır.
+  AZURE_TRANSLATOR_KEY: z.string().optional().default(''),
+  AZURE_TRANSLATOR_REGION: z.string().optional().default('westeurope'),
 });
 
 const parsed = envSchema.safeParse(process.env);

@@ -84,7 +84,7 @@ export class ProfilesService implements OnModuleInit {
       displayName: profile?.displayName ?? null,
       completedSteps: profile?.completedSteps ?? [],
       likesLeftToday: await this.likesLeftToday(user),
-      translation: Boolean(env.ANTHROPIC_API_KEY),
+      translation: Boolean(env.AZURE_TRANSLATOR_KEY || env.ANTHROPIC_API_KEY),
     };
   }
 
