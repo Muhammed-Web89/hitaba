@@ -78,7 +78,8 @@ export class TranslationService {
         method: 'POST',
         headers: {
           'Ocp-Apim-Subscription-Key': env.AZURE_TRANSLATOR_KEY,
-          'Ocp-Apim-Subscription-Region': env.AZURE_TRANSLATOR_REGION,
+          // "Global" bölgede oluşturulan kaynakta bölge başlığı gönderilmez.
+          ...(env.AZURE_TRANSLATOR_REGION && env.AZURE_TRANSLATOR_REGION !== 'global' && { 'Ocp-Apim-Subscription-Region': env.AZURE_TRANSLATOR_REGION }),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify([{ Text: source }]),
