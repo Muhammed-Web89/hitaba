@@ -34,14 +34,17 @@ function GirihRing({ className }: { className?: string }) {
 function FemaleEmblem() {
   return (
     <svg viewBox="0 0 100 100" className="h-full w-full" aria-hidden="true">
+      {/* Aşağı doğru açılan başörtüsü; yüz hatsız oval. Çapraz kıvrım örtünün omza atıldığını gösterir. */}
       <path
-        d="M50 18c-16 0-27 12-27 28v14c0 15 11 25 27 29 16-4 27-14 27-29V46c0-16-11-28-27-28Z"
+        d="M50 15C36 15 28 26 28 40c0 11-3 19-9 29-5 9-8 19-8 31h78c0-12-3-22-8-31-6-10-9-18-9-29 0-14-8-25-22-25Z"
         fill="var(--brand-100)"
         stroke="var(--brand-500)"
         strokeWidth="3"
+        strokeLinejoin="round"
       />
-      <ellipse cx="50" cy="49" rx="12" ry="14.5" fill="var(--bg-base)" stroke="var(--brand-500)" strokeWidth="2.5" />
-      <path d="M50 72l2.2 4.6 4.8.8-3.5 3.4.8 4.8L50 83.3l-4.3 2.3.8-4.8-3.5-3.4 4.8-.8Z" fill="var(--accent-500)" />
+      <ellipse cx="50" cy="41" rx="11" ry="13.5" fill="var(--bg-base)" stroke="var(--brand-500)" strokeWidth="2.5" />
+      <path d="M38.5 52c4 10 16 15 33 12" fill="none" stroke="var(--brand-500)" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M40 75l2 4.2 4.4.7-3.2 3.1.8 4.4-4-2.1-4 2.1.8-4.4-3.2-3.1 4.4-.7Z" fill="var(--accent-500)" />
     </svg>
   );
 }
