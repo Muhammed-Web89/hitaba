@@ -51,9 +51,9 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
 
         <div className="glass relative rounded-card border p-5" aria-hidden="true">
           <div className="flex items-center gap-3 border-b border-line pb-4">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 font-serif text-xl font-semibold text-brand-500">U</span>
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 font-serif text-xl font-semibold text-brand-500">S</span>
             <div className="flex-1">
-              <div className="font-semibold">Umar · Maryam</div>
+              <div className="font-semibold">Sherzod · Nilufar</div>
               <div className="text-xs text-ink-3">27–29 · Toshkent</div>
             </div>
             <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-500">
