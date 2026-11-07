@@ -357,7 +357,7 @@ export function StepFields({ step, draft, set, gender }: { step: WizardStep; dra
               label={t('hijab')}
               value={draft.hijab}
               onChange={(v) => set({ hijab: v })}
-              options={(['NIQAB', 'HIJAB', 'PARTIAL', 'NONE'] as const).map((h) => ({ value: h, label: te(`hijab.${h}`), icon: h === 'NONE' ? undefined : ('hijab' as const) }))}
+              options={(['NIQAB', 'HIJAB', 'PARTIAL', 'WANT', 'NONE'] as const).map((h) => ({ value: h, label: te(`hijab.${h}`), icon: h === 'NONE' || h === 'WANT' ? undefined : ('hijab' as const) }))}
             />
           )}
           <div>

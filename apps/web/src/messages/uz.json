@@ -182,7 +182,7 @@
       "beliefsManhajHint": "Masalan: “Ahli sunna val-jamoa aqidasidaman, hanafiy mazhabiga amal qilaman, dinni ishonchli ustozlardan oʻrganaman.”",
       "screeningPrivacy": "Bu javoblar shifrlanadi va faqat moderatorga koʻrinadi.",
       "prayer": "Besh vaqt namozni oʻqiysizmi?",
-      "hijab": "Hijob",
+      "hijab": "Roʻmol",
       "alcohol": "Spirtli ichimlik ichasizmi?",
       "drugs": "Giyohvand modda isteʼmol qilasizmi?",
       "relationsOutsideNikah": "Hozir kimdir bilan nikohsiz munosabatingiz bormi?",
@@ -678,10 +678,11 @@
       "NO": "Yoʻq"
     },
     "hijab": {
-      "NIQAB": "Niqob",
-      "HIJAB": "Hijob",
-      "PARTIAL": "Qisman",
-      "NONE": "Yoʻq"
+      "NIQAB": "Niqob oʻrayman",
+      "HIJAB": "Roʻmol oʻrayman",
+      "PARTIAL": "Baʼzan oʻrayman",
+      "WANT": "Oʻrashni xohlayman",
+      "NONE": "Oʻramayman"
     },
     "relation": {
       "FATHER": "Ota",

@@ -182,7 +182,7 @@
       "beliefsManhajHint": "Hangi âlimleri takip ediyorsunuz, dini nasıl anlıyorsunuz?",
       "screeningPrivacy": "Bu cevaplar şifrelenir ve yalnızca moderatöre görünür.",
       "prayer": "Beş vakit namaz kılıyor musunuz?",
-      "hijab": "Tesettür",
+      "hijab": "Başörtüsü",
       "alcohol": "Alkol kullanıyor musunuz?",
       "drugs": "Uyuşturucu kullanıyor musunuz?",
       "relationsOutsideNikah": "Şu an nikah dışı bir ilişkiniz var mı?",
@@ -678,10 +678,11 @@
       "NO": "Hayır"
     },
     "hijab": {
-      "NIQAB": "Peçe (nikab)",
-      "HIJAB": "Tesettür",
-      "PARTIAL": "Kısmen",
-      "NONE": "Yok"
+      "NIQAB": "Peçe (nikab) takıyorum",
+      "HIJAB": "Başörtüsü takıyorum",
+      "PARTIAL": "Bazen takıyorum",
+      "WANT": "Takmak istiyorum",
+      "NONE": "Takmıyorum"
     },
     "relation": {
       "FATHER": "Baba",

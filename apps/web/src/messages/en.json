@@ -678,10 +678,11 @@
       "NO": "No"
     },
     "hijab": {
-      "NIQAB": "Niqab",
-      "HIJAB": "Hijab",
-      "PARTIAL": "Partially",
-      "NONE": "No"
+      "NIQAB": "I wear niqab",
+      "HIJAB": "I wear hijab",
+      "PARTIAL": "I wear it sometimes",
+      "WANT": "I want to start wearing it",
+      "NONE": "I don't wear it"
     },
     "relation": {
       "FATHER": "Father",

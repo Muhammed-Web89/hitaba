@@ -110,7 +110,7 @@ export const profileSteps = {
     drugs: z.boolean(),
     relationsOutsideNikah: z.boolean(),
     contagiousDisease: z.boolean(),
-    hijab: z.enum(['NIQAB', 'HIJAB', 'PARTIAL', 'NONE']).optional(),
+    hijab: z.enum(['NIQAB', 'HIJAB', 'PARTIAL', 'WANT', 'NONE']).optional(),
   }),
   rules: z.object({
     acceptedRules: z.literal(true),
