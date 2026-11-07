@@ -1176,5 +1176,14 @@
     "showTranslation": "Çeviriyi göster",
     "chatOn": "Mesajları dilime çevir",
     "chatOff": "Çeviriyi kapat"
+  },
+  "guideLinks": {
+    "payment": "Nasıl ödeme yapılır?",
+    "paymentHint": "Adım adım, resimli anlatım",
+    "male": "Erkekler için rehber",
+    "female": "Kadınlar için rehber",
+    "profileHint": "Profil doldurma ve tanışma, resimli",
+    "onboarding": "Nasıl doldurulur? Rehbere bakın",
+    "all": "Rehber"
   }
 }

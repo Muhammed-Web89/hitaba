@@ -18,7 +18,7 @@ import { Chip, cx, Modal } from './ui';
  */
 
 /** Sekiz köşeli yıldız (girih) çerçeve — Hitaba logosundaki iç içe iki karenin halkası. */
-function GirihRing({ className }: { className?: string }) {
+export function GirihRing({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 100 100" className={cx('pointer-events-none absolute inset-0', className)} aria-hidden="true">
       <rect x="15" y="15" width="70" height="70" rx="10" fill="none" stroke="var(--brand-500)" strokeWidth="2.5" />
@@ -31,7 +31,7 @@ function GirihRing({ className }: { className?: string }) {
  * Hitaba'ya özel kadın amblemi: başörtülü siluet + altın sekiz köşeli yıldız. Kadının küçük avatarında
  * fotoğraf asla gösterilmez; fotoğraf yalnızca izinle, tam ekran ve tek seferlik açılır.
  */
-function FemaleEmblem() {
+export function FemaleEmblem() {
   return (
     <svg viewBox="0 0 100 100" className="h-full w-full" aria-hidden="true">
       {/* Aşağı doğru açılan başörtüsü; yüz hatsız oval. Çapraz kıvrım örtünün omza atıldığını gösterir. */}

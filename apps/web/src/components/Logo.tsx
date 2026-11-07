@@ -4,18 +4,25 @@ import { Link } from '@/i18n/navigation';
 export function Logo({ href = '/' }: { href?: string }) {
   return (
     <Link href={href} className="inline-flex items-center gap-2 text-ink" aria-label="Hitaba">
-      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
-        <rect x="6" y="6" width="20" height="20" rx="3" fill="none" stroke="var(--brand-500)" strokeWidth="2" />
-        <rect x="6" y="6" width="20" height="20" rx="3" fill="none" stroke="var(--accent-500)" strokeWidth="2" transform="rotate(45 16 16)" />
-        {/* Ortada H: köprü çapraz ince boşlukla ikiye ayrılır — iki gövde birbirine uzanır */}
-        <g fill="var(--brand-500)">
-          <rect x="11.68" y="10.77" width="2" height="10.45" rx="0.36" />
-          <rect x="18.32" y="10.77" width="2" height="10.45" rx="0.36" />
-          <path d="M14.6 14.68H18.35V16.8Z" />
-          <path d="M13.65 15.2V17.32H17.4Z" />
-        </g>
-      </svg>
+      <LogoMark />
       <span className="font-serif text-xl font-semibold tracking-tight">Hitaba</span>
     </Link>
+  );
+}
+
+/** Yalnızca işaret (yazısız); rehberdeki telefon taslakları gibi bağlantı olmaması gereken yerler için. */
+export function LogoMark({ size = 28 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="6" y="6" width="20" height="20" rx="3" fill="none" stroke="var(--brand-500)" strokeWidth="2" />
+      <rect x="6" y="6" width="20" height="20" rx="3" fill="none" stroke="var(--accent-500)" strokeWidth="2" transform="rotate(45 16 16)" />
+      {/* Ortada H: köprü çapraz ince boşlukla ikiye ayrılır — iki gövde birbirine uzanır */}
+      <g fill="var(--brand-500)">
+        <rect x="11.68" y="10.77" width="2" height="10.45" rx="0.36" />
+        <rect x="18.32" y="10.77" width="2" height="10.45" rx="0.36" />
+        <path d="M14.6 14.68H18.35V16.8Z" />
+        <path d="M13.65 15.2V17.32H17.4Z" />
+      </g>
+    </svg>
   );
 }

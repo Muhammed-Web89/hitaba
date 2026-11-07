@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { Me, OwnProfile } from '@hitaba/shared/client';
+import { GuideLink } from '@/components/guide/GuideLink';
 import { Icon } from '@/components/icons';
 import { Logo } from '@/components/Logo';
 import { draftFrom, payloadFor, StepFields, stepsFor, type Draft } from '@/components/ProfileSteps';
@@ -18,6 +19,7 @@ import { useErrorText } from '@/lib/format';
 export default function OnboardingPage() {
   const t = useTranslations('onboarding');
   const tc = useTranslations('common');
+  const tgl = useTranslations('guideLinks');
   const errorText = useErrorText();
   const router = useRouter();
   const { me, loading, signedIn, refreshMe } = useAuth();
@@ -106,6 +108,12 @@ export default function OnboardingPage() {
       <main className="mt-6">
         <h1 className="text-2xl font-semibold">{t(`steps.${step}.title`)}</h1>
         <p className="mt-1 text-ink-2">{t(`steps.${step}.why`)}</p>
+        {/* Rehber yalnızca ilk adımda: sonraki adımlarda sayfadan çıkmak kaydedilmemiş yazıyı kaybettirir. */}
+        {index === 0 && (
+          <div className="mt-3">
+            <GuideLink href={me.gender === 'FEMALE' ? '/guide/woman' : '/guide/man'} emoji={me.gender === 'FEMALE' ? '🧕' : '🧔'} title={tgl('onboarding')} />
+          </div>
+        )}
         <div className="mt-6 space-y-5">
           <StepFields step={step} draft={draft} set={set} gender={me.gender} />
         </div>

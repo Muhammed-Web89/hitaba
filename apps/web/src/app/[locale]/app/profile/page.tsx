@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { PROFILE_STEP_ORDER, type OwnProfile } from '@hitaba/shared/client';
+import { GuideLink } from '@/components/guide/GuideLink';
 import { Icon, type IconName } from '@/components/icons';
 import { PhotoManager } from '@/components/PhotoManager';
 import { Card, Chip, Notice, PageLoader, SectionTitle } from '@/components/ui';
@@ -13,6 +14,7 @@ import { useDisplayNames } from '@/lib/format';
 export default function MyProfilePage() {
   const t = useTranslations('myProfile');
   const to = useTranslations('onboarding.steps');
+  const tgl = useTranslations('guideLinks');
   const { me } = useAuth();
   const names = useDisplayNames();
   const { data: p } = useSWR<OwnProfile>('/profile');
@@ -56,6 +58,14 @@ export default function MyProfilePage() {
         </span>
         <Icon name="forward" size={18} className="flip-rtl text-ink-3" />
       </Link>
+
+      <div className="mt-3">
+        {me.gender === 'FEMALE' ? (
+          <GuideLink href="/guide/woman" emoji="🧕" title={tgl('female')} hint={tgl('profileHint')} />
+        ) : (
+          <GuideLink href="/guide/man" emoji="🧔" title={tgl('male')} hint={tgl('profileHint')} />
+        )}
+      </div>
 
       {p.moderationStatus === 'PENDING' && me.status === 'APPROVED' && (
         <div className="mt-4">

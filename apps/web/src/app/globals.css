@@ -284,6 +284,97 @@
   animation: pop-in 220ms ease-out;
 }
 
+/* ── Rehber (/guide) animasyonları ─────────────────────────────────── */
+/* Kaydırınca görünen bölümler: yukarı kayarak belirir. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+}
+.reveal[data-shown] {
+  opacity: 1;
+  transform: none;
+}
+/* "Buraya dokun" halkası ve parmak. */
+@keyframes guide-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+/* Büyük bağlantı düğmeleri: halka yerine dışa yayılan parıltı. */
+@keyframes guide-glow {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-500) 70%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 14px transparent;
+  }
+}
+@keyframes guide-tap {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-12deg);
+  }
+  45% {
+    transform: translate(-3px, -6px) rotate(-12deg);
+  }
+  55% {
+    transform: translate(0, 1px) rotate(-12deg) scale(0.92);
+  }
+}
+@keyframes guide-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes guide-rise {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70px) scale(1.15);
+    opacity: 0;
+  }
+}
+@keyframes guide-caret {
+  50% {
+    opacity: 0;
+  }
+}
+.guide-ping {
+  animation: guide-ping 1.6s ease-out infinite;
+}
+.guide-glow {
+  animation: guide-glow 1.8s ease-out infinite;
+}
+.guide-tap {
+  animation: guide-tap 1.6s ease-in-out infinite;
+}
+.guide-float {
+  animation: guide-float 3.2s ease-in-out infinite;
+}
+.guide-rise {
+  animation: guide-rise 2.4s ease-out infinite;
+}
+.guide-caret {
+  animation: guide-caret 1s steps(1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

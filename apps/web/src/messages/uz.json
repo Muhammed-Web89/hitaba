@@ -1176,5 +1176,14 @@
     "showTranslation": "Tarjimani koʻrsatish",
     "chatOn": "Xabarlarni tilimga tarjima qilish",
     "chatOff": "Tarjimani oʻchirish"
+  },
+  "guideLinks": {
+    "payment": "Qanday toʻlanadi?",
+    "paymentHint": "Qadamma-qadam, rasmlar bilan",
+    "male": "Erkaklar uchun qoʻllanma",
+    "female": "Ayollar uchun qoʻllanma",
+    "profileHint": "Profil toʻldirish va tanishuv, rasmlar bilan",
+    "onboarding": "Qanday toʻldiriladi? Qoʻllanmani koʻring",
+    "all": "Qoʻllanma"
   }
 }

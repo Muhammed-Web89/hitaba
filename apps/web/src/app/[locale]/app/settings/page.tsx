@@ -7,6 +7,7 @@ import type { OwnProfile } from '@hitaba/shared/client';
 import { LocaleMenu } from '@/components/LocaleMenu';
 import { TelegramDiagnostics } from '@/components/TelegramDiagnostics';
 import { ThemeSelector } from '@/components/ThemeToggle';
+import { GuideLink } from '@/components/guide/GuideLink';
 import { Button, Card, IconButton, Modal, PageLoader, SectionTitle, Toggle } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api';
@@ -14,6 +15,7 @@ import { useAuth } from '@/lib/auth';
 
 export default function SettingsPage() {
   const t = useTranslations('settings');
+  const tgl = useTranslations('guideLinks');
   const tc = useTranslations('common');
   const router = useRouter();
   const { me, signOut, refreshMe } = useAuth();
@@ -45,6 +47,10 @@ export default function SettingsPage() {
           <LocaleMenu full />
         </div>
       </Card>
+
+      <div className="mt-4">
+        <GuideLink href="/guide" emoji="📘" title={tgl('all')} hint={tgl('profileHint')} />
+      </div>
 
       <SectionTitle>{t('privacy')}</SectionTitle>
       <Card className="space-y-4 p-4">

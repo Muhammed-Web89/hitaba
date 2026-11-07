@@ -1176,5 +1176,14 @@
     "showTranslation": "Show translation",
     "chatOn": "Translate messages into my language",
     "chatOff": "Turn off translation"
+  },
+  "guideLinks": {
+    "payment": "How to pay?",
+    "paymentHint": "Step by step, with pictures",
+    "male": "Guide for men",
+    "female": "Guide for women",
+    "profileHint": "Filling in your profile and getting to know someone",
+    "onboarding": "How do I fill this in? See the guide",
+    "all": "Guide"
   }
 }

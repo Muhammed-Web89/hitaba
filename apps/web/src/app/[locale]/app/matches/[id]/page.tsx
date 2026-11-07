@@ -4,6 +4,7 @@ import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { RULES, type ChatSummary, type MatchSummary } from '@hitaba/shared/client';
+import { GuideLink } from '@/components/guide/GuideLink';
 import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
 import { OneTimePhotoViewer } from '@/components/OneTimePhotoViewer';
@@ -28,6 +29,7 @@ export default function MatchPage({ params }: { params: Promise<{ id: string }> 
 function Match({ id }: { id: string }) {
   const t = useTranslations('match');
   const tc = useTranslations('common');
+  const tgl = useTranslations('guideLinks');
   const tf = useTranslations('feed');
   const errorText = useErrorText();
   const status = useMatchStatus();
@@ -136,9 +138,12 @@ function Match({ id }: { id: string }) {
               <>
                 <p className="text-[15px]">{t('openChatText', { cost: RULES.chatOpenCost })}</p>
                 {me.connectBalance < RULES.chatOpenCost ? (
-                  <Link href="/app/wallet" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-control bg-accent px-4 font-semibold text-white">
-                    <Icon name="wallet" size={18} /> {t('buyConnects')}
-                  </Link>
+                  <div className="space-y-2 text-center">
+                    <Link href="/app/wallet" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-control bg-accent px-4 font-semibold text-white">
+                      <Icon name="wallet" size={18} /> {t('buyConnects')}
+                    </Link>
+                    <GuideLink compact href="/guide/payment" emoji="❓" title={tgl('payment')} />
+                  </div>
                 ) : (
                   <Button className="w-full" icon="chat" disabled={!m.canOpenChat} onClick={() => setConfirm('open')}>
                     {t('openChat', { cost: RULES.chatOpenCost })}

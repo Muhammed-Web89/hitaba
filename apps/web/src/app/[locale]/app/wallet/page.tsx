@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { ConnectPackageId, ConnectTxType } from '@hitaba/shared/client';
+import { GuideLink } from '@/components/guide/GuideLink';
 import { Icon } from '@/components/icons';
 import { Button, Card, cx, IconButton, Notice, PageLoader, SectionTitle } from '@/components/ui';
 import { useRouter } from '@/i18n/navigation';
@@ -23,6 +24,7 @@ interface WalletData {
 export default function WalletPage() {
   const t = useTranslations('wallet');
   const tc = useTranslations('common');
+  const tgl = useTranslations('guideLinks');
   const errorText = useErrorText();
   const time = useRelativeTime();
   const router = useRouter();
@@ -117,6 +119,9 @@ export default function WalletPage() {
       ) : (
         data.packages.some((p) => p.promo === 'intro') && <p className="mt-3 text-center text-xs text-ink-3">{t('introNote')}</p>
       )}
+      <div className="mt-4">
+        <GuideLink href="/guide/payment" emoji="❓" title={tgl('payment')} hint={tgl('paymentHint')} />
+      </div>
       {claimed && (
         <div className="mt-3">
           <Notice tone="success" icon="check">
