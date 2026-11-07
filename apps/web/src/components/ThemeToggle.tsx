@@ -1,12 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { Icon } from './icons';
 import { cx } from './ui';
 
 type Theme = 'light' | 'dark';
 const KEY = 'hitaba.theme';
+
+/** Kayıtlı tema; kayıt yoksa varsayılan koyu (layout'taki tema betiğiyle aynı kural). */
+function storedTheme(): Theme {
+  try {
+    return localStorage.getItem(KEY) === 'light' ? 'light' : 'dark';
+  } catch {
+    return 'dark';
+  }
+}
 
 /** Temayı uygular, kaydeder ve Telegram'ın üst çubuk rengini de günceller (layout'taki tema betiğiyle aynı anahtar). */
 function applyTheme(v: Theme) {
@@ -27,7 +36,7 @@ function applyTheme(v: Theme) {
 
 function useTheme(): [Theme, (v: Theme) => void] {
   const [theme, setTheme] = useState<Theme>('dark');
-  useEffect(() => setTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'), []);
+  useEffect(() => setTheme(storedTheme()), []);
   return [
     theme,
     (v) => {
@@ -35,6 +44,19 @@ function useTheme(): [Theme, (v: Theme) => void] {
       applyTheme(v);
     },
   ];
+}
+
+/**
+ * Dil değişince React <html>'i yeniden çizer ve tema betiğinin koyduğu data-theme silinir;
+ * sayfa açık renge düşer. Her dil değişiminde kayıtlı tema boyamadan önce geri konur.
+ */
+export function ThemeSync() {
+  const locale = useLocale();
+  useLayoutEffect(() => {
+    const v = storedTheme();
+    if (document.documentElement.dataset.theme !== v) document.documentElement.dataset.theme = v;
+  }, [locale]);
+  return null;
 }
 
 /** Üst çubuktaki tek dokunuşluk koyu/açık düğmesi. */

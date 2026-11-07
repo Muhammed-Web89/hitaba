@@ -7,6 +7,7 @@ import { persistentCache } from '@/lib/cache';
 import { AuthProvider } from '@/lib/auth';
 import { GlowTracker } from './GlowTracker';
 import { PrivacyShield, TelegramBridge } from './TelegramBridge';
+import { ThemeSync } from './ThemeToggle';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <TelegramBridge />
       <PrivacyShield />
       <GlowTracker />
+      <ThemeSync />
     </SWRConfig>
   );
 }
