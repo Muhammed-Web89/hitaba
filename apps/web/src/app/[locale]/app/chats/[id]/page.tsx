@@ -124,12 +124,15 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     const s = getSocket();
     if (!s) return;
     const join = () => s.emit('chat:join', id, () => {});
+    // Yeniden bağlanınca kopukken gelen mesajlar da çekilir.
+    const onConnect = () => {
+      join();
+      void load();
+    };
     const onNew = (m: ChatMessage) => m.chatId === id && setMessages((l) => (l ? upsert(l, m) : l));
     const onStatus = (c: { chatId: string }) => c.chatId === id && void mutateChat();
     const onHeld = (p: { chatId: string }) => p.chatId === id && void load();
-    const onConnectError = () => void api('/me').then(() => s.connect()).catch(() => {});
-    s.on('connect', join);
-    s.on('connect_error', onConnectError);
+    s.on('connect', onConnect);
     s.on('message:new', onNew);
     s.on('message:updated', onNew);
     s.on('chat:updated', onStatus);
@@ -137,8 +140,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     if (s.connected) join();
     return () => {
       s.emit('chat:leave', id);
-      s.off('connect', join);
-      s.off('connect_error', onConnectError);
+      s.off('connect', onConnect);
       s.off('message:new', onNew);
       s.off('message:updated', onNew);
       s.off('chat:updated', onStatus);
