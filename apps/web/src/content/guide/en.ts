@@ -78,7 +78,7 @@ const en: GuideContent = {
       eyebrow: 'Guide for women',
       title: 'You are safe here 🤍',
       lead: 'No one sees your photo without your permission. Everything is free.',
-      badges: ['🙈 Photo hidden', '👭 Female moderator', '🛡️ Your wali with you', '🎉 Completely free'],
+      badges: ['🙈 Photo hidden', '🧕 Female moderator', '🛡️ Your wali with you', '🎉 Completely free'],
     },
     shy: {
       kicker: 'Feeling a little shy?',
@@ -88,7 +88,7 @@ const en: GuideContent = {
         { emoji: '🎂', title: 'A range, not your age', tip: 'For example “24–26”.' },
         { emoji: '✍️', title: 'No surname', tip: 'Your name or a nickname is enough.' },
         { emoji: '🔒', title: 'Sensitive answers stay private', tip: 'Prayer, hijab, health: moderator only.' },
-        { emoji: '👭', title: 'Female moderator', tip: 'A woman reviews your profile.' },
+        { emoji: '🧕', title: 'Female moderator', tip: 'A woman reviews your profile.' },
       ],
     },
     example: '“I’m a nurse and I love children. Cooking and listening to the Qur’an are my favourite things. I dream of a warm, peaceful home.”',

@@ -135,7 +135,7 @@
         "why": "Siz uchun nima muhim: dindorlik, fe’l-atvor, oilaga munosabat, yashash joyi."
       },
       "beliefs": {
-        "title": "Aqida, mazhab va ustozlar",
+        "title": "Qadriyatlar, mazhab va ustozlar",
         "why": "Dinni qanday tushunishingiz va kimdan oʻrganishingizni yozing — diniy qarashlar mosligi oila uchun muhim."
       },
       "screening": {
@@ -178,8 +178,8 @@
       "aboutMeHint": "Masalan: “Oʻqituvchiman. Oilamda tarbiya olganman, Qurʼon oʻrganyapman. Tinch, mehribon oila qurmoqchiman.”",
       "aboutSpouse": "Qanday turmush oʻrtoq izlayapman",
       "aboutSpouseHint": "Masalan: “Namozxon, mehribon, ota-onasini hurmat qiladigan va oila qurishga jiddiy qaraydigan inson.”",
-      "beliefsManhaj": "Aqida, mazhab va ustozlar",
-      "beliefsManhajHint": "Masalan: “Ahli sunna val-jamoa aqidasidaman, hanafiy mazhabiga amal qilaman, dinni ishonchli ustozlardan oʻrganaman.”",
+      "beliefsManhaj": "Qadriyatlar, mazhab va ustozlar",
+      "beliefsManhajHint": "Masalan: “Ahli sunna val-jamoa yoʻlidaman, hanafiy mazhabiga amal qilaman, dinni ishonchli ustozlardan oʻrganaman.”",
       "screeningPrivacy": "Bu javoblar shifrlanadi va faqat moderatorga koʻrinadi.",
       "prayer": "Besh vaqt namozni oʻqiysizmi?",
       "hijab": "Roʻmol",
@@ -334,7 +334,7 @@
     "wali": "Valiy ulangan",
     "aboutMe": "Oʻzi haqida",
     "aboutSpouse": "Izlayotgan turmush oʻrtogʻi",
-    "beliefs": "Aqida va mazhab",
+    "beliefs": "Qadriyatlar va mazhab",
     "nationality": "Millat",
     "languages": "Tillar",
     "height": "Boʻy",

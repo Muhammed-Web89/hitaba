@@ -78,7 +78,7 @@ const tr: GuideContent = {
       eyebrow: 'Kadınlar için rehber',
       title: 'Burada güvendesiniz 🤍',
       lead: 'Siz izin vermeden kimse fotoğrafınızı göremez. Her şey ücretsiz.',
-      badges: ['🙈 Fotoğraf gizli', '👭 Kadın moderatör', '🛡️ Veliniz yanınızda', '🎉 Tamamen ücretsiz'],
+      badges: ['🙈 Fotoğraf gizli', '🧕 Kadın moderatör', '🛡️ Veliniz yanınızda', '🎉 Tamamen ücretsiz'],
     },
     shy: {
       kicker: 'Biraz utanıyor musunuz?',
@@ -88,7 +88,7 @@ const tr: GuideContent = {
         { emoji: '🎂', title: 'Yaş değil, aralık', tip: 'Örneğin “24–26”.' },
         { emoji: '✍️', title: 'Soyadı yok', tip: 'Adınız ya da takma ad yeter.' },
         { emoji: '🔒', title: 'Hassas sorular gizli', tip: 'Namaz, başörtüsü, sağlık: sadece moderatör.' },
-        { emoji: '👭', title: 'Kadın moderatör', tip: 'Profilinizi bir kadın inceler.' },
+        { emoji: '🧕', title: 'Kadın moderatör', tip: 'Profilinizi bir kadın inceler.' },
       ],
     },
     example: '“Hemşireyim, çocukları çok severim. Yemek yapmak ve Kur’an dinlemek en sevdiğim şeyler. Sıcak, huzurlu bir yuva hayal ediyorum.”',
