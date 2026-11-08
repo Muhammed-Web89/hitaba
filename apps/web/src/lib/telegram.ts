@@ -102,9 +102,13 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
     wa.setHeaderColor?.(bg);
     wa.setBackgroundColor?.(bg);
   }
-  wa.onEvent?.('viewportChanged', () => {
-    if (!wa.isExpanded) wa.expand();
+  // Menü ve sohbet düğmeleri uygulamayı yarım boy açar. Bazı istemciler açılış animasyonu sürerken gelen
+  // isteği yok sayar; bu yüzden ilk saniyelerde birkaç kez daha istenir (tam boydayken istek etkisizdir).
+  for (const ms of [150, 400, 800, 1500, 3000]) setTimeout(() => wa.expand(), ms);
+  wa.onEvent?.('viewportChanged', (e?: { isStateStable?: boolean }) => {
+    if (e?.isStateStable && !wa.isExpanded) wa.expand();
   });
+  wa.onEvent?.('activated', () => wa.expand());
 
   // Tam ekran istenmez: uygulama Telegram'ın normal tam boyunda açılır (expand). Tam ekran bilgisayardaki
   // Telegram'da ayrı pencere açıyordu. Bir bağlantı uygulamayı tam ekran açarsa güvenli alanlar yine işaretlenir.
