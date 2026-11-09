@@ -6,19 +6,23 @@ import { env } from '../config/env';
 export class TelegramService implements OnModuleInit {
   private readonly log = new Logger(TelegramService.name);
   private username = env.TELEGRAM_BOT_USERNAME || 'HitabaBot';
+  private webAppUrl = `${env.PUBLIC_WEB_URL}/tg`;
   private ready: Promise<void> = Promise.resolve();
 
   /** Yazı kutusunun solundaki menü düğmesi uygulamayı açsın (komut listesi yerine). */
   onModuleInit() {
     if (!this.enabled) return;
-    this.ready = this.call<{ username?: string }>('getMe', {}).then((me) => {
-      if (me?.username) this.username = me.username;
-    });
+    this.ready = Promise.all([
+      this.call<{ username?: string }>('getMe', {}).then((me) => {
+        if (me?.username) this.username = me.username;
+      }),
+      this.resolveWebAppUrl(),
+    ]).then(() => {});
     if (env.PUBLIC_WEB_URL.startsWith('https://')) void this.setMenuButton(undefined, 'Hitaba');
   }
 
   /**
-   * Uygulamayı açan düğmelerin hepsi ana Mini App bağlantısını açar, sohbet listesindeki "Aç" gibi tam ekran.
+   * Mesajlardaki düğmeler ana Mini App bağlantısını açar, sohbet listesindeki "Aç" gibi tam ekran.
    * Uygulama adresiyle (web_app) açılınca Telegram uygulamayı yarım boy açıyor ve sayfanın büyütme/tam ekran
    * isteklerini dinlemiyordu.
    */
@@ -31,21 +35,37 @@ export class TelegramService implements OnModuleInit {
   }
 
   /**
-   * `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). Bot API menü
-   * düğmesinde adres yerine t.me bağlantısını da kabul eder; reddedilirse uygulama adresine dönülür.
+   * Menü düğmesi uygulama adresini açar. (t.me bağlantısı Bot API'de kabul ediliyor ama iPhone'da menü
+   * düğmesinden açılınca uygulama hiç yüklenmiyor.) Adres başka alan adına yönlenirse (hitaba.me →
+   * www.hitaba.me) yönlendirmenin son adresi yazılır; Telegram yönlenen sayfanın isteklerini dinlemeyebiliyor.
    */
+  private async resolveWebAppUrl() {
+    if (!env.PUBLIC_WEB_URL.startsWith('https://')) return;
+    try {
+      let url = this.webAppUrl;
+      for (let i = 0; i < 3; i++) {
+        const res = await fetch(url, { method: 'HEAD', redirect: 'manual' });
+        const next = res.status >= 300 && res.status < 400 && res.headers.get('location');
+        if (!next) break;
+        url = new URL(next, url).toString();
+      }
+      if (url.startsWith('https://')) this.webAppUrl = url;
+    } catch (e) {
+      this.log.warn(`web app URL check failed: ${(e as Error).message}`);
+    }
+  }
+
+  /** `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). */
   async setMenuButton(chatId: string | undefined, label: string) {
     await this.ready;
-    const set = (url: string) =>
-      this.callRaw('setChatMenuButton', {
-        ...(chatId && { chat_id: chatId }),
-        menu_button: { type: 'web_app', text: label, web_app: { url } },
-      });
-    let res = await set(this.appLink);
+    const res = await this.callRaw('setChatMenuButton', {
+      ...(chatId && { chat_id: chatId }),
+      menu_button: { type: 'web_app', text: label, web_app: { url: this.webAppUrl } },
+    });
     // Kullanıcı botu hiç açmamış ya da engellemişse (ör. eski bottan taşınan hesap) yapılacak bir şey yok.
-    if (!res.ok && /user not found|chat not found|blocked/i.test(res.description ?? '')) return false;
-    if (!res.ok) res = await set(`${env.PUBLIC_WEB_URL}/tg`);
-    if (!res.ok) this.log.warn(`setChatMenuButton failed: ${res.description}`);
+    if (!res.ok && !/user not found|chat not found|blocked/i.test(res.description ?? '')) {
+      this.log.warn(`setChatMenuButton failed: ${res.description}`);
+    }
     return res.ok;
   }
 
