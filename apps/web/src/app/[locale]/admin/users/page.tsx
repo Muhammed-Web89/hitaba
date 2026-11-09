@@ -12,8 +12,6 @@ interface UserRow {
   role: string;
   gender: string;
   status: string;
-  isSandbox?: boolean;
-  sandboxTester?: boolean;
   /** Yalnızca yöneticiye: profili son onaylayan/reddeden personel. */
   decidedBy?: { status: 'APPROVED' | 'REJECTED'; at: string; role: 'MODERATOR' | 'ADMIN'; gender: 'MALE' | 'FEMALE'; name: string } | null;
   email: string | null;
@@ -52,8 +50,6 @@ export default function AdminUsersPage() {
               <Chip>{t(`gender.${u.gender as 'MALE' | 'FEMALE'}`)}</Chip>
               {u.role !== 'USER' && <Chip tone="accent">{t(`role.${u.role as 'MODERATOR' | 'ADMIN' | 'USER'}`)}</Chip>}
               <Chip tone={u.status === 'APPROVED' ? 'brand' : u.status === 'BANNED' ? 'warning' : 'info'}>{t(`userStatus.${u.status}` as never)}</Chip>
-              {u.isSandbox && <Chip tone="info">{t('sandbox')}</Chip>}
-              {u.sandboxTester && <Chip tone="accent">{t('sandboxTester.chip')}</Chip>}
               {u.decidedBy && (
                 <span
                   title={`${t(`decided.${u.decidedBy.status}`)} · ${new Date(u.decidedBy.at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })}`}

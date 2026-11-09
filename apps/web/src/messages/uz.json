@@ -881,7 +881,6 @@
     },
     "yes": "Ha",
     "no": "Yoʻq",
-    "sandbox": "Sinov hisobi",
     "decided": {
       "APPROVED": "Tasdiqlagan",
       "REJECTED": "Rad etgan"
@@ -891,13 +890,6 @@
       "MODERATOR_MALE": "Erkak moderator",
       "ADMIN_FEMALE": "Administrator",
       "ADMIN_MALE": "Administrator"
-    },
-    "sandboxTester": {
-      "title": "Sinov anketalari",
-      "hint": "Yoqilganda bu hisob haqiqiy anketalar bilan birga sinov anketalarini ham koʻradi, sinov hisoblari ham uni koʻradi. Boshqa foydalanuvchilar sinov hisoblarini koʻrmaydi.",
-      "on": "Sinov anketalarini koʻrsin",
-      "off": "Ruxsatni olib tashlash",
-      "chip": "Sinovni koʻradi"
     },
     "profile": {
       "link": "Profilim",

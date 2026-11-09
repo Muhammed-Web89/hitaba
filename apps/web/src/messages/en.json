@@ -881,7 +881,6 @@
     },
     "yes": "Yes",
     "no": "No",
-    "sandbox": "Sandbox account",
     "decided": {
       "APPROVED": "Approved by",
       "REJECTED": "Rejected by"
@@ -891,13 +890,6 @@
       "MODERATOR_MALE": "Male moderator",
       "ADMIN_FEMALE": "Admin",
       "ADMIN_MALE": "Admin"
-    },
-    "sandboxTester": {
-      "title": "Sandbox profiles",
-      "hint": "When on, this account sees sandbox profiles as well as real ones, and sandbox accounts see it. Other users never see sandbox accounts.",
-      "on": "Allow sandbox profiles",
-      "off": "Remove access",
-      "chip": "Sees sandbox"
     },
     "profile": {
       "link": "My profile",
