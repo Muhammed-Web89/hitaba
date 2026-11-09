@@ -5,10 +5,20 @@ import { env } from '../config/env';
 @Injectable()
 export class TelegramService implements OnModuleInit {
   private readonly log = new Logger(TelegramService.name);
+  private username = env.TELEGRAM_BOT_USERNAME || 'HitabaBot';
 
   /** Yazı kutusunun solundaki menü düğmesi uygulamayı açsın (komut listesi yerine). */
   onModuleInit() {
     if (this.enabled && env.PUBLIC_WEB_URL.startsWith('https://')) void this.setMenuButton(undefined, 'Hitaba');
+    void this.call<{ username?: string }>('getMe', {}).then((me) => me?.username && (this.username = me.username));
+  }
+
+  /**
+   * Mesajlardaki "Aç" düğmesi. web_app düğmesi uygulamayı yarım boy açar ve bazı istemciler büyütme/tam ekran
+   * isteğini dinlemez; ana Mini App bağlantısı ise sohbet listesindeki "Aç" gibi doğrudan tam ekran açar.
+   */
+  private appButton(text: string) {
+    return { text, url: `https://t.me/${this.username}?startapp&mode=fullscreen` };
   }
 
   /** `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). */
@@ -59,7 +69,7 @@ export class TelegramService implements OnModuleInit {
   }
 
   openAppKeyboard(label: string) {
-    return { inline_keyboard: [[{ text: label, web_app: { url: `${env.PUBLIC_WEB_URL}/tg` } }]] };
+    return { inline_keyboard: [[this.appButton(label)]] };
   }
 
   sendMessage(chatId: string, text: string, openAppLabel?: string) {
@@ -69,7 +79,7 @@ export class TelegramService implements OnModuleInit {
       // Bot mesajları iletilemez/kaydedilemez (Telegram yalnızca bot sohbetindeki mesajlar için destekler).
       protect_content: true,
       ...(openAppLabel && {
-        reply_markup: { inline_keyboard: [[{ text: openAppLabel, web_app: { url: `${env.PUBLIC_WEB_URL}/tg` } }]] },
+        reply_markup: this.openAppKeyboard(openAppLabel),
       }),
     });
   }
