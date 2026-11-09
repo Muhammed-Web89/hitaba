@@ -1,3 +1,4 @@
+import { API_URL } from './api';
 import { TELEGRAM_SDK_URL } from './telegram-sdk';
 
 /** Telegram Mini App WebApp API'sinin kullandığımız kısmı. */
@@ -144,6 +145,36 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
     if (e?.isStateStable && (!wa.isExpanded || (mobile && !wa.isFullscreen))) grow();
   });
   wa.onEvent?.('activated', grow);
+  diagnose(wa, platform);
+}
+
+/** GEÇİCİ teşhis: yarım boy açılış sorununu görmek için Telegram'ın görünüm durumu sunucuya yazılır. */
+function diagnose(wa: TelegramWebApp, platform: string | undefined) {
+  const events: string[] = [];
+  const t0 = Date.now();
+  const w = wa as TelegramWebApp & { viewportHeight?: number; viewportStableHeight?: number };
+  for (const e of ['viewportChanged', 'fullscreenChanged', 'fullscreenFailed', 'activated'] as const) {
+    wa.onEvent?.(e, ((arg?: unknown) => events.push(`${Date.now() - t0} ${e} ${JSON.stringify(arg ?? '')}`)) as () => void);
+  }
+  setTimeout(() => {
+    const body = {
+      platform: wa.platform,
+      stored: platform,
+      version: wa.version,
+      isExpanded: wa.isExpanded,
+      isFullscreen: wa.isFullscreen,
+      vh: w.viewportHeight,
+      vsh: w.viewportStableHeight,
+      inner: window.innerHeight,
+      screen: window.screen.height,
+      path: location.pathname,
+      hash: location.hash.includes('tgWebAppData'),
+      proxy: 'TelegramWebviewProxy' in window,
+      ua: navigator.userAgent.slice(0, 120),
+      events,
+    };
+    void fetch(`${API_URL}/telegram/diag`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).catch(() => {});
+  }, 4000);
 }
 
 export const telegramWebApp = (): TelegramWebApp | undefined =>

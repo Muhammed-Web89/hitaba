@@ -1,4 +1,6 @@
-import { Global, Injectable, Logger, Module, type OnModuleInit } from '@nestjs/common';
+import { Body, Controller, Global, HttpCode, Injectable, Logger, Module, Post, type OnModuleInit } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+import { Public } from '../auth/guards';
 import { env } from '../config/env';
 
 /** Telegram Bot API için ince istemci. Token yoksa tüm çağrılar sessizce atlanır. */
@@ -145,6 +147,24 @@ export class TelegramService implements OnModuleInit {
   }
 }
 
+/**
+ * GEÇİCİ teşhis: Mini App açıldıktan birkaç saniye sonra Telegram'ın bildirdiği görünüm durumunu
+ * (platform, sürüm, tam boy/tam ekran, yükseklik) sunucu günlüğüne yazar. Yarım boy açılış sorunu
+ * çözülünce kaldırılacak.
+ */
+@Controller('telegram')
+export class TelegramDiagController {
+  private readonly log = new Logger('TelegramDiag');
+
+  @Public()
+  @Post('diag')
+  @HttpCode(204)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  diag(@Body() body: unknown) {
+    this.log.log(JSON.stringify(body).slice(0, 1500));
+  }
+}
+
 @Global()
-@Module({ providers: [TelegramService], exports: [TelegramService] })
+@Module({ controllers: [TelegramDiagController], providers: [TelegramService], exports: [TelegramService] })
 export class TelegramModule {}
