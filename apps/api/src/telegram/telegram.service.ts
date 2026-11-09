@@ -37,11 +37,16 @@ export class TelegramService implements OnModuleInit {
   async setMenuButton(chatId: string | undefined, label: string) {
     await this.ready;
     const set = (url: string) =>
-      this.call('setChatMenuButton', {
+      this.callRaw('setChatMenuButton', {
         ...(chatId && { chat_id: chatId }),
         menu_button: { type: 'web_app', text: label, web_app: { url } },
       });
-    return (await set(this.appLink)) ?? set(`${env.PUBLIC_WEB_URL}/tg`);
+    let res = await set(this.appLink);
+    // Kullanıcı botu hiç açmamış ya da engellemişse (ör. eski bottan taşınan hesap) yapılacak bir şey yok.
+    if (!res.ok && /user not found|chat not found|blocked/i.test(res.description ?? '')) return false;
+    if (!res.ok) res = await set(`${env.PUBLIC_WEB_URL}/tg`);
+    if (!res.ok) this.log.warn(`setChatMenuButton failed: ${res.description}`);
+    return res.ok;
   }
 
   get enabled(): boolean {
