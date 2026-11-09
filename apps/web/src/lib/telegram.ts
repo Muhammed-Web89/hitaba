@@ -88,7 +88,7 @@ export function loadTelegramSdk(): Promise<TelegramWebApp | undefined> {
   return sdk;
 }
 
-/** Mini App ayarları: tam ekran, aşağı kaydırma uygulamayı küçültmez/kapatmaz, renkler temaya uyar. */
+/** Mini App ayarları: telefonda tam ekran, aşağı kaydırma uygulamayı küçültmez/kapatmaz, renkler temaya uyar. */
 export function setupTelegramWebApp(wa: TelegramWebApp) {
   wa.ready();
   wa.expand();
@@ -110,11 +110,29 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
   });
   wa.onEvent?.('activated', () => wa.expand());
 
-  // Tam ekran istenmez: uygulama Telegram'ın normal tam boyunda açılır (expand). Tam ekran bilgisayardaki
-  // Telegram'da ayrı pencere açıyordu. Bir bağlantı uygulamayı tam ekran açarsa güvenli alanlar yine işaretlenir.
+  // Telefonda tam ekran: Telegram başlığı kalkar, yalnızca köşedeki kapat/menü düğmeleri kalır; dikey kilit.
+  // Yalnızca iOS/Android: masaüstü Telegram tam ekranda ayrı pencere açar (masaüstü de TelegramWebviewProxy
+  // kullandığı için ona bakılmaz). Açılış parametreleri kaybolursa (yönlendirme, dil değişimi) platform,
+  // sayfanın ilk betiğinin sakladığı değerden okunur ve olay doğrudan gönderilir; SDK kendini 6.0 sanıp
+  // isteği atlamasın diye. 8.0 öncesi Telegram bu olayları tanımaz ve yok sayar.
   const root = document.documentElement;
   const markFullscreen = () => (wa.isFullscreen ? (root.dataset.tgFs = '1') : delete root.dataset.tgFs);
   wa.onEvent?.('fullscreenChanged', markFullscreen);
+  let platform = wa.platform;
+  try {
+    if (!platform || platform === 'unknown') platform = sessionStorage.getItem('hitaba.tgp') ?? undefined;
+  } catch {
+    /* yoksay */
+  }
+  if (['ios', 'android', 'android_x'].includes(platform ?? '') && !wa.isFullscreen) {
+    if (wa.isVersionAtLeast?.('8.0')) {
+      wa.requestFullscreen?.();
+      wa.lockOrientation?.();
+    } else {
+      window.Telegram?.WebView?.postEvent?.('web_app_request_fullscreen', false);
+      window.Telegram?.WebView?.postEvent?.('web_app_toggle_orientation_lock', false, { locked: true });
+    }
+  }
   markFullscreen();
 }
 

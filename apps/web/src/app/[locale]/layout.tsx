@@ -41,7 +41,7 @@ const themeScript = `var d=document.documentElement;d.dataset.theme='dark';try{i
  * oturum boyunca hatırlanır (sayfa geçişlerinde ve yönlendirmelerde hash kaybolabilir). Telefonda, React ve SDK
  * yüklenmeyi beklemeden uygulama tam boya açılır ve aşağı çekince küçülme/kapanma kapatılır (yarım açılış görünmesin). Telegram'daysa SDK, React yüklenmeyi beklemeden hemen indirilmeye başlar.
  */
-const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1||window.TelegramWebviewProxy)sessionStorage.setItem('hitaba.tg','1');if(window.TelegramWebviewProxy){var P=window.TelegramWebviewProxy;[0,300,900].forEach(function(t){setTimeout(function(){P.postEvent('web_app_expand')},t)});P.postEvent('web_app_setup_swipe_behavior','{"allow_vertical_swipe":false}')}if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
+const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1||window.TelegramWebviewProxy)sessionStorage.setItem('hitaba.tg','1');var m=/tgWebAppPlatform=([^&]+)/.exec(location.hash);if(m)sessionStorage.setItem('hitaba.tgp',m[1]);if(window.TelegramWebviewProxy){var P=window.TelegramWebviewProxy;[0,300,900].forEach(function(t){setTimeout(function(){P.postEvent('web_app_expand')},t)});P.postEvent('web_app_setup_swipe_behavior','{"allow_vertical_swipe":false}')}if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
