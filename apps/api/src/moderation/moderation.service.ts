@@ -19,6 +19,11 @@ export interface ModerationHandler {
 /** Fotoğraflar katı biçimde cinsiyete bölünür: kadın fotoğrafını yalnızca kadın moderatör görür. */
 const GENDER_STRICT: ModerationTarget[] = ['PHOTO'];
 
+/** Kadın moderatörler erkek profillerinin onayını da görmez; yalnızca kadın profillerine ve sohbet denetimine katılır. */
+function segregated(moderator: User): ModerationTarget[] {
+  return moderator.role === 'MODERATOR' && moderator.gender === 'FEMALE' ? [...GENDER_STRICT, 'PROFILE'] : GENDER_STRICT;
+}
+
 @Injectable()
 export class ModerationService {
   private readonly handlers = new Map<ModerationTarget, ModerationHandler>();
@@ -100,16 +105,17 @@ export class ModerationService {
   }
 
   private visibilityFilter(moderator: User) {
+    const strict = segregated(moderator);
     return [
-      { targetType: { notIn: GENDER_STRICT } },
-      { targetType: { in: GENDER_STRICT }, subjectGender: moderator.gender },
+      { targetType: { notIn: strict } },
+      { targetType: { in: strict }, subjectGender: moderator.gender },
     ];
   }
 
   private async getVisible(moderator: User, id: string) {
     const item = await this.prisma.moderationItem.findUnique({ where: { id } });
     if (!item) throw new NotFoundException();
-    if (GENDER_STRICT.includes(item.targetType) && item.subjectGender !== moderator.gender) {
+    if (segregated(moderator).includes(item.targetType) && item.subjectGender !== moderator.gender) {
       throw new ForbiddenException({ error: 'gender_segregated' });
     }
     return item;
