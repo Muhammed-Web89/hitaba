@@ -6,59 +6,42 @@ import { env } from '../config/env';
 export class TelegramService implements OnModuleInit {
   private readonly log = new Logger(TelegramService.name);
   private username = env.TELEGRAM_BOT_USERNAME || 'HitabaBot';
-  private webAppUrl = `${env.PUBLIC_WEB_URL}/tg`;
   private ready: Promise<void> = Promise.resolve();
 
   /** Yazı kutusunun solundaki menü düğmesi uygulamayı açsın (komut listesi yerine). */
   onModuleInit() {
     if (!this.enabled) return;
-    void this.call<{ username?: string }>('getMe', {}).then((me) => me?.username && (this.username = me.username));
-    if (!env.PUBLIC_WEB_URL.startsWith('https://')) return;
-    this.ready = this.resolveWebAppUrl();
-    void this.ready.then(() => this.setMenuButton(undefined, 'Hitaba'));
+    this.ready = this.call<{ username?: string }>('getMe', {}).then((me) => {
+      if (me?.username) this.username = me.username;
+    });
+    if (env.PUBLIC_WEB_URL.startsWith('https://')) void this.setMenuButton(undefined, 'Hitaba');
   }
 
   /**
-   * Menü düğmesinin adresi başka alan adına yönlenirse (hitaba.me → www.hitaba.me) Telegram, yönlenilen
-   * sayfadan gelen büyütme/tam ekran isteklerini dinlemez ve uygulama yarım boy kalır. Bu yüzden düğmeye
-   * yönlendirmenin son adresi yazılır.
+   * Uygulamayı açan düğmelerin hepsi ana Mini App bağlantısını açar, sohbet listesindeki "Aç" gibi tam ekran.
+   * Uygulama adresiyle (web_app) açılınca Telegram uygulamayı yarım boy açıyor ve sayfanın büyütme/tam ekran
+   * isteklerini dinlemiyordu.
    */
-  /** Menü düğmesi, ayardaki adresten farklı (yönlendirmenin sonundaki) bir adrese mi ayarlandı? */
-  async menuUrlChanged() {
-    await this.ready;
-    return this.enabled && this.webAppUrl !== `${env.PUBLIC_WEB_URL}/tg`;
+  private get appLink() {
+    return `https://t.me/${this.username}?startapp&mode=fullscreen`;
   }
 
-  private async resolveWebAppUrl() {
-    try {
-      let url = this.webAppUrl;
-      for (let i = 0; i < 3; i++) {
-        const res = await fetch(url, { method: 'HEAD', redirect: 'manual' });
-        const next = res.status >= 300 && res.status < 400 && res.headers.get('location');
-        if (!next) break;
-        url = new URL(next, url).toString();
-      }
-      if (url.startsWith('https://')) this.webAppUrl = url;
-    } catch (e) {
-      this.log.warn(`web app URL check failed: ${(e as Error).message}`);
-    }
-  }
-
-  /**
-   * Mesajlardaki "Aç" düğmesi. web_app düğmesi uygulamayı yarım boy açar ve bazı istemciler büyütme/tam ekran
-   * isteğini dinlemez; ana Mini App bağlantısı ise sohbet listesindeki "Aç" gibi doğrudan tam ekran açar.
-   */
   private appButton(text: string) {
-    return { text, url: `https://t.me/${this.username}?startapp&mode=fullscreen` };
+    return { text, url: this.appLink };
   }
 
-  /** `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). */
+  /**
+   * `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). Bot API menü
+   * düğmesinde adres yerine t.me bağlantısını da kabul eder; reddedilirse uygulama adresine dönülür.
+   */
   async setMenuButton(chatId: string | undefined, label: string) {
     await this.ready;
-    return this.call('setChatMenuButton', {
-      ...(chatId && { chat_id: chatId }),
-      menu_button: { type: 'web_app', text: label, web_app: { url: this.webAppUrl } },
-    });
+    const set = (url: string) =>
+      this.call('setChatMenuButton', {
+        ...(chatId && { chat_id: chatId }),
+        menu_button: { type: 'web_app', text: label, web_app: { url } },
+      });
+    return (await set(this.appLink)) ?? set(`${env.PUBLIC_WEB_URL}/tg`);
   }
 
   get enabled(): boolean {

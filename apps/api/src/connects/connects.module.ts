@@ -162,17 +162,17 @@ export class TelegramWebhookController implements OnApplicationBootstrap {
   ) {}
 
   /**
-   * /start ile her sohbete ayrı menü düğmesi yazılır ve Telegram onu saklar. Düğme adresi değişince
-   * (bkz. TelegramService.resolveWebAppUrl) kayıtlı kullanıcıların düğmeleri yeni adresle yeniden yazılır.
+   * /start ile her sohbete ayrı menü düğmesi yazılır ve Telegram onu saklar. Düğmenin açtığı adres değişirse
+   * eski sohbetlerde eski hali kalmasın diye kayıtlı kullanıcıların düğmeleri her açılışta yeniden yazılır.
    */
   onApplicationBootstrap() {
-    void this.telegram.menuUrlChanged().then(async (changed) => {
-      if (!changed) return;
+    if (!this.telegram.enabled) return;
+    void (async () => {
       for (const { telegramId, locale } of await this.connects.telegramChats()) {
         await this.telegram.setMenuButton(telegramId!, (START_TEXT[locale] ?? START_TEXT.en)[2]);
         await new Promise((r) => setTimeout(r, 50));
       }
-    });
+    })().catch(() => {});
   }
 
   /**
