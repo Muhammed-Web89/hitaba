@@ -95,6 +95,11 @@ export class ConnectsService {
     };
   }
 
+  /** Telegram'a bağlı kullanıcıların sohbetleri ve dilleri (menü düğmesini yenilemek için). */
+  telegramChats() {
+    return this.prisma.user.findMany({ where: { telegramId: { not: null } }, select: { telegramId: true, locale: true } });
+  }
+
   async userIdByTelegram(telegramId: string): Promise<string | null> {
     const u = await this.prisma.user.findUnique({ where: { telegramId }, select: { id: true } });
     return u?.id ?? null;

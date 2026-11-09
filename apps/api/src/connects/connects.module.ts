@@ -8,6 +8,7 @@ import {
   HttpCode,
   Module,
   NotFoundException,
+  type OnApplicationBootstrap,
   Post,
 } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
@@ -153,12 +154,26 @@ export const BOT_URL = 'https://t.me/HitabaBot';
 
 @Controller('telegram')
 @SkipThrottle()
-export class TelegramWebhookController {
+export class TelegramWebhookController implements OnApplicationBootstrap {
   constructor(
     private readonly connects: ConnectsService,
     private readonly telegram: TelegramService,
     private readonly notifications: NotificationsService,
   ) {}
+
+  /**
+   * /start ile her sohbete ayrı menü düğmesi yazılır ve Telegram onu saklar. Düğme adresi değişince
+   * (bkz. TelegramService.resolveWebAppUrl) kayıtlı kullanıcıların düğmeleri yeni adresle yeniden yazılır.
+   */
+  onApplicationBootstrap() {
+    void this.telegram.menuUrlChanged().then(async (changed) => {
+      if (!changed) return;
+      for (const { telegramId, locale } of await this.connects.telegramChats()) {
+        await this.telegram.setMenuButton(telegramId!, (START_TEXT[locale] ?? START_TEXT.en)[2]);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    });
+  }
 
   /**
    * Eski botun webhook'u. Yanıtın kendisi Bot API çağrısıdır (Telegram bunu yürütür),

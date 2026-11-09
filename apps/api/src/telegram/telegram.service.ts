@@ -6,11 +6,42 @@ import { env } from '../config/env';
 export class TelegramService implements OnModuleInit {
   private readonly log = new Logger(TelegramService.name);
   private username = env.TELEGRAM_BOT_USERNAME || 'HitabaBot';
+  private webAppUrl = `${env.PUBLIC_WEB_URL}/tg`;
+  private ready: Promise<void> = Promise.resolve();
 
   /** Yazı kutusunun solundaki menü düğmesi uygulamayı açsın (komut listesi yerine). */
   onModuleInit() {
-    if (this.enabled && env.PUBLIC_WEB_URL.startsWith('https://')) void this.setMenuButton(undefined, 'Hitaba');
+    if (!this.enabled) return;
     void this.call<{ username?: string }>('getMe', {}).then((me) => me?.username && (this.username = me.username));
+    if (!env.PUBLIC_WEB_URL.startsWith('https://')) return;
+    this.ready = this.resolveWebAppUrl();
+    void this.ready.then(() => this.setMenuButton(undefined, 'Hitaba'));
+  }
+
+  /**
+   * Menü düğmesinin adresi başka alan adına yönlenirse (hitaba.me → www.hitaba.me) Telegram, yönlenilen
+   * sayfadan gelen büyütme/tam ekran isteklerini dinlemez ve uygulama yarım boy kalır. Bu yüzden düğmeye
+   * yönlendirmenin son adresi yazılır.
+   */
+  /** Menü düğmesi, ayardaki adresten farklı (yönlendirmenin sonundaki) bir adrese mi ayarlandı? */
+  async menuUrlChanged() {
+    await this.ready;
+    return this.enabled && this.webAppUrl !== `${env.PUBLIC_WEB_URL}/tg`;
+  }
+
+  private async resolveWebAppUrl() {
+    try {
+      let url = this.webAppUrl;
+      for (let i = 0; i < 3; i++) {
+        const res = await fetch(url, { method: 'HEAD', redirect: 'manual' });
+        const next = res.status >= 300 && res.status < 400 && res.headers.get('location');
+        if (!next) break;
+        url = new URL(next, url).toString();
+      }
+      if (url.startsWith('https://')) this.webAppUrl = url;
+    } catch (e) {
+      this.log.warn(`web app URL check failed: ${(e as Error).message}`);
+    }
   }
 
   /**
@@ -22,10 +53,11 @@ export class TelegramService implements OnModuleInit {
   }
 
   /** `chatId` verilmezse herkes için varsayılan; verilirse o sohbet için (kullanıcının dilinde). */
-  setMenuButton(chatId: string | undefined, label: string) {
+  async setMenuButton(chatId: string | undefined, label: string) {
+    await this.ready;
     return this.call('setChatMenuButton', {
       ...(chatId && { chat_id: chatId }),
-      menu_button: { type: 'web_app', text: label, web_app: { url: `${env.PUBLIC_WEB_URL}/tg` } },
+      menu_button: { type: 'web_app', text: label, web_app: { url: this.webAppUrl } },
     });
   }
 
