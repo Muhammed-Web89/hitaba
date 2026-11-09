@@ -102,14 +102,6 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
     wa.setHeaderColor?.(bg);
     wa.setBackgroundColor?.(bg);
   }
-  // Menü ve sohbet düğmeleri uygulamayı yarım boy açar. Bazı istemciler açılış animasyonu sürerken gelen
-  // isteği yok sayar; bu yüzden ilk saniyelerde birkaç kez daha istenir (tam boydayken istek etkisizdir).
-  for (const ms of [150, 400, 800, 1500, 3000]) setTimeout(() => wa.expand(), ms);
-  wa.onEvent?.('viewportChanged', (e?: { isStateStable?: boolean }) => {
-    if (e?.isStateStable && !wa.isExpanded) wa.expand();
-  });
-  wa.onEvent?.('activated', () => wa.expand());
-
   // Telefonda tam ekran: Telegram başlığı kalkar, yalnızca köşedeki kapat/menü düğmeleri kalır; dikey kilit.
   // Yalnızca iOS/Android: masaüstü Telegram tam ekranda ayrı pencere açar (masaüstü de TelegramWebviewProxy
   // kullandığı için ona bakılmaz). Açılış parametreleri kaybolursa (yönlendirme, dil değişimi) platform,
@@ -118,22 +110,40 @@ export function setupTelegramWebApp(wa: TelegramWebApp) {
   const root = document.documentElement;
   const markFullscreen = () => (wa.isFullscreen ? (root.dataset.tgFs = '1') : delete root.dataset.tgFs);
   wa.onEvent?.('fullscreenChanged', markFullscreen);
+  markFullscreen();
   let platform = wa.platform;
   try {
     if (!platform || platform === 'unknown') platform = sessionStorage.getItem('hitaba.tgp') ?? undefined;
   } catch {
     /* yoksay */
   }
-  if (['ios', 'android', 'android_x'].includes(platform ?? '') && !wa.isFullscreen) {
+  const mobile = ['ios', 'android', 'android_x'].includes(platform ?? '');
+  let locked = false;
+  const fullscreen = () => {
+    if (!mobile || wa.isFullscreen) return;
     if (wa.isVersionAtLeast?.('8.0')) {
       wa.requestFullscreen?.();
-      wa.lockOrientation?.();
+      if (!locked) wa.lockOrientation?.();
     } else {
       window.Telegram?.WebView?.postEvent?.('web_app_request_fullscreen', false);
-      window.Telegram?.WebView?.postEvent?.('web_app_toggle_orientation_lock', false, { locked: true });
+      if (!locked) window.Telegram?.WebView?.postEvent?.('web_app_toggle_orientation_lock', false, { locked: true });
     }
-  }
-  markFullscreen();
+    locked = true;
+  };
+
+  // Sohbetin içindeki menü ve mesaj düğmeleri uygulamayı yarım boy açar (sohbet listesindeki "Aç" ise tam
+  // boy). İstemci, açılış animasyonu sürerken gelen büyütme ve tam ekran isteklerini yok sayabilir; bu yüzden
+  // tam ekran ilk anda değil biraz sonra istenir ve ikisi de ilk saniyelerde birkaç kez tekrarlanır
+  // (tam boy/tam ekrandayken istek etkisizdir). Yarım boyda kalırsa her görünüm değişiminde yeniden denenir.
+  const grow = () => {
+    wa.expand();
+    fullscreen();
+  };
+  for (const ms of [150, 400, 800, 1500, 3000]) setTimeout(grow, ms);
+  wa.onEvent?.('viewportChanged', (e?: { isStateStable?: boolean }) => {
+    if (e?.isStateStable && (!wa.isExpanded || (mobile && !wa.isFullscreen))) grow();
+  });
+  wa.onEvent?.('activated', grow);
 }
 
 export const telegramWebApp = (): TelegramWebApp | undefined =>

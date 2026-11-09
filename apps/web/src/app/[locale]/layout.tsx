@@ -37,11 +37,11 @@ export const viewport: Viewport = {
 const themeScript = `var d=document.documentElement;d.dataset.theme='dark';try{if(localStorage.getItem('hitaba.theme')==='light')d.dataset.theme='light'}catch(e){}`;
 
 /**
- * Telegram Mini App içinde mi? Açılış adresindeki tgWebAppData ya da Telegram'ın mobil köprüsü (TelegramWebviewProxy)
- * oturum boyunca hatırlanır (sayfa geçişlerinde ve yönlendirmelerde hash kaybolabilir). Telefonda, React ve SDK
+ * Telegram Mini App içinde mi? Açılış adresindeki tgWebAppData ya da Telegram'ın Android/masaüstü köprüsü (TelegramWebviewProxy)
+ * oturum boyunca hatırlanır (sayfa geçişlerinde ve yönlendirmelerde hash kaybolabilir). Telefonda (iOS'ta webkit köprüsüyle), React ve SDK
  * yüklenmeyi beklemeden uygulama tam boya açılır ve aşağı çekince küçülme/kapanma kapatılır (yarım açılış görünmesin). Telegram'daysa SDK, React yüklenmeyi beklemeden hemen indirilmeye başlar.
  */
-const tgScript = `try{if(location.hash.indexOf('tgWebAppData')>-1||window.TelegramWebviewProxy)sessionStorage.setItem('hitaba.tg','1');var m=/tgWebAppPlatform=([^&]+)/.exec(location.hash);if(m)sessionStorage.setItem('hitaba.tgp',m[1]);if(window.TelegramWebviewProxy){var P=window.TelegramWebviewProxy;[0,300,900].forEach(function(t){setTimeout(function(){P.postEvent('web_app_expand')},t)});P.postEvent('web_app_setup_swipe_behavior','{"allow_vertical_swipe":false}')}if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
+const tgScript = `try{var W=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.performAction,X=window.TelegramWebviewProxy;if(location.hash.indexOf('tgWebAppData')>-1||X)sessionStorage.setItem('hitaba.tg','1');var m=/tgWebAppPlatform=([^&]+)/.exec(location.hash);if(m)sessionStorage.setItem('hitaba.tgp',m[1]);var P=X?function(e,v){X.postEvent(e,JSON.stringify(v))}:W&&sessionStorage.getItem('hitaba.tg')?function(e,v){W.postMessage(JSON.stringify({eventType:e,eventData:v}))}:0;if(P){[0,300,900].forEach(function(t){setTimeout(function(){P('web_app_expand')},t)});P('web_app_setup_swipe_behavior',{allow_vertical_swipe:false})}if(sessionStorage.getItem('hitaba.tg')){d.dataset.tg='1';var s=document.createElement('script');s.src='${TELEGRAM_SDK_URL}';s.id='tg-sdk';document.head.appendChild(s)}}catch(e){}`;
 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
