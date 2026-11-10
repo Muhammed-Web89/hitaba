@@ -20,6 +20,41 @@ interface UserRow {
   _count: { reportsAgainst: number };
 }
 
+interface Stats {
+  users: Array<{ status: string; gender: 'MALE' | 'FEMALE'; count: number }>;
+}
+
+/** Üye sayıları (silinmiş hesaplar hariç); kayıt aşamasında kalanlar profilini henüz incelemeye göndermemiştir. */
+function MemberStats() {
+  const t = useTranslations('admin.stats');
+  const { data } = useSWR<Stats>('/admin/stats', { refreshInterval: 60_000 });
+  if (!data) return null;
+  const rows = data.users.filter((r) => r.status !== 'DELETED');
+  const sum = (f: (r: Stats['users'][number]) => boolean) => rows.filter(f).reduce((n, r) => n + r.count, 0);
+  const incomplete = (g: 'MALE' | 'FEMALE') => sum((r) => r.status === 'ONBOARDING' && r.gender === g);
+  const tiles = [
+    { label: t('total'), value: sum(() => true) },
+    { label: t('men'), value: sum((r) => r.gender === 'MALE') },
+    { label: t('women'), value: sum((r) => r.gender === 'FEMALE') },
+    {
+      label: t('incomplete'),
+      value: sum((r) => r.status === 'ONBOARDING'),
+      note: t('incompleteSplit', { men: incomplete('MALE'), women: incomplete('FEMALE') }),
+    },
+  ];
+  return (
+    <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {tiles.map((x) => (
+        <Card key={x.label} className="p-4">
+          <p className="text-sm text-ink-3">{x.label}</p>
+          <p className="mt-1 font-serif text-3xl font-semibold tabular-nums">{x.value}</p>
+          {x.note && <p className="mt-1 text-xs text-ink-3">{x.note}</p>}
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminUsersPage() {
   const t = useTranslations('admin');
   const locale = useLocale();
@@ -28,6 +63,7 @@ export default function AdminUsersPage() {
   const { data } = useSWR<UserRow[]>(`/admin/users${query ? `?q=${encodeURIComponent(query)}` : ''}`);
   return (
     <div>
+      <MemberStats />
       <form
         className="mb-4"
         onSubmit={(e) => {

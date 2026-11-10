@@ -939,6 +939,13 @@
       "loginOk": "Başarılı",
       "loginBadPassword": "Hatalı şifre",
       "loginBadCode": "Hatalı kod"
+    },
+    "stats": {
+      "total": "Toplam üye",
+      "men": "Erkek",
+      "women": "Kadın",
+      "incomplete": "Kaydı tamamlamayan",
+      "incompleteSplit": "Erkek {men} · kadın {women}"
     }
   },
   "consent": {

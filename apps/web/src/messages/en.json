@@ -939,6 +939,13 @@
       "loginOk": "Successful",
       "loginBadPassword": "Wrong password",
       "loginBadCode": "Wrong code"
+    },
+    "stats": {
+      "total": "Total members",
+      "men": "Men",
+      "women": "Women",
+      "incomplete": "Registration not finished",
+      "incompleteSplit": "Men {men} · women {women}"
     }
   },
   "consent": {

@@ -939,6 +939,13 @@
       "loginOk": "Muvaffaqiyatli",
       "loginBadPassword": "Notoʻgʻri parol",
       "loginBadCode": "Notoʻgʻri kod"
+    },
+    "stats": {
+      "total": "Jami aʼzolar",
+      "men": "Erkaklar",
+      "women": "Ayollar",
+      "incomplete": "Roʻyxatdan oʻtishni tugatmaganlar",
+      "incompleteSplit": "Erkaklar {men} · ayollar {women}"
     }
   },
   "consent": {

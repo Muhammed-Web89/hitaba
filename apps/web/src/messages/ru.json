@@ -939,6 +939,13 @@
       "loginOk": "Успешно",
       "loginBadPassword": "Неверный пароль",
       "loginBadCode": "Неверный код"
+    },
+    "stats": {
+      "total": "Всего участников",
+      "men": "Мужчины",
+      "women": "Женщины",
+      "incomplete": "Не завершили регистрацию",
+      "incompleteSplit": "Мужчины {men} · женщины {women}"
     }
   },
   "consent": {

@@ -939,6 +939,13 @@
       "loginOk": "ناجح",
       "loginBadPassword": "كلمة مرور خاطئة",
       "loginBadCode": "رمز خاطئ"
+    },
+    "stats": {
+      "total": "إجمالي الأعضاء",
+      "men": "الرجال",
+      "women": "النساء",
+      "incomplete": "لم يُكملوا التسجيل",
+      "incompleteSplit": "رجال {men} · نساء {women}"
     }
   },
   "consent": {
