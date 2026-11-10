@@ -15,13 +15,22 @@ import {
 } from '@hitaba/shared';
 import { decrypt, encrypt } from '../common/crypto';
 import { ageRange, startOfLocalDay } from '../common/time';
-import { AiScreenService } from '../moderation/ai-screen.service';
+import { AiScreenService, looksLikeText } from '../moderation/ai-screen.service';
 import { ModerationService } from '../moderation/moderation.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PhotosService } from '../photos/photos.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 export type UserWithProfile = User & { profile: Profile | null };
+
+/** "Hakkımda" ve "Aradığım eş" anlamsız doldurulduğunda kullanıcının dilinde otomatik ret gerekçesi. */
+const THIN_PROFILE_REASON: Record<string, string> = {
+  uz: '«Oʻzim haqimda» va «Qanday turmush oʻrtoq izlayapman» boʻlimlari boʻsh yoki maʼnosiz belgilar bilan toʻldirilgan. Iltimos, oʻzingiz (xarakteringiz, ishingiz, oilangiz, rejalaringiz) va qanday turmush oʻrtoq izlayotganingiz haqida toʻliq gaplar bilan batafsilroq yozing, soʻng profilni qayta yuboring.',
+  ru: 'Разделы «О себе» и «Кого я ищу» пустые или заполнены бессмысленными символами. Пожалуйста, подробнее расскажите о себе (характер, работа, семья, планы) и о том, каким видите будущего супруга, — полными предложениями. Затем отправьте анкету ещё раз.',
+  tr: '“Hakkımda” ve “Aradığım eş” bölümleri boş ya da anlamsız karakterlerle doldurulmuş. Lütfen kendinizi (karakteriniz, işiniz, aileniz, planlarınız) ve nasıl bir eş aradığınızı tam cümlelerle daha ayrıntılı yazın, ardından profilinizi yeniden gönderin.',
+  en: 'The “About me” and “The spouse I seek” sections are empty or filled with meaningless characters. Please describe yourself (character, work, family, plans) and the spouse you are looking for in full sentences, then submit your profile again.',
+  ar: 'قسما «نبذة عني» و«الشريك الذي أبحث عنه» فارغان أو مملوءان برموز لا معنى لها. من فضلك اكتب عن نفسك (طباعك، عملك، عائلتك، خططك) وعن الشريك الذي تبحث عنه بجمل كاملة وبتفصيل أكثر، ثم أرسل ملفك مرة أخرى.',
+};
 
 const EDITABLE_STATUSES = new Set(['ONBOARDING', 'PENDING_MODERATION', 'REJECTED', 'APPROVED']);
 
@@ -183,7 +192,8 @@ export class ProfilesService implements OnModuleInit {
     });
     await this.enqueueProfile(updated, profile);
     void this.notifications.refreshTelegramStatus(user.id);
-    return this.me(updated);
+    // Anlamsız metin hemen reddedilmiş olabilir: güncel durum döner.
+    return this.me(await this.prisma.user.findUniqueOrThrow({ where: { id: user.id } }));
   }
 
   async updateSettings(
@@ -323,12 +333,15 @@ export class ProfilesService implements OnModuleInit {
 
   private async enqueueProfile(user: User, profile: Profile) {
     const text = [profile.displayName, profile.aboutMe, profile.aboutSpouse, profile.beliefsManhaj].filter(Boolean).join('\n');
-    await this.moderation.enqueue({
+    const item = await this.moderation.enqueue({
       targetType: 'PROFILE',
       targetId: user.id,
       subjectUserId: user.id,
       subjectGender: user.gender,
       aiFlags: this.ai.screenText(text),
     });
+    if (!looksLikeText(profile.aboutMe) || !looksLikeText(profile.aboutSpouse)) {
+      await this.moderation.autoReject(item, THIN_PROFILE_REASON[user.locale] ?? THIN_PROFILE_REASON.en);
+    }
   }
 }

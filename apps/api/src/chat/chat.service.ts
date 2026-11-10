@@ -71,7 +71,7 @@ export class ChatService implements OnModuleInit {
       apply: async ({ item, moderator, approved }) => {
         const mc = await this.prisma.mahramContact.update({
           where: { id: item.targetId },
-          data: { status: approved ? 'APPROVED' : 'REJECTED', decidedById: moderator.id, decidedAt: new Date() },
+          data: { status: approved ? 'APPROVED' : 'REJECTED', decidedById: moderator?.id ?? null, decidedAt: new Date() },
         });
         if (!approved) {
           await this.notifications.notify(mc.submittedById, 'mahram_rejected', { chatId: mc.chatId });

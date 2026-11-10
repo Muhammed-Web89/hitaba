@@ -27,3 +27,30 @@ export class AiScreenService {
     return flags;
   }
 }
+
+const VOWELS = /[aeiouyäöüıâîûàáèéìíòóùúаеёиоуыэюяўіәөұүі]/iu;
+const LATIN_OR_CYRILLIC = /[a-zа-яёўқғҳәөұүі]/iu;
+
+/** Bir kelime gerçek bir sözcüğe benziyor mu: tek harf, aynı harfin tekrarı veya sesli harfsiz klavye karalaması değil. */
+function wordLike(word: string): boolean {
+  const w = word.toLowerCase();
+  if ([...w].length < 2) return false;
+  if (/(.)\1\1/u.test(w)) return false;
+  if (new Set(w).size === 1) return false;
+  // Arap yazısında kısa sesliler yazılmaz; yalnızca uzunluk ve tekrar kontrolü yeterli.
+  if (!LATIN_OR_CYRILLIC.test(w)) return true;
+  if (!VOWELS.test(w)) return w.length <= 3; // "va", "в", "ve" gibi kısa bağlaçlar; uzun sessiz dizisi karalamadır
+  return !/[^aeiouyäöüıâîûàáèéìíòóùúаеёиоуыэюяўіәөұүіʼ'‘’ьъ]{5,}/iu.test(w);
+}
+
+/**
+ * Serbest metin söze benziyor mu. En az 2 farklı gerçek kelime olmalı ve kelimelerin çoğu gerçek
+ * kelime olmalı. "a b c d e…", "aaaa", "....", "asdfgh jkl", "lorem ipsum" gibi doldurmalar elenir;
+ * kısa ama gerçek yazılar ("Quvnoq hazilkashman") geçer, onlara moderatör karar verir.
+ */
+export function looksLikeText(text: string | null | undefined): boolean {
+  const words = (text ?? '').match(/[\p{L}ʼ'‘’]+/gu)?.map((w) => w.replace(/^['‘’ʼ]+|['‘’ʼ]+$/g, '')).filter(Boolean) ?? [];
+  const real = words.filter(wordLike).map((w) => w.toLowerCase());
+  const distinct = new Set(real.filter((w) => w !== 'lorem' && w !== 'ipsum'));
+  return distinct.size >= 2 && real.length >= words.length * 0.6;
+}

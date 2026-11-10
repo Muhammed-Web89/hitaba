@@ -5,7 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 
 export interface DecisionContext {
   item: ModerationItem;
-  moderator: User;
+  /** Otomatik kararda null. */
+  moderator: User | null;
   approved: boolean;
   reason: string | null;
 }
@@ -95,6 +96,17 @@ export class ModerationService {
     });
     await this.handlers.get(item.targetType)?.apply({ item: updated, moderator, approved, reason });
     await this.audit(moderator.id, approved ? 'moderation.approve' : 'moderation.reject', item, { reason });
+    return updated;
+  }
+
+  /** Kural tabanlı kesin ret (ör. anlamsız profil metni): moderatör beklemeden karar verilir. */
+  async autoReject(item: ModerationItem, reason: string) {
+    const updated = await this.prisma.moderationItem.update({
+      where: { id: item.id },
+      data: { status: 'REJECTED', decidedAt: new Date(), reason },
+    });
+    await this.handlers.get(item.targetType)?.apply({ item: updated, moderator: null, approved: false, reason });
+    await this.audit(null, 'moderation.auto_reject', item, { reason });
     return updated;
   }
 
