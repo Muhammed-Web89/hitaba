@@ -10,7 +10,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import type { ChatStatus, ReportStatus, User } from '@prisma/client';
+import type { ChatStatus, Gender, ReportStatus, User } from '@prisma/client';
 import { z } from 'zod';
 import { reportSchema, type ReportInput } from '@hitaba/shared';
 import { CurrentUser, Roles } from '../auth/guards';
@@ -66,19 +66,20 @@ export class AdminService {
     return r;
   }
 
-  async users(viewer: User, q?: string) {
+  async users(viewer: User, q?: string, gender?: Gender) {
     const term = q?.trim();
     const users = await this.prisma.user.findMany({
-      where: term
-        ? {
-            OR: [
-              { id: term },
-              { email: { contains: term, mode: 'insensitive' } },
-              { telegramUsername: { contains: term.replace(/^@/, ''), mode: 'insensitive' } },
-              { profile: { displayName: { contains: term, mode: 'insensitive' } } },
-            ],
-          }
-        : {},
+      where: {
+        ...(gender && { gender }),
+        ...(term && {
+          OR: [
+            { id: term },
+            { email: { contains: term, mode: 'insensitive' } },
+            { telegramUsername: { contains: term.replace(/^@/, ''), mode: 'insensitive' } },
+            { profile: { displayName: { contains: term, mode: 'insensitive' } } },
+          ],
+        }),
+      },
       select: {
         id: true,
         role: true,
@@ -257,8 +258,8 @@ export class AdminController {
   }
 
   @Get('users')
-  users(@CurrentUser() viewer: User, @Query('q') q?: string) {
-    return this.admin.users(viewer, q);
+  users(@CurrentUser() viewer: User, @Query('q') q?: string, @Query('gender') gender?: string) {
+    return this.admin.users(viewer, q, gender === 'MALE' || gender === 'FEMALE' ? gender : undefined);
   }
 
   @Get('users/:id')

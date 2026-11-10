@@ -60,7 +60,9 @@ export default function AdminUsersPage() {
   const locale = useLocale();
   const [q, setQ] = useState('');
   const [query, setQuery] = useState('');
-  const { data } = useSWR<UserRow[]>(`/admin/users${query ? `?q=${encodeURIComponent(query)}` : ''}`);
+  const [gender, setGender] = useState<'ALL' | 'MALE' | 'FEMALE'>('ALL');
+  const params = new URLSearchParams({ ...(query && { q: query }), ...(gender !== 'ALL' && { gender }) }).toString();
+  const { data } = useSWR<UserRow[]>(`/admin/users${params ? `?${params}` : ''}`);
   return (
     <div>
       <MemberStats />
@@ -73,6 +75,13 @@ export default function AdminUsersPage() {
       >
         <Input placeholder={t('searchPlaceholder')} value={q} onChange={(e) => setQ(e.target.value)} />
       </form>
+      <div className="mb-4 flex flex-wrap gap-2">
+        {(['ALL', 'MALE', 'FEMALE'] as const).map((g) => (
+          <Chip key={g} active={gender === g} onClick={() => setGender(g)}>
+            {g === 'ALL' ? t('target.ALL') : t(`gender.${g}`)}
+          </Chip>
+        ))}
+      </div>
       {!data ? (
         <PageLoader />
       ) : !data.length ? (
