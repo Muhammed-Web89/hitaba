@@ -90,6 +90,7 @@ enum ModerationTarget {
   PHOTO
   MESSAGE
   MAHRAM_CONTACT
+  CHAT_EXTENSION
 }
 
 enum ReportCategory {
@@ -142,38 +143,38 @@ enum Relation {
 // ── Kimlik ───────────────────────────────────────────────────────────────
 
 model User {
-  id               String     @id @default(cuid())
-  role             Role       @default(USER)
-  gender           Gender
-  status           UserStatus @default(ONBOARDING)
+  id                String     @id @default(cuid())
+  role              Role       @default(USER)
+  gender            Gender
+  status            UserStatus @default(ONBOARDING)
   /// Deneme hesabı: yalnızca diğer deneme hesaplarıyla karşılaşır, gerçek kullanıcılar onu hiç görmez.
-  isSandbox        Boolean    @default(false)
+  isSandbox         Boolean    @default(false)
   /// Yöneticinin verdiği yetki: hem gerçek hem deneme profillerini görür, deneme hesapları da onu görür.
-  sandboxTester    Boolean    @default(false)
-  email            String?    @unique
+  sandboxTester     Boolean    @default(false)
+  email             String?    @unique
   /// E-posta ile kayıtta doğrulanana kadar null. Telegram hesaplarında kullanılmaz.
-  emailVerifiedAt  DateTime?
-  passwordHash     String?
-  telegramId       String?    @unique
-  telegramUsername String?
+  emailVerifiedAt   DateTime?
+  passwordHash      String?
+  telegramId        String?    @unique
+  telegramUsername  String?
   /// Bot sohbetinde sabitlenmiş durum mesajının kimliği (sayaçlar bu mesajda güncellenir).
   tgStatusMessageId Int?
-  locale           String     @default("en")
-  timezone         String     @default("Asia/Tashkent")
-  connectBalance   Int        @default(0)
+  locale            String     @default("en")
+  timezone          String     @default("Asia/Tashkent")
+  connectBalance    Int        @default(0)
   /// Artırıldığında tüm refresh token'lar geçersiz olur ("tüm oturumları kapat").
-  tokenVersion     Int        @default(0)
+  tokenVersion      Int        @default(0)
   /// Reddedilen profil için kullanıcıya gösterilen gerekçe (boşsa gizli).
-  statusReason     String?
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
+  statusReason      String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
   /// Dahili — kullanıcılara gösterilmez.
-  lastLoginAt      DateTime?
+  lastLoginAt       DateTime?
   /// Personel iki adımlı doğrulama (TOTP). Gizli anahtar şifreli; totpEnabledAt null ise kurulum bitmemiştir.
-  totpSecretEnc    String?
-  totpEnabledAt    DateTime?
+  totpSecretEnc     String?
+  totpEnabledAt     DateTime?
   /// Son kabul edilen kodun 30 sn'lik adımı: aynı kod ikinci kez kullanılamaz.
-  totpLastStep     Int?
+  totpLastStep      Int?
   passwordChangedAt DateTime?
 
   profile         Profile?
@@ -358,27 +359,31 @@ model Match {
 // ── Sohbet ──────────────────────────────────────────────────────────────
 
 model Chat {
-  id                String           @id @default(cuid())
-  matchId           String           @unique
-  match             Match            @relation(fields: [matchId], references: [id], onDelete: Cascade)
-  openedById        String
-  status            ChatStatus       @default(ACTIVE)
+  id                   String           @id @default(cuid())
+  matchId              String           @unique
+  match                Match            @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  openedById           String
+  status               ChatStatus       @default(ACTIVE)
   /// Kullanıcıya gösterilen duraklatma gerekçesi (ör. iletişim bilgisi denemesi).
-  pausedReason      String?
-  closeReason       ChatCloseReason?
-  closedById        String?
-  closedAt          DateTime?
-  connectSpent      Int              @default(0)
-  reopenCount       Int              @default(0)
-  maleModeratorId   String?
-  femaleModeratorId String?
-  mahramSharedAt    DateTime?
-  lastActivityAt    DateTime         @default(now())
-  reminder1SentAt   DateTime?
-  reminder2SentAt   DateTime?
-  createdAt         DateTime         @default(now())
-  messages          Message[]
-  mahramContacts    MahramContact[]
+  pausedReason         String?
+  closeReason          ChatCloseReason?
+  closedById           String?
+  closedAt             DateTime?
+  connectSpent         Int              @default(0)
+  reopenCount          Int              @default(0)
+  maleModeratorId      String?
+  femaleModeratorId    String?
+  mahramSharedAt       DateTime?
+  /// Mesaj kotası bu andan sonra yazılanlarla sayılır (null: sohbet başından). Moderatör "devam et"i onaylayınca yenilenir.
+  quotaResetAt         DateTime?
+  /// Bekleyen "devam et" isteği.
+  extensionRequestedAt DateTime?
+  lastActivityAt       DateTime         @default(now())
+  reminder1SentAt      DateTime?
+  reminder2SentAt      DateTime?
+  createdAt            DateTime         @default(now())
+  messages             Message[]
+  mahramContacts       MahramContact[]
 
   @@index([status, lastActivityAt])
 }

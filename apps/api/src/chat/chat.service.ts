@@ -32,9 +32,17 @@ export type SystemMessageKey =
   | 'chat_closed_user'
   | 'chat_closed_silence'
   | 'chat_closed_moderator'
-  | 'chat_closed_ban';
+  | 'chat_closed_ban'
+  | 'chat_extension_requested'
+  | 'chat_extended'
+  | 'chat_extension_denied';
 
 const OPEN_STATUSES = ['ACTIVE', 'PAUSED'] as const;
+
+/** Mesajdaki sayılar (Arapça-Hint rakamları dahil). */
+function numbersIn(text: string): string[] {
+  return text.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0)).match(/\d+/g) ?? [];
+}
 
 @Injectable()
 export class ChatService implements OnModuleInit {
@@ -50,7 +58,7 @@ export class ChatService implements OnModuleInit {
 
   onModuleInit() {
     this.moderation.register('MESSAGE', {
-      apply: async ({ item, approved }) => {
+      apply: async ({ item, moderator, approved, reason }) => {
         const msg = await this.prisma.message.update({
           where: { id: item.targetId },
           data: { state: approved ? 'DELIVERED' : 'REJECTED' },
@@ -58,6 +66,11 @@ export class ChatService implements OnModuleInit {
         });
         if (approved) this.realtime.toChat(msg.chatId, 'message:new', toChatMessage(msg));
         else this.realtime.toChat(msg.chatId, 'message:updated', toChatMessage(msg));
+        // Moderatörün reddettiği tutulmuş mesaj kural ihlalidir (iletişim bilgisi, kural dışı sayı, küfür): gönderen engellenir.
+        if (!approved && moderator && msg.senderId) {
+          await this.banForViolation(msg.senderId, moderator.id, reason ?? 'Sohbet kuralı ihlali (moderatör onayladı)');
+          return;
+        }
         await this.resumeIfClear(msg.chatId);
       },
       context: async (item, moderator) => {
@@ -65,6 +78,28 @@ export class ChatService implements OnModuleInit {
         if (!msg) return null;
         return { message: msg, transcript: await this.transcriptForModerator(moderator, msg.chatId) };
       },
+    });
+
+    this.moderation.register('CHAT_EXTENSION', {
+      apply: async ({ item, approved }) => {
+        const chat = await this.prisma.chat.findUnique({ where: { id: item.targetId }, include: { match: true } });
+        if (!chat) return;
+        const sys = await this.prisma.$transaction(async (tx) => {
+          await tx.chat.update({
+            where: { id: chat.id },
+            data: { extensionRequestedAt: null, ...(approved && { quotaResetAt: new Date(), lastActivityAt: new Date(), reminder1SentAt: null, reminder2SentAt: null }) },
+          });
+          return this.systemMessage(tx, chat.id, approved ? 'chat_extended' : 'chat_extension_denied');
+        });
+        this.emitNew(sys);
+        this.emitStatus(chat.id);
+        await Promise.all(
+          [chat.match.maleId, chat.match.femaleId].map((u) =>
+            this.notifications.notify(u, approved ? 'chat_extended' : 'chat_extension_denied', { chatId: chat.id }),
+          ),
+        );
+      },
+      context: async (item, moderator) => ({ transcript: await this.transcriptForModerator(moderator, item.targetId) }),
     });
 
     this.moderation.register('MAHRAM_CONTACT', {
@@ -221,6 +256,65 @@ export class ChatService implements OnModuleInit {
     return this.summary(viewer, chatId);
   }
 
+  /** Kotası dolan taraf "Devam et" der; istek moderatöre gider, onaylanınca iki tarafa yeni kota açılır. */
+  async requestExtension(viewer: User, chatId: string): Promise<ChatSummary> {
+    const chat = await this.participantChat(viewer, chatId);
+    if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
+    if (chat.extensionRequestedAt) return this.summary(viewer, chatId);
+    if ((await this.quotaUsed(chat, viewer.id)) < RULES.chatMessageQuota) throw new BadRequestException({ error: 'quota_not_reached' });
+    const sys = await this.prisma.$transaction(async (tx) => {
+      await tx.chat.update({ where: { id: chat.id }, data: { extensionRequestedAt: new Date() } });
+      return this.systemMessage(tx, chat.id, 'chat_extension_requested');
+    });
+    this.emitNew(sys);
+    await this.moderation.enqueue({ targetType: 'CHAT_EXTENSION', targetId: chat.id, subjectUserId: viewer.id, subjectGender: viewer.gender });
+    this.emitStatus(chat.id);
+    return this.summary(viewer, chatId);
+  }
+
+  /** Bu turda kişinin yazdığı mesaj sayısı (silinen ve tutulanlar dahil). */
+  private quotaUsed(chat: Chat, userId: string) {
+    return this.prisma.message.count({
+      where: { chatId: chat.id, senderId: userId, kind: 'TEXT', createdAt: { gte: chat.quotaResetAt ?? chat.createdAt } },
+    });
+  }
+
+  /**
+   * Sohbet kuralları: iletişim bilgisi, niyet ve yasaklı kelimeler; ayrıca sayılar en fazla
+   * {chatNumberMaxDigits} haneli olabilir ve sohbet boyunca en fazla {chatNumberMaxTimes} mesajda geçebilir.
+   * Kural dışı mesaj karşı tarafa iletilmez, moderatöre tutulur.
+   */
+  private async screen(viewer: User, chatId: string, text: string, excludeId?: string) {
+    const scan = scanForContactInfo(text);
+    const signals: string[] = [...scan.signals];
+    const numbers = numbersIn(text);
+    if (numbers.length && !signals.includes('PHONE')) {
+      const tooLong = numbers.some((n) => n.length > RULES.chatNumberMaxDigits);
+      const earlier = tooLong
+        ? 0
+        : (
+            await this.prisma.message.findMany({
+              where: { chatId, senderId: viewer.id, kind: 'TEXT', ...(excludeId && { id: { not: excludeId } }) },
+              select: { text: true, history: true },
+            })
+          ).filter((m) => [m.text, ...m.history].some((t) => numbersIn(t).length)).length;
+      if (tooLong || earlier >= RULES.chatNumberMaxTimes) signals.push('DIGITS');
+    }
+    return { blocked: signals.length > 0, signals };
+  }
+
+  /** Kural ihlali (moderatör tutulmuş mesajı reddetti): hesap engellenir, bakiyesi sıfırlanır, açık sohbetleri kapanır. */
+  private async banForViolation(userId: string, moderatorId: string, reason: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user || user.role !== 'USER' || user.status === 'BANNED' || user.status === 'DELETED') return;
+    await this.prisma.$transaction(async (tx) => {
+      await tx.user.update({ where: { id: userId }, data: { status: 'BANNED', statusReason: reason, tokenVersion: { increment: 1 } } });
+      await this.connects.zeroOut(tx, userId);
+    });
+    await this.closeAllForBan(userId, moderatorId);
+    await this.moderation.audit(moderatorId, 'user.ban', { targetType: 'USER', targetId: userId }, { reason, auto: 'chat_violation' });
+  }
+
   // ── Mesajlar ──────────────────────────────────────────────────────────
 
   async send(viewer: User, chatId: string, text: string, clientId?: string): Promise<ChatMessage> {
@@ -235,8 +329,9 @@ export class ChatService implements OnModuleInit {
     if (existing) return toChatMessage(existing);
     if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
     if (chat.status === 'PAUSED') throw new BadRequestException({ error: 'chat_paused' });
+    if ((await this.quotaUsed(chat, viewer.id)) >= RULES.chatMessageQuota) throw new BadRequestException({ error: 'quota_reached' });
 
-    const scan = scanForContactInfo(trimmed);
+    const scan = await this.screen(viewer, chatId, trimmed);
     const created = this.prisma.message.create({
       data: {
         chatId,
@@ -276,7 +371,7 @@ export class ChatService implements OnModuleInit {
     if (chat.status !== 'ACTIVE') throw new BadRequestException({ error: 'chat_not_active' });
 
     const trimmed = text.trim().slice(0, RULES.messageMaxChars);
-    const scan = scanForContactInfo(trimmed);
+    const scan = await this.screen(viewer, chat.id, trimmed, msg.id);
     const updated = await this.prisma.message.update({
       where: { id: msg.id },
       data: {
@@ -396,7 +491,7 @@ export class ChatService implements OnModuleInit {
   async summary(viewer: User, chatId: string): Promise<ChatSummary> {
     const chat = await this.participantChat(viewer, chatId);
     const otherId = viewer.id === chat.match.maleId ? chat.match.femaleId : chat.match.maleId;
-    const [other, last, witnesses, wali] = await Promise.all([
+    const [other, last, witnesses, wali, used] = await Promise.all([
       this.prisma.profile.findUnique({ where: { userId: otherId } }),
       this.prisma.message.findFirst({
         where: { chatId, state: 'DELIVERED', deletedAt: null },
@@ -404,6 +499,7 @@ export class ChatService implements OnModuleInit {
       }),
       this.prisma.witness.findMany({ where: { femaleId: chat.match.femaleId }, select: { relation: true } }),
       this.prisma.waliLink.findUnique({ where: { femaleId: chat.match.femaleId }, select: { id: true } }),
+      this.quotaUsed(chat, viewer.id),
     ]);
     const watchers: ChatParticipantInfo = {
       maleModerator: Boolean(chat.maleModeratorId),
@@ -430,6 +526,7 @@ export class ChatService implements OnModuleInit {
       lastActivityAt: chat.lastActivityAt.toISOString(),
       canReopen: this.canReopen(viewer, chat),
       watchers,
+      quota: { limit: RULES.chatMessageQuota, used, extensionPending: Boolean(chat.extensionRequestedAt) },
     };
   }
 

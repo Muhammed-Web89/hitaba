@@ -498,7 +498,10 @@
       "chat_closed_user": "Sohbet sonlandırıldı.",
       "chat_closed_silence": "Sessizlik nedeniyle sohbet kapandı.",
       "chat_closed_moderator": "Sohbet bir moderatör tarafından kapatıldı.",
-      "chat_closed_ban": "Sohbet kapandı."
+      "chat_closed_ban": "Sohbet kapandı.",
+      "chat_extension_requested": "Sohbeti devam ettirme isteği moderatöre gönderildi.",
+      "chat_extended": "Moderatör izin verdi: her iki taraf 10 mesaj daha yazabilir.",
+      "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi."
     },
     "mahram": {
       "title": "Mahrem yakının iletişim bilgisini paylaş",
@@ -522,13 +525,19 @@
         "ai": "Yapay zekâ asistanı 7/24 her mesajı kontrol eder; şüpheli mesajlar moderatöre gider.",
         "noOutside": "Telegram, WhatsApp gibi dış uygulamalara geçmek ve telefon, kullanıcı adı, bağlantı paylaşmak yasaktır. Mahreminizin iletişim bilgisini yalnızca ⋮ → “Mahrem yakının iletişim bilgisini paylaş” ile gönderebilirsiniz.",
         "noBypass": "Kontrolü atlatma girişimleri (rakamları harfle yazmak, harfleri ayırmak, resimle göndermek) doğrudan paylaşım gibi değerlendirilir. Karşı tarafa bunu önermek ya da öğretmek de aynı ihlaldir ve iki hesabın da engellenmesine yol açabilir.",
+        "limits": "Her taraf moderatör onayına kadar {quota} mesaj yazabilir; sonra “Devam et” isteği moderatöre gider. Sayılar en fazla {digits} haneli olabilir ve sohbet boyunca en fazla {times} mesajda yazılabilir.",
+        "ban": "Telefon numarası, iletişim isteği, hakaret, ahlaka aykırı sözler ve kural dışı sayılar karşı tarafa iletilmez; moderatöre gider. Moderatör ihlali onaylarsa hesap kalıcı olarak engellenir.",
         "adab": "Konuşma amaca yönelik olmalı; boş sohbetten kaçının. Edep içindeki nazik sözler serbesttir, flört ve mahrem konular değildir.",
         "noToxic": "Hakaret, baskı ve saygısız üslup kesinlikle yasaktır ve hesabın engellenmesine yol açar.",
         "silence": "{remind1} saat yazılmazsa hatırlatma gelir; {close} saat sessiz kalan sohbet kendiliğinden kapanır.",
         "refund": "Sohbeti moderatör kapatırsa ya da karşı taraf engellenir veya hesabını silerse, sohbet için harcanan jeton iade edilir.",
         "actions": "Kendi mesajınızı {editMin} dakika içinde düzenleyebilir ya da silebilirsiniz; moderatörler ilk hâlini de görür. Mesajlara tepki ekleyebilirsiniz."
       }
-    }
+    },
+    "quotaLeft": "{left} mesaj hakkınız kaldı",
+    "quotaReached": "Bu aşamadaki {limit} mesaj hakkınız doldu. Sohbeti sürdürmek için moderatöre devam isteği gönderin.",
+    "continue": "Devam et",
+    "continuePending": "İstek moderatörde. Onaylanınca sohbet devam eder."
   },
   "report": {
     "title": "Şikâyet",
@@ -639,7 +648,9 @@
       "photo_view_granted": "Fotoğraf izni verildi — bir kez açabilirsiniz.",
       "photo_view_declined": "Fotoğrafı tekrar görme isteğiniz reddedildi.",
       "photo_view_first_request": "Bir erkek fotoğrafınızı görmek istiyor. Önce onun fotoğrafına bakıp karar verin.",
-      "likes_released": "Sohbetiniz sürerken {count} kişi sizi beğendi. Görmek için dokunun."
+      "likes_released": "Sohbetiniz sürerken {count} kişi sizi beğendi. Görmek için dokunun.",
+      "chat_extended": "Moderatör sohbetin devam etmesine izin verdi.",
+      "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi."
     }
   },
   "portal": {
@@ -771,7 +782,9 @@
     "otp_already_enabled": "İki adımlı doğrulama zaten açık.",
     "otp_setup_required": "Önce kurulumu başlatın.",
     "otp_not_enabled": "İki adımlı doğrulama kapalı.",
-    "session_current": "Kullandığınız cihazın oturumu buradan kapatılamaz."
+    "session_current": "Kullandığınız cihazın oturumu buradan kapatılamaz.",
+    "quota_reached": "Bu aşamadaki mesaj hakkınız doldu. Devam etmek için moderatör onayı gerekiyor.",
+    "quota_not_reached": "Mesaj hakkınız henüz dolmadı."
   },
   "admin": {
     "title": "Moderasyon",
@@ -796,7 +809,8 @@
       "MESSAGE": "Mesaj",
       "MAHRAM_CONTACT": "Mahrem yakın bilgisi",
       "PROFILE": "Profil",
-      "PHOTO": "Fotoğraf"
+      "PHOTO": "Fotoğraf",
+      "CHAT_EXTENSION": "Sohbet devam isteği"
     },
     "segregationNote": "Fotoğraflar yalnızca aynı cinsiyetten moderatörlere gösterilir.",
     "queueEmpty": "İnceleme sırası boş",
@@ -877,7 +891,10 @@
       "contact_messenger": "Mesajlaşma uygulaması anılmış",
       "spam_repeated_chars": "Tekrarlanan karakterler",
       "quality_too_short": "Çok kısa",
-      "quality_low_resolution": "Düşük çözünürlük"
+      "quality_low_resolution": "Düşük çözünürlük",
+      "contact_intent": "İletişim isteği",
+      "contact_profanity": "Uygunsuz kelime",
+      "contact_digits": "Kural dışı sayı"
     },
     "yes": "Evet",
     "no": "Hayır",
@@ -946,7 +963,10 @@
       "women": "Kadın",
       "incomplete": "Kaydı tamamlamayan",
       "incompleteSplit": "Erkek {men} · kadın {women}"
-    }
+    },
+    "rejectAndBan": "Reddet ve engelle",
+    "banOnRejectNote": "Reddedilirse gönderenin hesabı kalıcı olarak engellenir ve tüm sohbetleri kapanır.",
+    "extensionNote": "Onaylanırsa iki taraf da {quota} mesaj daha yazabilir."
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

@@ -162,7 +162,10 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   }
   if (!chat || !messages || !me) return <PageLoader />;
 
-  const active = chat.status === 'ACTIVE';
+  // Eski sunucu sürümü kota göndermiyorsa sınır yok sayılır (site sunucudan önce güncellenebilir).
+  const quota = chat.quota ?? { limit: Infinity, used: 0, extensionPending: false };
+  const quotaLeft = Math.max(0, quota.limit - quota.used);
+  const active = chat.status === 'ACTIVE' && quotaLeft > 0;
   const watcherCount =
     Number(chat.watchers.maleModerator) + Number(chat.watchers.femaleModerator) + 1 + chat.watchers.witnesses.length + Number(chat.watchers.hasWali);
 
@@ -222,7 +225,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     sent.then(
       (m) => {
         setMessages((l) => (l ? upsert(l, m) : l));
-        if (m.state === 'HELD') void mutateChat();
+        void mutateChat();
       },
       (e) => {
         setMessages((l) => (l ? upsert(l, { ...local, pending: false, failed: true }) : l));
@@ -324,6 +327,30 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
               {t('pausedBanner')}
             </Notice>
           </div>
+        )}
+        {chat.status !== 'CLOSED' && quotaLeft === 0 && (
+          <div className="mb-2 space-y-2">
+            <Notice tone="warning" icon="clock">
+              {quota.extensionPending ? t('continuePending') : t('quotaReached', { limit: quota.limit })}
+            </Notice>
+            {!quota.extensionPending && (
+              <Button
+                className="w-full"
+                variant="secondary"
+                onClick={() =>
+                  api<ChatSummary>(`/chats/${id}/continue`, { method: 'POST' }).then(
+                    (c) => mutateChat(c, { revalidate: false }),
+                    (e) => setError(errorText(e)),
+                  )
+                }
+              >
+                {t('continue')}
+              </Button>
+            )}
+          </div>
+        )}
+        {chat.status === 'ACTIVE' && quotaLeft > 0 && quotaLeft <= 3 && (
+          <p className="mb-1 px-1 text-xs text-warning">{t('quotaLeft', { left: quotaLeft })}</p>
         )}
         {chat.status === 'CLOSED' && (
           <div className="mb-2 space-y-2">

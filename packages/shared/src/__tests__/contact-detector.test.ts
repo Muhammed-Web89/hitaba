@@ -11,8 +11,13 @@ test('plain conversation passes', () => {
     'Boyum 175, yoshim 28. Namozni vaqtida o‘qishga harakat qilaman.',
     'Ben 1995 doğumluyum ve 2 kardeşim var.',
     'Я работаю инженером уже пять лет.',
-    'Telegram üzerinden bu uygulamayı kullanıyorum, çok güzel.',
     'I have three brothers and one sister.',
+    'Sık sık ailemi ziyaret ederim, işte sıkıştım biraz.',
+    'Ва алейкум ассалям. В связи с работой переехал.',
+    'Куръондан кайси сурани кетма кетлигини биласизми',
+    'Ota-onam bilan yashayman, aloqador emas.',
+    'أنا عريس المستقبل إن شاء الله، جنسيتي أوزبكية',
+    'Hamma narsa Allohning izni bilan boʻladi.',
   ]) {
     assert.equal(blocked(s), false, s);
   }
@@ -50,4 +55,28 @@ test('basics step rejects minors', () => {
   const y = new Date().getUTCFullYear() - 17;
   const r = profileSteps.basics.safeParse({ displayName: 'Aisha', birthDate: `${y}-01-01` });
   assert.equal(r.success, false);
+});
+
+test('asking for or offering contact details is held', () => {
+  for (const s of [
+    'Ракамизни беринг',
+    'Ман ёзаман езиб олинг шу номерда телеграм булади',
+    'Таер туринг бошка алокадан ракамларни расмга олиб олинг',
+    'Шунда тел бор',
+    'raqamingizni yozib qoldiring',
+    'nomeringiz bormi?',
+    'Telegram üzerinden yazar mısın?',
+    'numaranı verir misin',
+    'дайте ваш телефон, созвонимся',
+    'what is your number',
+    'أعطني رقم هاتفك',
+  ]) {
+    assert.ok(scanForContactInfo(s).signals.includes('INTENT'), s);
+  }
+});
+
+test('profanity and indecent words are held', () => {
+  for (const s of ['ты сука', 'nima qilyapsan jalab', 'siktir git', 'send nudes', 'секс хочешь?', 'Ялангоч расм']) {
+    assert.ok(scanForContactInfo(s).signals.includes('PROFANITY'), s);
+  }
 });

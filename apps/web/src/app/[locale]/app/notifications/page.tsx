@@ -21,6 +21,8 @@ const ICONS: Record<string, IconName> = {
   photo_view_declined: 'lock',
   chat_requested: 'chat',
   chat_opened: 'chat',
+  chat_extended: 'chat',
+  chat_extension_denied: 'x',
   chat_closed: 'x',
   silence_reminder: 'clock',
   mahram_approved: 'shield',

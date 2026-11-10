@@ -15,6 +15,8 @@ const ITEMS: Array<{ key: string; icon: IconName; tone: string }> = [
   { key: 'ai', icon: 'sparkle', tone: 'text-info' },
   { key: 'noOutside', icon: 'lock', tone: 'text-danger' },
   { key: 'noBypass', icon: 'ban', tone: 'text-danger' },
+  { key: 'limits', icon: 'clock', tone: 'text-warning' },
+  { key: 'ban', icon: 'ban', tone: 'text-danger' },
   { key: 'adab', icon: 'chat', tone: 'text-brand-500' },
   { key: 'noToxic', icon: 'flag', tone: 'text-danger' },
   { key: 'silence', icon: 'clock', tone: 'text-warning' },
@@ -61,6 +63,9 @@ export function ChatRulesSheet({ open, onClose }: { open: boolean; onClose: () =
                   editMin: RULES.messageEditWindowMinutes,
                   remind1: RULES.silenceFirstReminderHours,
                   close: RULES.silenceAutoCloseHours,
+                  quota: RULES.chatMessageQuota,
+                  digits: RULES.chatNumberMaxDigits,
+                  times: RULES.chatNumberMaxTimes,
                 })}
               </span>
             </li>

@@ -23,6 +23,8 @@ export type NotificationType =
   | 'chat_opened'
   | 'chat_paused'
   | 'chat_resumed'
+  | 'chat_extended'
+  | 'chat_extension_denied'
   | 'chat_closed'
   | 'silence_reminder'
   | 'mahram_approved'
@@ -48,6 +50,8 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_closed: 'Suhbatingiz yopildi.',
     mahram_approved: 'Mahram aloqa ma’lumoti suhbatda e’lon qilindi.',
     connects_credited: 'Hisobingizga tanga qo‘shildi.',
+    chat_extended: 'Moderator suhbatni davom ettirishga ruxsat berdi.',
+    chat_extension_denied: 'Suhbatni davom ettirish soʻrovi rad etildi.',
   },
   ru: {
     profile_approved: 'Ваш профиль одобрен. Теперь вы можете смотреть анкеты.',
@@ -66,6 +70,8 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_closed: 'Ваш чат закрыт.',
     mahram_approved: 'Контакт махрама опубликован в чате.',
     connects_credited: 'Монеты зачислены на ваш баланс.',
+    chat_extended: 'Модератор разрешил продолжить чат.',
+    chat_extension_denied: 'Запрос на продолжение чата отклонён.',
   },
   tr: {
     profile_approved: 'Profiliniz onaylandı. Artık profilleri görebilirsiniz.',
@@ -84,6 +90,8 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_closed: 'Sohbetiniz kapatıldı.',
     mahram_approved: 'Mahrem iletişim bilgisi sohbette paylaşıldı.',
     connects_credited: 'Bakiyenize jeton eklendi.',
+    chat_extended: 'Moderatör sohbetin devam etmesine izin verdi.',
+    chat_extension_denied: 'Sohbeti devam ettirme isteği reddedildi.',
   },
   en: {
     profile_approved: 'Your profile is approved. You can now browse profiles.',
@@ -102,6 +110,8 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_closed: 'Your chat was closed.',
     mahram_approved: 'The mahram contact was posted in the chat.',
     connects_credited: 'Connects were added to your balance.',
+    chat_extended: 'A moderator allowed the chat to continue.',
+    chat_extension_denied: 'The request to continue the chat was declined.',
   },
   ar: {
     profile_approved: 'تمت الموافقة على ملفك. يمكنك الآن تصفح الملفات.',
@@ -120,6 +130,8 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_closed: 'تم إغلاق محادثتك.',
     mahram_approved: 'تم نشر بيانات تواصل المحرم في المحادثة.',
     connects_credited: 'أُضيفت العملات إلى رصيدك.',
+    chat_extended: 'سمح المشرف بمتابعة المحادثة.',
+    chat_extension_denied: 'رُفض طلب متابعة المحادثة.',
   },
 };
 

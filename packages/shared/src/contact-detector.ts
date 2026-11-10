@@ -6,7 +6,11 @@
  * Yanlış pozitif kabul edilebilir — mesaj silinmez, moderatör onayına tutulur.
  */
 
-export type ContactSignal = 'PHONE' | 'EMAIL' | 'URL' | 'HANDLE' | 'MESSENGER';
+/**
+ * INTENT: iletişim bilgisi isteme/verme niyeti ("raqamingizni bering", "номер", "telegram");
+ * PROFANITY: küfür ve ahlaka aykırı sözler. İkisi de mesajı moderatöre tutar.
+ */
+export type ContactSignal = 'PHONE' | 'EMAIL' | 'URL' | 'HANDLE' | 'MESSENGER' | 'INTENT' | 'PROFANITY';
 
 export interface ContactScanResult {
   blocked: boolean;
@@ -30,11 +34,53 @@ const MESSENGER_WORDS = [
   'insta', 'инста', 'imo', 'viber', 'вайбер', 'signal', 'snapchat', 'facebook', 'tiktok', 'discord', 'skype',
 ];
 
+/**
+ * Yasaklı kelimeler (normalize edilmiş biçimde karşılaştırılır). PREFIX: kelime bununla başlıyorsa
+ * ("raqamingiz", "телефоном"); EXACT: yalnızca kelimenin kendisi (kısa ya da başka kelimelerin
+ * başında geçen sözler: "tel", "sik", "aq").
+ */
+const INTENT_PREFIX = [
+  // uz (lotin)
+  'nomer', 'raqam', 'telefon', 'aloqaga', 'aloqada', 'aloqani', 'aloqangiz', 'qongiroq', 'qungiroq', 'zvon', 'lichka', 'lichkaga', 'manzil', 'adres', 'kontakt', 'akkaunt',
+  // uz / ru (kiril)
+  'номер', 'ракам', 'рақам', 'телефон', 'алокага', 'алокада', 'алокани', 'алоқага', 'алоқада', 'алоқани', 'кунгирок', 'қўнғироқ', 'қунғироқ', 'звон', 'позвон', 'созвон', 'связат', 'свяж', 'контакт', 'личк', 'адрес', 'манзил', 'аккаунт',
+  // tr
+  'numara', 'iletisim', 'irtibat', 'ulas',
+  // en
+  'number', 'phone', 'contact', 'inbox', 'whats',
+  // ar
+  'رقم', 'هاتف', 'جوال', 'تلفون', 'تليفون', 'واتس', 'تواصل', 'اتصل', 'تلجرام', 'تيليجرام', 'انستا',
+  // mesajlaşma uygulamaları — adının geçmesi yeterli
+  ...MESSENGER_WORDS.filter((w) => w.length > 4),
+];
+// "aloqa" yalnızca kendisi ve iletişim çekimleriyle: "aloqador" (ilgili) masumdur.
+const INTENT_EXACT = ['aloqa', 'алока', 'алоқа', 'tel', 'тел', 'imo', 'dm', 'лс', 'tg', 'тг', 'wp', 'insta', 'инста'];
+
+const PROFANITY_PREFIX = [
+  // ru
+  'хуй', 'хуе', 'хуё', 'пизд', 'ебат', 'ебал', 'ебан', 'ебу', 'выеб', 'заеб', 'уеб', 'бляд', 'блят', 'мудак', 'мудил', 'пидор', 'пидар', 'гандон',
+  'шлюх', 'залуп', 'дроч', 'трах', 'секс', 'порн', 'интим', 'голая', 'голые', 'раздеть', 'раздева', 'минет', 'оргазм', 'эрот',
+  // uz
+  'jalab', 'jalap', 'qanjiq', 'dalbayob', 'dalbayop', 'onangni', 'gandon', 'yalangoch', 'erotik', 'intim', 'porno', 'sikish', 'sikay', 'sikam',
+  'жалаб', 'қанжиқ', 'канжик', 'далбаёб', 'онангни', 'ялангоч', 'яланғоч', 'сикиш', 'сикай',
+  // tr
+  'orospu', 'siktir', 'sikerim', 'yarrak', 'yarak', 'kahpe', 'pezevenk', 'amcik', 'ciplak', 'sevisme', 'sevisel', 'gotunu',
+  // en
+  'fuck', 'bitch', 'slut', 'whore', 'pussy', 'porn', 'horny', 'nude', 'naked', 'boob', 'blowjob', 'erotic',
+  // ar
+  'شرموط', 'عاهر', 'قحب', 'منيوك', 'سكس',
+];
+// Türkçe "sık sık", "sıkıştı" normalize edilince "sik…" olur; bu yüzden o kökler listede yok.
+const PROFANITY_EXACT = ['бля', 'сука', 'суки', 'сучка', 'ебать', 'amk', 'oc', 'seks', 'sex', 'sexy', 'seksi', 'shit', 'dick', 'كس', 'زب', 'نيك', 'عارية', 'عاري'];
+
 function normalize(input: string): string {
   return (
     input
       .normalize('NFKD')
       .replace(/[̀-ͯ]/g, '')
+      // Arapça harekeler ve kelime içi kesme işaretleri (o‘g‘il → ogil)
+      .replace(/[ً-ْٰ]/g, '')
+      .replace(/[ʻʼ'‘’`]/g, '')
       // Arapça-Hint ve Farsça rakamlar
       .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
       .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0))
@@ -46,6 +92,17 @@ function normalize(input: string): string {
       .replace(/ö/g, 'o')
       .replace(/ü/g, 'u')
   );
+}
+
+const norm = (list: string[]) => list.map(normalize);
+const LISTS = {
+  INTENT: { prefix: norm(INTENT_PREFIX), exact: new Set(norm(INTENT_EXACT)) },
+  PROFANITY: { prefix: norm(PROFANITY_PREFIX), exact: new Set(norm(PROFANITY_EXACT)) },
+} as const;
+
+function hasWord(words: string[], kind: keyof typeof LISTS): boolean {
+  const { prefix, exact } = LISTS[kind];
+  return words.some((w) => exact.has(w) || prefix.some((p) => w.startsWith(p)));
 }
 
 function digitWordsToDigits(text: string): string {
@@ -88,6 +145,10 @@ export function scanForContactInfo(raw: string): ContactScanResult {
   if (hasMessenger && /\b(?=[a-z0-9_]*[0-9_])[a-z][a-z0-9_]{3,}\b/.test(text)) {
     signals.add('MESSENGER');
   }
+
+  const words = text.match(/[\p{L}]+/gu) ?? [];
+  if (hasWord(words, 'INTENT')) signals.add('INTENT');
+  if (hasWord(words, 'PROFANITY')) signals.add('PROFANITY');
 
   return { blocked: signals.size > 0, signals: [...signals] };
 }

@@ -59,7 +59,7 @@ export class ModerationService {
       orderBy: [{ createdAt: 'asc' }],
       take: 100,
     });
-    const priority: Record<ModerationTarget, number> = { MESSAGE: 0, MAHRAM_CONTACT: 1, PROFILE: 2, PHOTO: 3 };
+    const priority: Record<ModerationTarget, number> = { MESSAGE: 0, MAHRAM_CONTACT: 1, CHAT_EXTENSION: 2, PROFILE: 3, PHOTO: 4 };
     return items.sort((a, b) => priority[a.targetType] - priority[b.targetType]);
   }
 

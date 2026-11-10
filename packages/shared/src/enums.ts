@@ -84,6 +84,7 @@ export const ModerationTarget = {
   PHOTO: 'PHOTO',
   MESSAGE: 'MESSAGE',
   MAHRAM_CONTACT: 'MAHRAM_CONTACT',
+  CHAT_EXTENSION: 'CHAT_EXTENSION',
 } as const;
 export type ModerationTarget = (typeof ModerationTarget)[keyof typeof ModerationTarget];
 

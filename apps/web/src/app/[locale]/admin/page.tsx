@@ -19,7 +19,7 @@ interface ModerationItemRow {
   createdAt: string;
 }
 
-const TYPES: Array<ModerationTarget | 'ALL'> = ['ALL', 'MESSAGE', 'MAHRAM_CONTACT', 'PROFILE', 'PHOTO'];
+const TYPES: Array<ModerationTarget | 'ALL'> = ['ALL', 'MESSAGE', 'MAHRAM_CONTACT', 'CHAT_EXTENSION', 'PROFILE', 'PHOTO'];
 
 export default function QueuePage() {
   const t = useTranslations('admin');

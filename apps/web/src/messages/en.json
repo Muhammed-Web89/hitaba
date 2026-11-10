@@ -498,7 +498,10 @@
       "chat_closed_user": "The chat was ended.",
       "chat_closed_silence": "The chat was closed due to silence.",
       "chat_closed_moderator": "The chat was closed by a moderator.",
-      "chat_closed_ban": "The chat was closed."
+      "chat_closed_ban": "The chat was closed.",
+      "chat_extension_requested": "A request to continue the chat was sent to the moderators.",
+      "chat_extended": "A moderator approved: each side can write 10 more messages.",
+      "chat_extension_denied": "The request to continue the chat was declined."
     },
     "mahram": {
       "title": "Share mahram contact",
@@ -522,13 +525,19 @@
         "ai": "The AI assistant checks every message around the clock; suspicious messages go to a moderator.",
         "noOutside": "Moving to outside apps like Telegram or WhatsApp and sharing phone numbers, usernames or links is forbidden. A mahram’s contact can be shared only via ⋮ → “Share mahram contact”.",
         "noBypass": "Attempts to get around the check (writing digits as words, splitting letters, sending as an image) count as direct sharing. Suggesting or teaching it to the other side is the same violation and can lead to both accounts being blocked.",
+        "limits": "Each side can write {quota} messages until a moderator approves more; then a “Continue” request goes to the moderators. Numbers may have at most {digits} digits and appear in at most {times} messages per chat.",
+        "ban": "Phone numbers, requests for contacts, insults, indecent words and numbers outside the rules are not delivered — they go to a moderator. If the moderator confirms the violation, the account is banned permanently.",
         "adab": "Keep the conversation purposeful and avoid idle talk. Kind words within adab are fine; flirting and intimate topics are not.",
         "noToxic": "Insults, pressure and a disrespectful tone are strictly forbidden and lead to a block.",
         "silence": "If no one writes for {remind1} hours, you get a reminder; a chat silent for {close} hours closes automatically.",
         "refund": "If a moderator closes the chat, or the other side is blocked or deletes the account, the connect spent on it is refunded.",
         "actions": "You can edit or delete your own message within {editMin} minutes; moderators still see the original. You can add reactions to messages."
       }
-    }
+    },
+    "quotaLeft": "{left} messages left",
+    "quotaReached": "You have used your {limit} messages for this stage. Ask the moderators to let the chat continue.",
+    "continue": "Continue",
+    "continuePending": "Your request is with the moderators. The chat continues once approved."
   },
   "report": {
     "title": "Report",
@@ -639,7 +648,9 @@
       "photo_view_granted": "Photo access granted — you can open it once.",
       "photo_view_declined": "Your request to see the photo again was declined.",
       "photo_view_first_request": "A man wants to see your photo. Look at his photo first, then decide.",
-      "likes_released": "{count, plural, one {# person} other {# people}} liked you while your chat was open. Tap to see."
+      "likes_released": "{count, plural, one {# person} other {# people}} liked you while your chat was open. Tap to see.",
+      "chat_extended": "A moderator allowed the chat to continue.",
+      "chat_extension_denied": "The request to continue the chat was declined."
     }
   },
   "portal": {
@@ -771,7 +782,9 @@
     "otp_already_enabled": "Two-step verification is already on.",
     "otp_setup_required": "Start the setup first.",
     "otp_not_enabled": "Two-step verification is off.",
-    "session_current": "You can’t sign out the device you’re using from here."
+    "session_current": "You can’t sign out the device you’re using from here.",
+    "quota_reached": "You have used your messages for this stage. A moderator must approve before you continue.",
+    "quota_not_reached": "You still have messages left."
   },
   "admin": {
     "title": "Moderation",
@@ -796,7 +809,8 @@
       "MESSAGE": "Message",
       "MAHRAM_CONTACT": "Mahram contact",
       "PROFILE": "Profile",
-      "PHOTO": "Photo"
+      "PHOTO": "Photo",
+      "CHAT_EXTENSION": "Chat continuation"
     },
     "segregationNote": "Photos are shown only to moderators of the same gender.",
     "queueEmpty": "The queue is empty",
@@ -877,7 +891,10 @@
       "contact_messenger": "Messenger mentioned",
       "spam_repeated_chars": "Repeated characters",
       "quality_too_short": "Too short",
-      "quality_low_resolution": "Low resolution"
+      "quality_low_resolution": "Low resolution",
+      "contact_intent": "Contact request",
+      "contact_profanity": "Indecent word",
+      "contact_digits": "Number outside the rules"
     },
     "yes": "Yes",
     "no": "No",
@@ -946,7 +963,10 @@
       "women": "Women",
       "incomplete": "Registration not finished",
       "incompleteSplit": "Men {men} · women {women}"
-    }
+    },
+    "rejectAndBan": "Reject and ban",
+    "banOnRejectNote": "Rejecting bans the sender permanently and closes all their chats.",
+    "extensionNote": "If approved, both sides can write {quota} more messages."
   },
   "consent": {
     "title": "Consents (required)",

@@ -498,7 +498,10 @@
       "chat_closed_user": "Suhbat yakunlandi.",
       "chat_closed_silence": "Sukut tufayli suhbat yopildi.",
       "chat_closed_moderator": "Suhbatni moderator yopdi.",
-      "chat_closed_ban": "Suhbat yopildi."
+      "chat_closed_ban": "Suhbat yopildi.",
+      "chat_extension_requested": "Suhbatni davom ettirish soʻrovi moderatorga yuborildi.",
+      "chat_extended": "Moderator ruxsat berdi: har bir tomon yana 10 ta xabar yozishi mumkin.",
+      "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi."
     },
     "mahram": {
       "title": "Mahram (ota yoki aka) raqamini ulashish",
@@ -522,13 +525,19 @@
         "ai": "Sunʼiy intellekt yordamchisi har bir xabarni kecha-kunduz tekshiradi; shubhali xabarlar moderatorga yuboriladi.",
         "noOutside": "Telegram, WhatsApp kabi tashqi ilovalarga oʻtish va telefon, foydalanuvchi nomi, havola ulashish taqiqlanadi. Mahramingizning aloqa maʼlumotini faqat ⋮ → “Mahram (ota yoki aka) raqamini ulashish” orqali yuborish mumkin.",
         "noBypass": "Tekshiruvni chetlab oʻtishga urinishlar (raqamlarni soʻz bilan yozish, harflarni ajratish, rasm qilib yuborish) toʻgʻridan-toʻgʻri ulashish deb baholanadi. Buni qarshi tomonga taklif qilish yoki oʻrgatish ham xuddi shunday qoidabuzarlik boʻlib, ikkala hisobning bloklanishiga olib kelishi mumkin.",
+        "limits": "Har bir tomon moderator ruxsatigacha {quota} ta xabar yoza oladi; keyin «Davom ettirish» soʻrovi moderatorga boradi. Raqamlar koʻpi bilan {digits} xonali boʻlishi va suhbat davomida koʻpi bilan {times} marta yozilishi mumkin.",
+        "ban": "Telefon raqami, aloqa soʻrash, haqoratli yoki odobsiz soʻzlar va qoidadan tashqari raqamlar qarshi tomonga yetkazilmaydi — moderatorga boradi. Moderator buzilishni tasdiqlasa, hisob butunlay bloklanadi.",
         "adab": "Suhbat maqsadli boʻlsin, behuda gaplardan saqlaning. Odob doirasidagi iliq soʻzlar mumkin, noz-karashma va mahram mavzular mumkin emas.",
         "noToxic": "Haqorat, bosim va hurmatsiz ohang qatʼiyan taqiqlanadi va hisobning bloklanishiga olib keladi.",
         "silence": "{remind1} soat yozilmasa, eslatma keladi; {close} soat jim qolgan suhbat oʻz-oʻzidan yopiladi.",
         "refund": "Suhbatni moderator yopsa yoki qarshi tomon bloklansa yoxud hisobini oʻchirsa, suhbatga sarflangan tanga qaytariladi.",
         "actions": "Oʻz xabaringizni {editMin} daqiqa ichida tahrirlash yoki oʻchirish mumkin; moderatorlar asl matnni ham koʻradi. Xabarlarga reaksiya qoʻshishingiz mumkin."
       }
-    }
+    },
+    "quotaLeft": "Yana {left} ta xabar yozishingiz mumkin",
+    "quotaReached": "Bu bosqichdagi {limit} ta xabaringiz tugadi. Suhbatni davom ettirish uchun moderatorga soʻrov yuboring.",
+    "continue": "Davom ettirish",
+    "continuePending": "Soʻrov moderatorda. Ruxsat berilgach, suhbat davom etadi."
   },
   "report": {
     "title": "Shikoyat",
@@ -639,7 +648,9 @@
       "photo_view_granted": "Surat koʻrishga ruxsat berildi — bir marta ochishingiz mumkin.",
       "photo_view_declined": "Suratni qayta koʻrish soʻrovingiz rad etildi.",
       "photo_view_first_request": "Bir erkak suratingizni koʻrmoqchi. Avval uning suratini koʻrib, qaror qiling.",
-      "likes_released": "Suhbatingiz davomida {count} kishi sizga qiziqish bildirdi. Koʻrish uchun bosing."
+      "likes_released": "Suhbatingiz davomida {count} kishi sizga qiziqish bildirdi. Koʻrish uchun bosing.",
+      "chat_extended": "Moderator suhbatni davom ettirishga ruxsat berdi.",
+      "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi."
     }
   },
   "portal": {
@@ -771,7 +782,9 @@
     "otp_already_enabled": "Ikki bosqichli tekshiruv allaqachon yoqilgan.",
     "otp_setup_required": "Avval sozlashni boshlang.",
     "otp_not_enabled": "Ikki bosqichli tekshiruv oʻchirilgan.",
-    "session_current": "Hozir foydalanayotgan qurilmangiz seansini bu yerdan yopib boʻlmaydi."
+    "session_current": "Hozir foydalanayotgan qurilmangiz seansini bu yerdan yopib boʻlmaydi.",
+    "quota_reached": "Bu bosqichdagi xabarlar soni tugadi. Davom ettirish uchun moderator ruxsati kerak.",
+    "quota_not_reached": "Xabarlar soni hali tugamagan."
   },
   "admin": {
     "title": "Moderatsiya",
@@ -796,7 +809,8 @@
       "MESSAGE": "Xabar",
       "MAHRAM_CONTACT": "Mahram maʼlumotlari",
       "PROFILE": "Anketa",
-      "PHOTO": "Surat"
+      "PHOTO": "Surat",
+      "CHAT_EXTENSION": "Suhbatni davom ettirish"
     },
     "segregationNote": "Suratlar faqat bir xil jinsdagi moderatorlarga koʻrsatiladi.",
     "queueEmpty": "Navbat boʻsh",
@@ -877,7 +891,10 @@
       "contact_messenger": "Messenjer nomi tilga olingan",
       "spam_repeated_chars": "Takroriy belgilar",
       "quality_too_short": "Juda qisqa",
-      "quality_low_resolution": "Sifati past"
+      "quality_low_resolution": "Sifati past",
+      "contact_intent": "Aloqa soʻrash",
+      "contact_profanity": "Odobsiz soʻz",
+      "contact_digits": "Qoidadan tashqari raqam"
     },
     "yes": "Ha",
     "no": "Yoʻq",
@@ -946,7 +963,10 @@
       "women": "Ayollar",
       "incomplete": "Roʻyxatdan oʻtishni tugatmaganlar",
       "incompleteSplit": "Erkaklar {men} · ayollar {women}"
-    }
+    },
+    "rejectAndBan": "Rad etish va bloklash",
+    "banOnRejectNote": "Rad etilsa, yuboruvchining hisobi butunlay bloklanadi va barcha suhbatlari yopiladi.",
+    "extensionNote": "Tasdiqlansa, ikkala tomon yana {quota} ta xabar yozishi mumkin."
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

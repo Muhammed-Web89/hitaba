@@ -157,6 +157,8 @@ export interface ChatSummary {
   lastActivityAt: string;
   canReopen: boolean;
   watchers: ChatParticipantInfo;
+  /** Bu turdaki mesaj kotası (yalnızca görüntüleyenin kendi sayısı) ve bekleyen "devam et" isteği. */
+  quota: { limit: number; used: number; extensionPending: boolean };
 }
 
 export interface ChatMessage {
