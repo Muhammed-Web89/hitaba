@@ -126,6 +126,16 @@ export class TelegramService implements OnModuleInit {
     });
   }
 
+  /** sendMessage, hata ayrıntısıyla (kullanıcının botu engelleyip engellemediğini anlamak için). */
+  sendMessageRaw(chatId: string, text: string, openAppLabel?: string) {
+    return this.callRaw('sendMessage', {
+      chat_id: chatId,
+      text,
+      protect_content: true,
+      ...(openAppLabel && { reply_markup: this.openAppKeyboard(openAppLabel) }),
+    });
+  }
+
   /** Telegram Stars (XTR) faturası; provider_token boş kalır. */
   createStarsInvoiceLink(p: { title: string; description: string; payload: string; stars: number }) {
     return this.call<string>('createInvoiceLink', {

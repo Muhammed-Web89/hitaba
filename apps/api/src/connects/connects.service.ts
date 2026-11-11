@@ -100,6 +100,16 @@ export class ConnectsService {
     return this.prisma.user.findMany({ where: { telegramId: { not: null } }, select: { telegramId: true, locale: true } });
   }
 
+  /** /start: botu engelleyip geri dönen yeniden hatırlatma alır; hesabı olmayan günlük davet için kaydedilir. */
+  async botStarted(chatId: string, userId: string | null, lang: string) {
+    if (userId) {
+      await this.prisma.user.update({ where: { id: userId }, data: { botBlockedAt: null } });
+      return;
+    }
+    const locale = ['uz', 'ru', 'tr', 'en', 'ar'].includes(lang) ? lang : 'en';
+    await this.prisma.botStarter.upsert({ where: { chatId }, create: { chatId, locale }, update: { locale, blockedAt: null } });
+  }
+
   async userIdByTelegram(telegramId: string): Promise<string | null> {
     const u = await this.prisma.user.findUnique({ where: { telegramId }, select: { id: true } });
     return u?.id ?? null;

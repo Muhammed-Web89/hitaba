@@ -224,9 +224,10 @@ export class TelegramWebhookController implements OnApplicationBootstrap {
       const [text, label, menu] = START_TEXT[lang] ?? START_TEXT.en;
       const chatId = String(update.message.chat.id);
       await Promise.all([this.telegram.sendMessage(chatId, text, label), this.telegram.setMenuButton(chatId, menu)]);
-      // Kayıtlı kullanıcıysa sabitlenmiş durum satırı oluşturulur/güncellenir.
+      // Kayıtlı kullanıcıysa sabitlenmiş durum satırı oluşturulur/güncellenir; değilse günlük davet için kaydedilir.
       const known = await this.connects.userIdByTelegram(chatId);
       if (known) await this.notifications.refreshTelegramStatus(known);
+      await this.connects.botStarted(chatId, known, lang);
     }
     return { ok: true };
   }

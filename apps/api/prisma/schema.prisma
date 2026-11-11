@@ -161,6 +161,10 @@ model User {
   tgStatusMessageId Int?
   locale            String     @default("en")
   timezone          String     @default("Asia/Tashkent")
+  /// Profilini doldurmayanlara günlük Telegram hatırlatması: son gönderim, kaçıncı mesaj, botu engellediği an (sonra gönderilmez).
+  nudgeSentAt       DateTime?
+  nudgeCount        Int        @default(0)
+  botBlockedAt      DateTime?
   connectBalance    Int        @default(0)
   /// Artırıldığında tüm refresh token'lar geçersiz olur ("tüm oturumları kapat").
   tokenVersion      Int        @default(0)
@@ -624,4 +628,14 @@ model LoginEvent {
   createdAt DateTime @default(now())
 
   @@index([userId, createdAt])
+}
+
+/// Botta /start deyip uygulamada hesap açmamış kişiler: günlük davet mesajı için (cinsiyet bilinmez).
+model BotStarter {
+  chatId      String    @id
+  locale      String
+  startedAt   DateTime  @default(now())
+  nudgeSentAt DateTime?
+  nudgeCount  Int       @default(0)
+  blockedAt   DateTime?
 }

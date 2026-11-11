@@ -16,6 +16,11 @@ export function startOfLocalDay(timezone: string, now = new Date()): Date {
   return new Date(Date.UTC(get('year'), get('month') - 1, get('day')) - offsetMs);
 }
 
+/** Verilen saat dilimindeki şu anki saat (0–23). */
+export function localHour(timezone: string, now = new Date()): number {
+  return Number(new Intl.DateTimeFormat('en-US', { timeZone: safeZone(timezone), hour: '2-digit', hourCycle: 'h23' }).format(now));
+}
+
 export function safeZone(tz: string): string {
   try {
     new Intl.DateTimeFormat('en-US', { timeZone: tz });

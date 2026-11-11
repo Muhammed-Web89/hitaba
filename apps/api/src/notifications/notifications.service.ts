@@ -5,6 +5,7 @@ import { CurrentUser } from '../auth/guards';
 import { PrismaService } from '../prisma/prisma.service';
 import { RealtimeService } from '../realtime/realtime.service';
 import { TelegramService } from '../telegram/telegram.service';
+import { NudgeService } from './nudges';
 import { OPEN_APP, tgStatusText } from './tg-status';
 
 export type NotificationType =
@@ -244,7 +245,7 @@ export class NotificationsController {
 @Global()
 @Module({
   controllers: [NotificationsController],
-  providers: [NotificationsService],
+  providers: [NotificationsService, NudgeService],
   exports: [NotificationsService],
 })
 export class NotificationsModule {}
