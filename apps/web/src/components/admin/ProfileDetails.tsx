@@ -37,6 +37,7 @@ export function ProfileDetails({ profile: p, screening, gender }: { profile: any
               `${te(`marital.${p.maritalStatus}` as 'marital.MARRIED', { gender })} · ${tf('nikahCount')}: ${p.nikahCount} · ${tf('childrenCount')}: ${p.childrenCount}`
             }
           />
+          {gender === 'FEMALE' && <KV k={tf('polygamy')} v={p.polygamyAnswer && te(`polygamy.${p.polygamyAnswer}` as never)} />}
           <KV k={tf('aboutMe')} v={p.aboutMe} />
           <KV k={tf('aboutSpouse')} v={p.aboutSpouse} />
           <KV k={tf('beliefsManhaj')} v={p.beliefsManhaj} />

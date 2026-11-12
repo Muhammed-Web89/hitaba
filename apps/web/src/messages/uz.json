@@ -173,7 +173,7 @@
       "nikahCount": "Avval necha marta nikohda boʻlgansiz?",
       "childrenCount": "Farzandlaringiz soni",
       "polygamy": "Ikkinchi xotin boʻlishga rozimisiz?",
-      "polygamyHint": "Javobingizni faqat shu filtrni tanlagan erkaklar koʻradi.",
+      "polygamyHint": "Javobingiz anketingizda hammaga koʻrinadi.",
       "aboutMe": "Oʻzim haqimda",
       "aboutMeHint": "Masalan: “Oʻqituvchiman. Oilamda tarbiya olganman, Qurʼon oʻrganyapman. Tinch, mehribon oila qurmoqchiman.”",
       "aboutSpouse": "Qanday turmush oʻrtoq izlayapman",
@@ -348,6 +348,7 @@
     "childrenLivingSome": "{n} tasi u bilan yashaydi",
     "openPhoto": "Suratni kattalashtirish",
     "family": "Oila",
+    "polygamyYes": "Ikkinchi xotin boʻlishga rozi",
     "previousNikahs": "{n} ta avvalgi nikoh",
     "interests": "Qiziqishlar"
   },

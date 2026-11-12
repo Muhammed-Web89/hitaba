@@ -173,7 +173,7 @@
       "nikahCount": "Sona ermiş önceki nikah sayısı",
       "childrenCount": "Çocuk sayısı",
       "polygamy": "İkinci eş olmaya açık mısınız?",
-      "polygamyHint": "Cevabınızı yalnızca bu filtreyi seçen erkekler görür.",
+      "polygamyHint": "Cevabınız profilinizde herkese görünür.",
       "aboutMe": "Hakkımda",
       "aboutMeHint": "Karakter, iş, günlük hayat, planlar.",
       "aboutSpouse": "Aradığım eş",
@@ -348,6 +348,7 @@
     "childrenLivingSome": "{n} tanesi yanında yaşıyor",
     "openPhoto": "Fotoğrafı büyüt",
     "family": "Aile",
+    "polygamyYes": "İkinci eş olmaya razı",
     "previousNikahs": "{n} önceki nikah",
     "interests": "İlgi alanları"
   },

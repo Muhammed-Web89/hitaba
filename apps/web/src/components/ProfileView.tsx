@@ -209,6 +209,11 @@ export function ProfileCard({ profile, actions }: { profile: PublicProfile; acti
         </div>
         <div className="mt-3 flex items-end gap-2">
           <div className="flex flex-1 flex-wrap gap-1.5">
+            {profile.gender === 'FEMALE' && profile.polygamyAnswer === 'YES' && (
+              <Chip tone="brand">
+                <Icon name="users" size={12} /> {t('polygamyYes')}
+              </Chip>
+            )}
             {profile.busy && (
               <Chip tone="warning">
                 <Icon name="chat" size={12} /> {t('busy')}
@@ -253,14 +258,14 @@ export function ProfileCard({ profile, actions }: { profile: PublicProfile; acti
               </>
             )}
           </div>
-          {(profile.nikahCount > 0 || profile.polygamyAnswer) && (
+          {(profile.nikahCount > 0 || (profile.polygamyAnswer && profile.polygamyAnswer !== 'PREFER_NOT_TO_SAY')) && (
             <div className="space-y-1 pt-2 text-sm text-ink-3">
               {profile.nikahCount > 0 && (
                 <p className="flex items-center gap-1.5">
                   <Icon name="clock" size={14} /> {t('previousNikahs', { n: profile.nikahCount })}
                 </p>
               )}
-              {profile.polygamyAnswer && (
+              {profile.polygamyAnswer && profile.polygamyAnswer !== 'PREFER_NOT_TO_SAY' && (
                 <p className="flex items-center gap-1.5">
                   <Icon name="users" size={14} /> {t('polygamy')}: {te(`polygamy.${profile.polygamyAnswer}`)}
                 </p>

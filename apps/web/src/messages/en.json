@@ -173,7 +173,7 @@
       "nikahCount": "Previous (ended) nikahs",
       "childrenCount": "Children",
       "polygamy": "Are you open to being a second wife?",
-      "polygamyHint": "Only men who filter for this will see your answer.",
+      "polygamyHint": "Your answer is shown publicly on your profile.",
       "aboutMe": "About me",
       "aboutMeHint": "Character, work, daily life, plans.",
       "aboutSpouse": "The spouse I seek",
@@ -348,6 +348,7 @@
     "childrenLivingSome": "{n} live with them",
     "openPhoto": "Enlarge photo",
     "family": "Family",
+    "polygamyYes": "Open to being a second wife",
     "previousNikahs": "{n, plural, one {# previous nikah} other {# previous nikahs}}",
     "interests": "Interests"
   },
