@@ -1,4 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { env } from '../config/env';
 import type { Prisma, Profile, User } from '@prisma/client';
 import {
@@ -23,14 +24,19 @@ import { PrismaService } from '../prisma/prisma.service';
 
 export type UserWithProfile = User & { profile: Profile | null };
 
-/** "Hakkımda" ve "Aradığım eş" anlamsız doldurulduğunda kullanıcının dilinde otomatik ret gerekçesi. */
+/** Anket boş ya da anlamsız doldurulduğunda kullanıcının dilinde otomatik ret gerekçesi — azarlamadan, doldurmaya teşvik eder. */
 const THIN_PROFILE_REASON: Record<string, string> = {
-  uz: '«Oʻzim haqimda» va «Qanday turmush oʻrtoq izlayapman» boʻlimlari boʻsh yoki maʼnosiz belgilar bilan toʻldirilgan. Iltimos, oʻzingiz (xarakteringiz, ishingiz, oilangiz, rejalaringiz) va qanday turmush oʻrtoq izlayotganingiz haqida toʻliq gaplar bilan batafsilroq yozing, soʻng profilni qayta yuboring.',
-  ru: 'Разделы «О себе» и «Кого я ищу» пустые или заполнены бессмысленными символами. Пожалуйста, подробнее расскажите о себе (характер, работа, семья, планы) и о том, каким видите будущего супруга, — полными предложениями. Затем отправьте анкету ещё раз.',
-  tr: '“Hakkımda” ve “Aradığım eş” bölümleri boş ya da anlamsız karakterlerle doldurulmuş. Lütfen kendinizi (karakteriniz, işiniz, aileniz, planlarınız) ve nasıl bir eş aradığınızı tam cümlelerle daha ayrıntılı yazın, ardından profilinizi yeniden gönderin.',
-  en: 'The “About me” and “The spouse I seek” sections are empty or filled with meaningless characters. Please describe yourself (character, work, family, plans) and the spouse you are looking for in full sentences, then submit your profile again.',
-  ar: 'قسما «نبذة عني» و«الشريك الذي أبحث عنه» فارغان أو مملوءان برموز لا معنى لها. من فضلك اكتب عن نفسك (طباعك، عملك، عائلتك، خططك) وعن الشريك الذي تبحث عنه بجمل كاملة وبتفصيل أكثر، ثم أرسل ملفك مرة أخرى.',
+  uz: 'Assalomu alaykum! Anketangiz hali toʻliq emas, shuning uchun uni koʻrib chiqa olmadik. Sizni kutayotgan inson aynan anketangiz orqali sizni taniydi 🤍 Ismingiz, yoshingizni koʻrsating va «Oʻzim haqimda» (xarakteringiz, ishingiz, oilangiz, orzularingiz) hamda «Qanday turmush oʻrtoq izlayapman» boʻlimlarini toʻliq gaplar bilan yozing. Samimiy va batafsil anketa — xayrli nikoh sari birinchi qadam. Toʻldirib, qayta yuboring — sizni kutamiz!',
+  ru: 'Ассаламу алейкум! Ваша анкета пока не заполнена, поэтому мы не смогли её рассмотреть. Человек, который, возможно, ждёт именно вас, узнаёт вас по анкете 🤍 Укажите имя и возраст и расскажите полными предложениями «О себе» (характер, работа, семья, мечты) и «Кого я ищу». Искренняя и подробная анкета — первый шаг к благословенному никаху. Заполните и отправьте снова — мы ждём вас!',
+  tr: 'Esselâmu aleyküm! Profiliniz henüz doldurulmadığı için değerlendiremedik. Sizi bekleyen kişi sizi profilinizden tanıyacak 🤍 Adınızı ve yaşınızı girin; “Hakkımda” (karakteriniz, işiniz, aileniz, hayalleriniz) ve “Aradığım eş” bölümlerini tam cümlelerle yazın. Samimi ve ayrıntılı bir profil, hayırlı bir nikaha atılan ilk adımdır. Doldurup yeniden gönderin, sizi bekliyoruz!',
+  en: 'Assalamu alaikum! Your profile isn’t filled in yet, so we couldn’t review it. The person who may be waiting for you will get to know you through your profile 🤍 Add your name and age, and write “About me” (your character, work, family, hopes) and “The spouse I seek” in full sentences. A sincere, detailed profile is the first step towards a blessed nikah. Fill it in and submit again — we’re waiting for you!',
+  ar: 'السلام عليكم! ملفك لم يُملأ بعد، لذلك لم نتمكن من مراجعته. الشخص الذي ربما ينتظرك سيتعرّف عليك من خلال ملفك 🤍 أضف اسمك وعمرك، واكتب بجمل كاملة «نبذة عني» (طباعك، عملك، عائلتك، آمالك) و«الشريك الذي أبحث عنه». الملف الصادق المفصّل هو أول خطوة نحو نكاح مبارك. املأه وأرسله من جديد — نحن في انتظارك!',
 };
+
+/** Ad, doğum tarihi ya da iki serbest metinden biri boş/anlamsızsa anket incelemeye değmez. */
+function isThinProfile(p: Profile) {
+  return !p.displayName?.trim() || !p.birthDate || !looksLikeText(p.aboutMe) || !looksLikeText(p.aboutSpouse);
+}
 
 const EDITABLE_STATUSES = new Set(['ONBOARDING', 'PENDING_MODERATION', 'REJECTED', 'APPROVED']);
 
@@ -340,8 +346,25 @@ export class ProfilesService implements OnModuleInit {
       subjectGender: user.gender,
       aiFlags: this.ai.screenText(text),
     });
-    if (!looksLikeText(profile.aboutMe) || !looksLikeText(profile.aboutSpouse)) {
-      await this.moderation.autoReject(item, THIN_PROFILE_REASON[user.locale] ?? THIN_PROFILE_REASON.en);
+    if (isThinProfile(profile)) await this.moderation.autoReject(item, THIN_PROFILE_REASON[user.locale] ?? THIN_PROFILE_REASON.en);
+  }
+
+  /** Kuyrukta bekleyen boş anketleri de geri gönderir (kural öncesi gelenler ya da başka bir yoldan düşenler). */
+  @Cron(CronExpression.EVERY_10_MINUTES)
+  async sweepThinProfiles() {
+    const items = await this.prisma.moderationItem.findMany({ where: { targetType: 'PROFILE', status: 'PENDING' } });
+    if (!items.length) return;
+    const users = await this.prisma.user.findMany({
+      // Yalnızca ilk kez incelemeye gönderilenler; onaylı üyenin düzenlemesi moderatöre kalır.
+      where: { id: { in: items.map((i) => i.subjectUserId) }, status: 'PENDING_MODERATION' },
+      include: { profile: true },
+    });
+    const byId = new Map(users.map((u) => [u.id, u]));
+    for (const item of items) {
+      const u = byId.get(item.subjectUserId);
+      if (u?.profile && isThinProfile(u.profile)) {
+        await this.moderation.autoReject(item, THIN_PROFILE_REASON[u.locale] ?? THIN_PROFILE_REASON.en);
+      }
     }
   }
 }
