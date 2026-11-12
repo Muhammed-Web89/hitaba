@@ -1,4 +1,5 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { createHash } from 'node:crypto';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { env } from '../config/env';
 import type { Prisma, Profile, User } from '@prisma/client';
@@ -33,6 +34,23 @@ const THIN_PROFILE_REASON: Record<string, string> = {
   ar: 'السلام عليكم! ملفك لم يُملأ بعد، لذلك لم نتمكن من مراجعته. الشخص الذي ربما ينتظرك سيتعرّف عليك من خلال ملفك 🤍 أضف اسمك وعمرك، واكتب بجمل كاملة «نبذة عني» (طباعك، عملك، عائلتك، آمالك) و«الشريك الذي أبحث عنه». الملف الصادق المفصّل هو أول خطوة نحو نكاح مبارك. املأه وأرسله من جديد — نحن في انتظارك!',
 };
 
+/** Reddedilen anket hiç değiştirilmeden yeniden gönderildiğinde: ilk seferde uyarıyla geri çevrilir, ikincisinde hesap engellenir. */
+const UNCHANGED_RESUBMIT_REASON: Record<string, string> = {
+  uz: 'Anketingiz hech qanday oʻzgarishsiz qayta yuborildi. Iltimos, avvalgi rad etish sababini oʻqib, anketangizni tuzating. Diqqat: anketa yana oʻzgarishsiz yuborilsa, hisobingiz butunlay bloklanadi.',
+  ru: 'Анкета отправлена повторно без каких-либо изменений. Пожалуйста, прочитайте прежнюю причину отказа и исправьте анкету. Внимание: если анкета снова будет отправлена без изменений, аккаунт будет заблокирован навсегда.',
+  tr: 'Profiliniz hiçbir değişiklik yapılmadan yeniden gönderildi. Lütfen önceki ret gerekçesini okuyup profilinizi düzeltin. Dikkat: profil yine değiştirilmeden gönderilirse hesabınız kalıcı olarak engellenir.',
+  en: 'Your profile was resubmitted without any changes. Please read the previous rejection reason and update your profile. Note: if it is submitted unchanged again, your account will be permanently blocked.',
+  ar: 'أُعيد إرسال ملفك دون أي تعديل. من فضلك اقرأ سبب الرفض السابق وعدّل ملفك. تنبيه: إذا أُرسل الملف مرة أخرى دون تعديل فسيُحظر حسابك نهائيًا.',
+};
+const UNCHANGED_RESUBMIT_LIMIT = 2;
+
+/** Anketin içerik özeti (fotoğraflar hariç); şifreli ön eleme cevapları çözülerek karşılaştırılır. */
+function profileHash(p: Profile) {
+  const { userId: _u, updatedAt: _t, submittedAt: _s, approvedAt: _a, moderationStatus: _m, rejectedHash: _r, unchangedResubmits: _n, screeningEnc, acceptedRulesAt: _ar, completedSteps: _c, showPhotoInFeed: _f, hideBusyBadge: _b, ...content } = p;
+  const screening = screeningEnc ? decrypt(screeningEnc) : null;
+  return createHash('sha256').update(JSON.stringify({ ...content, screening })).digest('hex');
+}
+
 /** Ad, doğum tarihi ya da iki serbest metinden biri boş/anlamsızsa anket incelemeye değmez. */
 function isThinProfile(p: Profile) {
   return !p.displayName?.trim() || !p.birthDate || !looksLikeText(p.aboutMe) || !looksLikeText(p.aboutSpouse);
@@ -58,6 +76,10 @@ export class ProfilesService implements OnModuleInit {
           where: { userId: user.id },
           data: { moderationStatus: approved ? 'APPROVED' : 'REJECTED', ...(approved && { approvedAt: new Date() }) },
         });
+        if (!approved) {
+          const p = await this.prisma.profile.findUniqueOrThrow({ where: { userId: user.id } });
+          await this.prisma.profile.update({ where: { userId: user.id }, data: { rejectedHash: profileHash(p) } });
+        }
         if (user.status === 'BANNED' || user.status === 'FROZEN' || user.status === 'DELETED') return;
         await this.prisma.user.update({
           where: { id: user.id },
@@ -189,6 +211,23 @@ export class ProfilesService implements OnModuleInit {
     const missing = PROFILE_STEP_ORDER.filter((s) => !profile.completedSteps.includes(s));
     if (missing.length) throw new BadRequestException({ error: 'steps_incomplete', missing });
 
+    const unchanged = user.status === 'REJECTED' && profile.rejectedHash !== null && profile.rejectedHash === profileHash(profile);
+    const resubmits = unchanged ? profile.unchangedResubmits + 1 : 0;
+    if (resubmits >= UNCHANGED_RESUBMIT_LIMIT) {
+      await this.prisma.$transaction([
+        this.prisma.profile.update({ where: { userId: user.id }, data: { unchangedResubmits: resubmits } }),
+        this.prisma.user.update({
+          where: { id: user.id },
+          data: { status: 'BANNED', statusReason: 'Anket düzeltilmeden tekrar tekrar gönderildi (otomatik)', tokenVersion: { increment: 1 } },
+        }),
+      ]);
+      await this.moderation.audit(null, 'user.ban', { targetType: 'USER', targetId: user.id }, { auto: 'unchanged_resubmit', resubmits });
+      throw new UnauthorizedException({ error: 'account_blocked' });
+    }
+    if (resubmits !== profile.unchangedResubmits) {
+      await this.prisma.profile.update({ where: { userId: user.id }, data: { unchangedResubmits: resubmits } });
+    }
+
     const updated = await this.prisma.$transaction(async (tx) => {
       await tx.profile.update({
         where: { userId: user.id },
@@ -196,7 +235,7 @@ export class ProfilesService implements OnModuleInit {
       });
       return tx.user.update({ where: { id: user.id }, data: { status: 'PENDING_MODERATION', statusReason: null } });
     });
-    await this.enqueueProfile(updated, profile);
+    await this.enqueueProfile(updated, profile, unchanged);
     void this.notifications.refreshTelegramStatus(user.id);
     // Anlamsız metin hemen reddedilmiş olabilir: güncel durum döner.
     return this.me(await this.prisma.user.findUniqueOrThrow({ where: { id: user.id } }));
@@ -337,7 +376,7 @@ export class ProfilesService implements OnModuleInit {
     }
   }
 
-  private async enqueueProfile(user: User, profile: Profile) {
+  private async enqueueProfile(user: User, profile: Profile, unchanged = false) {
     const text = [profile.displayName, profile.aboutMe, profile.aboutSpouse, profile.beliefsManhaj].filter(Boolean).join('\n');
     const item = await this.moderation.enqueue({
       targetType: 'PROFILE',
@@ -346,7 +385,8 @@ export class ProfilesService implements OnModuleInit {
       subjectGender: user.gender,
       aiFlags: this.ai.screenText(text),
     });
-    if (isThinProfile(profile)) await this.moderation.autoReject(item, THIN_PROFILE_REASON[user.locale] ?? THIN_PROFILE_REASON.en);
+    if (unchanged) await this.moderation.autoReject(item, UNCHANGED_RESUBMIT_REASON[user.locale] ?? UNCHANGED_RESUBMIT_REASON.en);
+    else if (isThinProfile(profile)) await this.moderation.autoReject(item, THIN_PROFILE_REASON[user.locale] ?? THIN_PROFILE_REASON.en);
   }
 
   /** Kuyrukta bekleyen boş anketleri de geri gönderir (kural öncesi gelenler ya da başka bir yoldan düşenler). */

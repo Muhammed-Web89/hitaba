@@ -245,6 +245,10 @@ model Profile {
   hideBusyBadge      Boolean          @default(false)
   moderationStatus   ModerationStatus @default(PENDING)
   submittedAt        DateTime?
+  /// Son reddedilişteki içerik özeti; değişmeden yeniden gönderim bununla anlaşılır.
+  rejectedHash       String?
+  /// Ret sonrası hiç değiştirilmeden yapılan gönderim sayısı (2. seferde hesap engellenir).
+  unchangedResubmits Int              @default(0)
   approvedAt         DateTime?
   updatedAt          DateTime         @updatedAt
 
