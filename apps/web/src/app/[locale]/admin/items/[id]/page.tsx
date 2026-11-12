@@ -9,6 +9,7 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { api, mediaUrl } from '@/lib/api';
 import { useErrorText } from '@/lib/format';
 import { Transcript } from '@/components/Transcript';
+import { KV, ProfileDetails } from '@/components/admin/ProfileDetails';
 
 interface Detail {
   item: { id: string; targetType: ModerationTarget; status: string; aiFlags: string[]; subjectUserId: string; subjectGender: string; reason: string | null };
@@ -90,15 +91,6 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
   );
 }
 
-function KV({ k, v }: { k: string; v: React.ReactNode }) {
-  return (
-    <div className="grid grid-cols-[160px_1fr] gap-3 py-1.5 text-sm">
-      <dt className="text-ink-3">{k}</dt>
-      <dd className="whitespace-pre-wrap break-words">{v === null || v === undefined || v === '' ? '—' : v}</dd>
-    </div>
-  );
-}
-
 /** AI bayrakları "contact:phone" biçimindedir; çevirisi yoksa ham kod gösterilir. */
 function useFlagLabel() {
   const t = useTranslations('admin.flags');
@@ -110,14 +102,8 @@ function useFlagLabel() {
 
 function ContextView({ type, context, gender }: { type: ModerationTarget; context: any; gender: string }) {
   const t = useTranslations('admin');
-  const tf = useTranslations('onboarding.fields');
   const te = useTranslations('enums');
   const flagLabel = useFlagLabel();
-  const screeningValue = (k: string, v: unknown) => {
-    if (typeof v === 'boolean') return t(v ? 'yes' : 'no');
-    if ((k === 'prayer' || k === 'hijab') && typeof v === 'string') return te(`${k}.${v}` as never);
-    return String(v);
-  };
 
   if (type === 'PHOTO') {
     return (
@@ -129,35 +115,7 @@ function ContextView({ type, context, gender }: { type: ModerationTarget; contex
   }
 
   if (type === 'PROFILE') {
-    const p = context.profile;
-    return (
-      <>
-        <Card className="p-4">
-          <dl className="divide-y divide-line">
-            <KV k={tf('displayName')} v={p.displayName} />
-            <KV k={t('age')} v={p.age} />
-            <KV k={tf('country')} v={`${p.city ?? ''}, ${p.country ?? ''}`} />
-            <KV k={tf('nationality')} v={p.nationality} />
-            <KV k={tf('maritalStatus')} v={`${te(`marital.${p.maritalStatus}` as 'marital.MARRIED', { gender })} · ${tf('nikahCount')}: ${p.nikahCount} · ${tf('childrenCount')}: ${p.childrenCount}`} />
-            <KV k={tf('aboutMe')} v={p.aboutMe} />
-            <KV k={tf('aboutSpouse')} v={p.aboutSpouse} />
-            <KV k={tf('beliefsManhaj')} v={p.beliefsManhaj} />
-          </dl>
-        </Card>
-        <Card className="p-4">
-          <h3 className="mb-2 font-semibold">{t('screening')}</h3>
-          {context.screening ? (
-            <dl className="divide-y divide-line">
-              {Object.entries(context.screening).map(([k, v]) => (
-                <KV key={k} k={tf.has(k as never) ? tf(k as never) : k} v={screeningValue(k, v)} />
-              ))}
-            </dl>
-          ) : (
-            '—'
-          )}
-        </Card>
-      </>
-    );
+    return <ProfileDetails profile={context.profile} screening={context.screening} gender={gender} />;
   }
 
   if (type === 'MAHRAM_CONTACT') {

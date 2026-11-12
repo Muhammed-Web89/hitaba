@@ -4,6 +4,7 @@ import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { Button, Card, Chip, Field, Modal, Notice, PageLoader, Textarea } from '@/components/ui';
+import { ProfileDetails } from '@/components/admin/ProfileDetails';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useErrorText, useRelativeTime } from '@/lib/format';
@@ -19,6 +20,7 @@ interface AdminUser {
   connectBalance: number;
   createdAt: string;
   profile: Record<string, any> | null;
+  screening: Record<string, unknown> | null;
   reportsAgainst: { id: string; category: string; details: string | null; createdAt: string }[];
   connectTxs: { id: string; amount: number; type: string; createdAt: string }[];
   _count: Record<string, number>;
@@ -83,9 +85,7 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
             ))}
           </dl>
         </Card>
-        {u.profile?.aboutMe && (
-          <Card className="whitespace-pre-wrap p-4 text-sm">{u.profile.aboutMe}</Card>
-        )}
+        {u.profile && <ProfileDetails profile={u.profile} screening={u.screening} gender={u.gender} />}
         <Card className="p-4">
           <h3 className="mb-2 font-semibold">{t('reportsAgainst')}</h3>
           {u.reportsAgainst.length ? (

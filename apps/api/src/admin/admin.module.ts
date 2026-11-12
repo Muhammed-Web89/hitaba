@@ -12,10 +12,11 @@ import {
 } from '@nestjs/common';
 import type { ChatStatus, Gender, ReportStatus, User } from '@prisma/client';
 import { z } from 'zod';
-import { reportSchema, type ReportInput } from '@hitaba/shared';
+import { ageFromBirthDate, reportSchema, type ReportInput } from '@hitaba/shared';
 import { CurrentUser, Roles } from '../auth/guards';
 import { ChatModule } from '../chat/chat.module';
 import { ChatService } from '../chat/chat.service';
+import { decrypt } from '../common/crypto';
 import { ZodPipe } from '../common/zod.pipe';
 import { ConnectsService } from '../connects/connects.service';
 import { ModerationService } from '../moderation/moderation.service';
@@ -126,7 +127,7 @@ export class AdminService {
     const user = await this.prisma.user.findUnique({
       where: { id },
       include: {
-        profile: { omit: { screeningEnc: true } },
+        profile: true,
         reportsAgainst: { orderBy: { createdAt: 'desc' }, take: 20 },
         connectTxs: { orderBy: { createdAt: 'desc' }, take: 20 },
         _count: { select: { likesGiven: true, likesReceived: true, matchesAsMale: true, matchesAsFemale: true } },
@@ -134,8 +135,14 @@ export class AdminService {
     });
     if (!user) throw new NotFoundException();
     await this.moderation.audit(mod.id, 'user.view', { targetType: 'USER', targetId: id });
-    const { passwordHash: _pw, ...safe } = user;
-    return safe;
+    const { passwordHash: _pw, profile, ...safe } = user;
+    if (!profile) return { ...safe, profile: null, screening: null };
+    const { screeningEnc, ...rest } = profile;
+    return {
+      ...safe,
+      profile: { ...rest, age: rest.birthDate ? ageFromBirthDate(rest.birthDate) : null },
+      screening: screeningEnc ? JSON.parse(decrypt(screeningEnc)) : null,
+    };
   }
 
   /** Ban: tüm oturumlar kapanır, bakiye sıfırlanır, açık sohbetler kapanır (karşı tarafa iade). */
