@@ -281,7 +281,8 @@ export class ChatService implements OnModuleInit {
 
   /**
    * Sohbet kuralları: iletişim bilgisi, niyet ve yasaklı kelimeler; ayrıca sayılar en fazla
-   * {chatNumberMaxDigits} haneli olabilir ve sohbet boyunca en fazla {chatNumberMaxTimes} mesajda geçebilir.
+   * {chatNumberMaxDigits} haneli olabilir ve sohbet boyunca en fazla {chatNumberMaxTimes} mesajda yeni sayı geçebilir
+   * (daha önce yazılan sayıyı tekrar etmek sayılmaz).
    * Kural dışı mesaj karşı tarafa iletilmez, moderatöre tutulur.
    */
   private async screen(viewer: User, chatId: string, text: string, excludeId?: string) {
@@ -290,15 +291,24 @@ export class ChatService implements OnModuleInit {
     const numbers = numbersIn(text);
     if (numbers.length && !signals.includes('PHONE')) {
       const tooLong = numbers.some((n) => n.length > RULES.chatNumberMaxDigits);
-      const earlier = tooLong
-        ? 0
-        : (
-            await this.prisma.message.findMany({
-              where: { chatId, senderId: viewer.id, kind: 'TEXT', ...(excludeId && { id: { not: excludeId } }) },
-              select: { text: true, history: true },
-            })
-          ).filter((m) => [m.text, ...m.history].some((t) => numbersIn(t).length)).length;
-      if (tooLong || earlier >= RULES.chatNumberMaxTimes) signals.push('DIGITS');
+      if (tooLong) signals.push('DIGITS');
+      else {
+        // Daha önce yazılmış bir sayıyı tekrar etmek (ör. "1 ta farzand" iki kez) yeni bir hak harcamaz;
+        // yalnızca yeni sayı getiren mesajlar sınıra sayılır.
+        const earlier = await this.prisma.message.findMany({
+          where: { chatId, senderId: viewer.id, kind: 'TEXT', ...(excludeId && { id: { not: excludeId } }) },
+          select: { text: true, history: true },
+          orderBy: { createdAt: 'asc' },
+        });
+        const seen = new Set<string>();
+        let times = 0;
+        for (const m of earlier) {
+          const ns = [m.text, ...m.history].flatMap(numbersIn);
+          if (ns.some((n) => !seen.has(n))) times++;
+          ns.forEach((n) => seen.add(n));
+        }
+        if (numbers.some((n) => !seen.has(n)) && times >= RULES.chatNumberMaxTimes) signals.push('DIGITS');
+      }
     }
     return { blocked: signals.length > 0, signals };
   }

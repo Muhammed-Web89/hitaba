@@ -44,7 +44,7 @@ export const RULES = {
    * isteği moderatöre gider, onaylanınca iki tarafa da yeni kota açılır.
    */
   chatMessageQuota: 10,
-  /** Sohbette sayı yazma sınırı: en fazla 2 haneli sayılar, sohbet boyunca en fazla 2 mesajda. */
+  /** Sohbette sayı yazma sınırı: en fazla 2 haneli sayılar, sohbet boyunca en fazla 2 mesajda yeni sayı (tekrarlar sayılmaz). */
   chatNumberMaxDigits: 2,
   chatNumberMaxTimes: 2,
 
