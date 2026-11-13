@@ -7,7 +7,7 @@
  */
 
 /**
- * INTENT: iletişim bilgisi isteme/verme niyeti ("raqamingizni bering", "номер", "telegram");
+ * INTENT: iletişim bilgisi isteme/verme niyeti — iletişim adı + isteme fiili ("raqamingizni bering", "скиньте телеграм");
  * PROFANITY: küfür ve ahlaka aykırı sözler. İkisi de mesajı moderatöre tutar.
  */
 export type ContactSignal = 'PHONE' | 'EMAIL' | 'URL' | 'HANDLE' | 'MESSENGER' | 'INTENT' | 'PROFANITY';
@@ -35,26 +35,41 @@ const MESSENGER_WORDS = [
 ];
 
 /**
- * Yasaklı kelimeler (normalize edilmiş biçimde karşılaştırılır). PREFIX: kelime bununla başlıyorsa
- * ("raqamingiz", "телефоном"); EXACT: yalnızca kelimenin kendisi (kısa ya da başka kelimelerin
- * başında geçen sözler: "tel", "sik", "aq").
+ * İletişim niyeti ikili kelimeyle anlaşılır: bir iletişim adı ("raqam", "kontakt", "telegram", "номер")
+ * VE aynı mesajda bir isteme/gönderme fiili ("bering", "yuboring", "скиньте", "ver"). Tek başına
+ * "aloqa" ya da "telefon" sohbeti durdurmaz — rakam sınırı zaten numara paylaşımını engeller.
+ * PREFIX: kelime bununla başlıyorsa ("raqamingizni", "телефоном"); EXACT: yalnızca kendisi.
  */
-const INTENT_PREFIX = [
+const CONTACT_PREFIX = [
   // uz (lotin)
-  'nomer', 'raqam', 'telefon', 'aloqaga', 'aloqada', 'aloqani', 'aloqangiz', 'qongiroq', 'qungiroq', 'zvon', 'lichka', 'lichkaga', 'manzil', 'adres', 'kontakt', 'akkaunt',
+  'nomer', 'raqam', 'telefon', 'aloqa', 'kontakt', 'lichka', 'akkaunt', 'link', 'ssilka',
   // uz / ru (kiril)
-  'номер', 'ракам', 'рақам', 'телефон', 'алокага', 'алокада', 'алокани', 'алоқага', 'алоқада', 'алоқани', 'кунгирок', 'қўнғироқ', 'қунғироқ', 'звон', 'позвон', 'созвон', 'связат', 'свяж', 'контакт', 'личк', 'адрес', 'манзил', 'аккаунт',
+  'номер', 'ракам', 'рақам', 'телефон', 'алока', 'алоқа', 'контакт', 'личк', 'аккаунт', 'линк', 'ссылк',
   // tr
-  'numara', 'iletisim', 'irtibat', 'ulas',
+  'numara', 'iletisim', 'irtibat', 'hesab',
   // en
-  'number', 'phone', 'contact', 'inbox', 'whats',
+  'number', 'phone', 'contact', 'account', 'handle', 'username',
   // ar
-  'رقم', 'هاتف', 'جوال', 'تلفون', 'تليفون', 'واتس', 'تواصل', 'اتصل', 'تلجرام', 'تيليجرام', 'انستا',
-  // mesajlaşma uygulamaları — adının geçmesi yeterli
+  'رقم', 'هاتف', 'جوال', 'تلفون', 'تليفون', 'واتس', 'تلجرام', 'تيليجرام', 'انستا', 'حساب', 'رابط',
   ...MESSENGER_WORDS.filter((w) => w.length > 4),
 ];
-// "aloqa" yalnızca kendisi ve iletişim çekimleriyle: "aloqador" (ilgili) masumdur.
-const INTENT_EXACT = ['aloqa', 'алока', 'алоқа', 'tel', 'тел', 'imo', 'dm', 'лс', 'tg', 'тг', 'wp', 'insta', 'инста'];
+const CONTACT_EXACT = ['tel', 'тел', 'imo', 'tg', 'тг', 'wp', 'insta', 'инста', 'лс', 'dm'];
+
+const REQUEST_PREFIX = [
+  // uz: ber-, yubor-, tashla-, yoz-, qoldir-, ayt-, ulash-, olib
+  'ber', 'yubor', 'jonat', 'tashla', 'yoz', 'qoldir', 'ayt', 'ulash', 'olib', 'oling',
+  'бер', 'юбор', 'жўнат', 'жонат', 'ташла', 'ёз', 'қолдир', 'колдир', 'айт', 'улаш', 'олиб', 'олинг',
+  // ru
+  'дай', 'дайт', 'дашь', 'скин', 'кин', 'отправ', 'пиш', 'напиш', 'остав', 'добав', 'сброс', 'подел', 'перешл',
+  // tr
+  'ver', 'gonder', 'yaz', 'paylas', 'birak', 'yolla', 'ekle',
+  // en
+  'give', 'send', 'share', 'text', 'drop', 'write', 'leave', 'add',
+  // ar
+  'اعط', 'أعط', 'ارسل', 'أرسل', 'ابعث', 'اكتب', 'شارك', 'هات',
+];
+// "at" (tr: numaranı at) kısa olduğu için yalnızca kendisi; "bormi" (bor mi?) da soru biçimiyle istek sayılır.
+const REQUEST_EXACT = ['at', 'atar', 'atarmisin', 'atin', 'bormi', 'борми', 'dm'];
 
 const PROFANITY_PREFIX = [
   // ru
@@ -96,7 +111,8 @@ function normalize(input: string): string {
 
 const norm = (list: string[]) => list.map(normalize);
 const LISTS = {
-  INTENT: { prefix: norm(INTENT_PREFIX), exact: new Set(norm(INTENT_EXACT)) },
+  CONTACT: { prefix: norm(CONTACT_PREFIX), exact: new Set(norm(CONTACT_EXACT)) },
+  REQUEST: { prefix: norm(REQUEST_PREFIX), exact: new Set(norm(REQUEST_EXACT)) },
   PROFANITY: { prefix: norm(PROFANITY_PREFIX), exact: new Set(norm(PROFANITY_EXACT)) },
 } as const;
 
@@ -147,7 +163,7 @@ export function scanForContactInfo(raw: string): ContactScanResult {
   }
 
   const words = text.match(/[\p{L}]+/gu) ?? [];
-  if (hasWord(words, 'INTENT')) signals.add('INTENT');
+  if (hasWord(words, 'CONTACT') && hasWord(words, 'REQUEST')) signals.add('INTENT');
   if (hasWord(words, 'PROFANITY')) signals.add('PROFANITY');
 
   return { blocked: signals.size > 0, signals: [...signals] };

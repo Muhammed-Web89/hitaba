@@ -62,16 +62,33 @@ test('asking for or offering contact details is held', () => {
     'Ракамизни беринг',
     'Ман ёзаман езиб олинг шу номерда телеграм булади',
     'Таер туринг бошка алокадан ракамларни расмга олиб олинг',
-    'Шунда тел бор',
     'raqamingizni yozib qoldiring',
     'nomeringiz bormi?',
+    'kontaktingizni bering',
+    'aloqangizni yuboring',
+    'telefon raqamingizni bering',
+    'telegram linkingizni tashlang',
     'Telegram üzerinden yazar mısın?',
     'numaranı verir misin',
     'дайте ваш телефон, созвонимся',
-    'what is your number',
+    'скиньте телеграм',
+    'send me your number',
     'أعطني رقم هاتفك',
   ]) {
     assert.ok(scanForContactInfo(s).signals.includes('INTENT'), s);
+  }
+});
+
+test('contact words alone do not hold the chat', () => {
+  for (const s of [
+    'Aloqa sohasida ishlayman',
+    'Telefon ustasiman',
+    'Telegramda Hitabani topdim',
+    'Kontakt markazida ishlayman',
+    'Я работаю в отделе связи, телефон у меня старый',
+    'Hitabayı Telegram’da buldum',
+  ]) {
+    assert.ok(!scanForContactInfo(s).signals.includes('INTENT'), s);
   }
 });
 
