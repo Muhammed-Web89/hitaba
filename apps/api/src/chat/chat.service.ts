@@ -256,29 +256,6 @@ export class ChatService implements OnModuleInit {
     return this.summary(viewer, chatId);
   }
 
-  /** Kotası dolan taraf "Devam et" der; istek moderatöre gider, onaylanınca iki tarafa yeni kota açılır. */
-  async requestExtension(viewer: User, chatId: string): Promise<ChatSummary> {
-    const chat = await this.participantChat(viewer, chatId);
-    if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
-    if (chat.extensionRequestedAt) return this.summary(viewer, chatId);
-    if ((await this.quotaUsed(chat, viewer.id)) < RULES.chatMessageQuota) throw new BadRequestException({ error: 'quota_not_reached' });
-    const sys = await this.prisma.$transaction(async (tx) => {
-      await tx.chat.update({ where: { id: chat.id }, data: { extensionRequestedAt: new Date() } });
-      return this.systemMessage(tx, chat.id, 'chat_extension_requested');
-    });
-    this.emitNew(sys);
-    await this.moderation.enqueue({ targetType: 'CHAT_EXTENSION', targetId: chat.id, subjectUserId: viewer.id, subjectGender: viewer.gender });
-    this.emitStatus(chat.id);
-    return this.summary(viewer, chatId);
-  }
-
-  /** Bu turda kişinin yazdığı mesaj sayısı (silinen ve tutulanlar dahil). */
-  private quotaUsed(chat: Chat, userId: string) {
-    return this.prisma.message.count({
-      where: { chatId: chat.id, senderId: userId, kind: 'TEXT', createdAt: { gte: chat.quotaResetAt ?? chat.createdAt } },
-    });
-  }
-
   /**
    * Sohbet kuralları: iletişim bilgisi, niyet ve yasaklı kelimeler; ayrıca sayılar en fazla
    * {chatNumberMaxDigits} haneli olabilir ve sohbet boyunca en fazla {chatNumberMaxTimes} mesajda yeni sayı geçebilir
@@ -339,7 +316,6 @@ export class ChatService implements OnModuleInit {
     if (existing) return toChatMessage(existing);
     if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
     if (chat.status === 'PAUSED') throw new BadRequestException({ error: 'chat_paused' });
-    if ((await this.quotaUsed(chat, viewer.id)) >= RULES.chatMessageQuota) throw new BadRequestException({ error: 'quota_reached' });
 
     const scan = await this.screen(viewer, chatId, trimmed);
     const created = this.prisma.message.create({
@@ -501,7 +477,7 @@ export class ChatService implements OnModuleInit {
   async summary(viewer: User, chatId: string): Promise<ChatSummary> {
     const chat = await this.participantChat(viewer, chatId);
     const otherId = viewer.id === chat.match.maleId ? chat.match.femaleId : chat.match.maleId;
-    const [other, last, witnesses, wali, used] = await Promise.all([
+    const [other, last, witnesses, wali] = await Promise.all([
       this.prisma.profile.findUnique({ where: { userId: otherId } }),
       this.prisma.message.findFirst({
         where: { chatId, state: 'DELIVERED', deletedAt: null },
@@ -509,7 +485,6 @@ export class ChatService implements OnModuleInit {
       }),
       this.prisma.witness.findMany({ where: { femaleId: chat.match.femaleId }, select: { relation: true } }),
       this.prisma.waliLink.findUnique({ where: { femaleId: chat.match.femaleId }, select: { id: true } }),
-      this.quotaUsed(chat, viewer.id),
     ]);
     const watchers: ChatParticipantInfo = {
       maleModerator: Boolean(chat.maleModeratorId),
@@ -536,7 +511,6 @@ export class ChatService implements OnModuleInit {
       lastActivityAt: chat.lastActivityAt.toISOString(),
       canReopen: this.canReopen(viewer, chat),
       watchers,
-      quota: { limit: RULES.chatMessageQuota, used, extensionPending: Boolean(chat.extensionRequestedAt) },
     };
   }
 

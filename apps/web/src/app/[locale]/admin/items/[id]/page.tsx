@@ -3,7 +3,7 @@
 import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { RULES, type ModerationTarget } from '@hitaba/shared/client';
+import type { ModerationTarget } from '@hitaba/shared/client';
 import { Button, Card, Chip, EmptyState, Field, Notice, PageLoader, Textarea } from '@/components/ui';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api, mediaUrl } from '@/lib/api';
@@ -72,7 +72,6 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
                 <Textarea rows={3} value={reason} onChange={(e) => setReason(e.target.value)} maxLength={500} />
               </Field>
               {item.targetType === 'MESSAGE' && <Notice tone="warning">{t('banOnRejectNote')}</Notice>}
-              {item.targetType === 'CHAT_EXTENSION' && <Notice>{t('extensionNote', { quota: RULES.chatMessageQuota })}</Notice>}
               {error && <Notice tone="danger">{error}</Notice>}
               <div className="grid grid-cols-2 gap-2">
                 <Button variant="danger" loading={busy} onClick={() => decide('REJECT')}>

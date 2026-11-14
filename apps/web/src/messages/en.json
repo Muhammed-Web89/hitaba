@@ -526,7 +526,7 @@
         "ai": "The AI assistant checks every message around the clock; suspicious messages go to a moderator.",
         "noOutside": "Moving to outside apps like Telegram or WhatsApp and sharing phone numbers, usernames or links is forbidden. A mahram’s contact can be shared only via ⋮ → “Share mahram contact”.",
         "noBypass": "Attempts to get around the check (writing digits as words, splitting letters, sending as an image) count as direct sharing. Suggesting or teaching it to the other side is the same violation and can lead to both accounts being blocked.",
-        "limits": "Each side can write {quota} messages until a moderator approves more; then a “Continue” request goes to the moderators. Numbers may have at most {digits} digits and appear in at most {times} messages per chat.",
+        "limits": "Numbers may have at most {digits} digits and appear in at most {times} messages per chat.",
         "ban": "Phone numbers, requests for contacts, insults, indecent words and numbers outside the rules are not delivered — they go to a moderator. If the moderator confirms the violation, the account is banned permanently.",
         "adab": "Keep the conversation purposeful and avoid idle talk. Kind words within adab are fine; flirting and intimate topics are not.",
         "noToxic": "Insults, pressure and a disrespectful tone are strictly forbidden and lead to a block.",

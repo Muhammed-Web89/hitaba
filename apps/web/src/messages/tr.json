@@ -526,7 +526,7 @@
         "ai": "Yapay zekâ asistanı 7/24 her mesajı kontrol eder; şüpheli mesajlar moderatöre gider.",
         "noOutside": "Telegram, WhatsApp gibi dış uygulamalara geçmek ve telefon, kullanıcı adı, bağlantı paylaşmak yasaktır. Mahreminizin iletişim bilgisini yalnızca ⋮ → “Mahrem yakının iletişim bilgisini paylaş” ile gönderebilirsiniz.",
         "noBypass": "Kontrolü atlatma girişimleri (rakamları harfle yazmak, harfleri ayırmak, resimle göndermek) doğrudan paylaşım gibi değerlendirilir. Karşı tarafa bunu önermek ya da öğretmek de aynı ihlaldir ve iki hesabın da engellenmesine yol açabilir.",
-        "limits": "Her taraf moderatör onayına kadar {quota} mesaj yazabilir; sonra “Devam et” isteği moderatöre gider. Sayılar en fazla {digits} haneli olabilir ve sohbet boyunca en fazla {times} mesajda yazılabilir.",
+        "limits": "Sayılar en fazla {digits} haneli olabilir ve sohbet boyunca en fazla {times} mesajda yazılabilir.",
         "ban": "Telefon numarası, iletişim isteği, hakaret, ahlaka aykırı sözler ve kural dışı sayılar karşı tarafa iletilmez; moderatöre gider. Moderatör ihlali onaylarsa hesap kalıcı olarak engellenir.",
         "adab": "Konuşma amaca yönelik olmalı; boş sohbetten kaçının. Edep içindeki nazik sözler serbesttir, flört ve mahrem konular değildir.",
         "noToxic": "Hakaret, baskı ve saygısız üslup kesinlikle yasaktır ve hesabın engellenmesine yol açar.",

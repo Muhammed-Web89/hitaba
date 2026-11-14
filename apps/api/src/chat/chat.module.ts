@@ -55,10 +55,6 @@ export class ChatController {
   }
 
   /** Mesaj kotası dolunca "Devam et": istek moderatör onayına gider. */
-  @Post(':id/continue')
-  requestExtension(@CurrentUser() user: User, @Param('id') id: string) {
-    return this.chats.requestExtension(user, id);
-  }
 
   @Post(':id/close')
   close(@CurrentUser() user: User, @Param('id') id: string) {

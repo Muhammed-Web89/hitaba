@@ -526,7 +526,7 @@
         "ai": "Sunʼiy intellekt yordamchisi har bir xabarni kecha-kunduz tekshiradi; shubhali xabarlar moderatorga yuboriladi.",
         "noOutside": "Telegram, WhatsApp kabi tashqi ilovalarga oʻtish va telefon, foydalanuvchi nomi, havola ulashish taqiqlanadi. Mahramingizning aloqa maʼlumotini faqat ⋮ → “Mahram (ota yoki aka) raqamini ulashish” orqali yuborish mumkin.",
         "noBypass": "Tekshiruvni chetlab oʻtishga urinishlar (raqamlarni soʻz bilan yozish, harflarni ajratish, rasm qilib yuborish) toʻgʻridan-toʻgʻri ulashish deb baholanadi. Buni qarshi tomonga taklif qilish yoki oʻrgatish ham xuddi shunday qoidabuzarlik boʻlib, ikkala hisobning bloklanishiga olib kelishi mumkin.",
-        "limits": "Har bir tomon moderator ruxsatigacha {quota} ta xabar yoza oladi; keyin «Davom ettirish» soʻrovi moderatorga boradi. Raqamlar koʻpi bilan {digits} xonali boʻlishi va suhbat davomida koʻpi bilan {times} marta yozilishi mumkin.",
+        "limits": "Raqamlar koʻpi bilan {digits} xonali boʻlishi va suhbat davomida koʻpi bilan {times} marta yozilishi mumkin.",
         "ban": "Telefon raqami, aloqa soʻrash, haqoratli yoki odobsiz soʻzlar va qoidadan tashqari raqamlar qarshi tomonga yetkazilmaydi — moderatorga boradi. Moderator buzilishni tasdiqlasa, hisob butunlay bloklanadi.",
         "adab": "Suhbat maqsadli boʻlsin, behuda gaplardan saqlaning. Odob doirasidagi iliq soʻzlar mumkin, noz-karashma va mahram mavzular mumkin emas.",
         "noToxic": "Haqorat, bosim va hurmatsiz ohang qatʼiyan taqiqlanadi va hisobning bloklanishiga olib keladi.",

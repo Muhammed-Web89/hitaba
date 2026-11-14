@@ -63,7 +63,6 @@ export function ChatRulesSheet({ open, onClose }: { open: boolean; onClose: () =
                   editMin: RULES.messageEditWindowMinutes,
                   remind1: RULES.silenceFirstReminderHours,
                   close: RULES.silenceAutoCloseHours,
-                  quota: RULES.chatMessageQuota,
                   digits: RULES.chatNumberMaxDigits,
                   times: RULES.chatNumberMaxTimes,
                 })}
