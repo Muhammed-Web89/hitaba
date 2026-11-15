@@ -67,11 +67,22 @@ export class TranslationService {
     const source = text.trim();
     if (!source) return '';
     const useClaude = kind === 'profile' ? Boolean(this.client) : !env.AZURE_TRANSLATOR_KEY;
-    // Sağlayıcı anahtara dahil: sağlayıcı değişince önceki çeviriler (ör. Azure'un profil çevirileri) kullanılmaz.
-    const key = createHash('sha256').update(`${useClaude ? 'claude' : 'azure'}\n${target}\n${source}`).digest('hex');
-    const cached = await this.prisma.translation.findUnique({ where: { key } });
-    if (cached) return cached.text;
-    const out = useClaude ? await this.viaClaude(source, target) : await this.viaAzure(source, target);
+    if (!useClaude) return this.cached('azure', source, target);
+    try {
+      return await this.cached('claude', source, target);
+    } catch (e) {
+      // Claude geçici olarak kullanılamazsa (kredi, kota) profil Azure ile çevrilir; Claude dönünce yine Claude kullanılır.
+      if (!env.AZURE_TRANSLATOR_KEY) throw e;
+      return this.cached('azure', source, target);
+    }
+  }
+
+  /** Sağlayıcı anahtara dahil: sağlayıcı değişince önceki çeviriler (ör. Azure'un profil çevirileri) kullanılmaz. */
+  private async cached(provider: 'claude' | 'azure', source: string, target: Locale): Promise<string> {
+    const key = createHash('sha256').update(`${provider}\n${target}\n${source}`).digest('hex');
+    const hit = await this.prisma.translation.findUnique({ where: { key } });
+    if (hit) return hit.text;
+    const out = provider === 'claude' ? await this.viaClaude(source, target) : await this.viaAzure(source, target);
     await this.prisma.translation.upsert({ where: { key }, create: { key, text: out }, update: {} });
     return out;
   }
