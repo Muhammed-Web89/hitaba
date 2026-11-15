@@ -20,6 +20,8 @@ import { decrypt } from '../common/crypto';
 import { ZodPipe } from '../common/zod.pipe';
 import { ConnectsService } from '../connects/connects.service';
 import { ModerationService } from '../moderation/moderation.service';
+import { PhotosModule } from '../photos/photos.module';
+import { PhotosService } from '../photos/photos.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const reasonSchema = z.object({ reason: z.string().trim().min(3).max(500) });
@@ -35,6 +37,7 @@ export class AdminService {
     private readonly chats: ChatService,
     private readonly connects: ConnectsService,
     private readonly moderation: ModerationService,
+    private readonly photos: PhotosService,
   ) {}
 
   async report(reporter: User, input: ReportInput) {
@@ -136,10 +139,12 @@ export class AdminService {
     if (!user) throw new NotFoundException();
     await this.moderation.audit(mod.id, 'user.view', { targetType: 'USER', targetId: id });
     const { passwordHash: _pw, profile, ...safe } = user;
-    if (!profile) return { ...safe, profile: null, screening: null };
+    const photos = await this.photos.forStaff(mod, id);
+    if (!profile) return { ...safe, profile: null, screening: null, photos };
     const { screeningEnc, ...rest } = profile;
     return {
       ...safe,
+      photos,
       profile: { ...rest, age: rest.birthDate ? ageFromBirthDate(rest.birthDate) : null },
       screening: screeningEnc ? JSON.parse(decrypt(screeningEnc)) : null,
     };
@@ -247,7 +252,10 @@ export class ReportsController {
 @Controller('admin')
 @Roles('MODERATOR', 'ADMIN')
 export class AdminController {
-  constructor(private readonly admin: AdminService) {}
+  constructor(
+    private readonly admin: AdminService,
+    private readonly photos: PhotosService,
+  ) {}
 
   @Get('stats')
   stats() {
@@ -290,6 +298,11 @@ export class AdminController {
     return this.admin.freeze(mod, id, false);
   }
 
+  @Post('photos/:id/reject')
+  rejectPhoto(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(reasonSchema)) body: { reason: string }) {
+    return this.photos.rejectByStaff(mod, id, body.reason);
+  }
+
   @Get('chats')
   chats(@Query('status') status?: ChatStatus) {
     return this.admin.chatsList(status);
@@ -307,7 +320,7 @@ export class AdminController {
 }
 
 @Module({
-  imports: [ChatModule],
+  imports: [ChatModule, PhotosModule],
   controllers: [ReportsController, AdminController],
   providers: [AdminService],
 })

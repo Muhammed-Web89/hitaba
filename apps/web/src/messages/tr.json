@@ -860,6 +860,13 @@
     "freeze": "Profili dondur",
     "unfreeze": "Dondurmayı kaldır",
     "ban": "Hesabı engelle",
+    "photos": "Fotoğraflar",
+    "photosHidden": "Bu kullanıcının fotoğraflarını yalnızca aynı cinsiyetteki moderatörler görebilir.",
+    "photosNone": "Fotoğraf yok.",
+    "rejectPhoto": "Reddet, yenisini yüklesin",
+    "rejectPhotoHint": "Fotoğraf profilden kalkar; kullanıcıya sebep bildirilir ve yeni fotoğraf yükleyebilir.",
+    "photoStatus": {"PENDING": "İncelemede", "APPROVED": "Onaylı", "REJECTED": "Reddedildi"},
+    "photoMain": "Ana",
     "banNote": "Engelleme: tüm oturumlar kapanır, bakiye sıfırlanır, açık sohbetler kapanır ve karşı tarafa iade yapılır.",
     "userStatus": {
       "ONBOARDING": "Kayıt aşamasında",

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { Button, Card, Chip, Field, Modal, Notice, PageLoader, Textarea } from '@/components/ui';
 import { ProfileDetails } from '@/components/admin/ProfileDetails';
-import { api } from '@/lib/api';
+import { api, mediaUrl } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useErrorText, useRelativeTime } from '@/lib/format';
 
@@ -21,6 +21,8 @@ interface AdminUser {
   createdAt: string;
   profile: Record<string, any> | null;
   screening: Record<string, unknown> | null;
+  /** null: farklı cinsiyetteki ekip üyesi göremez. */
+  photos: { id: string; kind: string; status: 'PENDING' | 'APPROVED' | 'REJECTED'; rejectionReason: string | null; url: string }[] | null;
   reportsAgainst: { id: string; category: string; details: string | null; createdAt: string }[];
   connectTxs: { id: string; amount: number; type: string; createdAt: string }[];
   _count: Record<string, number>;
@@ -37,6 +39,7 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
   const { me } = useAuth();
   const { data: u, mutate } = useSWR<AdminUser>(`/admin/users/${id}`);
   const [action, setAction] = useState<'ban' | 'freeze' | null>(null);
+  const [photoId, setPhotoId] = useState<string | null>(null);
   const [reason, setReason] = useState('');
   const [error, setError] = useState<string | null>(null);
   if (!u) return <PageLoader />;
@@ -44,8 +47,9 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
   async function run(path: string, body?: unknown) {
     setError(null);
     try {
-      await api(`/admin/users/${id}/${path}`, { method: 'POST', body });
+      await api(path.startsWith('/') ? path : `/admin/users/${id}/${path}`, { method: 'POST', body });
       setAction(null);
+      setPhotoId(null);
       setReason('');
       await mutate();
     } catch (e) {
@@ -84,6 +88,33 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
               </span>
             ))}
           </dl>
+        </Card>
+        <Card className="p-4">
+          <h3 className="mb-3 font-semibold">{t('photos')}</h3>
+          {u.photos === null ? (
+            <p className="text-sm text-ink-3">{t('photosHidden')}</p>
+          ) : u.photos.length ? (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {u.photos.map((p) => (
+                <div key={p.id} className="space-y-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={mediaUrl(p.url)} alt="" loading="lazy" decoding="async" className="aspect-[3/4] w-full rounded-card object-cover" />
+                  <div className="flex flex-wrap gap-1.5">
+                    <Chip tone={p.status === 'APPROVED' ? 'brand' : 'warning'}>{t(`photoStatus.${p.status}`)}</Chip>
+                    {p.kind === 'MAIN' && <Chip>{t('photoMain')}</Chip>}
+                  </div>
+                  {p.rejectionReason && <p className="text-xs text-ink-3">{p.rejectionReason}</p>}
+                  {p.status !== 'REJECTED' && (
+                    <Button variant="secondary" size="sm" className="w-full" onClick={() => setPhotoId(p.id)}>
+                      {t('rejectPhoto')}
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-ink-3">{t('photosNone')}</p>
+          )}
         </Card>
         {u.profile && <ProfileDetails profile={u.profile} screening={u.screening} gender={u.gender} />}
         <Card className="p-4">
@@ -127,20 +158,30 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
       </aside>
 
       <Modal
-        open={action !== null}
-        onClose={() => setAction(null)}
-        title={action === 'ban' ? t('ban') : t('freeze')}
+        open={action !== null || photoId !== null}
+        onClose={() => {
+          setAction(null);
+          setPhotoId(null);
+        }}
+        title={photoId ? t('rejectPhoto') : action === 'ban' ? t('ban') : t('freeze')}
         footer={
           <>
-            <Button variant="secondary" onClick={() => setAction(null)}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setAction(null);
+                setPhotoId(null);
+              }}
+            >
               {tc('cancel')}
             </Button>
-            <Button variant="danger" disabled={reason.trim().length < 3} onClick={() => run(action!, { reason })}>
+            <Button variant="danger" disabled={reason.trim().length < 3} onClick={() => run(photoId ? `/admin/photos/${photoId}/reject` : action!, { reason })}>
               {tc('confirm')}
             </Button>
           </>
         }
       >
+        {photoId && <p className="mb-3 text-sm text-ink-2">{t('rejectPhotoHint')}</p>}
         <Field label={t('reason')}>
           <Textarea rows={3} value={reason} onChange={(e) => setReason(e.target.value)} />
         </Field>

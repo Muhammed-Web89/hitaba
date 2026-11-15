@@ -860,6 +860,13 @@
     "freeze": "Freeze profile",
     "unfreeze": "Unfreeze",
     "ban": "Ban account",
+    "photos": "Photos",
+    "photosHidden": "Only moderators of the same gender can see this user’s photos.",
+    "photosNone": "No photos.",
+    "rejectPhoto": "Reject, ask for a new one",
+    "rejectPhotoHint": "The photo is removed from the profile; the user is told why and can upload a new one.",
+    "photoStatus": {"PENDING": "In review", "APPROVED": "Approved", "REJECTED": "Rejected"},
+    "photoMain": "Main",
     "banNote": "Ban: all sessions end, balance is reset, open chats close and the other side is refunded.",
     "userStatus": {
       "ONBOARDING": "Filling in profile",

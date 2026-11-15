@@ -154,6 +154,26 @@ export class PhotosService implements OnModuleInit {
     return Boolean(match?.malePhotoAccessUntil && match.malePhotoAccessUntil > new Date() && match.stage !== 'CLOSED');
   }
 
+  /** Yönetim paneli: kullanıcının tüm fotoğrafları (yalnızca aynı cinsiyetteki ekip üyesi görür, aksi halde null). */
+  async forStaff(staff: User, ownerId: string) {
+    if (!(await this.canView(staff, ownerId))) return null;
+    const photos = await this.prisma.photo.findMany({ where: { userId: ownerId }, orderBy: [{ kind: 'asc' }, { position: 'asc' }, { createdAt: 'desc' }] });
+    return Promise.all(
+      photos.map(async (p) => ({ id: p.id, kind: p.kind, status: p.status, rejectionReason: p.rejectionReason, createdAt: p.createdAt, url: await this.signedUrl(p.id, staff.id) })),
+    );
+  }
+
+  /** Onaylanmış bir fotoğrafı sonradan geri çevirir (ör. "gerçek değil" şikâyeti); kullanıcı yenisini yükler. */
+  async rejectByStaff(staff: User, photoId: string, reason: string) {
+    const photo = await this.prisma.photo.findUnique({ where: { id: photoId } });
+    if (!photo) throw new NotFoundException();
+    if (!(await this.canView(staff, photo.userId))) throw new ForbiddenException();
+    await this.prisma.photo.update({ where: { id: photoId }, data: { status: 'REJECTED', rejectionReason: reason, moderatedAt: new Date() } });
+    await this.notifications.notify(photo.userId, 'photo_rejected', { photoId, reason });
+    await this.moderation.audit(staff.id, 'photo.reject', { targetType: 'PHOTO', targetId: photoId }, { reason });
+    return { ok: true };
+  }
+
   /** Görüntüleyenin erişebildiği onaylı fotoğrafların imzalı URL'leri. */
   async urlsFor(viewer: Pick<User, 'id' | 'role' | 'gender'>, ownerId: string): Promise<string[]> {
     if (!(await this.canView(viewer, ownerId))) return [];

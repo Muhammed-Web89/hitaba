@@ -860,6 +860,13 @@
     "freeze": "Anketani toʻxtatish",
     "unfreeze": "Qayta faollashtirish",
     "ban": "Hisobni bloklash",
+    "photos": "Rasmlar",
+    "photosHidden": "Bu foydalanuvchining rasmlarini faqat bir jinsdagi moderatorlar koʻra oladi.",
+    "photosNone": "Rasm yoʻq.",
+    "rejectPhoto": "Rad etish, yangisini yuklasin",
+    "rejectPhotoHint": "Rasm profildan olinadi; foydalanuvchiga sababi bildiriladi va u yangi rasm yuklay oladi.",
+    "photoStatus": {"PENDING": "Tekshiruvda", "APPROVED": "Tasdiqlangan", "REJECTED": "Rad etilgan"},
+    "photoMain": "Asosiy",
     "banNote": "Bloklash: barcha seanslar yopiladi, balans nolga tushadi, ochiq suhbatlar yopiladi va qarshi tomonga qaytariladi.",
     "userStatus": {
       "ONBOARDING": "Anketa toʻldirilmoqda",
