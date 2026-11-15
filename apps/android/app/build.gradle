@@ -1,0 +1,49 @@
+// Hitaba Android: www.hitaba.me'yi tam ekran açan Trusted Web Activity. Site güncellendikçe uygulama da güncellenir.
+plugins {
+    id 'com.android.application'
+}
+
+def keystoreProps = new Properties()
+def keystoreFile = rootProject.file('keystore.properties')
+if (keystoreFile.exists()) keystoreProps.load(new FileInputStream(keystoreFile))
+
+android {
+    namespace 'me.hitaba.app'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'me.hitaba.app'
+        minSdk 23
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+        manifestPlaceholders = [host: 'www.hitaba.me', startUrl: 'https://www.hitaba.me/app?twa=1']
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreFile.exists()) {
+                storeFile rootProject.file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}
