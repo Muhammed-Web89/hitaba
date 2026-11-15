@@ -11,6 +11,7 @@ import { useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useErrorText, useRelativeTime } from '@/lib/format';
+import { isAndroidApp } from '@/lib/platform';
 import { telegramWebApp } from '@/lib/telegram';
 
 interface WalletData {
@@ -37,6 +38,9 @@ export default function WalletPage() {
 
   const tg = telegramWebApp();
   const inTelegram = Boolean(tg);
+  // Play sürümünde yalnızca ücretsiz paketler gösterilir (dijital ürün satışı Google Play ödemesi gerektirir).
+  const android = isAndroidApp();
+  const packages = android ? data.packages.filter((p) => p.price === 0) : data.packages;
 
   async function buy(packageId: ConnectPackageId) {
     setBusy(packageId);
@@ -85,9 +89,9 @@ export default function WalletPage() {
       </Card>
       <p className="mt-3 text-sm text-ink-2">{t('explain')}</p>
 
-      <SectionTitle>{t('packages')}</SectionTitle>
+      {packages.length > 0 && <SectionTitle>{t('packages')}</SectionTitle>}
       <div className="grid grid-cols-3 gap-3">
-        {data.packages.map((p) => {
+        {packages.map((p) => {
           const deal = p.price < p.stars;
           const free = p.price === 0;
           return (
@@ -114,14 +118,16 @@ export default function WalletPage() {
           );
         })}
       </div>
-      {data.packages.some((p) => p.promo === 'launch') ? (
+      {packages.some((p) => p.promo === 'launch') ? (
         <p className="mt-3 text-center text-xs text-ink-3">{t('launchNote')}</p>
       ) : (
-        data.packages.some((p) => p.promo === 'intro') && <p className="mt-3 text-center text-xs text-ink-3">{t('introNote')}</p>
+        packages.some((p) => p.promo === 'intro') && <p className="mt-3 text-center text-xs text-ink-3">{t('introNote')}</p>
       )}
-      <div className="mt-4">
-        <GuideLink href="/guide/payment" emoji="❓" title={tgl('payment')} hint={tgl('paymentHint')} />
-      </div>
+      {!android && (
+        <div className="mt-4">
+          <GuideLink href="/guide/payment" emoji="❓" title={tgl('payment')} hint={tgl('paymentHint')} />
+        </div>
+      )}
       {claimed && (
         <div className="mt-3">
           <Notice tone="success" icon="check">
@@ -129,7 +135,7 @@ export default function WalletPage() {
           </Notice>
         </div>
       )}
-      {!inTelegram && (
+      {!inTelegram && !android && (
         <div className="mt-3">
           <Notice>{t('devNote')}</Notice>
         </div>

@@ -13,6 +13,7 @@ import { cx, PageLoader } from '@/components/ui';
 import { VerifyEmailBanner } from '@/components/VerifyEmailBanner';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/lib/auth';
+import { isAndroidApp } from '@/lib/platform';
 import { getSocket } from '@/lib/socket';
 import { telegramUserId } from '@/lib/telegram';
 
@@ -31,6 +32,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   const { data: notes, mutate } = useSWR<{ items: NotificationItem[]; unreadCount: number }>(me ? '/notifications' : null, {
     refreshInterval: 60_000,
   });
+
+  // Android uygulaması /app?twa=1 ile açılır; işaret ilk yönlendirmeden önce kaydedilir.
+  useEffect(() => void isAndroidApp(), []);
 
   useEffect(() => {
     // Telegram içindeyse oturum düştüğünde e-posta girişine değil Telegram girişine dönülür.
