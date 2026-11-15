@@ -17,6 +17,8 @@ export interface ProductionEnv {
 
 /** Demo/seed hesaplarının alan adı — üretim veritabanında bulunmamalı. */
 export const DEMO_EMAIL_DOMAIN = '@hitaba.dev';
+/** Google Play inceleme hesabı: giriş yapabilir ama hiçbir kullanıcının akışında görünmez. */
+export const REVIEW_EMAIL = 'review@hitaba.me';
 
 /**
  * Üretimde güvensiz yapılandırmayla açılmayı reddeder. Hepsi bir arada raporlanır.

@@ -2,6 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 import type { Chat, ChatStatus, Match, Prisma, Profile, User } from '@prisma/client';
 import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicProfile } from '@hitaba/shared';
 import { hours, startOfLocalDay } from '../common/time';
+import { REVIEW_EMAIL } from '../config/production-checks';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProfilesService } from '../profiles/profiles.service';
@@ -74,6 +75,7 @@ export class MatchingService {
       id: { not: viewer.id },
       role: 'USER',
       status: 'APPROVED',
+      OR: [{ email: null }, { email: { not: REVIEW_EMAIL } }],
       gender: viewer.gender === 'MALE' ? 'FEMALE' : 'MALE',
       profile: { is: profile },
       likesReceived: { none: { fromId: viewer.id } },
