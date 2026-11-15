@@ -1,10 +1,13 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "me.hitaba.app",
       "sha256_cert_fingerprints": [
+        "21:29:3E:97:1F:3C:DD:D0:2C:21:FE:E6:68:25:AD:88:F9:7A:EC:4C:7F:10:97:42:6A:8C:01:30:83:CC:87:2B",
         "A5:37:FE:B1:D5:AD:EE:BF:BE:D3:19:F1:9D:C9:71:82:C9:A2:BC:D0:0D:D1:F8:8A:9A:88:AE:28:A7:E6:F5:B6"
       ]
     }
