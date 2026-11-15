@@ -58,7 +58,12 @@ export function MessageList({
           return [
             dayRow,
             <li key={m.id} className="flex justify-center">
-              <span className="max-w-[85%] rounded-full bg-surface-alt px-3 py-1 text-center text-xs text-ink-2">
+              <span
+                className={cx(
+                  'max-w-[85%] bg-surface-alt text-center text-xs text-ink-2',
+                  m.text === 'chat_daily_pause' ? 'whitespace-pre-line rounded-card px-4 py-3 leading-relaxed' : 'rounded-full px-3 py-1',
+                )}
+              >
                 {t.has(`system.${m.text}` as never) ? t(`system.${m.text}` as never) : m.text}
               </span>
             </li>,

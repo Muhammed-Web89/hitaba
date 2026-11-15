@@ -502,7 +502,8 @@
       "chat_closed_ban": "Suhbat yopildi.",
       "chat_extension_requested": "Suhbatni davom ettirish soʻrovi moderatorga yuborildi.",
       "chat_extended": "Moderator ruxsat berdi: har bir tomon yana 10 ta xabar yozishi mumkin.",
-      "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi."
+      "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi.",
+      "chat_daily_pause": "Bugungi xabar chegarasiga yetildi — ertaga davom etasiz, inshaAlloh. 🤍\nAlloh taolo nikoh haqida: «Sizlar uchun oʻzlaringizdan juftlar yaratib qoʻyganligi — ular bilan orom olishingiz uchun — va oralaringizda muhabbat va rahmat paydo qilganligi Uning oyatlaridandir» (Rum, 21). Paygʻambarimiz ﷺ: «Kishining Islomi goʻzalligidan — oʻziga aloqasi yoʻq narsani tark etishidir» (Termiziy).\nNomahram bilan suhbat — omonat: maqsadli, odobli va qisqa boʻlsin. Nikohga yetaklovchi savollarni bering, vaqtni behuda soʻzlarga sarflamang."
     },
     "mahram": {
       "title": "Mahram (ota yoki aka) raqamini ulashish",
@@ -535,6 +536,8 @@
         "actions": "Oʻz xabaringizni {editMin} daqiqa ichida tahrirlash yoki oʻchirish mumkin; moderatorlar asl matnni ham koʻradi. Xabarlarga reaksiya qoʻshishingiz mumkin."
       }
     },
+    "dailyLeft": "Bugun yana {left} ta xabar yozishingiz mumkin",
+    "dailyReached": "Bugungi {limit} ta xabaringiz tugadi. Ertaga davom ettirasiz, inshaAlloh. Keyingi xabaringizda maqsad va savollaringizni jamlab yozing.",
     "quotaLeft": "Yana {left} ta xabar yozishingiz mumkin",
     "quotaReached": "Bu bosqichdagi {limit} ta xabaringiz tugadi. Suhbatni davom ettirish uchun moderatorga soʻrov yuboring.",
     "continue": "Davom ettirish",
@@ -784,6 +787,7 @@
     "otp_setup_required": "Avval sozlashni boshlang.",
     "otp_not_enabled": "Ikki bosqichli tekshiruv oʻchirilgan.",
     "session_current": "Hozir foydalanayotgan qurilmangiz seansini bu yerdan yopib boʻlmaydi.",
+    "daily_limit_reached": "Bugungi xabarlar soni tugadi. Ertaga davom etishingiz mumkin.",
     "quota_reached": "Bu bosqichdagi xabarlar soni tugadi. Davom ettirish uchun moderator ruxsati kerak.",
     "quota_not_reached": "Xabarlar soni hali tugamagan."
   },

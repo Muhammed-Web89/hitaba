@@ -502,7 +502,8 @@
       "chat_closed_ban": "The chat was closed.",
       "chat_extension_requested": "A request to continue the chat was sent to the moderators.",
       "chat_extended": "A moderator approved: each side can write 10 more messages.",
-      "chat_extension_denied": "The request to continue the chat was declined."
+      "chat_extension_denied": "The request to continue the chat was declined.",
+      "chat_daily_pause": "The daily message limit has been reached — continue tomorrow, in sha Allah. 🤍\nAllah says of marriage: “Among His signs is that He created for you spouses from among yourselves so that you may find tranquillity in them, and He placed between you affection and mercy” (ar-Rum 30:21). The Prophet ﷺ said: “Part of the excellence of a person's Islam is leaving what does not concern him” (at-Tirmidhi).\nTalking with a non-mahram is an amanah: keep it purposeful, modest and brief. Ask the questions that lead to nikah, and don't spend time on idle talk."
     },
     "mahram": {
       "title": "Share mahram contact",
@@ -535,6 +536,8 @@
         "actions": "You can edit or delete your own message within {editMin} minutes; moderators still see the original. You can add reactions to messages."
       }
     },
+    "dailyLeft": "{left} messages left today",
+    "dailyReached": "You've used today's {limit} messages. Continue tomorrow, in sha Allah. In your next message, bring your intentions and questions together.",
     "quotaLeft": "{left} messages left",
     "quotaReached": "You have used your {limit} messages for this stage. Ask the moderators to let the chat continue.",
     "continue": "Continue",
@@ -784,6 +787,7 @@
     "otp_setup_required": "Start the setup first.",
     "otp_not_enabled": "Two-step verification is off.",
     "session_current": "You can’t sign out the device you’re using from here.",
+    "daily_limit_reached": "Today's messages are used up. You can continue tomorrow.",
     "quota_reached": "You have used your messages for this stage. A moderator must approve before you continue.",
     "quota_not_reached": "You still have messages left."
   },

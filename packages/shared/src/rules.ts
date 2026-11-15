@@ -39,6 +39,8 @@ export const RULES = {
   silenceSecondReminderHours: 48,
   silenceAutoCloseHours: 72,
   femaleMaxActiveChats: 1,
+  /** Günlük mesaj hakkı: her taraf bir sohbette kendi yerel gününde en fazla bu kadar mesaj yazar. */
+  chatDailyMessages: 20,
   /** Sohbette sayı yazma sınırı: en fazla 2 haneli sayılar, sohbet boyunca en fazla 2 mesajda yeni sayı (tekrarlar sayılmaz). */
   chatNumberMaxDigits: 2,
   chatNumberMaxTimes: 2,

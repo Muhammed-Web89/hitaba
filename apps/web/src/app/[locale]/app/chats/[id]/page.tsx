@@ -162,7 +162,10 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
   }
   if (!chat || !messages || !me) return <PageLoader />;
 
-  const active = chat.status === 'ACTIVE';
+  // Eski sunucu sürümü günlük hakkı göndermiyorsa sınır yok sayılır (site sunucudan önce güncellenebilir).
+  const daily = chat.daily ?? { limit: Infinity, used: 0 };
+  const dailyLeft = Math.max(0, daily.limit - daily.used);
+  const active = chat.status === 'ACTIVE' && dailyLeft > 0;
   const watcherCount =
     Number(chat.watchers.maleModerator) + Number(chat.watchers.femaleModerator) + 1 + chat.watchers.witnesses.length + Number(chat.watchers.hasWali);
 
@@ -325,6 +328,14 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             </Notice>
           </div>
         )}
+        {chat.status === 'ACTIVE' && dailyLeft === 0 && (
+          <div className="mb-2">
+            <Notice tone="warning" icon="clock">
+              {t('dailyReached', { limit: daily.limit })}
+            </Notice>
+          </div>
+        )}
+        {chat.status === 'ACTIVE' && dailyLeft > 0 && dailyLeft <= 3 && <p className="mb-1 px-1 text-xs text-warning">{t('dailyLeft', { left: dailyLeft })}</p>}
         {chat.status === 'CLOSED' && (
           <div className="mb-2 space-y-2">
             <Notice icon="info">{t(`closedBanner.${chat.closeReason ?? 'USER'}`)}</Notice>

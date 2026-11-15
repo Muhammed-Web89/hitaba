@@ -502,7 +502,8 @@
       "chat_closed_ban": "Sohbet kapandı.",
       "chat_extension_requested": "Sohbeti devam ettirme isteği moderatöre gönderildi.",
       "chat_extended": "Moderatör izin verdi: her iki taraf 10 mesaj daha yazabilir.",
-      "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi."
+      "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi.",
+      "chat_daily_pause": "Günlük mesaj sınırına ulaşıldı — inşallah yarın devam edersiniz. 🤍\nAllah Teâlâ nikâhı şöyle anar: «Kendileriyle huzur bulasınız diye size kendi cinsinizden eşler yaratması ve aranızda sevgi ve merhamet var etmesi O'nun ayetlerindendir» (Rûm, 21). Peygamberimiz ﷺ: «Kişinin kendisini ilgilendirmeyeni terk etmesi, Müslümanlığının güzelliğindendir» buyurdu (Tirmizî).\nNamahremle yazışma bir emanettir: amaçlı, edepli ve kısa olsun. Nikâha götüren sorular sorun, vakti boş sözlerle harcamayın."
     },
     "mahram": {
       "title": "Mahrem yakının iletişim bilgisini paylaş",
@@ -535,6 +536,8 @@
         "actions": "Kendi mesajınızı {editMin} dakika içinde düzenleyebilir ya da silebilirsiniz; moderatörler ilk hâlini de görür. Mesajlara tepki ekleyebilirsiniz."
       }
     },
+    "dailyLeft": "Bugün {left} mesaj hakkınız kaldı",
+    "dailyReached": "Bugünkü {limit} mesaj hakkınız doldu. İnşallah yarın devam edersiniz. Bir sonraki mesajınızda amacınızı ve sorularınızı birlikte yazın.",
     "quotaLeft": "{left} mesaj hakkınız kaldı",
     "quotaReached": "Bu aşamadaki {limit} mesaj hakkınız doldu. Sohbeti sürdürmek için moderatöre devam isteği gönderin.",
     "continue": "Devam et",
@@ -784,6 +787,7 @@
     "otp_setup_required": "Önce kurulumu başlatın.",
     "otp_not_enabled": "İki adımlı doğrulama kapalı.",
     "session_current": "Kullandığınız cihazın oturumu buradan kapatılamaz.",
+    "daily_limit_reached": "Bugünkü mesaj hakkınız doldu. Yarın devam edebilirsiniz.",
     "quota_reached": "Bu aşamadaki mesaj hakkınız doldu. Devam etmek için moderatör onayı gerekiyor.",
     "quota_not_reached": "Mesaj hakkınız henüz dolmadı."
   },

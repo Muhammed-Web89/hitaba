@@ -11,7 +11,7 @@ import {
   type Reaction,
 } from '@hitaba/shared';
 import { decrypt, encrypt } from '../common/crypto';
-import { ageRange, hours, minutes } from '../common/time';
+import { ageRange, hours, minutes, startOfLocalDay } from '../common/time';
 import { ConnectsService } from '../connects/connects.service';
 import { ModerationService } from '../moderation/moderation.service';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -35,7 +35,8 @@ export type SystemMessageKey =
   | 'chat_closed_ban'
   | 'chat_extension_requested'
   | 'chat_extended'
-  | 'chat_extension_denied';
+  | 'chat_extension_denied'
+  | 'chat_daily_pause';
 
 const OPEN_STATUSES = ['ACTIVE', 'PAUSED'] as const;
 
@@ -316,6 +317,8 @@ export class ChatService implements OnModuleInit {
     if (existing) return toChatMessage(existing);
     if (chat.status === 'CLOSED') throw new BadRequestException({ error: 'chat_closed' });
     if (chat.status === 'PAUSED') throw new BadRequestException({ error: 'chat_paused' });
+    const sentToday = await this.dailyUsed(chatId, viewer);
+    if (sentToday >= RULES.chatDailyMessages) throw new BadRequestException({ error: 'daily_limit_reached' });
 
     const scan = await this.screen(viewer, chatId, trimmed);
     const created = this.prisma.message.create({
@@ -344,7 +347,25 @@ export class ChatService implements OnModuleInit {
       }),
     ]);
     this.realtime.toChat(chatId, 'message:new', toChatMessage(msg));
+    if (sentToday + 1 === RULES.chatDailyMessages) await this.dailyPauseNotice(chatId, viewer);
     return toChatMessage(msg);
+  }
+
+  /** Bugün (yazanın yerel günü) bu sohbette yazdığı mesajlar; tutulan ve silinenler dahil. */
+  private dailyUsed(chatId: string, viewer: User) {
+    return this.prisma.message.count({
+      where: { chatId, senderId: viewer.id, kind: 'TEXT', createdAt: { gte: startOfLocalDay(viewer.timezone) } },
+    });
+  }
+
+  /** Günlük hakkı dolunca iki tarafa nikâha teşvik eden, namahremle gereksiz sohbetten sakındıran hatırlatma (günde bir kez). */
+  private async dailyPauseNotice(chatId: string, viewer: User) {
+    const already = await this.prisma.message.findFirst({
+      where: { chatId, kind: 'SYSTEM', text: 'chat_daily_pause', createdAt: { gte: startOfLocalDay(viewer.timezone) } },
+    });
+    if (already) return;
+    const sys = await this.prisma.$transaction((tx) => this.systemMessage(tx, chatId, 'chat_daily_pause'));
+    this.emitNew(sys);
   }
 
   async edit(viewer: User, messageId: string, text: string): Promise<ChatMessage> {
@@ -477,7 +498,7 @@ export class ChatService implements OnModuleInit {
   async summary(viewer: User, chatId: string): Promise<ChatSummary> {
     const chat = await this.participantChat(viewer, chatId);
     const otherId = viewer.id === chat.match.maleId ? chat.match.femaleId : chat.match.maleId;
-    const [other, last, witnesses, wali] = await Promise.all([
+    const [other, last, witnesses, wali, used] = await Promise.all([
       this.prisma.profile.findUnique({ where: { userId: otherId } }),
       this.prisma.message.findFirst({
         where: { chatId, state: 'DELIVERED', deletedAt: null },
@@ -485,6 +506,7 @@ export class ChatService implements OnModuleInit {
       }),
       this.prisma.witness.findMany({ where: { femaleId: chat.match.femaleId }, select: { relation: true } }),
       this.prisma.waliLink.findUnique({ where: { femaleId: chat.match.femaleId }, select: { id: true } }),
+      this.dailyUsed(chatId, viewer),
     ]);
     const watchers: ChatParticipantInfo = {
       maleModerator: Boolean(chat.maleModeratorId),
@@ -511,6 +533,7 @@ export class ChatService implements OnModuleInit {
       lastActivityAt: chat.lastActivityAt.toISOString(),
       canReopen: this.canReopen(viewer, chat),
       watchers,
+      daily: { limit: RULES.chatDailyMessages, used },
     };
   }
 

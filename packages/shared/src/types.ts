@@ -157,6 +157,8 @@ export interface ChatSummary {
   lastActivityAt: string;
   canReopen: boolean;
   watchers: ChatParticipantInfo;
+  /** Bugün bu sohbette yazılan mesaj sayısı (görüntüleyenin yerel günü). */
+  daily: { limit: number; used: number };
   /** Bu turdaki mesaj kotası (yalnızca görüntüleyenin kendi sayısı) ve bekleyen "devam et" isteği. */
 }
 
