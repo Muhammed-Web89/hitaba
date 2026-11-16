@@ -774,6 +774,8 @@
     "already_mutual": "A mutual like can’t be undone; you can leave the match instead.",
     "photo_view_not_granted": "You don’t have access to the photo; ask for permission first.",
     "photo_view_already_granted": "You already have a view available.",
+    "photo_view_closed": "The chat was closed — you can't request to view photos.",
+    "photo_view_cooldown": "Your request was declined. You can't send another request for now.",
     "free_claim_has_balance": "You can claim the free package once your balance runs out.",
     "offer_unavailable": "This offer is not available right now.",
     "use_free_claim": "This package is free right now; refresh the page and try again.",

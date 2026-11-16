@@ -774,6 +774,8 @@
     "already_mutual": "Oʻzaro boʻlgan qiziqishni qaytarib olib boʻlmaydi; tanishuvni yakunlashingiz mumkin.",
     "photo_view_not_granted": "Suratni koʻrish huquqingiz yoʻq; avval ruxsat soʻrang.",
     "photo_view_already_granted": "Sizda allaqachon koʻrish huquqi bor.",
+    "photo_view_closed": "Suhbat yopilgan — rasmni koʻrish soʻrovini yuborib boʻlmaydi.",
+    "photo_view_cooldown": "Soʻrovingiz rad etildi. Qayta soʻrash uchun keyinroq urinib koʻring.",
     "free_claim_has_balance": "Bepul paketni tangangiz tugaganda olishingiz mumkin.",
     "offer_unavailable": "Bu taklif hozir amalda emas.",
     "use_free_claim": "Bu paket hozir bepul — sahifani yangilab, qayta urinib ko‘ring.",

@@ -328,6 +328,19 @@ export class MatchingService {
     const m = await this.ownMatch(viewer, id);
     if (viewer.gender !== 'MALE' || m.stage === 'CLOSED' || m.stage === 'MUTUAL') throw new BadRequestException({ error: 'invalid_stage' });
     if (m.malePhotoViewGranted) throw new BadRequestException({ error: 'photo_view_already_granted' });
+    // Kadın (ya da moderatör) sohbeti kapattıysa erkek artık fotoğraf isteğiyle ona ulaşamaz.
+    const chat = await this.prisma.chat.findUnique({ where: { matchId: id }, select: { status: true, closedById: true, closeReason: true } });
+    if (chat?.status === 'CLOSED' && chat.closedById !== viewer.id && chat.closeReason !== 'SILENCE') {
+      throw new BadRequestException({ error: 'photo_view_closed' });
+    }
+    // Reddedilen istek: 24 saat yeni istek yok; iki kez reddedildiyse hiç yok (ısrarla rahatsız etmeyi önler).
+    const declines = await this.prisma.notification.findMany({
+      where: { userId: viewer.id, type: 'photo_view_declined', data: { path: ['matchId'], equals: id } },
+      select: { createdAt: true },
+    });
+    if (declines.length >= 2 || declines.some((d) => d.createdAt > new Date(Date.now() - hours(24)))) {
+      throw new BadRequestException({ error: 'photo_view_cooldown' });
+    }
     if (!m.photoViewRequestedAt) {
       await this.prisma.match.update({ where: { id }, data: { photoViewRequestedAt: new Date() } });
       await this.notifications.notify(m.femaleId, 'photo_view_requested', { matchId: id });

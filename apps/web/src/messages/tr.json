@@ -774,6 +774,8 @@
     "already_mutual": "Karşılıklı olmuş bir beğeni geri alınamaz; eşleşmeden ayrılabilirsiniz.",
     "photo_view_not_granted": "Fotoğrafı görme hakkınız yok; önce izin isteyin.",
     "photo_view_already_granted": "Zaten bir görme hakkınız var.",
+    "photo_view_closed": "Sohbet kapatıldı; fotoğraf görme isteği gönderilemez.",
+    "photo_view_cooldown": "İsteğiniz reddedildi. Şimdilik yeniden istek gönderemezsiniz.",
     "free_claim_has_balance": "Ücretsiz paketi jetonunuz bittiğinde alabilirsiniz.",
     "offer_unavailable": "Bu kampanya şu an geçerli değil.",
     "use_free_claim": "Bu paket şu an ücretsiz; sayfayı yenileyip tekrar deneyin.",
