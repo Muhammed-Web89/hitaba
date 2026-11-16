@@ -30,7 +30,8 @@ export type NotificationType =
   | 'silence_reminder'
   | 'mahram_approved'
   | 'mahram_rejected'
-  | 'connects_credited';
+  | 'connects_credited'
+  | 'report_reply';
 
 /** Telegram'a gönderilen kısa metinler. Uygulama içi metinler web tarafında çevrilir. */
 const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
@@ -53,6 +54,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     connects_credited: 'Hisobingizga tanga qo‘shildi.',
     chat_extended: 'Moderator suhbatni davom ettirishga ruxsat berdi.',
     chat_extension_denied: 'Suhbatni davom ettirish soʻrovi rad etildi.',
+    report_reply: 'Shikoyatingizga moderator javob berdi:',
   },
   ru: {
     profile_approved: 'Ваш профиль одобрен. Теперь вы можете смотреть анкеты.',
@@ -73,6 +75,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     connects_credited: 'Монеты зачислены на ваш баланс.',
     chat_extended: 'Модератор разрешил продолжить чат.',
     chat_extension_denied: 'Запрос на продолжение чата отклонён.',
+    report_reply: 'Модератор ответил на вашу жалобу:',
   },
   tr: {
     profile_approved: 'Profiliniz onaylandı. Artık profilleri görebilirsiniz.',
@@ -93,6 +96,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     connects_credited: 'Bakiyenize jeton eklendi.',
     chat_extended: 'Moderatör sohbetin devam etmesine izin verdi.',
     chat_extension_denied: 'Sohbeti devam ettirme isteği reddedildi.',
+    report_reply: 'Şikâyetinize moderatör yanıt verdi:',
   },
   en: {
     profile_approved: 'Your profile is approved. You can now browse profiles.',
@@ -113,6 +117,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     connects_credited: 'Connects were added to your balance.',
     chat_extended: 'A moderator allowed the chat to continue.',
     chat_extension_denied: 'The request to continue the chat was declined.',
+    report_reply: 'A moderator replied to your report:',
   },
   ar: {
     profile_approved: 'تمت الموافقة على ملفك. يمكنك الآن تصفح الملفات.',
@@ -133,6 +138,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     connects_credited: 'أُضيفت العملات إلى رصيدك.',
     chat_extended: 'سمح المشرف بمتابعة المحادثة.',
     chat_extension_denied: 'رُفض طلب متابعة المحادثة.',
+    report_reply: 'ردّ المشرف على بلاغك:',
   },
 };
 
@@ -164,7 +170,9 @@ export class NotificationsService {
       where: { id: userId },
       select: { telegramId: true, locale: true },
     });
-    const text = user && (TG_TEXT[user.locale] ?? TG_TEXT.en)[type];
+    const head = user && (TG_TEXT[user.locale] ?? TG_TEXT.en)[type];
+    // Moderatör yanıtında yazılan metin de Telegram'a gider.
+    const text = head && type === 'report_reply' && typeof data.reason === 'string' ? `${head}\n\n${data.reason}` : head;
     if (user?.telegramId && text) {
       void this.telegram.sendMessage(user.telegramId, `Hitaba · ${text}`, OPEN_LABEL[user.locale] ?? OPEN_LABEL.en);
     }

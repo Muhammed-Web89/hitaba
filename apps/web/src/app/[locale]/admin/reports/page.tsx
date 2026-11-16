@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
-import { Button, Card, Chip, EmptyState, PageLoader } from '@/components/ui';
+import { Button, Card, Chip, EmptyState, PageLoader, Textarea } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useRelativeTime } from '@/lib/format';
@@ -14,6 +14,7 @@ interface ReportRow {
   details: string | null;
   chatId: string | null;
   status: string;
+  resolution: string | null;
   createdAt: string;
   reporter: { id: string; profile: { displayName: string | null } | null };
   targetUser: { id: string; status: string; profile: { displayName: string | null } | null };
@@ -77,10 +78,47 @@ export default function ReportsPage() {
                   </>
                 )}
               </div>
+              {r.resolution && (
+                <div className="rounded-control border border-line bg-surface-alt p-3">
+                  <p className="text-xs font-semibold text-ink-3">{t('repliesSent')}</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm">{r.resolution}</p>
+                </div>
+              )}
+              <ReplyBox reportId={r.id} onSent={() => mutate()} />
             </Card>
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+/** Şikâyet edene yanıt: uygulama bildirimi ve Telegram mesajı olarak gider. */
+function ReplyBox({ reportId, onSent }: { reportId: string; onSent: () => void }) {
+  const t = useTranslations('admin');
+  const [text, setText] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [sent, setSent] = useState(false);
+  const send = async () => {
+    setBusy(true);
+    try {
+      await api(`/admin/reports/${reportId}/reply`, { method: 'POST', body: { text } });
+      setText('');
+      setSent(true);
+      onSent();
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="space-y-2">
+      <Textarea rows={3} maxLength={1000} value={text} placeholder={t('replyPlaceholder')} onChange={(e) => (setText(e.target.value), setSent(false))} />
+      <div className="flex items-center gap-3">
+        <Button size="sm" variant="secondary" disabled={busy || text.trim().length < 2} onClick={send}>
+          {t('sendReply')}
+        </Button>
+        {sent && <span className="text-xs text-brand-500">{t('replySent')}</span>}
+      </div>
     </div>
   );
 }

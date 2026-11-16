@@ -654,7 +654,8 @@
       "photo_view_first_request": "Bir erkek fotoğrafınızı görmek istiyor. Önce onun fotoğrafına bakıp karar verin.",
       "likes_released": "Sohbetiniz sürerken {count} kişi sizi beğendi. Görmek için dokunun.",
       "chat_extended": "Moderatör sohbetin devam etmesine izin verdi.",
-      "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi."
+      "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi.",
+      "report_reply": "Şikâyetinize moderatör yanıt verdi:"
     }
   },
   "portal": {
@@ -871,7 +872,11 @@
     "photosNone": "Fotoğraf yok.",
     "rejectPhoto": "Reddet, yenisini yüklesin",
     "rejectPhotoHint": "Fotoğraf profilden kalkar; kullanıcıya sebep bildirilir ve yeni fotoğraf yükleyebilir.",
-    "photoStatus": {"PENDING": "İncelemede", "APPROVED": "Onaylı", "REJECTED": "Reddedildi"},
+    "photoStatus": {
+      "PENDING": "İncelemede",
+      "APPROVED": "Onaylı",
+      "REJECTED": "Reddedildi"
+    },
     "photoMain": "Ana",
     "banNote": "Engelleme: tüm oturumlar kapanır, bakiye sıfırlanır, açık sohbetler kapanır ve karşı tarafa iade yapılır.",
     "userStatus": {
@@ -980,7 +985,11 @@
     },
     "rejectAndBan": "Reddet ve engelle",
     "banOnRejectNote": "Reddedilirse gönderenin hesabı kalıcı olarak engellenir ve tüm sohbetleri kapanır.",
-    "extensionNote": "Onaylanırsa iki taraf da {quota} mesaj daha yazabilir."
+    "extensionNote": "Onaylanırsa iki taraf da {quota} mesaj daha yazabilir.",
+    "replyPlaceholder": "Kullanıcıya yanıt yazın — bildirim ve Telegram mesajı olarak gider",
+    "sendReply": "Yanıt gönder",
+    "replySent": "Yanıt gönderildi",
+    "repliesSent": "Gönderilen yanıtlar"
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

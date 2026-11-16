@@ -20,11 +20,13 @@ import { decrypt } from '../common/crypto';
 import { ZodPipe } from '../common/zod.pipe';
 import { ConnectsService } from '../connects/connects.service';
 import { ModerationService } from '../moderation/moderation.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { PhotosModule } from '../photos/photos.module';
 import { PhotosService } from '../photos/photos.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const reasonSchema = z.object({ reason: z.string().trim().min(3).max(500) });
+const replySchema = z.object({ text: z.string().trim().min(2).max(1000) });
 const resolveSchema = z.object({
   status: z.enum(['RESOLVED', 'DISMISSED']),
   resolution: z.string().trim().max(1000).optional(),
@@ -38,6 +40,7 @@ export class AdminService {
     private readonly connects: ConnectsService,
     private readonly moderation: ModerationService,
     private readonly photos: PhotosService,
+    private readonly notifications: NotificationsService,
   ) {}
 
   async report(reporter: User, input: ReportInput) {
@@ -68,6 +71,19 @@ export class AdminService {
     });
     await this.moderation.audit(mod.id, `report.${body.status.toLowerCase()}`, { targetType: 'REPORT', targetId: id });
     return r;
+  }
+
+  /** Şikâyet edene moderatör yanıtı: uygulama bildirimi + Telegram. Yanıtlar şikâyette saklanır. */
+  async replyReport(mod: User, id: string, text: string) {
+    const r = await this.prisma.report.findUnique({ where: { id } });
+    if (!r) throw new NotFoundException();
+    const updated = await this.prisma.report.update({
+      where: { id },
+      data: { resolution: r.resolution ? `${r.resolution}\n\n${text}` : text },
+    });
+    await this.notifications.notify(r.reporterId, 'report_reply', { reportId: id, reason: text });
+    await this.moderation.audit(mod.id, 'report.reply', { targetType: 'REPORT', targetId: id });
+    return updated;
   }
 
   async users(viewer: User, q?: string, gender?: Gender) {
@@ -270,6 +286,11 @@ export class AdminController {
   @Post('reports/:id/resolve')
   resolve(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(resolveSchema)) body: z.infer<typeof resolveSchema>) {
     return this.admin.resolveReport(mod, id, body);
+  }
+
+  @Post('reports/:id/reply')
+  reply(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(replySchema)) body: z.infer<typeof replySchema>) {
+    return this.admin.replyReport(mod, id, body.text);
   }
 
   @Get('users')

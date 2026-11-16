@@ -654,7 +654,8 @@
       "photo_view_first_request": "A man wants to see your photo. Look at his photo first, then decide.",
       "likes_released": "{count, plural, one {# person} other {# people}} liked you while your chat was open. Tap to see.",
       "chat_extended": "A moderator allowed the chat to continue.",
-      "chat_extension_denied": "The request to continue the chat was declined."
+      "chat_extension_denied": "The request to continue the chat was declined.",
+      "report_reply": "A moderator replied to your report:"
     }
   },
   "portal": {
@@ -871,7 +872,11 @@
     "photosNone": "No photos.",
     "rejectPhoto": "Reject, ask for a new one",
     "rejectPhotoHint": "The photo is removed from the profile; the user is told why and can upload a new one.",
-    "photoStatus": {"PENDING": "In review", "APPROVED": "Approved", "REJECTED": "Rejected"},
+    "photoStatus": {
+      "PENDING": "In review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    },
     "photoMain": "Main",
     "banNote": "Ban: all sessions end, balance is reset, open chats close and the other side is refunded.",
     "userStatus": {
@@ -980,7 +985,11 @@
     },
     "rejectAndBan": "Reject and ban",
     "banOnRejectNote": "Rejecting bans the sender permanently and closes all their chats.",
-    "extensionNote": "If approved, both sides can write {quota} more messages."
+    "extensionNote": "If approved, both sides can write {quota} more messages.",
+    "replyPlaceholder": "Write a reply to the user — sent as a notification and a Telegram message",
+    "sendReply": "Send reply",
+    "replySent": "Reply sent",
+    "repliesSent": "Replies sent"
   },
   "consent": {
     "title": "Consents (required)",
