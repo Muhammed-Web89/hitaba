@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { AuthTokens, Me } from '@hitaba/shared/client';
 import { AuthShell } from '@/components/AuthShell';
+import { TelegramLoginButton } from '@/components/TelegramLoginButton';
 import { Button, Field, Input, Notice } from '@/components/ui';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api, ApiError } from '@/lib/api';
@@ -83,6 +84,14 @@ export default function LoginPage() {
           {t('loginSubmit')}
         </Button>
       </form>
+      <div className="mt-6 space-y-3">
+        <div className="flex items-center gap-3 text-xs text-ink-3">
+          <span className="h-px flex-1 bg-line" />
+          {t('orTelegram')}
+          <span className="h-px flex-1 bg-line" />
+        </div>
+        <TelegramLoginButton />
+      </div>
     </AuthShell>
   );
 }

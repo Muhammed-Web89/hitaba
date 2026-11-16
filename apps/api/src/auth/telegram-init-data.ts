@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 
 export interface TelegramWebAppUser {
   id: number;
@@ -43,4 +43,32 @@ export function verifyTelegramInitData(
   } catch {
     return null;
   }
+}
+
+/**
+ * Telegram Login Widget doğrulaması (tarayıcı ve Android uygulaması). Gizli anahtar bot token'ının SHA-256'sıdır.
+ * https://core.telegram.org/widgets/login#checking-authorization
+ */
+export function verifyTelegramLoginWidget(
+  fields: Record<string, string>,
+  botToken: string,
+  maxAgeSeconds = 24 * 60 * 60,
+  now = Date.now(),
+): TelegramWebAppUser | null {
+  if (!botToken || !fields.hash || !fields.id) return null;
+  const dataCheckString = Object.keys(fields)
+    .filter((k) => k !== 'hash')
+    .sort()
+    .map((k) => `${k}=${fields[k]}`)
+    .join('\n');
+  const secret = createHash('sha256').update(botToken).digest();
+  const expected = createHmac('sha256', secret).update(dataCheckString).digest();
+  const given = Buffer.from(fields.hash, 'hex');
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return null;
+
+  const authDate = Number(fields.auth_date);
+  if (!authDate || now / 1000 - authDate > maxAgeSeconds) return null;
+  const id = Number(fields.id);
+  if (!Number.isSafeInteger(id)) return null;
+  return { id, first_name: fields.first_name, last_name: fields.last_name, username: fields.username };
 }

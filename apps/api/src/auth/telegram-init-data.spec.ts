@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createHmac } from 'node:crypto';
-import { verifyTelegramInitData } from './telegram-init-data';
+import { createHash, createHmac } from 'node:crypto';
+import { verifyTelegramInitData, verifyTelegramLoginWidget } from './telegram-init-data';
 
 const BOT = '123456:TEST-TOKEN';
 
@@ -39,4 +39,22 @@ test('rejects a different bot token', () => {
 test('rejects stale auth_date', () => {
   const old = { ...fields, auth_date: String(Math.floor(now / 1000) - 2 * 86400) };
   assert.equal(verifyTelegramInitData(sign(old), BOT, 86400, now), null);
+});
+
+function signWidget(f: Record<string, string>, token = BOT): Record<string, string> {
+  const dcs = Object.keys(f).sort().map((k) => `${k}=${f[k]}`).join('\n');
+  const hash = createHmac('sha256', createHash('sha256').update(token).digest()).update(dcs).digest('hex');
+  return { ...f, hash };
+}
+const wfields = { id: '42', first_name: 'Ali', username: 'ali', auth_date: String(Math.floor(now / 1000) - 60) };
+
+test('login widget: accepts a correctly signed payload', () => {
+  assert.equal(verifyTelegramLoginWidget(signWidget(wfields), BOT, 86400, now)?.id, 42);
+});
+
+test('login widget: rejects tampered, foreign-bot and stale payloads', () => {
+  assert.equal(verifyTelegramLoginWidget({ ...signWidget(wfields), id: '43' }, BOT, 86400, now), null);
+  assert.equal(verifyTelegramLoginWidget(signWidget(wfields, '999:OTHER'), BOT, 86400, now), null);
+  const old = { ...wfields, auth_date: String(Math.floor(now / 1000) - 2 * 86400) };
+  assert.equal(verifyTelegramLoginWidget(signWidget(old), BOT, 86400, now), null);
 });

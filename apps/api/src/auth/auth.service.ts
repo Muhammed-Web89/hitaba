@@ -10,7 +10,7 @@ import { MailService } from '../mail/mail.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { PrismaService } from '../prisma/prisma.service';
 import type { AccessPayload } from './guards';
-import { verifyTelegramInitData } from './telegram-init-data';
+import { verifyTelegramInitData, verifyTelegramLoginWidget } from './telegram-init-data';
 
 /** Hoş geldin: yeni erkek hesaba ilk sohbet için 1 ücretsiz jeton (kadınlar jeton harcamaz). */
 function welcomeBonus(gender: User['gender']): Pick<Prisma.UserCreateInput, 'connectBalance' | 'connectTxs'> {
@@ -156,7 +156,9 @@ export class AuthService {
   }
 
   async telegram(input: TelegramAuthInput, meta: RequestMeta): Promise<AuthTokens> {
-    const tgUser = verifyTelegramInitData(input.initData, env.TELEGRAM_BOT_TOKEN);
+    const tgUser = input.initData
+      ? verifyTelegramInitData(input.initData, env.TELEGRAM_BOT_TOKEN)
+      : verifyTelegramLoginWidget(input.widget ?? {}, env.TELEGRAM_BOT_TOKEN);
     if (!tgUser) throw new UnauthorizedException({ error: 'invalid_init_data' });
 
     const telegramId = String(tgUser.id);

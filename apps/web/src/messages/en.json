@@ -97,10 +97,11 @@
     "adultsOnly": "Only for adults (18+) with the intention of nikah.",
     "tgWelcome": "Welcome to Hitaba",
     "tgOnly": "Open from Telegram",
-    "tgOnlyText": "This page works inside the Telegram Mini App. On the web, please sign in with email.",
+    "tgOnlyText": "This page is for signing in with Telegram. Use the Telegram button on the sign-in page.",
     "consentRequired": "Please accept all required consents.",
     "otpLabel": "Verification code",
-    "otpHint": "The 6-digit code from your authenticator app"
+    "otpHint": "The 6-digit code from your authenticator app",
+    "orTelegram": "or sign in with Telegram"
   },
   "onboarding": {
     "stepOf": "Step {current} of {total}",

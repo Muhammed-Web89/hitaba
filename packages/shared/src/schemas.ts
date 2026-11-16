@@ -38,12 +38,15 @@ export const loginSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export const telegramAuthSchema = z.object({
-  initData: z.string().min(1).max(4096),
+  /** Mini App içinden: Telegram.WebApp.initData. */
+  initData: z.string().min(1).max(4096).optional(),
+  /** Tarayıcı / Android: Telegram Login Widget'ın döndürdüğü alanlar (id, auth_date, hash…). */
+  widget: z.record(z.string(), z.string().max(512)).optional(),
   /** Yalnızca ilk girişte (hesap yoksa) zorunlu. */
   gender: enumOf(Gender).optional(),
   /** Yalnızca ilk girişte (hesap yoksa) zorunlu. */
   consents: consentSchema.optional(),
-});
+}).refine((v) => Boolean(v.initData) !== Boolean(v.widget), { message: 'initData or widget' });
 
 export const verifyEmailSchema = z.object({ token: z.string().min(20).max(200) });
 export type TelegramAuthInput = z.infer<typeof telegramAuthSchema>;

@@ -15,7 +15,18 @@ import { homeFor } from '@/lib/routing';
 import { cachedMe } from '@/lib/cache';
 import { lastTelegramUser, loadTelegramSdk, rememberTelegramUser, telegramUserId } from '@/lib/telegram';
 
-/** Telegram Mini App girişi: initData sunucuda HMAC-SHA256 ile doğrulanır. */
+const WIDGET_KEYS = ['id', 'first_name', 'last_name', 'username', 'photo_url', 'auth_date', 'hash'];
+
+/** Telegram Login Widget yönlendirmesiyle gelen alanlar (tarayıcı / Android uygulaması). */
+function widgetFields(): Record<string, string> | null {
+  const qs = new URLSearchParams(window.location.search);
+  if (!qs.get('hash') || !qs.get('id')) return null;
+  return Object.fromEntries(WIDGET_KEYS.flatMap((k) => (qs.has(k) ? [[k, qs.get(k) as string]] : [])));
+}
+
+/**
+ * Telegram girişi. Mini App'te initData, tarayıcıda Login Widget alanları sunucuda HMAC-SHA256 ile doğrulanır.
+ */
 export default function TelegramEntry() {
   const t = useTranslations('auth');
   const errorText = useErrorText();
@@ -28,10 +39,12 @@ export default function TelegramEntry() {
 
   const authenticate = useCallback(
     async (g?: Gender, consents?: ConsentInput) => {
+      const widget = widgetFields();
       const wa = window.Telegram?.WebApp;
-      if (!wa?.initData) return setState('notTelegram');
+      if (!widget && !wa?.initData) return setState('notTelegram');
       try {
-        const t = await api<AuthTokens>('/auth/telegram', { method: 'POST', body: { initData: wa.initData, gender: g, consents }, auth: false });
+        const source = widget ? { widget } : { initData: wa?.initData };
+        const t = await api<AuthTokens>('/auth/telegram', { method: 'POST', body: { ...source, gender: g, consents }, auth: false });
         await signIn(t);
         rememberTelegramUser(telegramUserId());
         router.replace(homeFor(cachedMe<Me>() ?? (await api<Me>('/me'))));
@@ -53,7 +66,8 @@ export default function TelegramEntry() {
       router.replace(homeFor(known));
       return;
     }
-    void loadTelegramSdk().then(() => authenticate());
+    if (widgetFields()) void authenticate();
+    else void loadTelegramSdk().then(() => authenticate());
   }, [authenticate, router]);
 
   return (

@@ -97,10 +97,11 @@
     "adultsOnly": "Faqat nikoh niyatidagi voyaga yetganlar (18+) uchun.",
     "tgWelcome": "Hitaba’ga xush kelibsiz",
     "tgOnly": "Telegram orqali oching",
-    "tgOnlyText": "Bu sahifa Telegram mini-ilovasi ichida ishlaydi. Brauzerda elektron pochta orqali kiring.",
+    "tgOnlyText": "Bu sahifa Telegram orqali kirish uchun. Kirish sahifasidagi «Telegram orqali kirish» tugmasidan foydalaning.",
     "consentRequired": "Iltimos, barcha majburiy roziliklarni bering.",
     "otpLabel": "Tasdiqlash kodi",
-    "otpHint": "Autentifikator ilovasidagi 6 xonali kod"
+    "otpHint": "Autentifikator ilovasidagi 6 xonali kod",
+    "orTelegram": "yoki Telegram orqali kiring"
   },
   "onboarding": {
     "stepOf": "{current}-qadam ({total} tadan)",

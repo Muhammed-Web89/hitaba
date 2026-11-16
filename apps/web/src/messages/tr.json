@@ -97,10 +97,11 @@
     "adultsOnly": "Yalnızca nikah niyetindeki yetişkinler (18+) için.",
     "tgWelcome": "Hitaba’ya hoş geldiniz",
     "tgOnly": "Telegram’dan açın",
-    "tgOnlyText": "Bu sayfa Telegram mini uygulaması içinde çalışır. Tarayıcıdan lütfen e-posta adresinizle giriş yapın.",
+    "tgOnlyText": "Bu sayfa Telegram ile giriş içindir. Giriş sayfasındaki Telegram düğmesini kullanın.",
     "consentRequired": "Lütfen zorunlu onayların hepsini verin.",
     "otpLabel": "Doğrulama kodu",
-    "otpHint": "Doğrulama uygulamanızdaki 6 haneli kod"
+    "otpHint": "Doğrulama uygulamanızdaki 6 haneli kod",
+    "orTelegram": "ya da Telegram ile giriş yapın"
   },
   "onboarding": {
     "stepOf": "Adım {current} / {total}",
