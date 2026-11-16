@@ -504,7 +504,8 @@
       "chat_extension_requested": "Suhbatni davom ettirish soʻrovi moderatorga yuborildi.",
       "chat_extended": "Moderator ruxsat berdi: har bir tomon yana 10 ta xabar yozishi mumkin.",
       "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi.",
-      "chat_daily_pause": "Bugungi xabar chegarasiga yetildi — ertaga davom etasiz, inshaAlloh. 🤍\nAlloh taolo nikoh haqida: «Sizlar uchun oʻzlaringizdan juftlar yaratib qoʻyganligi — ular bilan orom olishingiz uchun — va oralaringizda muhabbat va rahmat paydo qilganligi Uning oyatlaridandir» (Rum, 21). Paygʻambarimiz ﷺ: «Kishining Islomi goʻzalligidan — oʻziga aloqasi yoʻq narsani tark etishidir» (Termiziy).\nNomahram bilan suhbat — omonat: maqsadli, odobli va qisqa boʻlsin. Nikohga yetaklovchi savollarni bering, vaqtni behuda soʻzlarga sarflamang."
+      "chat_daily_pause": "Bugungi xabar chegarasiga yetildi — ertaga davom etasiz, inshaAlloh. 🤍\nAlloh taolo nikoh haqida: «Sizlar uchun oʻzlaringizdan juftlar yaratib qoʻyganligi — ular bilan orom olishingiz uchun — va oralaringizda muhabbat va rahmat paydo qilganligi Uning oyatlaridandir» (Rum, 21). Paygʻambarimiz ﷺ: «Kishining Islomi goʻzalligidan — oʻziga aloqasi yoʻq narsani tark etishidir» (Termiziy).\nNomahram bilan suhbat — omonat: maqsadli, odobli va qisqa boʻlsin. Nikohga yetaklovchi savollarni bering, vaqtni behuda soʻzlarga sarflamang.",
+      "chat_moderator_warning": "Moderator eslatmasi: aloqa maʼlumotini soʻragan xabar yetkazilmadi. Telefon, Telegram va boshqa aloqalar faqat «Mahram maʼlumotlari» orqali, oila ishtirokida ulashiladi."
     },
     "mahram": {
       "title": "Mahram (ota yoki aka) raqamini ulashish",
@@ -656,7 +657,8 @@
       "likes_released": "Suhbatingiz davomida {count} kishi sizga qiziqish bildirdi. Koʻrish uchun bosing.",
       "chat_extended": "Moderator suhbatni davom ettirishga ruxsat berdi.",
       "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi.",
-      "report_reply": "Shikoyatingizga moderator javob berdi:"
+      "report_reply": "Shikoyatingizga moderator javob berdi:",
+      "chat_warning": "Moderator ogohlantirishi: suhbatda telefon raqami, Telegram yoki boshqa aloqa maʼlumotini soʻrash va ulashish mumkin emas — xabaringiz yetkazilmadi. Aloqa faqat «Mahram maʼlumotlari» orqali, oila ishtirokida boʻladi. Takrorlansa, hisobingiz bloklanadi."
     }
   },
   "portal": {
@@ -990,7 +992,10 @@
     "replyPlaceholder": "Foydalanuvchiga javob yozing — bildirishnoma va Telegram xabari sifatida boradi",
     "sendReply": "Javob yuborish",
     "replySent": "Javob yuborildi",
-    "repliesSent": "Yuborilgan javoblar"
+    "repliesSent": "Yuborilgan javoblar",
+    "warn": "Ogohlantirish, yetkazmaslik",
+    "warnNote": "Xabar yetkazilmaydi, hisob bloklanmaydi. Yuboruvchiga ogohlantirish boradi (Telegram + ilova), suhbat qayta ochiladi.",
+    "warnedBefore": "Bu foydalanuvchi avval {count} marta ogohlantirilgan."
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

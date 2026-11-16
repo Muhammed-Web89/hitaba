@@ -32,6 +32,7 @@ const ICONS: Record<string, IconName> = {
   photo_rejected: 'camera',
   connects_credited: 'wallet',
   report_reply: 'shield',
+  chat_warning: 'shield',
 };
 
 /** Bildirim verisindeki sayı/metin alanları çeviriye aktarılır (ör. {count}). */

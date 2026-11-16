@@ -205,7 +205,8 @@ export type ReportInput = z.infer<typeof reportSchema>;
 // ── Moderasyon kararı ───────────────────────────────────────────────────
 
 export const moderationDecisionSchema = z.object({
-  decision: z.enum(['APPROVE', 'REJECT']),
+  /** WARN: yalnızca tutulmuş mesajda — mesaj iletilmez, gönderen engellenmez, uyarılır. */
+  decision: z.enum(['APPROVE', 'REJECT', 'WARN']),
   /** Kullanıcıya gösterilen gerekçe. Boşsa gerekçe gizlidir (§5.2). */
   reason: z.string().trim().max(500).optional(),
 });

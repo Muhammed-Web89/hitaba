@@ -31,7 +31,7 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
   if (!data) return <PageLoader />;
   const { item, context } = data;
 
-  async function decide(decision: 'APPROVE' | 'REJECT') {
+  async function decide(decision: 'APPROVE' | 'REJECT' | 'WARN') {
     setBusy(true);
     setError(null);
     try {
@@ -71,6 +71,7 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
               <Field label={t('reason')} hint={t('reasonHint')}>
                 <Textarea rows={3} value={reason} onChange={(e) => setReason(e.target.value)} maxLength={500} />
               </Field>
+              {item.targetType === 'MESSAGE' && context?.warnings > 0 && <Notice tone="danger">{t('warnedBefore', { count: context.warnings })}</Notice>}
               {item.targetType === 'MESSAGE' && <Notice tone="warning">{t('banOnRejectNote')}</Notice>}
               {error && <Notice tone="danger">{error}</Notice>}
               <div className="grid grid-cols-2 gap-2">
@@ -81,6 +82,14 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
                   {t('approve')}
                 </Button>
               </div>
+              {item.targetType === 'MESSAGE' && (
+                <div className="space-y-2">
+                  <Button variant="secondary" className="w-full" loading={busy} onClick={() => decide('WARN')}>
+                    {t('warn')}
+                  </Button>
+                  <p className="text-xs text-ink-3">{t('warnNote')}</p>
+                </div>
+              )}
             </>
           )}
           <p className="text-xs text-ink-3">{t('auditNote')}</p>

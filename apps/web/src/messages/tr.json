@@ -504,7 +504,8 @@
       "chat_extension_requested": "Sohbeti devam ettirme isteği moderatöre gönderildi.",
       "chat_extended": "Moderatör izin verdi: her iki taraf 10 mesaj daha yazabilir.",
       "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi.",
-      "chat_daily_pause": "Günlük mesaj sınırına ulaşıldı — inşallah yarın devam edersiniz. 🤍\nAllah Teâlâ nikâhı şöyle anar: «Kendileriyle huzur bulasınız diye size kendi cinsinizden eşler yaratması ve aranızda sevgi ve merhamet var etmesi O'nun ayetlerindendir» (Rûm, 21). Peygamberimiz ﷺ: «Kişinin kendisini ilgilendirmeyeni terk etmesi, Müslümanlığının güzelliğindendir» buyurdu (Tirmizî).\nNamahremle yazışma bir emanettir: amaçlı, edepli ve kısa olsun. Nikâha götüren sorular sorun, vakti boş sözlerle harcamayın."
+      "chat_daily_pause": "Günlük mesaj sınırına ulaşıldı — inşallah yarın devam edersiniz. 🤍\nAllah Teâlâ nikâhı şöyle anar: «Kendileriyle huzur bulasınız diye size kendi cinsinizden eşler yaratması ve aranızda sevgi ve merhamet var etmesi O'nun ayetlerindendir» (Rûm, 21). Peygamberimiz ﷺ: «Kişinin kendisini ilgilendirmeyeni terk etmesi, Müslümanlığının güzelliğindendir» buyurdu (Tirmizî).\nNamahremle yazışma bir emanettir: amaçlı, edepli ve kısa olsun. Nikâha götüren sorular sorun, vakti boş sözlerle harcamayın.",
+      "chat_moderator_warning": "Moderatör hatırlatması: İletişim bilgisi isteyen bir mesaj iletilmedi. Telefon, Telegram ve diğer iletişim bilgileri yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla paylaşılır."
     },
     "mahram": {
       "title": "Mahrem yakının iletişim bilgisini paylaş",
@@ -656,7 +657,8 @@
       "likes_released": "Sohbetiniz sürerken {count} kişi sizi beğendi. Görmek için dokunun.",
       "chat_extended": "Moderatör sohbetin devam etmesine izin verdi.",
       "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi.",
-      "report_reply": "Şikâyetinize moderatör yanıt verdi:"
+      "report_reply": "Şikâyetinize moderatör yanıt verdi:",
+      "chat_warning": "Moderatör uyarısı: Sohbette telefon, Telegram veya başka iletişim bilgisi istemek ve paylaşmak yasaktır — mesajınız iletilmedi. İletişim yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla olur. Tekrarlanırsa hesabınız engellenir."
     }
   },
   "portal": {
@@ -990,7 +992,10 @@
     "replyPlaceholder": "Kullanıcıya yanıt yazın — bildirim ve Telegram mesajı olarak gider",
     "sendReply": "Yanıt gönder",
     "replySent": "Yanıt gönderildi",
-    "repliesSent": "Gönderilen yanıtlar"
+    "repliesSent": "Gönderilen yanıtlar",
+    "warn": "Uyar, iletme",
+    "warnNote": "Mesaj iletilmez ve hesap engellenmez. Gönderene uyarı gider (Telegram + uygulama), sohbet yeniden açılır. Gerekçe yazarsanız uyarıya eklenir.",
+    "warnedBefore": "Bu kullanıcı daha önce {count} kez uyarıldı."
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

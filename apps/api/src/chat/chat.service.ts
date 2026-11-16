@@ -36,7 +36,8 @@ export type SystemMessageKey =
   | 'chat_extension_requested'
   | 'chat_extended'
   | 'chat_extension_denied'
-  | 'chat_daily_pause';
+  | 'chat_daily_pause'
+  | 'chat_moderator_warning';
 
 const OPEN_STATUSES = ['ACTIVE', 'PAUSED'] as const;
 
@@ -59,7 +60,7 @@ export class ChatService implements OnModuleInit {
 
   onModuleInit() {
     this.moderation.register('MESSAGE', {
-      apply: async ({ item, moderator, approved, reason }) => {
+      apply: async ({ item, moderator, approved, reason, warn }) => {
         const msg = await this.prisma.message.update({
           where: { id: item.targetId },
           data: { state: approved ? 'DELIVERED' : 'REJECTED' },
@@ -67,6 +68,14 @@ export class ChatService implements OnModuleInit {
         });
         if (approved) this.realtime.toChat(msg.chatId, 'message:new', toChatMessage(msg));
         else this.realtime.toChat(msg.chatId, 'message:updated', toChatMessage(msg));
+        // Uyarı: mesaj iletilmez, gönderen engellenmez; sohbette herkese hatırlatma, gönderene kişisel uyarı.
+        if (warn && msg.senderId) {
+          const sys = await this.prisma.$transaction((tx) => this.systemMessage(tx, msg.chatId, 'chat_moderator_warning'));
+          this.emitNew(sys);
+          await this.notifications.notify(msg.senderId, 'chat_warning', { chatId: msg.chatId, ...(reason && { reason }) });
+          await this.resumeIfClear(msg.chatId);
+          return;
+        }
         // Moderatörün reddettiği tutulmuş mesaj kural ihlalidir (iletişim bilgisi, kural dışı sayı, küfür): gönderen engellenir.
         if (!approved && moderator && msg.senderId) {
           await this.banForViolation(msg.senderId, moderator.id, reason ?? 'Sohbet kuralı ihlali (moderatör onayladı)');
@@ -77,7 +86,8 @@ export class ChatService implements OnModuleInit {
       context: async (item, moderator) => {
         const msg = await this.prisma.message.findUnique({ where: { id: item.targetId } });
         if (!msg) return null;
-        return { message: msg, transcript: await this.transcriptForModerator(moderator, msg.chatId) };
+        const warnings = msg.senderId ? await this.prisma.notification.count({ where: { userId: msg.senderId, type: 'chat_warning' } }) : 0;
+        return { message: msg, warnings, transcript: await this.transcriptForModerator(moderator, msg.chatId) };
       },
     });
 

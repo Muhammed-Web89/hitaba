@@ -61,7 +61,7 @@ export function MessageList({
               <span
                 className={cx(
                   'max-w-[85%] bg-surface-alt text-center text-xs text-ink-2',
-                  m.text === 'chat_daily_pause' ? 'whitespace-pre-line rounded-card px-4 py-3 leading-relaxed' : 'rounded-full px-3 py-1',
+                  m.text === 'chat_daily_pause' || m.text === 'chat_moderator_warning' ? 'whitespace-pre-line rounded-card px-4 py-3 leading-relaxed' : 'rounded-full px-3 py-1',
                 )}
               >
                 {t.has(`system.${m.text}` as never) ? t(`system.${m.text}` as never) : m.text}

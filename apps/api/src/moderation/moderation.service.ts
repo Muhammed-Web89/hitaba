@@ -9,6 +9,8 @@ export interface DecisionContext {
   moderator: User | null;
   approved: boolean;
   reason: string | null;
+  /** Ret, ama yaptırımsız uyarı (yalnızca MESSAGE). */
+  warn?: boolean;
 }
 
 /** Her hedef türünün sahibi olan modül kararın etkisini ve inceleme bağlamını sağlar. */
@@ -82,7 +84,9 @@ export class ModerationService {
   async decide(moderator: User, id: string, input: ModerationDecisionInput) {
     const item = await this.getVisible(moderator, id);
     if (item.status !== 'PENDING') throw new ForbiddenException({ error: 'already_decided' });
+    if (input.decision === 'WARN' && item.targetType !== 'MESSAGE') throw new ForbiddenException({ error: 'warn_not_supported' });
     const approved = input.decision === 'APPROVE';
+    const warn = input.decision === 'WARN';
     const reason = input.reason?.trim() || null;
 
     const updated = await this.prisma.moderationItem.update({
@@ -94,8 +98,8 @@ export class ModerationService {
         reason,
       },
     });
-    await this.handlers.get(item.targetType)?.apply({ item: updated, moderator, approved, reason });
-    await this.audit(moderator.id, approved ? 'moderation.approve' : 'moderation.reject', item, { reason });
+    await this.handlers.get(item.targetType)?.apply({ item: updated, moderator, approved, reason, warn });
+    await this.audit(moderator.id, approved ? 'moderation.approve' : warn ? 'moderation.warn' : 'moderation.reject', item, { reason });
     return updated;
   }
 

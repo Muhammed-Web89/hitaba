@@ -31,7 +31,8 @@ export type NotificationType =
   | 'mahram_approved'
   | 'mahram_rejected'
   | 'connects_credited'
-  | 'report_reply';
+  | 'report_reply'
+  | 'chat_warning';
 
 /** Telegram'a gönderilen kısa metinler. Uygulama içi metinler web tarafında çevrilir. */
 const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
@@ -55,6 +56,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_extended: 'Moderator suhbatni davom ettirishga ruxsat berdi.',
     chat_extension_denied: 'Suhbatni davom ettirish soʻrovi rad etildi.',
     report_reply: 'Shikoyatingizga moderator javob berdi:',
+    chat_warning: 'Moderator ogohlantirishi: suhbatda telefon raqami, Telegram yoki boshqa aloqa maʼlumotini soʻrash va ulashish mumkin emas — xabaringiz yetkazilmadi. Aloqa faqat «Mahram maʼlumotlari» orqali, oila ishtirokida boʻladi. Takrorlansa, hisobingiz bloklanadi.',
   },
   ru: {
     profile_approved: 'Ваш профиль одобрен. Теперь вы можете смотреть анкеты.',
@@ -76,6 +78,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_extended: 'Модератор разрешил продолжить чат.',
     chat_extension_denied: 'Запрос на продолжение чата отклонён.',
     report_reply: 'Модератор ответил на вашу жалобу:',
+    chat_warning: 'Предупреждение модератора: в чате нельзя просить или передавать номер телефона, Telegram и другие контакты — ваше сообщение не доставлено. Контакт — только через «Контакт махрама», с участием семьи. При повторе аккаунт будет заблокирован.',
   },
   tr: {
     profile_approved: 'Profiliniz onaylandı. Artık profilleri görebilirsiniz.',
@@ -97,6 +100,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_extended: 'Moderatör sohbetin devam etmesine izin verdi.',
     chat_extension_denied: 'Sohbeti devam ettirme isteği reddedildi.',
     report_reply: 'Şikâyetinize moderatör yanıt verdi:',
+    chat_warning: 'Moderatör uyarısı: Sohbette telefon, Telegram veya başka iletişim bilgisi istemek ve paylaşmak yasaktır — mesajınız iletilmedi. İletişim yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla olur. Tekrarlanırsa hesabınız engellenir.',
   },
   en: {
     profile_approved: 'Your profile is approved. You can now browse profiles.',
@@ -118,6 +122,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_extended: 'A moderator allowed the chat to continue.',
     chat_extension_denied: 'The request to continue the chat was declined.',
     report_reply: 'A moderator replied to your report:',
+    chat_warning: 'Moderator warning: asking for or sharing a phone number, Telegram or other contacts in chat is not allowed — your message was not delivered. Contact happens only through “Mahram contact”, with the family involved. If it happens again, your account will be blocked.',
   },
   ar: {
     profile_approved: 'تمت الموافقة على ملفك. يمكنك الآن تصفح الملفات.',
@@ -139,6 +144,7 @@ const TG_TEXT: Record<string, Partial<Record<NotificationType, string>>> = {
     chat_extended: 'سمح المشرف بمتابعة المحادثة.',
     chat_extension_denied: 'رُفض طلب متابعة المحادثة.',
     report_reply: 'ردّ المشرف على بلاغك:',
+    chat_warning: 'تنبيه من المشرف: لا يُسمح بطلب أو مشاركة رقم الهاتف أو تيليجرام أو أي وسيلة تواصل في المحادثة — لم تُرسل رسالتك. التواصل يكون فقط عبر «بيانات المحرم» وبحضور الأسرة. عند التكرار سيُحظر حسابك.',
   },
 };
 
@@ -172,7 +178,7 @@ export class NotificationsService {
     });
     const head = user && (TG_TEXT[user.locale] ?? TG_TEXT.en)[type];
     // Moderatör yanıtında yazılan metin de Telegram'a gider.
-    const text = head && type === 'report_reply' && typeof data.reason === 'string' ? `${head}\n\n${data.reason}` : head;
+    const text = head && (type === 'report_reply' || type === 'chat_warning') && typeof data.reason === 'string' ? `${head}\n\n${data.reason}` : head;
     if (user?.telegramId && text) {
       void this.telegram.sendMessage(user.telegramId, `Hitaba · ${text}`, OPEN_LABEL[user.locale] ?? OPEN_LABEL.en);
     }
