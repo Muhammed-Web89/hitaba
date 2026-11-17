@@ -795,7 +795,8 @@
     "session_current": "Hozir foydalanayotgan qurilmangiz seansini bu yerdan yopib boʻlmaydi.",
     "daily_limit_reached": "Bugungi xabarlar soni tugadi. Ertaga davom etishingiz mumkin.",
     "quota_reached": "Bu bosqichdagi xabarlar soni tugadi. Davom ettirish uchun moderator ruxsati kerak.",
-    "quota_not_reached": "Xabarlar soni hali tugamagan."
+    "quota_not_reached": "Xabarlar soni hali tugamagan.",
+    "photo_not_available": "U hali surat yuklamagan yoki surati tekshiruvda. Surat tasdiqlangach koʻrishingiz mumkin."
   },
   "admin": {
     "title": "Moderatsiya",

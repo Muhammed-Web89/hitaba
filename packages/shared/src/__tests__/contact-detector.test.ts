@@ -74,6 +74,8 @@ test('asking for or offering contact details is held', () => {
     'скиньте телеграм',
     'send me your number',
     'أعطني رقم هاتفك',
+    'telegdan yozin',
+    'Телегдан ёзинг',
   ]) {
     assert.ok(scanForContactInfo(s).signals.includes('INTENT'), s);
   }

@@ -305,6 +305,8 @@ export class MatchingService {
   async openPhoto(viewer: User, id: string) {
     const m = await this.ownMatch(viewer, id);
     if (viewer.gender !== 'MALE' || m.stage === 'CLOSED' || m.stage === 'MUTUAL') throw new BadRequestException({ error: 'invalid_stage' });
+    // Kadının onaylı fotoğrafı yoksa hak harcanmaz (boş görüntüleyiciyle tek seferlik izin boşa gitmesin).
+    if (!(await this.hasApprovedPhoto(m.femaleId))) throw new BadRequestException({ error: 'photo_not_available' });
     // Koşullu güncelleme: aynı hak iki kez kullanılamaz.
     const res = await this.prisma.match.updateMany({
       where: { id, malePhotoViewGranted: true },
@@ -328,6 +330,7 @@ export class MatchingService {
     const m = await this.ownMatch(viewer, id);
     if (viewer.gender !== 'MALE' || m.stage === 'CLOSED' || m.stage === 'MUTUAL') throw new BadRequestException({ error: 'invalid_stage' });
     if (m.malePhotoViewGranted) throw new BadRequestException({ error: 'photo_view_already_granted' });
+    if (!(await this.hasApprovedPhoto(m.femaleId))) throw new BadRequestException({ error: 'photo_not_available' });
     // Kadın (ya da moderatör) sohbeti kapattıysa erkek artık fotoğraf isteğiyle ona ulaşamaz.
     const chat = await this.prisma.chat.findUnique({ where: { matchId: id }, select: { status: true, closedById: true, closeReason: true } });
     if (chat?.status === 'CLOSED' && chat.closedById !== viewer.id && chat.closeReason !== 'SILENCE') {
@@ -373,6 +376,10 @@ export class MatchingService {
     if (m.stage === 'CHAT_OPEN' || m.stage === 'CLOSED') throw new BadRequestException({ error: 'invalid_stage' });
     await this.prisma.match.update({ where: { id }, data: { stage: 'CLOSED', closedById: viewer.id, closedAt: new Date() } });
     return { ok: true };
+  }
+
+  private async hasApprovedPhoto(userId: string): Promise<boolean> {
+    return (await this.prisma.photo.count({ where: { userId, status: 'APPROVED' } })) > 0;
   }
 
   async ownMatch(viewer: User, id: string): Promise<Match & { chat: Chat | null }> {

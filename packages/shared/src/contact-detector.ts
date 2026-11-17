@@ -50,6 +50,8 @@ const CONTACT_PREFIX = [
   // en
   'number', 'phone', 'contact', 'account', 'handle', 'username',
   // ar
+  // Kısaltılmış/bozuk yazımlar: "telegdan yozin", "телегдан", "whatsappga", "вотсапга"
+  'teleg', 'телег', 'telgram', 'tlgrm', 'whats', 'vatsap', 'votsap',
   'رقم', 'هاتف', 'جوال', 'تلفون', 'تليفون', 'واتس', 'تلجرام', 'تيليجرام', 'انستا', 'حساب', 'رابط',
   ...MESSENGER_WORDS.filter((w) => w.length > 4),
 ];

@@ -795,7 +795,8 @@
     "session_current": "Kullandığınız cihazın oturumu buradan kapatılamaz.",
     "daily_limit_reached": "Bugünkü mesaj hakkınız doldu. Yarın devam edebilirsiniz.",
     "quota_reached": "Bu aşamadaki mesaj hakkınız doldu. Devam etmek için moderatör onayı gerekiyor.",
-    "quota_not_reached": "Mesaj hakkınız henüz dolmadı."
+    "quota_not_reached": "Mesaj hakkınız henüz dolmadı.",
+    "photo_not_available": "Henüz fotoğraf yüklemedi ya da fotoğrafı incelemede. Onaylanınca görebilirsiniz."
   },
   "admin": {
     "title": "Moderasyon",

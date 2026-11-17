@@ -795,7 +795,8 @@
     "session_current": "You can’t sign out the device you’re using from here.",
     "daily_limit_reached": "Today's messages are used up. You can continue tomorrow.",
     "quota_reached": "You have used your messages for this stage. A moderator must approve before you continue.",
-    "quota_not_reached": "You still have messages left."
+    "quota_not_reached": "You still have messages left.",
+    "photo_not_available": "She hasn't uploaded a photo yet, or it is still under review. You can view it once approved."
   },
   "admin": {
     "title": "Moderation",
