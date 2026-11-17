@@ -796,7 +796,8 @@
     "daily_limit_reached": "Bugungi xabarlar soni tugadi. Ertaga davom etishingiz mumkin.",
     "quota_reached": "Bu bosqichdagi xabarlar soni tugadi. Davom ettirish uchun moderator ruxsati kerak.",
     "quota_not_reached": "Xabarlar soni hali tugamagan.",
-    "photo_not_available": "U hali surat yuklamagan yoki surati tekshiruvda. Surat tasdiqlangach koʻrishingiz mumkin."
+    "photo_not_available": "U hali surat yuklamagan yoki surati tekshiruvda. Surat tasdiqlangach koʻrishingiz mumkin.",
+    "gender_change_blocked": "Bu hisobda qiziqish yoki juftlik tarixi bor; jinsni oʻzgartirib boʻlmaydi."
   },
   "admin": {
     "title": "Moderatsiya",
@@ -996,7 +997,11 @@
     "repliesSent": "Yuborilgan javoblar",
     "warn": "Ogohlantirish, yetkazmaslik",
     "warnNote": "Xabar yetkazilmaydi, hisob bloklanmaydi. Yuboruvchiga ogohlantirish boradi (Telegram + ilova), suhbat qayta ochiladi.",
-    "warnedBefore": "Bu foydalanuvchi avval {count} marta ogohlantirilgan."
+    "warnedBefore": "Bu foydalanuvchi avval {count} marta ogohlantirilgan.",
+    "genderFix": "Jinsni tuzatish: {gender}",
+    "genderFixNote": "Hisob jinsi “{gender}” ga oʻzgaradi. Faqat qiziqish/juftlik tarixi yoʻq hisobda mumkin; foydalanuvchi qayta kiradi.",
+    "genderFixCancel": "Bekor qilish",
+    "genderFixConfirm": "Ha, oʻzgartirish"
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

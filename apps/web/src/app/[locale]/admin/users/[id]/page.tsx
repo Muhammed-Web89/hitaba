@@ -147,6 +147,9 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
               {t('unfreeze')}
             </Button>
           )}
+          {me?.role === 'ADMIN' && u.role === 'USER' && u.status !== 'BANNED' && u.status !== 'DELETED' && (
+            <GenderFix current={u.gender} onConfirm={(gender) => run('gender', { gender })} />
+          )}
           {me?.role === 'ADMIN' && u.status !== 'BANNED' && (
             <Button variant="danger" className="w-full" onClick={() => setAction('ban')}>
               {t('ban')}
@@ -187,5 +190,30 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
         </Field>
       </Modal>
     </div>
+  );
+}
+
+/** Kayıtta yanlış seçilmiş cinsiyeti düzeltir (yalnızca eşleşme geçmişi olmayan hesapta). İki adımlı onay. */
+function GenderFix({ current, onConfirm }: { current: string; onConfirm: (g: 'MALE' | 'FEMALE') => void }) {
+  const t = useTranslations('admin');
+  const [armed, setArmed] = useState(false);
+  const next = current === 'MALE' ? 'FEMALE' : 'MALE';
+  const label = t(`gender.${next}` as never);
+  return armed ? (
+    <div className="space-y-2 rounded-control border border-line p-3">
+      <p className="text-xs text-ink-2">{t('genderFixNote', { gender: label })}</p>
+      <div className="grid grid-cols-2 gap-2">
+        <Button size="sm" variant="ghost" onClick={() => setArmed(false)}>
+          {t('genderFixCancel')}
+        </Button>
+        <Button size="sm" onClick={() => (setArmed(false), onConfirm(next))}>
+          {t('genderFixConfirm')}
+        </Button>
+      </div>
+    </div>
+  ) : (
+    <Button variant="secondary" className="w-full" onClick={() => setArmed(true)}>
+      {t('genderFix', { gender: label })}
+    </Button>
   );
 }

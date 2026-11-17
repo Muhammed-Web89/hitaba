@@ -26,6 +26,7 @@ import { PhotosService } from '../photos/photos.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const reasonSchema = z.object({ reason: z.string().trim().min(3).max(500) });
+const genderSchema = z.object({ gender: z.enum(['MALE', 'FEMALE']) });
 const replySchema = z.object({ text: z.string().trim().min(2).max(1000) });
 const resolveSchema = z.object({
   status: z.enum(['RESOLVED', 'DISMISSED']),
@@ -193,6 +194,27 @@ export class AdminService {
     return { ok: true };
   }
 
+  /**
+   * Kayıtta yanlış seçilen cinsiyeti düzelt. Yalnızca beğeni/eşleşme geçmişi olmayan hesapta (karşı cinse göre
+   * kurulmuş ilişkiler bozulmasın). Erkekten kadına geçişte hoş geldin jetonu sıfırlanır; oturumlar yenilenir.
+   */
+  async changeGender(mod: User, id: string, gender: Gender) {
+    const target = await this.assertTargetable(mod, id);
+    if (target.role !== 'USER' || target.gender === gender) throw new BadRequestException({ error: 'invalid_gender_change' });
+    const [likes, matches] = await Promise.all([
+      this.prisma.like.count({ where: { OR: [{ fromId: id }, { toId: id }] } }),
+      this.prisma.match.count({ where: { OR: [{ maleId: id }, { femaleId: id }] } }),
+    ]);
+    if (likes || matches) throw new BadRequestException({ error: 'gender_change_blocked' });
+    await this.prisma.$transaction(async (tx) => {
+      if (gender === 'FEMALE') await this.connects.zeroOut(tx, id);
+      await tx.user.update({ where: { id }, data: { gender, tokenVersion: { increment: 1 } } });
+      await tx.moderationItem.updateMany({ where: { subjectUserId: id, status: 'PENDING' }, data: { subjectGender: gender } });
+    });
+    await this.moderation.audit(mod.id, 'user.gender', { targetType: 'USER', targetId: id }, { from: target.gender, to: gender });
+    return { ok: true };
+  }
+
   chatsList(status: ChatStatus = 'ACTIVE') {
     return this.prisma.chat.findMany({
       where: { status },
@@ -312,6 +334,12 @@ export class AdminController {
   @Post('users/:id/freeze')
   freeze(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(reasonSchema)) body: { reason: string }) {
     return this.admin.freeze(mod, id, true, body.reason);
+  }
+
+  @Post('users/:id/gender')
+  @Roles('ADMIN')
+  gender(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(genderSchema)) body: z.infer<typeof genderSchema>) {
+    return this.admin.changeGender(mod, id, body.gender);
   }
 
   @Post('users/:id/unfreeze')

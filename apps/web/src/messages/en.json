@@ -796,7 +796,8 @@
     "daily_limit_reached": "Today's messages are used up. You can continue tomorrow.",
     "quota_reached": "You have used your messages for this stage. A moderator must approve before you continue.",
     "quota_not_reached": "You still have messages left.",
-    "photo_not_available": "She hasn't uploaded a photo yet, or it is still under review. You can view it once approved."
+    "photo_not_available": "She hasn't uploaded a photo yet, or it is still under review. You can view it once approved.",
+    "gender_change_blocked": "This account has likes or matches; the gender can't be changed."
   },
   "admin": {
     "title": "Moderation",
@@ -996,7 +997,11 @@
     "repliesSent": "Replies sent",
     "warn": "Warn, don't deliver",
     "warnNote": "The message is not delivered and the account is not blocked. The sender gets a warning (Telegram + app) and the chat resumes.",
-    "warnedBefore": "This user has been warned {count} time(s) before."
+    "warnedBefore": "This user has been warned {count} time(s) before.",
+    "genderFix": "Fix gender: {gender}",
+    "genderFixNote": "The account's gender will change to “{gender}”. Only for accounts without likes or matches; the user is signed in again.",
+    "genderFixCancel": "Cancel",
+    "genderFixConfirm": "Yes, change"
   },
   "consent": {
     "title": "Consents (required)",

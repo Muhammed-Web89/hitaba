@@ -796,7 +796,8 @@
     "daily_limit_reached": "Bugünkü mesaj hakkınız doldu. Yarın devam edebilirsiniz.",
     "quota_reached": "Bu aşamadaki mesaj hakkınız doldu. Devam etmek için moderatör onayı gerekiyor.",
     "quota_not_reached": "Mesaj hakkınız henüz dolmadı.",
-    "photo_not_available": "Henüz fotoğraf yüklemedi ya da fotoğrafı incelemede. Onaylanınca görebilirsiniz."
+    "photo_not_available": "Henüz fotoğraf yüklemedi ya da fotoğrafı incelemede. Onaylanınca görebilirsiniz.",
+    "gender_change_blocked": "Bu hesabın beğeni veya eşleşme geçmişi var; cinsiyet değiştirilemez."
   },
   "admin": {
     "title": "Moderasyon",
@@ -996,7 +997,11 @@
     "repliesSent": "Gönderilen yanıtlar",
     "warn": "Uyar, iletme",
     "warnNote": "Mesaj iletilmez ve hesap engellenmez. Gönderene uyarı gider (Telegram + uygulama), sohbet yeniden açılır. Gerekçe yazarsanız uyarıya eklenir.",
-    "warnedBefore": "Bu kullanıcı daha önce {count} kez uyarıldı."
+    "warnedBefore": "Bu kullanıcı daha önce {count} kez uyarıldı.",
+    "genderFix": "Cinsiyeti düzelt: {gender}",
+    "genderFixNote": "Hesabın cinsiyeti “{gender}” olarak değişecek. Yalnızca beğeni/eşleşmesi olmayan hesapta yapılır; kullanıcının oturumu yenilenir.",
+    "genderFixCancel": "Vazgeç",
+    "genderFixConfirm": "Evet, değiştir"
   },
   "consent": {
     "title": "Onaylar (zorunlu)",
