@@ -764,6 +764,7 @@
     "invoice_failed": "Toʻlovni yaratib boʻlmadi. Qaytadan urinib koʻring.",
     "not_approved": "Faqat tasdiqlangan anketani toʻxtatish mumkin.",
     "not_frozen": "Bu anketa toʻxtatilmagan.",
+    "not_banned": "Bu hisob bloklanmagan.",
     "not_deletable": "Bu xabarni endi oʻchirib boʻlmaydi.",
     "not_editable": "Bu xabarni endi tahrirlab boʻlmaydi.",
     "only_brother_opens": "Suhbatni faqat erkak ochadi.",
@@ -1005,7 +1006,10 @@
     "genderFixConfirm": "Ha, oʻzgartirish",
     "reopenReview": "Tasdiqni bekor qilish",
     "reopenReviewNote": "Anketa yana “Tekshiruvda” boʻladi, qidiruvdan chiqadi va tekshiruv navbatiga qaytadi — u yerda sabab yozib rad etishingiz mumkin. Moslik bor hisobda qilinmaydi.",
-    "reopenReviewConfirm": "Ha, bekor qilish"
+    "reopenReviewConfirm": "Ha, bekor qilish",
+    "unban": "Blokdan chiqarish",
+    "unbanNote": "Hisob anketaning oxirgi holatiga qaytadi (tasdiqlangan, tekshiruvda yoki rad etilgan). Nolga tushgan balans va yopilgan suhbatlar qaytmaydi.",
+    "unbanConfirm": "Ha, chiqarish"
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

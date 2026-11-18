@@ -182,6 +182,28 @@ export class AdminService {
     return { ok: true };
   }
 
+  /**
+   * Engeli kaldırır (yanlışlıkla ya da otomatik engellenen hesap). Hesap, anketin son moderasyon durumuna döner:
+   * onaylıysa onaylı, incelemedeyse sıraya, reddedildiyse "reddedildi" (düzeltip yeniden gönderebilir).
+   * Sıfırlanan bakiye ve kapanan sohbetler geri gelmez.
+   */
+  async unban(mod: User, id: string) {
+    const target = await this.assertTargetable(mod, id);
+    if (target.status !== 'BANNED') throw new BadRequestException({ error: 'not_banned' });
+    const profile = await this.prisma.profile.findUnique({ where: { userId: id } });
+    const status =
+      profile?.moderationStatus === 'APPROVED' ? 'APPROVED' : profile?.moderationStatus === 'PENDING' && profile.submittedAt ? 'PENDING_MODERATION' : profile?.submittedAt ? 'REJECTED' : 'ONBOARDING';
+    await this.prisma.$transaction([
+      this.prisma.user.update({ where: { id }, data: { status, statusReason: null } }),
+      ...(profile ? [this.prisma.profile.update({ where: { userId: id }, data: { unchangedResubmits: 0 } })] : []),
+    ]);
+    if (status === 'PENDING_MODERATION') {
+      await this.moderation.enqueue({ targetType: 'PROFILE', targetId: id, subjectUserId: id, subjectGender: target.gender });
+    }
+    await this.moderation.audit(mod.id, 'user.unban', { targetType: 'USER', targetId: id }, { to: status });
+    return { ok: true };
+  }
+
   async freeze(mod: User, id: string, frozen: boolean, reason?: string) {
     const target = await this.assertTargetable(mod, id);
     if (frozen && target.status !== 'APPROVED') throw new BadRequestException({ error: 'not_approved' });
@@ -347,6 +369,12 @@ export class AdminController {
   @Roles('ADMIN')
   ban(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(reasonSchema)) body: { reason: string }) {
     return this.admin.ban(mod, id, body.reason);
+  }
+
+  @Post('users/:id/unban')
+  @Roles('ADMIN')
+  unban(@CurrentUser() mod: User, @Param('id') id: string) {
+    return this.admin.unban(mod, id);
   }
 
   @Post('users/:id/freeze')

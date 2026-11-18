@@ -764,6 +764,7 @@
     "invoice_failed": "Ödeme oluşturulamadı. Lütfen tekrar deneyin.",
     "not_approved": "Yalnızca onaylı profiller dondurulabilir.",
     "not_frozen": "Bu profil dondurulmuş değil.",
+    "not_banned": "Bu hesap engellenmiş değil.",
     "not_deletable": "Bu mesaj artık silinemez.",
     "not_editable": "Bu mesaj artık düzenlenemez.",
     "only_brother_opens": "Sohbeti yalnızca erkek açabilir.",
@@ -1005,7 +1006,10 @@
     "genderFixConfirm": "Evet, değiştir",
     "reopenReview": "Onayı geri al",
     "reopenReviewNote": "Profil yeniden “İncelemede” olur, keşiften düşer ve inceleme sırasına döner; oradan gerekçe yazarak reddedebilirsiniz. Eşleşmesi olan hesapta yapılmaz.",
-    "reopenReviewConfirm": "Evet, geri al"
+    "reopenReviewConfirm": "Evet, geri al",
+    "unban": "Engeli kaldır",
+    "unbanNote": "Hesap, anketin son durumuna döner (onaylı, incelemede ya da reddedildi). Sıfırlanan bakiye ve kapanan sohbetler geri gelmez.",
+    "unbanConfirm": "Evet, kaldır"
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

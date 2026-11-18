@@ -764,6 +764,7 @@
     "invoice_failed": "Could not create the payment. Please try again.",
     "not_approved": "Only approved profiles can be frozen.",
     "not_frozen": "This profile is not frozen.",
+    "not_banned": "This account isn't blocked.",
     "not_deletable": "This message can no longer be deleted.",
     "not_editable": "This message can no longer be edited.",
     "only_brother_opens": "Only the man can open the chat.",
@@ -1005,7 +1006,10 @@
     "genderFixConfirm": "Yes, change",
     "reopenReview": "Undo approval",
     "reopenReviewNote": "The profile goes back to “In review”, leaves discovery and returns to the review queue, where you can reject it with a reason. Not possible for accounts with matches.",
-    "reopenReviewConfirm": "Yes, undo"
+    "reopenReviewConfirm": "Yes, undo",
+    "unban": "Unblock",
+    "unbanNote": "The account returns to its profile's last state (approved, in review or rejected). A zeroed balance and closed chats are not restored.",
+    "unbanConfirm": "Yes, unblock"
   },
   "consent": {
     "title": "Consents (required)",

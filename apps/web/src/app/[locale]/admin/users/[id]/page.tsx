@@ -142,7 +142,9 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
               {t('freeze')}
             </Button>
           )}
-          {u.status === 'APPROVED' && u.role === 'USER' && <ReopenReview onConfirm={() => run('reopen-review')} />}
+          {u.status === 'APPROVED' && u.role === 'USER' && (
+            <Confirm label={t('reopenReview')} note={t('reopenReviewNote')} confirm={t('reopenReviewConfirm')} onConfirm={() => run('reopen-review')} />
+          )}
           {u.status === 'FROZEN' && (
             <Button variant="secondary" className="w-full" onClick={() => run('unfreeze')}>
               {t('unfreeze')}
@@ -150,6 +152,9 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
           )}
           {me?.role === 'ADMIN' && u.role === 'USER' && u.status !== 'BANNED' && u.status !== 'DELETED' && (
             <GenderFix current={u.gender} onConfirm={(gender) => run('gender', { gender })} />
+          )}
+          {me?.role === 'ADMIN' && u.status === 'BANNED' && (
+            <Confirm label={t('unban')} note={t('unbanNote')} confirm={t('unbanConfirm')} onConfirm={() => run('unban')} />
           )}
           {me?.role === 'ADMIN' && u.status !== 'BANNED' && (
             <Button variant="danger" className="w-full" onClick={() => setAction('ban')}>
@@ -194,25 +199,25 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
   );
 }
 
-/** Yanlışlıkla verilen onayı geri alır: profil inceleme sırasına döner. İki adımlı onay. */
-function ReopenReview({ onConfirm }: { onConfirm: () => void }) {
+/** İki adımlı onaylı işlem düğmesi (onayı geri al, engeli kaldır). */
+function Confirm({ label, note, confirm, onConfirm }: { label: string; note: string; confirm: string; onConfirm: () => void }) {
   const t = useTranslations('admin');
   const [armed, setArmed] = useState(false);
   return armed ? (
     <div className="space-y-2 rounded-control border border-line p-3">
-      <p className="text-xs text-ink-2">{t('reopenReviewNote')}</p>
+      <p className="text-xs text-ink-2">{note}</p>
       <div className="grid grid-cols-2 gap-2">
         <Button size="sm" variant="ghost" onClick={() => setArmed(false)}>
           {t('genderFixCancel')}
         </Button>
         <Button size="sm" onClick={() => (setArmed(false), onConfirm())}>
-          {t('reopenReviewConfirm')}
+          {confirm}
         </Button>
       </div>
     </div>
   ) : (
     <Button variant="secondary" className="w-full" onClick={() => setArmed(true)}>
-      {t('reopenReview')}
+      {label}
     </Button>
   );
 }
