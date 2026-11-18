@@ -41,9 +41,12 @@ export const RULES = {
   femaleMaxActiveChats: 1,
   /** Günlük mesaj hakkı: her taraf bir sohbette kendi yerel gününde en fazla bu kadar mesaj yazar. */
   chatDailyMessages: 20,
-  /** Sohbette sayı yazma sınırı: en fazla 2 haneli sayılar, sohbet boyunca en fazla 2 mesajda yeni sayı (tekrarlar sayılmaz). */
-  chatNumberMaxDigits: 2,
-  chatNumberMaxTimes: 2,
+  /**
+   * Sohbette sayı yazma sınırı: en fazla 4 haneli sayılar (yıl, boy, kilo), sohbet boyunca en fazla 5 mesajda yeni sayı
+   * (tekrarlar sayılmaz). Sınırı aşan mesaj tutulur ama sohbet durmaz; 7+ haneli numara ayrıca telefon sayılır.
+   */
+  chatNumberMaxDigits: 4,
+  chatNumberMaxTimes: 5,
 
   reactions: ['👍', '✅', '❤️'] as const,
 } as const;

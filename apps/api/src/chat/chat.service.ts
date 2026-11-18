@@ -41,6 +41,16 @@ export type SystemMessageKey =
 
 const OPEN_STATUSES = ['ACTIVE', 'PAUSED'] as const;
 
+/**
+ * Doğrudan iletişim bilgisi (numara, e-posta, link, kullanıcı adı): mesaj tutulur VE sohbet moderatör bakana dek durur.
+ * Diğerleri (niyet sözcükleri, küfür, sayı kuralı) yalnızca o mesajı tutar; sohbet devam eder.
+ */
+const PAUSING_SIGNALS = ['PHONE', 'EMAIL', 'URL', 'HANDLE', 'MESSENGER'];
+const pauses = (signals: string[]) => signals.some((s) => PAUSING_SIGNALS.includes(s));
+
+/** Neredeyse yalnızca sayıdan oluşan mesaj (numarayı parça parça gönderme denemesi). */
+const numberOnly = (text: string) => /\d/.test(text) && (text.match(/\p{L}/gu)?.length ?? 0) < 3;
+
 /** Mesajdaki sayılar (Arapça-Hint rakamları dahil). */
 function numbersIn(text: string): string[] {
   return text.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660)).replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0)).match(/\d+/g) ?? [];
@@ -295,7 +305,11 @@ export class ChatService implements OnModuleInit {
           if (ns.some((n) => !seen.has(n))) times++;
           ns.forEach((n) => seen.add(n));
         }
-        if (numbers.some((n) => !seen.has(n)) && times >= RULES.chatNumberMaxTimes) signals.push('DIGITS');
+        const fresh = numbers.some((n) => !seen.has(n));
+        // Art arda iki "yalnızca sayı" mesajı: numara parçalara bölünerek gönderiliyor olabilir.
+        const last = earlier.at(-1);
+        const split = fresh && numberOnly(text) && last !== undefined && numberOnly(last.text);
+        if ((fresh && times >= RULES.chatNumberMaxTimes) || split) signals.push('DIGITS');
       }
     }
     return { blocked: signals.length > 0, signals };
@@ -603,10 +617,12 @@ export class ChatService implements OnModuleInit {
   }
 
   private async holdForModeration(viewer: User, chat: Chat, msg: Message, signals: string[]) {
-    const sys = await this.prisma.$transaction(async (tx) => {
-      await tx.chat.update({ where: { id: chat.id }, data: { status: 'PAUSED', pausedReason: 'contact_info' } });
-      return chat.status !== 'PAUSED' ? this.systemMessage(tx, chat.id, 'chat_paused_contact') : null;
-    });
+    const sys = pauses(signals)
+      ? await this.prisma.$transaction(async (tx) => {
+          await tx.chat.update({ where: { id: chat.id }, data: { status: 'PAUSED', pausedReason: 'contact_info' } });
+          return chat.status !== 'PAUSED' ? this.systemMessage(tx, chat.id, 'chat_paused_contact') : null;
+        })
+      : null;
     if (sys) this.emitNew(sys);
     await this.moderation.enqueue({
       targetType: 'MESSAGE',
@@ -623,7 +639,8 @@ export class ChatService implements OnModuleInit {
   private async resumeIfClear(chatId: string) {
     const chat = await this.prisma.chat.findUnique({ where: { id: chatId }, include: { match: true } });
     if (!chat || chat.status !== 'PAUSED' || chat.pausedReason !== 'contact_info') return;
-    const held = await this.prisma.message.count({ where: { chatId, state: 'HELD' } });
+    // Yalnızca sohbeti durduran türden tutulmuş mesajlar beklenir; diğerleri sohbet açıkken incelenir.
+    const held = await this.prisma.message.count({ where: { chatId, state: 'HELD', contactSignals: { hasSome: PAUSING_SIGNALS } } });
     if (held) return;
     const sys = await this.prisma.$transaction(async (tx) => {
       await tx.chat.update({

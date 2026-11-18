@@ -57,6 +57,14 @@ const CONTACT_PREFIX = [
 ];
 const CONTACT_EXACT = ['tel', 'тел', 'imo', 'tg', 'тг', 'wp', 'insta', 'инста', 'лс', 'dm'];
 
+/**
+ * Veli/mahrem sözcükleri: "valiyingiz raqamini bering", "mahramlarizga aloqaga chiqaman" platformun
+ * teşvik ettiği yoldur (veli bilgisi kart olarak, moderatör onayıyla paylaşılır). Yanındaki iletişim sözcüğü niyet sayılmaz.
+ */
+const GUARDIAN_PREFIX = ['vali', 'veli', 'wali', 'валий', 'вали', 'mahram', 'махрам', 'маҳрам', 'ota', 'ота', 'ولي', 'محرم'];
+/** İletişim sözcüğü ile isteme fiili arasında en fazla bu kadar kelime mesafe olabilir (uzun mesajlarda rastgele eşleşmeyi önler). */
+const INTENT_WINDOW = 3;
+
 const REQUEST_PREFIX = [
   // uz: ber-, yubor-, tashla-, yoz-, qoldir-, ayt-, ulash-, olib
   'ber', 'yubor', 'jonat', 'tashla', 'yoz', 'qoldir', 'ayt', 'ulash', 'olib', 'oling',
@@ -116,11 +124,23 @@ const LISTS = {
   CONTACT: { prefix: norm(CONTACT_PREFIX), exact: new Set(norm(CONTACT_EXACT)) },
   REQUEST: { prefix: norm(REQUEST_PREFIX), exact: new Set(norm(REQUEST_EXACT)) },
   PROFANITY: { prefix: norm(PROFANITY_PREFIX), exact: new Set(norm(PROFANITY_EXACT)) },
+  GUARDIAN: { prefix: norm(GUARDIAN_PREFIX), exact: new Set<string>() },
 } as const;
 
-function hasWord(words: string[], kind: keyof typeof LISTS): boolean {
+function isWord(w: string, kind: keyof typeof LISTS): boolean {
   const { prefix, exact } = LISTS[kind];
-  return words.some((w) => exact.has(w) || prefix.some((p) => w.startsWith(p)));
+  return exact.has(w) || prefix.some((p) => w.startsWith(p));
+}
+
+function hasWord(words: string[], kind: keyof typeof LISTS): boolean {
+  return words.some((w) => isWord(w, kind));
+}
+
+/** İletişim sözcüğü ve isteme fiili birbirine yakın geçiyorsa (veli/mahrem bağlamı hariç) niyet sayılır. */
+function hasIntent(words: string[]): boolean {
+  const near = (i: number, kind: keyof typeof LISTS) =>
+    words.slice(Math.max(0, i - INTENT_WINDOW), i + INTENT_WINDOW + 1).some((w, k) => k + Math.max(0, i - INTENT_WINDOW) !== i && isWord(w, kind));
+  return words.some((w, i) => isWord(w, 'CONTACT') && !near(i, 'GUARDIAN') && !isWord(w, 'GUARDIAN') && near(i, 'REQUEST'));
 }
 
 function digitWordsToDigits(text: string): string {
@@ -165,7 +185,7 @@ export function scanForContactInfo(raw: string): ContactScanResult {
   }
 
   const words = text.match(/[\p{L}]+/gu) ?? [];
-  if (hasWord(words, 'CONTACT') && hasWord(words, 'REQUEST')) signals.add('INTENT');
+  if (hasIntent(words)) signals.add('INTENT');
   if (hasWord(words, 'PROFANITY')) signals.add('PROFANITY');
 
   return { blocked: signals.size > 0, signals: [...signals] };

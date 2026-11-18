@@ -89,6 +89,11 @@ test('contact words alone do not hold the chat', () => {
     'Kontakt markazida ishlayman',
     'Я работаю в отделе связи, телефон у меня старый',
     'Hitabayı Telegram’da buldum',
+    // Uzun mesajda birbirinden uzak geçen sözcükler ve veli/mahrem bağlamı
+    'Masha Alloh endi meni fikirlarimdi aytman rozi bolsayiz Mahramlarizga Aloqaga chiqaman men oʻzimdi ayolim ishlashini hohlamiyman',
+    'Иложи буса валий ракамини берсез',
+    'Валий рақами бериш керекми ёки ўзиз юборасми',
+    'Aloqadamisiz?',
   ]) {
     assert.ok(!scanForContactInfo(s).signals.includes('INTENT'), s);
   }
