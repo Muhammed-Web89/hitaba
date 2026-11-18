@@ -142,6 +142,7 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
               {t('freeze')}
             </Button>
           )}
+          {u.status === 'APPROVED' && u.role === 'USER' && <ReopenReview onConfirm={() => run('reopen-review')} />}
           {u.status === 'FROZEN' && (
             <Button variant="secondary" className="w-full" onClick={() => run('unfreeze')}>
               {t('unfreeze')}
@@ -190,6 +191,29 @@ export default function AdminUserPage({ params }: { params: Promise<{ id: string
         </Field>
       </Modal>
     </div>
+  );
+}
+
+/** Yanlışlıkla verilen onayı geri alır: profil inceleme sırasına döner. İki adımlı onay. */
+function ReopenReview({ onConfirm }: { onConfirm: () => void }) {
+  const t = useTranslations('admin');
+  const [armed, setArmed] = useState(false);
+  return armed ? (
+    <div className="space-y-2 rounded-control border border-line p-3">
+      <p className="text-xs text-ink-2">{t('reopenReviewNote')}</p>
+      <div className="grid grid-cols-2 gap-2">
+        <Button size="sm" variant="ghost" onClick={() => setArmed(false)}>
+          {t('genderFixCancel')}
+        </Button>
+        <Button size="sm" onClick={() => (setArmed(false), onConfirm())}>
+          {t('reopenReviewConfirm')}
+        </Button>
+      </div>
+    </div>
+  ) : (
+    <Button variant="secondary" className="w-full" onClick={() => setArmed(true)}>
+      {t('reopenReview')}
+    </Button>
   );
 }
 

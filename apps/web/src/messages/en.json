@@ -797,7 +797,8 @@
     "quota_reached": "You have used your messages for this stage. A moderator must approve before you continue.",
     "quota_not_reached": "You still have messages left.",
     "photo_not_available": "She hasn't uploaded a photo yet, or it is still under review. You can view it once approved.",
-    "gender_change_blocked": "This account has likes or matches; the gender can't be changed."
+    "gender_change_blocked": "This account has likes or matches; the gender can't be changed.",
+    "reopen_blocked": "This account has matches; the approval can't be undone. Use freeze instead."
   },
   "admin": {
     "title": "Moderation",
@@ -1001,7 +1002,10 @@
     "genderFix": "Fix gender: {gender}",
     "genderFixNote": "The account's gender will change to “{gender}”. Only for accounts without likes or matches; the user is signed in again.",
     "genderFixCancel": "Cancel",
-    "genderFixConfirm": "Yes, change"
+    "genderFixConfirm": "Yes, change",
+    "reopenReview": "Undo approval",
+    "reopenReviewNote": "The profile goes back to “In review”, leaves discovery and returns to the review queue, where you can reject it with a reason. Not possible for accounts with matches.",
+    "reopenReviewConfirm": "Yes, undo"
   },
   "consent": {
     "title": "Consents (required)",

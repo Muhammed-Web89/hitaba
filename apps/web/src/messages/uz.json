@@ -797,7 +797,8 @@
     "quota_reached": "Bu bosqichdagi xabarlar soni tugadi. Davom ettirish uchun moderator ruxsati kerak.",
     "quota_not_reached": "Xabarlar soni hali tugamagan.",
     "photo_not_available": "U hali surat yuklamagan yoki surati tekshiruvda. Surat tasdiqlangach koʻrishingiz mumkin.",
-    "gender_change_blocked": "Bu hisobda qiziqish yoki juftlik tarixi bor; jinsni oʻzgartirib boʻlmaydi."
+    "gender_change_blocked": "Bu hisobda qiziqish yoki juftlik tarixi bor; jinsni oʻzgartirib boʻlmaydi.",
+    "reopen_blocked": "Bu hisobda moslik bor; tasdiqni bekor qilib boʻlmaydi. Muzlatishdan foydalaning."
   },
   "admin": {
     "title": "Moderatsiya",
@@ -1001,7 +1002,10 @@
     "genderFix": "Jinsni tuzatish: {gender}",
     "genderFixNote": "Hisob jinsi “{gender}” ga oʻzgaradi. Faqat qiziqish/juftlik tarixi yoʻq hisobda mumkin; foydalanuvchi qayta kiradi.",
     "genderFixCancel": "Bekor qilish",
-    "genderFixConfirm": "Ha, oʻzgartirish"
+    "genderFixConfirm": "Ha, oʻzgartirish",
+    "reopenReview": "Tasdiqni bekor qilish",
+    "reopenReviewNote": "Anketa yana “Tekshiruvda” boʻladi, qidiruvdan chiqadi va tekshiruv navbatiga qaytadi — u yerda sabab yozib rad etishingiz mumkin. Moslik bor hisobda qilinmaydi.",
+    "reopenReviewConfirm": "Ha, bekor qilish"
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

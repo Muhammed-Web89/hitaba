@@ -195,6 +195,24 @@ export class AdminService {
   }
 
   /**
+   * Yanlışlıkla verilen profil onayını geri alır: hesap yeniden "incelemede" olur, keşiften düşer ve profil inceleme
+   * sırasına döner (oradan gerekçeyle reddedilebilir). Açık eşleşmesi olan hesapta yapılmaz (dondurma kullanılır).
+   */
+  async reopenReview(mod: User, id: string) {
+    const target = await this.assertTargetable(mod, id);
+    if (target.role !== 'USER' || target.status !== 'APPROVED') throw new BadRequestException({ error: 'not_approved' });
+    const matches = await this.prisma.match.count({ where: { OR: [{ maleId: id }, { femaleId: id }] } });
+    if (matches) throw new BadRequestException({ error: 'reopen_blocked' });
+    await this.prisma.$transaction([
+      this.prisma.user.update({ where: { id }, data: { status: 'PENDING_MODERATION', statusReason: null } }),
+      this.prisma.profile.update({ where: { userId: id }, data: { moderationStatus: 'PENDING' } }),
+    ]);
+    await this.moderation.enqueue({ targetType: 'PROFILE', targetId: id, subjectUserId: id, subjectGender: target.gender });
+    await this.moderation.audit(mod.id, 'user.reopen_review', { targetType: 'USER', targetId: id }, {});
+    return { ok: true };
+  }
+
+  /**
    * Kayıtta yanlış seçilen cinsiyeti düzelt. Yalnızca beğeni/eşleşme geçmişi olmayan hesapta (karşı cinse göre
    * kurulmuş ilişkiler bozulmasın). Erkekten kadına geçişte hoş geldin jetonu sıfırlanır; oturumlar yenilenir.
    */
@@ -340,6 +358,11 @@ export class AdminController {
   @Roles('ADMIN')
   gender(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(genderSchema)) body: z.infer<typeof genderSchema>) {
     return this.admin.changeGender(mod, id, body.gender);
+  }
+
+  @Post('users/:id/reopen-review')
+  reopenReview(@CurrentUser() mod: User, @Param('id') id: string) {
+    return this.admin.reopenReview(mod, id);
   }
 
   @Post('users/:id/unfreeze')
