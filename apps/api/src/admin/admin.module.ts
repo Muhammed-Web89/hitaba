@@ -297,6 +297,12 @@ export class AdminService {
     return { ok: true };
   }
 
+  async reopenChat(mod: User, id: string) {
+    await this.chats.reopenByAdmin(id);
+    await this.moderation.audit(mod.id, 'chat.reopen', { targetType: 'CHAT', targetId: id }, {});
+    return { ok: true };
+  }
+
   async stats() {
     const [byStatus, pendingModeration, openReports, activeChats] = await Promise.all([
       this.prisma.user.groupBy({ by: ['status', 'gender'], where: { role: 'USER' }, _count: true }),
@@ -411,6 +417,12 @@ export class AdminController {
   @Get('chats/:id')
   chat(@CurrentUser() mod: User, @Param('id') id: string) {
     return this.admin.chat(mod, id);
+  }
+
+  @Post('chats/:id/reopen')
+  @Roles('ADMIN')
+  reopenChat(@CurrentUser() mod: User, @Param('id') id: string) {
+    return this.admin.reopenChat(mod, id);
   }
 
   @Post('chats/:id/close')

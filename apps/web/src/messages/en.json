@@ -765,6 +765,9 @@
     "not_approved": "Only approved profiles can be frozen.",
     "not_frozen": "This profile is not frozen.",
     "not_banned": "This account isn't blocked.",
+    "chat_not_closed": "The chat isn't closed.",
+    "reopen_users_not_approved": "Both accounts must be approved.",
+    "reopen_other_chat_open": "One of the sides has another open chat.",
     "not_deletable": "This message can no longer be deleted.",
     "not_editable": "This message can no longer be edited.",
     "only_brother_opens": "Only the man can open the chat.",
@@ -1009,7 +1012,12 @@
     "reopenReviewConfirm": "Yes, undo",
     "unban": "Unblock",
     "unbanNote": "The account returns to its profile's last state (approved, in review or rejected). A zeroed balance and closed chats are not restored.",
-    "unbanConfirm": "Yes, unblock"
+    "unbanConfirm": "Yes, unblock",
+    "reopenChat": "Reopen chat",
+    "reopenChatNote": "Reopens a chat closed by mistake. Both sides must be approved and have no other open chat. A refund made on closing isn't reversed.",
+    "reopenChatConfirm": "Yes, reopen",
+    "rejectBanConfirm": "This BLOCKS the sender's account and closes all their chats. If you only want to explain, use “Warn, don't deliver”; your reason is added to the warning.",
+    "rejectBanConfirmButton": "Yes, block"
   },
   "consent": {
     "title": "Consents (required)",

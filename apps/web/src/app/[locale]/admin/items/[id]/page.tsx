@@ -25,6 +25,7 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
   const { data, error: loadError } = useSWR<Detail>(`/moderation/items/${id}`);
   const [reason, setReason] = useState('');
   const [busy, setBusy] = useState(false);
+  const [confirmBan, setConfirmBan] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (loadError) return <Notice tone="danger">{errorText(loadError)}</Notice>;
@@ -74,9 +75,17 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
               {item.targetType === 'MESSAGE' && context?.warnings > 0 && <Notice tone="danger">{t('warnedBefore', { count: context.warnings })}</Notice>}
               {item.targetType === 'MESSAGE' && <Notice tone="warning">{t('banOnRejectNote')}</Notice>}
               {error && <Notice tone="danger">{error}</Notice>}
+              {confirmBan && (
+                <Notice tone="danger">
+                  {t('rejectBanConfirm')}{' '}
+                  <button type="button" className="font-semibold underline" onClick={() => setConfirmBan(false)}>
+                    {t('genderFixCancel')}
+                  </button>
+                </Notice>
+              )}
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="danger" loading={busy} onClick={() => decide('REJECT')}>
-                  {item.targetType === 'MESSAGE' ? t('rejectAndBan') : t('reject')}
+                <Button variant="danger" loading={busy} onClick={() => (item.targetType === 'MESSAGE' && !confirmBan ? setConfirmBan(true) : decide('REJECT'))}>
+                  {item.targetType === 'MESSAGE' ? (confirmBan ? t('rejectBanConfirmButton') : t('rejectAndBan')) : t('reject')}
                 </Button>
                 <Button loading={busy} onClick={() => decide('APPROVE')}>
                   {t('approve')}

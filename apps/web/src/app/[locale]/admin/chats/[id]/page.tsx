@@ -7,6 +7,7 @@ import { Transcript } from '@/components/Transcript';
 import { Button, Card, Chip, Field, Notice, PageLoader, Textarea } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 import { useErrorText } from '@/lib/format';
 
 interface AdminChat {
@@ -30,6 +31,8 @@ export default function AdminChatPage({ params }: { params: Promise<{ id: string
   const { data, mutate } = useSWR<AdminChat>(`/admin/chats/${id}`);
   const [reason, setReason] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [armed, setArmed] = useState(false);
+  const { me } = useAuth();
   if (!data) return <PageLoader />;
   const { chat } = data;
 
@@ -51,6 +54,39 @@ export default function AdminChatPage({ params }: { params: Promise<{ id: string
           ))}
           <p className="text-ink-3">{t('connectSpent', { n: chat.connectSpent })}</p>
         </Card>
+        {chat.status === 'CLOSED' && me?.role === 'ADMIN' && (
+          <Card className="space-y-3 p-4">
+            <h3 className="font-semibold">{t('reopenChat')}</h3>
+            <p className="text-xs text-ink-3">{t('reopenChatNote')}</p>
+            {error && <Notice tone="danger">{error}</Notice>}
+            {armed ? (
+              <div className="grid grid-cols-2 gap-2">
+                <Button size="sm" variant="ghost" onClick={() => setArmed(false)}>
+                  {t('genderFixCancel')}
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={async () => {
+                    setArmed(false);
+                    setError(null);
+                    try {
+                      await api(`/admin/chats/${id}/reopen`, { method: 'POST' });
+                      await mutate();
+                    } catch (e) {
+                      setError(errorText(e));
+                    }
+                  }}
+                >
+                  {t('reopenChatConfirm')}
+                </Button>
+              </div>
+            ) : (
+              <Button variant="secondary" className="w-full" onClick={() => setArmed(true)}>
+                {t('reopenChat')}
+              </Button>
+            )}
+          </Card>
+        )}
         {chat.status !== 'CLOSED' && (
           <Card className="space-y-3 p-4">
             <h3 className="font-semibold">{t('closeChat')}</h3>

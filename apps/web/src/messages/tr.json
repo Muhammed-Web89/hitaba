@@ -765,6 +765,9 @@
     "not_approved": "Yalnızca onaylı profiller dondurulabilir.",
     "not_frozen": "Bu profil dondurulmuş değil.",
     "not_banned": "Bu hesap engellenmiş değil.",
+    "chat_not_closed": "Sohbet kapalı değil.",
+    "reopen_users_not_approved": "İki tarafın hesabı da onaylı olmalı.",
+    "reopen_other_chat_open": "Taraflardan birinin başka açık sohbeti var.",
     "not_deletable": "Bu mesaj artık silinemez.",
     "not_editable": "Bu mesaj artık düzenlenemez.",
     "only_brother_opens": "Sohbeti yalnızca erkek açabilir.",
@@ -1009,7 +1012,12 @@
     "reopenReviewConfirm": "Evet, geri al",
     "unban": "Engeli kaldır",
     "unbanNote": "Hesap, anketin son durumuna döner (onaylı, incelemede ya da reddedildi). Sıfırlanan bakiye ve kapanan sohbetler geri gelmez.",
-    "unbanConfirm": "Evet, kaldır"
+    "unbanConfirm": "Evet, kaldır",
+    "reopenChat": "Sohbeti yeniden aç",
+    "reopenChatNote": "Yanlışlıkla kapanan sohbeti açar. İki taraf da onaylı olmalı ve başka açık sohbeti olmamalı. Kapanışta yapılan jeton iadesi geri alınmaz.",
+    "reopenChatConfirm": "Evet, aç",
+    "rejectBanConfirm": "Bu, gönderenin hesabını ENGELLER ve tüm sohbetlerini kapatır. Yalnızca açıklama yapmak istiyorsanız “Uyar, iletme”yi kullanın; gerekçeniz uyarıya eklenir.",
+    "rejectBanConfirmButton": "Evet, engelle"
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

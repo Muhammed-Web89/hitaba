@@ -765,6 +765,9 @@
     "not_approved": "Faqat tasdiqlangan anketani toʻxtatish mumkin.",
     "not_frozen": "Bu anketa toʻxtatilmagan.",
     "not_banned": "Bu hisob bloklanmagan.",
+    "chat_not_closed": "Suhbat yopiq emas.",
+    "reopen_users_not_approved": "Ikki hisob ham tasdiqlangan boʻlishi kerak.",
+    "reopen_other_chat_open": "Tomonlardan birida boshqa ochiq suhbat bor.",
     "not_deletable": "Bu xabarni endi oʻchirib boʻlmaydi.",
     "not_editable": "Bu xabarni endi tahrirlab boʻlmaydi.",
     "only_brother_opens": "Suhbatni faqat erkak ochadi.",
@@ -1009,7 +1012,12 @@
     "reopenReviewConfirm": "Ha, bekor qilish",
     "unban": "Blokdan chiqarish",
     "unbanNote": "Hisob anketaning oxirgi holatiga qaytadi (tasdiqlangan, tekshiruvda yoki rad etilgan). Nolga tushgan balans va yopilgan suhbatlar qaytmaydi.",
-    "unbanConfirm": "Ha, chiqarish"
+    "unbanConfirm": "Ha, chiqarish",
+    "reopenChat": "Suhbatni qayta ochish",
+    "reopenChatNote": "Xato bilan yopilgan suhbatni ochadi. Ikki tomon ham tasdiqlangan va boshqa ochiq suhbati boʻlmasligi kerak. Yopilganda qaytarilgan jeton qaytarib olinmaydi.",
+    "reopenChatConfirm": "Ha, ochish",
+    "rejectBanConfirm": "Bu yuboruvchining hisobini BLOKLAYDI va barcha suhbatlarini yopadi. Faqat tushuntirmoqchi boʻlsangiz, «Ogohlantirish, yetkazmaslik»dan foydalaning — sababingiz ogohlantirishga qoʻshiladi.",
+    "rejectBanConfirmButton": "Ha, bloklash"
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

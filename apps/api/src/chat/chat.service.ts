@@ -258,6 +258,30 @@ export class ChatService implements OnModuleInit {
     if (count) await this.notifications.notify(femaleId, 'likes_released', { count });
   }
 
+  /**
+   * Yönetici, yanlışlıkla kapanan sohbeti yeniden açar. İki taraf da onaylı olmalı ve başka açık sohbeti olmamalı.
+   * Kapanışta yapılan jeton iadesi geri alınmaz.
+   */
+  async reopenByAdmin(chatId: string) {
+    const chat = await this.prisma.chat.findUnique({ where: { id: chatId }, include: { match: { include: { male: true, female: true } } } });
+    if (!chat) throw new NotFoundException();
+    if (chat.status !== 'CLOSED') throw new BadRequestException({ error: 'chat_not_closed' });
+    if (chat.match.male.status !== 'APPROVED' || chat.match.female.status !== 'APPROVED') throw new BadRequestException({ error: 'reopen_users_not_approved' });
+    const others = await this.prisma.chat.count({
+      where: { id: { not: chatId }, status: { in: [...OPEN_STATUSES] }, match: { OR: [{ femaleId: chat.match.femaleId }, { maleId: chat.match.maleId }] } },
+    });
+    if (others) throw new BadRequestException({ error: 'reopen_other_chat_open' });
+    const sys = await this.prisma.$transaction(async (tx) => {
+      await tx.chat.update({
+        where: { id: chatId },
+        data: { status: 'ACTIVE', closeReason: null, closedById: null, closedAt: null, pausedReason: null, lastActivityAt: new Date(), reminder1SentAt: null, reminder2SentAt: null },
+      });
+      return this.systemMessage(tx, chatId, 'chat_resumed');
+    });
+    this.emitNew(sys);
+    this.emitStatus(chatId);
+  }
+
   /** Ban: kullanıcının tüm açık sohbetleri kapanır; karşı taraf açtıysa ona iade yapılır. */
   async closeAllForBan(userId: string, moderatorId: string) {
     const chats = await this.prisma.chat.findMany({
