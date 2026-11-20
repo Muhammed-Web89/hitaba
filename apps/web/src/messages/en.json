@@ -1029,7 +1029,16 @@
     "notifyFemale": "The woman",
     "notifyBoth": "Both",
     "chatNoteSend": "Send",
-    "chatNoteSent": "Message posted to the chat."
+    "chatNoteSent": "Message posted to the chat.",
+    "submittedBy": "Submitted by",
+    "subjectJoined": "Joined",
+    "subjectChats": "Chats",
+    "subjectDecisions": "Past decisions",
+    "subjectDecisionsValue": "{approved} approved · {rejected} rejected",
+    "mahramChat": "Chat",
+    "mahramChatWith": "Chat with {name}",
+    "sameContact": "This number also appears in other mahram contacts ({count}). The user may be giving their own number under a relative's name.",
+    "openUserFull": "Profile and chats"
   },
   "consent": {
     "title": "Consents (required)",

@@ -1029,7 +1029,16 @@
     "notifyFemale": "Kadına",
     "notifyBoth": "İkisine de",
     "chatNoteSend": "Gönder",
-    "chatNoteSent": "Mesaj sohbete gönderildi."
+    "chatNoteSent": "Mesaj sohbete gönderildi.",
+    "submittedBy": "Gönderen",
+    "subjectJoined": "Kayıt",
+    "subjectChats": "Sohbetler",
+    "subjectDecisions": "Önceki kararlar",
+    "subjectDecisionsValue": "{approved} onaylı · {rejected} reddedilmiş",
+    "mahramChat": "Sohbet",
+    "mahramChatWith": "{name} ile sohbet",
+    "sameContact": "Bu numara başka mahrem bilgilerinde de var ({count}). Kullanıcı kendi numarasını yakını adıyla veriyor olabilir.",
+    "openUserFull": "Profil ve sohbetler"
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

@@ -1029,7 +1029,16 @@
     "notifyFemale": "المرأة",
     "notifyBoth": "كليهما",
     "chatNoteSend": "إرسال",
-    "chatNoteSent": "أُرسلت الرسالة إلى المحادثة."
+    "chatNoteSent": "أُرسلت الرسالة إلى المحادثة.",
+    "submittedBy": "المُرسِل",
+    "subjectJoined": "التسجيل",
+    "subjectChats": "المحادثات",
+    "subjectDecisions": "قرارات سابقة",
+    "subjectDecisionsValue": "{approved} مقبول · {rejected} مرفوض",
+    "mahramChat": "المحادثة",
+    "mahramChatWith": "محادثة مع {name}",
+    "sameContact": "هذا الرقم موجود أيضًا في بيانات محارم أخرى ({count}). ربما يقدّم المستخدم رقمه باسم أحد أقاربه.",
+    "openUserFull": "الملف والمحادثات"
   },
   "consent": {
     "title": "الموافقات (إلزامية)",

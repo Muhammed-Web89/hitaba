@@ -1029,7 +1029,16 @@
     "notifyFemale": "Женщине",
     "notifyBoth": "Обоим",
     "chatNoteSend": "Отправить",
-    "chatNoteSent": "Сообщение отправлено в чат."
+    "chatNoteSent": "Сообщение отправлено в чат.",
+    "submittedBy": "Кто отправил",
+    "subjectJoined": "Регистрация",
+    "subjectChats": "Чатов",
+    "subjectDecisions": "Прошлые решения",
+    "subjectDecisionsValue": "{approved} одобрено · {rejected} отклонено",
+    "mahramChat": "Чат",
+    "mahramChatWith": "Чат с {name}",
+    "sameContact": "Этот номер есть и в других контактах махрама ({count}). Возможно, пользователь выдаёт свой номер за номер родственника.",
+    "openUserFull": "Профиль и чаты"
   },
   "consent": {
     "title": "Согласия (обязательно)",

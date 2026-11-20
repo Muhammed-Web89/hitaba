@@ -14,6 +14,23 @@ import { KV, ProfileDetails } from '@/components/admin/ProfileDetails';
 interface Detail {
   item: { id: string; targetType: ModerationTarget; status: string; aiFlags: string[]; subjectUserId: string; subjectGender: string; reason: string | null };
   context: any;
+  subject: Subject | null;
+}
+
+interface Subject {
+  id: string;
+  gender: string;
+  status: string;
+  displayName: string | null;
+  age: number | null;
+  city: string | null;
+  country: string | null;
+  nationality: string | null;
+  telegramUsername: string | null;
+  createdAt: string;
+  chats: number;
+  approvedItems: number;
+  rejectedItems: number;
 }
 
 export default function ItemPage({ params }: { params: Promise<{ id: string }> }) {
@@ -55,10 +72,13 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
               {flagLabel(f)}
             </Chip>
           ))}
-          <Link href={`/admin/users/${item.subjectUserId}`} className="text-sm font-semibold text-brand-600 hover:underline">
-            {t('openUser')}
-          </Link>
+          {!data.subject && (
+            <Link href={`/admin/users/${item.subjectUserId}`} className="text-sm font-semibold text-brand-600 hover:underline">
+              {t('openUser')}
+            </Link>
+          )}
         </div>
+        {data.subject && <SubjectCard s={data.subject} />}
         {!context ? <EmptyState icon="info" title={t('targetGone')} /> : <ContextView type={item.targetType} context={context} gender={item.subjectGender} />}
       </div>
 
@@ -108,6 +128,34 @@ export default function ItemPage({ params }: { params: Promise<{ id: string }> }
   );
 }
 
+/** Onaya gönderen kişi: kim olduğu, yaşı ve geçmişi karar ekranında görünür. */
+function SubjectCard({ s }: { s: Subject }) {
+  const t = useTranslations('admin');
+  const tf = useTranslations('onboarding.fields');
+  return (
+    <Card className="p-4">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-xs font-bold uppercase tracking-wider text-ink-3">{t('submittedBy')}</p>
+        <Link href={`/admin/users/${s.id}`} className="text-sm font-semibold text-brand-600 hover:underline">
+          {t('openUserFull')} →
+        </Link>
+      </div>
+      <p className="text-lg font-semibold">
+        {s.displayName ?? '—'} {s.age != null && <span className="text-ink-2">· {s.age}</span>}{' '}
+        <Chip>{t(`userStatus.${s.status}` as never)}</Chip>
+      </p>
+      <dl className="mt-2 divide-y divide-line">
+        <KV k={tf('country')} v={[s.city, s.country].filter(Boolean).join(', ')} />
+        <KV k={tf('nationality')} v={s.nationality} />
+        <KV k="Telegram" v={s.telegramUsername && <span dir="ltr">@{s.telegramUsername}</span>} />
+        <KV k={t('subjectJoined')} v={new Date(s.createdAt).toLocaleDateString()} />
+        <KV k={t('subjectChats')} v={s.chats} />
+        <KV k={t('subjectDecisions')} v={t('subjectDecisionsValue', { approved: s.approvedItems, rejected: s.rejectedItems })} />
+      </dl>
+    </Card>
+  );
+}
+
 /** AI bayrakları "contact:phone" biçimindedir; çevirisi yoksa ham kod gösterilir. */
 function useFlagLabel() {
   const t = useTranslations('admin.flags');
@@ -137,14 +185,37 @@ function ContextView({ type, context, gender }: { type: ModerationTarget; contex
 
   if (type === 'MAHRAM_CONTACT') {
     const m = context.mahramContact;
+    const same: { id: string; submittedById: string; chatId: string; name: string }[] = context.sameContact ?? [];
     return (
-      <Card className="p-4">
-        <dl className="divide-y divide-line">
-          <KV k={t('mahramName')} v={`${m.name} · ${te(`relation.${m.relation}` as never)}`} />
-          <KV k={t('mahramContact')} v={<span dir="ltr">{m.contact}</span>} />
-          <KV k={t('note')} v={m.note} />
-        </dl>
-      </Card>
+      <>
+        {same.length > 0 && (
+          <Notice tone="danger">
+            {t('sameContact', { count: same.length })}{' '}
+            {same.map((o) => (
+              <Link key={o.id} href={`/admin/chats/${o.chatId}`} className="me-2 font-semibold underline">
+                {o.name}
+              </Link>
+            ))}
+          </Notice>
+        )}
+        <Card className="p-4">
+          <dl className="divide-y divide-line">
+            <KV k={t('mahramName')} v={`${m.name} · ${te(`relation.${m.relation}` as never)}`} />
+            <KV k={t('mahramContact')} v={<span dir="ltr">{m.contact}</span>} />
+            <KV k={t('note')} v={m.note} />
+            {context.chat && (
+              <KV
+                k={t('mahramChat')}
+                v={
+                  <Link href={`/admin/chats/${context.chat.id}`} className="font-semibold text-brand-600 hover:underline">
+                    {t('mahramChatWith', { name: context.chat.other?.displayName ?? '—' })} · {t('openChat')} →
+                  </Link>
+                }
+              />
+            )}
+          </dl>
+        </Card>
+      </>
     );
   }
 

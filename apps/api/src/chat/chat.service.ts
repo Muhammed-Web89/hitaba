@@ -155,7 +155,23 @@ export class ChatService implements OnModuleInit {
         const mc = await this.prisma.mahramContact.findUnique({ where: { id: item.targetId } });
         if (!mc) return null;
         const { contactEnc, ...rest } = mc;
-        return { mahramContact: { ...rest, contact: decrypt(contactEnc) } };
+        const contact = decrypt(contactEnc);
+        const chat = await this.prisma.chat.findUnique({
+          where: { id: mc.chatId },
+          include: { match: { include: { male: { include: { profile: true } }, female: { include: { profile: true } } } } },
+        });
+        const other = chat && (chat.match.maleId === mc.submittedById ? chat.match.female : chat.match.male);
+        // Aynı numara başka kullanıcıların mahrem bilgisinde de geçiyorsa (ör. kendi numarasını "akam" diye veriyorsa) moderatör görsün.
+        const digits = contact.replace(/\D/g, '');
+        const others = await this.prisma.mahramContact.findMany({ where: { id: { not: mc.id } }, select: { id: true, contactEnc: true, submittedById: true, chatId: true, name: true, relation: true } });
+        const sameContact = digits.length >= 7
+          ? others.filter((o) => decrypt(o.contactEnc).replace(/\D/g, '').endsWith(digits.slice(-9))).map(({ contactEnc: _, ...o }) => o)
+          : [];
+        return {
+          mahramContact: { ...rest, contact },
+          chat: chat && { id: chat.id, status: chat.status, other: other && { id: other.id, displayName: other.profile?.displayName ?? null } },
+          sameContact,
+        };
       },
     });
   }

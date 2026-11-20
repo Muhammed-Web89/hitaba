@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Gender, ModerationItem, ModerationTarget, User } from '@prisma/client';
-import type { ModerationDecisionInput } from '@hitaba/shared';
+import { ageFromBirthDate, type ModerationDecisionInput } from '@hitaba/shared';
 import { PrismaService } from '../prisma/prisma.service';
 
 export interface DecisionContext {
@@ -78,7 +78,35 @@ export class ModerationService {
     const item = await this.getVisible(moderator, id);
     const handler = this.handlers.get(item.targetType);
     await this.audit(moderator.id, 'moderation.view', item);
-    return { item, context: handler ? await handler.context(item, moderator) : null };
+    const [context, subject] = await Promise.all([handler ? handler.context(item, moderator) : null, this.subject(item.subjectUserId)]);
+    return { item, context, subject };
+  }
+
+  /** Onay için gönderen kişi: karar verirken kimin gönderdiği, yaşı ve hesap geçmişi görünsün. */
+  private async subject(userId: string) {
+    const u = await this.prisma.user.findUnique({ where: { id: userId }, include: { profile: true } });
+    if (!u) return null;
+    const mine = u.gender === 'MALE' ? { maleId: u.id } : { femaleId: u.id };
+    const [chats, decided] = await Promise.all([
+      this.prisma.chat.count({ where: { match: mine } }),
+      this.prisma.moderationItem.groupBy({ by: ['status'], where: { subjectUserId: u.id, status: { in: ['APPROVED', 'REJECTED'] } }, _count: true }),
+    ]);
+    const p = u.profile;
+    return {
+      id: u.id,
+      gender: u.gender,
+      status: u.status,
+      displayName: p?.displayName ?? null,
+      age: p?.birthDate ? ageFromBirthDate(p.birthDate) : null,
+      city: p?.city ?? null,
+      country: p?.country ?? null,
+      nationality: p?.nationality ?? null,
+      telegramUsername: u.telegramUsername,
+      createdAt: u.createdAt.toISOString(),
+      chats,
+      approvedItems: decided.find((d) => d.status === 'APPROVED')?._count ?? 0,
+      rejectedItems: decided.find((d) => d.status === 'REJECTED')?._count ?? 0,
+    };
   }
 
   async decide(moderator: User, id: string, input: ModerationDecisionInput) {

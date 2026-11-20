@@ -1029,7 +1029,16 @@
     "notifyFemale": "Ayolga",
     "notifyBoth": "Ikkalasiga",
     "chatNoteSend": "Yuborish",
-    "chatNoteSent": "Xabar suhbatga yuborildi."
+    "chatNoteSent": "Xabar suhbatga yuborildi.",
+    "submittedBy": "Kim yubordi",
+    "subjectJoined": "Roʻyxatdan oʻtgan",
+    "subjectChats": "Suhbatlar",
+    "subjectDecisions": "Oldingi qarorlar",
+    "subjectDecisionsValue": "{approved} tasdiqlangan · {rejected} rad etilgan",
+    "mahramChat": "Suhbat",
+    "mahramChatWith": "{name} bilan suhbat",
+    "sameContact": "Bu raqam boshqa mahram maʼlumotlarida ham bor ({count}). Foydalanuvchi oʻz raqamini qarindosh nomi bilan berayotgan boʻlishi mumkin.",
+    "openUserFull": "Profil va suhbatlar"
   },
   "consent": {
     "title": "Roziliklar (majburiy)",
