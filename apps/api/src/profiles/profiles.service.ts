@@ -258,7 +258,10 @@ export class ProfilesService implements OnModuleInit {
 
   /** Başka bir kullanıcının profili; yalnızca karşı cinsten, onaylı kullanıcılar arasında. */
   async publicProfile(viewer: User, userId: string): Promise<PublicProfile> {
-    const target = await this.prisma.user.findUnique({ where: { id: userId }, include: { profile: true } });
+    const target = await this.prisma.user.findFirst({
+      where: { id: userId, blocksGiven: { none: { toId: viewer.id } }, blocksReceived: { none: { fromId: viewer.id } } },
+      include: { profile: true },
+    });
     if (!target || target.status !== 'APPROVED' || target.gender === viewer.gender || target.role !== 'USER') {
       throw new NotFoundException();
     }

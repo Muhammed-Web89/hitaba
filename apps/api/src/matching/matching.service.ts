@@ -4,6 +4,7 @@ import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicPr
 import { hours, startOfLocalDay } from '../common/time';
 import { REVIEW_EMAIL } from '../config/production-checks';
 import { NotificationsService } from '../notifications/notifications.service';
+import { notBlockedWith } from '../blocks/blocks.module';
 import { PrismaService } from '../prisma/prisma.service';
 import { ProfilesService } from '../profiles/profiles.service';
 
@@ -80,6 +81,7 @@ export class MatchingService {
       profile: { is: profile },
       likesReceived: { none: { fromId: viewer.id } },
       passesReceived: { none: { fromId: viewer.id } },
+      ...notBlockedWith(viewer.id),
       ...(viewer.gender === 'MALE'
         ? {
             matchesAsFemale: {
@@ -226,7 +228,7 @@ export class MatchingService {
   async favorites(viewer: User): Promise<PublicProfile[]> {
     const rows = await this.prisma.favorite.findMany({
       // Zaten beğenilmiş (veya eşleşmiş) kişiler favorilerde gösterilmez.
-      where: { userId: viewer.id, target: { status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } } } },
+      where: { userId: viewer.id, target: { status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } }, ...notBlockedWith(viewer.id) } },
       include: { target: { include: { profile: true } } },
       orderBy: { createdAt: 'desc' },
     });
@@ -239,7 +241,7 @@ export class MatchingService {
       where: {
         toId: viewer.id,
         held: false,
-        from: { role: 'USER', status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } } },
+        from: { role: 'USER', status: 'APPROVED', likesReceived: { none: { fromId: viewer.id } }, ...notBlockedWith(viewer.id) },
       },
       include: { from: { include: { profile: true } } },
       orderBy: { createdAt: 'desc' },
@@ -253,7 +255,7 @@ export class MatchingService {
     const rows = await this.prisma.like.findMany({
       where: {
         fromId: viewer.id,
-        to: { status: 'APPROVED', likesGiven: { none: { toId: viewer.id } } },
+        to: { status: 'APPROVED', likesGiven: { none: { toId: viewer.id } }, ...notBlockedWith(viewer.id) },
       },
       include: { to: { include: { profile: true } } },
       orderBy: { createdAt: 'desc' },
@@ -410,7 +412,7 @@ export class MatchingService {
   }
 
   private async assertCandidate(viewer: User, targetId: string) {
-    const target = await this.prisma.user.findUnique({ where: { id: targetId } });
+    const target = await this.prisma.user.findFirst({ where: { id: targetId, ...notBlockedWith(viewer.id) } });
     if (!target || target.role !== 'USER' || target.status !== 'APPROVED' || target.gender === viewer.gender) {
       throw new NotFoundException();
     }

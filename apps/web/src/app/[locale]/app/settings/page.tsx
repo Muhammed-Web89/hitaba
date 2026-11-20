@@ -61,6 +61,8 @@ export default function SettingsPage() {
         )}
       </Card>
 
+      <BlockedList />
+
       <SectionTitle>{t('account')}</SectionTitle>
       <Card className="space-y-3 p-4">
         <p className="text-sm text-ink-2">{me.email ?? (me.telegramUsername ? `@${me.telegramUsername}` : '')}</p>
@@ -145,5 +147,38 @@ export default function SettingsPage() {
       </Modal>
       <TelegramDiagnostics />
     </div>
+  );
+}
+
+/** Engellediğim kişiler: yalnızca ad; engel buradan kaldırılır. */
+function BlockedList() {
+  const t = useTranslations('settings');
+  const { data, mutate } = useSWR<{ userId: string; displayName: string; createdAt: string }[]>('/blocks');
+  if (!data) return null;
+  return (
+    <>
+      <SectionTitle>{t('blocked')}</SectionTitle>
+      <Card className="divide-y divide-line">
+        {!data.length && <p className="p-4 text-sm text-ink-3">{t('blockedEmpty')}</p>}
+        {data.map((b) => (
+          <div key={b.userId} className="flex items-center justify-between gap-3 p-4">
+            <div className="min-w-0">
+              <p className="truncate font-semibold">{b.displayName}</p>
+              <p className="text-xs text-ink-3">{t('blockedAt', { date: new Date(b.createdAt).toLocaleDateString() })}</p>
+            </div>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={async () => {
+                await api(`/blocks/${b.userId}`, { method: 'DELETE' });
+                await mutate();
+              }}
+            >
+              {t('unblock')}
+            </Button>
+          </div>
+        ))}
+      </Card>
+    </>
   );
 }

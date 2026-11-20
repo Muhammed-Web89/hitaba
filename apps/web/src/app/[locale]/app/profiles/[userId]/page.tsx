@@ -34,7 +34,7 @@ function Profile({ userId }: { userId: string }) {
         <IconButton icon="flag" label={tf('report')} onClick={() => setReport(true)} />
       </div>
       <ProfileCard profile={data} />
-      <ReportDialog open={report} onClose={() => setReport(false)} targetUserId={data.userId} />
+      <ReportDialog open={report} onClose={() => setReport(false)} targetUserId={data.userId} onBlocked={() => router.replace('/app')} />
     </div>
   );
 }

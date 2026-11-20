@@ -19,6 +19,7 @@ import { TranslationModule } from './translation/translation.module';
 import { RealtimeModule } from './realtime/realtime.service';
 import { StorageModule } from './storage/storage.service';
 import { TelegramModule } from './telegram/telegram.service';
+import { BlocksModule } from './blocks/blocks.module';
 import { WaliModule } from './wali/wali.module';
 
 @Controller()
@@ -51,6 +52,7 @@ class HealthController {
     TranslationModule,
     WaliModule,
     AdminModule,
+    BlocksModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

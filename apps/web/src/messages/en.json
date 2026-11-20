@@ -547,11 +547,17 @@
     "continuePending": "Your request is with the moderators. The chat continues once approved."
   },
   "report": {
-    "title": "Report",
+    "title": "Report or block",
     "category": "Reason",
     "details": "Details (optional)",
     "submit": "Send report",
-    "thanks": "Thank you. The safety team will review it."
+    "thanks": "Thank you. The safety team will review it.",
+    "alsoBlock": "Block this person",
+    "blockHint": "You won't see each other again. Any open chat and match will close. They won't be notified.",
+    "blockOnly": "Just block, without reporting",
+    "blockConfirm": "Block this person? Any open chat closes and they won't see you again.",
+    "thanksBlocked": "Thank you. The report will be reviewed and this person is blocked.",
+    "blockedOnly": "This person is blocked. You can unblock them in settings."
   },
   "myProfile": {
     "quick": "Quick access",
@@ -606,7 +612,11 @@
     "deleteAccount": "Delete account",
     "deleteAccountTitle": "Delete your account?",
     "deleteAccountText": "Your profile, photos, likes, witnesses and wali link are deleted immediately; open chats are closed and remaining connects are removed. This cannot be undone.",
-    "deleteAccountConfirm": "I understand, delete my account permanently."
+    "deleteAccountConfirm": "I understand, delete my account permanently.",
+    "blocked": "Blocked people",
+    "blockedEmpty": "You haven't blocked anyone.",
+    "unblock": "Unblock",
+    "blockedAt": "Blocked on {date}"
   },
   "wallet": {
     "balance": "Balance",

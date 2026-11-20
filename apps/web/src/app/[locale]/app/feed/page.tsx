@@ -301,7 +301,7 @@ function Feed() {
       </Modal>
 
       {filter && filtersOpen && <FilterSheet onClose={() => setFiltersOpen(false)} value={filter} onApply={applyFilter} />}
-      {card && reportOpen && <ReportDialog open={reportOpen} onClose={() => setReportOpen(false)} targetUserId={card.profile.userId} />}
+      {card && reportOpen && <ReportDialog open={reportOpen} onClose={() => setReportOpen(false)} targetUserId={card.profile.userId} onBlocked={() => filter && void load(filter)} />}
     </div>
   );
 }

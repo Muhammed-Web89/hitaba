@@ -427,7 +427,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
 
       <ChatRulesSheet open={rulesOpen} onClose={() => setRulesOpen(false)} />
       <MahramDialog open={dialog === 'mahram'} onClose={() => setDialog(null)} chatId={id} />
-      <ReportDialog open={dialog === 'report'} onClose={() => setDialog(null)} targetUserId={chat.other.userId} chatId={id} />
+      <ReportDialog open={dialog === 'report'} onClose={() => setDialog(null)} targetUserId={chat.other.userId} chatId={id} onBlocked={() => router.replace('/app/chats')} />
       <Modal
         open={dialog === 'close' || dialog === 'reopen'}
         onClose={() => setDialog(null)}

@@ -209,6 +209,10 @@ export class ChatService implements OnModuleInit {
   async reopen(viewer: User, chatId: string): Promise<ChatSummary> {
     const chat = await this.participantChat(viewer, chatId);
     if (!this.canReopen(viewer, chat)) throw new BadRequestException({ error: 'cannot_reopen' });
+    const blocked = await this.prisma.block.count({
+      where: { OR: [{ fromId: chat.match.maleId, toId: chat.match.femaleId }, { fromId: chat.match.femaleId, toId: chat.match.maleId }] },
+    });
+    if (blocked) throw new BadRequestException({ error: 'cannot_reopen' });
 
     const sys = await this.prisma.$transaction(async (tx) => {
       await this.lockFemale(tx, chat.match.femaleId);

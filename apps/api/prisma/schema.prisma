@@ -187,6 +187,8 @@ model User {
   likesReceived   Like[]            @relation("likeTo")
   passesGiven     Pass[]            @relation("passFrom")
   passesReceived  Pass[]            @relation("passTo")
+  blocksGiven     Block[]           @relation("blockFrom")
+  blocksReceived  Block[]           @relation("blockTo")
   favorites       Favorite[]        @relation("favOwner")
   favoritedBy     Favorite[]        @relation("favTarget")
   matchesAsMale   Match[]           @relation("matchMale")
@@ -325,6 +327,18 @@ model Pass {
 
   @@id([fromId, toId])
   @@index([fromId, createdAt])
+}
+
+/// Kullanıcının engellediği kişi: iki taraf da birbirini akışta, beğenilerde ve eşleşmelerde bir daha görmez.
+model Block {
+  fromId    String
+  toId      String
+  from      User     @relation("blockFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        User     @relation("blockTo", fields: [toId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([fromId, toId])
+  @@index([toId])
 }
 
 model Favorite {

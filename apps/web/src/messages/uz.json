@@ -547,11 +547,17 @@
     "continuePending": "Soʻrov moderatorda. Ruxsat berilgach, suhbat davom etadi."
   },
   "report": {
-    "title": "Shikoyat",
+    "title": "Shikoyat yoki bloklash",
     "category": "Sabab",
     "details": "Tafsilotlar (ixtiyoriy)",
     "submit": "Shikoyat yuborish",
-    "thanks": "Rahmat. Xavfsizlik jamoasi koʻrib chiqadi."
+    "thanks": "Rahmat. Xavfsizlik jamoasi koʻrib chiqadi.",
+    "alsoBlock": "Bu kishini bloklash",
+    "blockHint": "U sizni boshqa koʻrmaydi, siz ham uni koʻrmaysiz. Ochiq suhbat va moslik yopiladi. Unga xabar berilmaydi.",
+    "blockOnly": "Shikoyatsiz, faqat bloklash",
+    "blockConfirm": "Bu kishi bloklansinmi? Ochiq suhbat yopiladi va u sizni boshqa koʻrmaydi.",
+    "thanksBlocked": "Rahmat. Shikoyat koʻrib chiqiladi, bu kishi bloklandi.",
+    "blockedOnly": "Bu kishi bloklandi. Sozlamalardan blokni olib tashlashingiz mumkin."
   },
   "myProfile": {
     "quick": "Tezkor havolalar",
@@ -606,7 +612,11 @@
     "deleteAccount": "Hisobni oʻchirish",
     "deleteAccountTitle": "Hisobingiz oʻchirilsinmi?",
     "deleteAccountText": "Anketangiz, suratlaringiz, qiziqishlar, guvohlar va valiy havolasi darhol oʻchiriladi; ochiq suhbatlar yopiladi va qolgan tangalar oʻchadi. Buni ortga qaytarib boʻlmaydi.",
-    "deleteAccountConfirm": "Tushundim, hisobim butunlay oʻchirilsin."
+    "deleteAccountConfirm": "Tushundim, hisobim butunlay oʻchirilsin.",
+    "blocked": "Bloklanganlar",
+    "blockedEmpty": "Hech kimni bloklamagansiz.",
+    "unblock": "Blokdan chiqarish",
+    "blockedAt": "{date} da bloklangan"
   },
   "wallet": {
     "balance": "Balans",

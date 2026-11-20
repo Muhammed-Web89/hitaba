@@ -252,7 +252,7 @@ function Match({ id }: { id: string }) {
         {confirm && t(`confirm.${confirm}.text`, { cost: RULES.chatOpenCost })}
       </Modal>
 
-      <ReportDialog open={report} onClose={() => setReport(false)} targetUserId={m.other.userId} />
+      <ReportDialog open={report} onClose={() => setReport(false)} targetUserId={m.other.userId} onBlocked={() => router.replace('/app/matches')} />
     </div>
   );
 }

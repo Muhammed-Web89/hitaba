@@ -547,11 +547,17 @@
     "continuePending": "İstek moderatörde. Onaylanınca sohbet devam eder."
   },
   "report": {
-    "title": "Şikâyet",
+    "title": "Şikâyet veya engelle",
     "category": "Neden",
     "details": "Ayrıntılar (isteğe bağlı)",
     "submit": "Şikâyeti gönder",
-    "thanks": "Teşekkürler. Güvenlik ekibi inceleyecek."
+    "thanks": "Teşekkürler. Güvenlik ekibi inceleyecek.",
+    "alsoBlock": "Bu kişiyi engelle",
+    "blockHint": "Birbirinizi bir daha görmezsiniz. Açık sohbet ve eşleşme kapanır. Karşı tarafa bildirim gitmez.",
+    "blockOnly": "Şikâyet etmeden sadece engelle",
+    "blockConfirm": "Bu kişi engellensin mi? Açık sohbet kapanır ve sizi bir daha görmez.",
+    "thanksBlocked": "Teşekkürler. Şikâyet incelenecek, bu kişi engellendi.",
+    "blockedOnly": "Bu kişi engellendi. Engeli ayarlardan kaldırabilirsiniz."
   },
   "myProfile": {
     "quick": "Hızlı erişim",
@@ -606,7 +612,11 @@
     "deleteAccount": "Hesabı sil",
     "deleteAccountTitle": "Hesabınız silinsin mi?",
     "deleteAccountText": "Profiliniz, fotoğraflarınız, beğenileriniz, şahitler ve veli bağlantısı hemen silinir; açık sohbetler kapanır ve kalan jetonlar silinir. Bu işlem geri alınamaz.",
-    "deleteAccountConfirm": "Anladım, hesabım kalıcı olarak silinsin."
+    "deleteAccountConfirm": "Anladım, hesabım kalıcı olarak silinsin.",
+    "blocked": "Engellenenler",
+    "blockedEmpty": "Kimseyi engellemediniz.",
+    "unblock": "Engeli kaldır",
+    "blockedAt": "{date} tarihinde engellendi"
   },
   "wallet": {
     "balance": "Bakiye",
