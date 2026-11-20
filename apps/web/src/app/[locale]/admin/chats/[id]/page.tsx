@@ -4,7 +4,7 @@ import { use, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import { Transcript } from '@/components/Transcript';
-import { Button, Card, Chip, Field, Notice, PageLoader, Textarea } from '@/components/ui';
+import { Button, Card, Chip, Field, Notice, PageLoader, Select, Textarea } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -32,6 +32,9 @@ export default function AdminChatPage({ params }: { params: Promise<{ id: string
   const [reason, setReason] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [armed, setArmed] = useState(false);
+  const [note, setNote] = useState('');
+  const [notify, setNotify] = useState<'NONE' | 'MALE' | 'FEMALE' | 'BOTH'>('BOTH');
+  const [noteState, setNoteState] = useState<{ busy?: boolean; sent?: boolean; error?: string }>({});
   const { me } = useAuth();
   if (!data) return <PageLoader />;
   const { chat } = data;
@@ -87,6 +90,40 @@ export default function AdminChatPage({ params }: { params: Promise<{ id: string
             )}
           </Card>
         )}
+        <Card className="space-y-3 p-4">
+          <h3 className="font-semibold">{t('chatNote')}</h3>
+          <p className="text-xs text-ink-3">{t('chatNoteNote')}</p>
+          <Field label={t('chatNoteText')}>
+            <Textarea rows={6} maxLength={1500} value={note} onChange={(e) => (setNote(e.target.value), setNoteState({}))} />
+          </Field>
+          <Field label={t('chatNoteNotify')}>
+            <Select value={notify} onChange={(e) => setNotify(e.target.value as typeof notify)}>
+              <option value="BOTH">{t('notifyBoth')}</option>
+              <option value="MALE">{t('notifyMale')} · {chat.match.male.profile?.displayName}</option>
+              <option value="FEMALE">{t('notifyFemale')} · {chat.match.female.profile?.displayName}</option>
+              <option value="NONE">{t('notifyNone')}</option>
+            </Select>
+          </Field>
+          {noteState.error && <Notice tone="danger">{noteState.error}</Notice>}
+          {noteState.sent && <Notice tone="success">{t('chatNoteSent')}</Notice>}
+          <Button
+            className="w-full"
+            disabled={note.trim().length < 3 || noteState.busy}
+            onClick={async () => {
+              setNoteState({ busy: true });
+              try {
+                await api(`/admin/chats/${id}/note`, { method: 'POST', body: { text: note.trim(), notify } });
+                setNote('');
+                setNoteState({ sent: true });
+                await mutate();
+              } catch (e) {
+                setNoteState({ error: errorText(e) });
+              }
+            }}
+          >
+            {t('chatNoteSend')}
+          </Button>
+        </Card>
         {chat.status !== 'CLOSED' && (
           <Card className="space-y-3 p-4">
             <h3 className="font-semibold">{t('closeChat')}</h3>

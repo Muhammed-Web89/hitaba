@@ -76,6 +76,14 @@ test('asking for or offering contact details is held', () => {
     'أعطني رقم هاتفك',
     'telegdan yozin',
     'Телегдан ёзинг',
+    // Uygulama adı tek başına ve arama ile buldurma
+    'Telegramda',
+    'Telegramda Hitabani topdim',
+    'Hitabayı Telegram’da buldum',
+    'Jumanoyabr abdulloh oʻzbek chiqadi yozing',
+    'xuddi shunday yozing chiqadi',
+    'ismimni qidiring',
+    'вотсапда борман',
   ]) {
     assert.ok(scanForContactInfo(s).signals.includes('INTENT'), s);
   }
@@ -85,10 +93,11 @@ test('contact words alone do not hold the chat', () => {
   for (const s of [
     'Aloqa sohasida ishlayman',
     'Telefon ustasiman',
-    'Telegramda Hitabani topdim',
     'Kontakt markazida ishlayman',
     'Я работаю в отделе связи, телефон у меня старый',
-    'Hitabayı Telegram’da buldum',
+    'Men umr yoʻldosh qidiryapman',
+    'Хочу найти хорошую жену',
+    'Opam bilan maslahatlashib yozaman, nima chiqadi koʻramiz',
     // Uzun mesajda birbirinden uzak geçen sözcükler ve veli/mahrem bağlamı
     'Masha Alloh endi meni fikirlarimdi aytman rozi bolsayiz Mahramlarizga Aloqaga chiqaman men oʻzimdi ayolim ishlashini hohlamiyman',
     'Иложи буса валий ракамини берсез',

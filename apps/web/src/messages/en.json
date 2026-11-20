@@ -505,7 +505,8 @@
       "chat_extended": "A moderator approved: each side can write 10 more messages.",
       "chat_extension_denied": "The request to continue the chat was declined.",
       "chat_daily_pause": "The daily message limit has been reached — continue tomorrow, in sha Allah. 🤍\nAllah says of marriage: “Among His signs is that He created for you spouses from among yourselves so that you may find tranquillity in them, and He placed between you affection and mercy” (ar-Rum 30:21). The Prophet ﷺ said: “Part of the excellence of a person's Islam is leaving what does not concern him” (at-Tirmidhi).\nTalking with a non-mahram is an amanah: keep it purposeful, modest and brief. Ask the questions that lead to nikah, and don't spend time on idle talk.",
-      "chat_moderator_warning": "Moderator reminder: a message asking for contact details was not delivered. Phone, Telegram and other contacts are shared only through “Mahram contact”, with the family involved."
+      "chat_moderator_warning": "Moderator reminder: a message asking for contact details was not delivered. Phone, Telegram and other contacts are shared only through “Mahram contact”, with the family involved.",
+      "moderator_note": "Moderator message"
     },
     "mahram": {
       "title": "Share mahram contact",
@@ -658,7 +659,8 @@
       "chat_extended": "A moderator allowed the chat to continue.",
       "chat_extension_denied": "The request to continue the chat was declined.",
       "report_reply": "A moderator replied to your report:",
-      "chat_warning": "Moderator warning: asking for or sharing a phone number, Telegram or other contacts in chat is not allowed — your message was not delivered. Contact happens only through “Mahram contact”, with the family involved. If it happens again, your account will be blocked."
+      "chat_warning": "Moderator warning: asking for or sharing a phone number, Telegram or other contacts in chat is not allowed — your message was not delivered. Contact happens only through “Mahram contact”, with the family involved. If it happens again, your account will be blocked.",
+      "moderator_note": "Message from the moderator:"
     }
   },
   "portal": {
@@ -1017,7 +1019,17 @@
     "reopenChatNote": "Reopens a chat closed by mistake. Both sides must be approved and have no other open chat. A refund made on closing isn't reversed.",
     "reopenChatConfirm": "Yes, reopen",
     "rejectBanConfirm": "This BLOCKS the sender's account and closes all their chats. If you only want to explain, use “Warn, don't deliver”; your reason is added to the warning.",
-    "rejectBanConfirmButton": "Yes, block"
+    "rejectBanConfirmButton": "Yes, block",
+    "chatNote": "Moderator message to chat",
+    "chatNoteNote": "Both sides see it in the chat as a “Moderator message”. The selected person also gets it on Telegram.",
+    "chatNoteText": "Message text",
+    "chatNoteNotify": "Telegram to",
+    "notifyNone": "No one",
+    "notifyMale": "The man",
+    "notifyFemale": "The woman",
+    "notifyBoth": "Both",
+    "chatNoteSend": "Send",
+    "chatNoteSent": "Message posted to the chat."
   },
   "consent": {
     "title": "Consents (required)",

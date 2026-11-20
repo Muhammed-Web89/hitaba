@@ -505,7 +505,8 @@
       "chat_extended": "Moderator ruxsat berdi: har bir tomon yana 10 ta xabar yozishi mumkin.",
       "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi.",
       "chat_daily_pause": "Bugungi xabar chegarasiga yetildi — ertaga davom etasiz, inshaAlloh. 🤍\nAlloh taolo nikoh haqida: «Sizlar uchun oʻzlaringizdan juftlar yaratib qoʻyganligi — ular bilan orom olishingiz uchun — va oralaringizda muhabbat va rahmat paydo qilganligi Uning oyatlaridandir» (Rum, 21). Paygʻambarimiz ﷺ: «Kishining Islomi goʻzalligidan — oʻziga aloqasi yoʻq narsani tark etishidir» (Termiziy).\nNomahram bilan suhbat — omonat: maqsadli, odobli va qisqa boʻlsin. Nikohga yetaklovchi savollarni bering, vaqtni behuda soʻzlarga sarflamang.",
-      "chat_moderator_warning": "Moderator eslatmasi: aloqa maʼlumotini soʻragan xabar yetkazilmadi. Telefon, Telegram va boshqa aloqalar faqat «Mahram maʼlumotlari» orqali, oila ishtirokida ulashiladi."
+      "chat_moderator_warning": "Moderator eslatmasi: aloqa maʼlumotini soʻragan xabar yetkazilmadi. Telefon, Telegram va boshqa aloqalar faqat «Mahram maʼlumotlari» orqali, oila ishtirokida ulashiladi.",
+      "moderator_note": "Moderator xabari"
     },
     "mahram": {
       "title": "Mahram (ota yoki aka) raqamini ulashish",
@@ -658,7 +659,8 @@
       "chat_extended": "Moderator suhbatni davom ettirishga ruxsat berdi.",
       "chat_extension_denied": "Suhbatni davom ettirish soʻrovi rad etildi.",
       "report_reply": "Shikoyatingizga moderator javob berdi:",
-      "chat_warning": "Moderator ogohlantirishi: suhbatda telefon raqami, Telegram yoki boshqa aloqa maʼlumotini soʻrash va ulashish mumkin emas — xabaringiz yetkazilmadi. Aloqa faqat «Mahram maʼlumotlari» orqali, oila ishtirokida boʻladi. Takrorlansa, hisobingiz bloklanadi."
+      "chat_warning": "Moderator ogohlantirishi: suhbatda telefon raqami, Telegram yoki boshqa aloqa maʼlumotini soʻrash va ulashish mumkin emas — xabaringiz yetkazilmadi. Aloqa faqat «Mahram maʼlumotlari» orqali, oila ishtirokida boʻladi. Takrorlansa, hisobingiz bloklanadi.",
+      "moderator_note": "Moderatordan xabar:"
     }
   },
   "portal": {
@@ -1017,7 +1019,17 @@
     "reopenChatNote": "Xato bilan yopilgan suhbatni ochadi. Ikki tomon ham tasdiqlangan va boshqa ochiq suhbati boʻlmasligi kerak. Yopilganda qaytarilgan jeton qaytarib olinmaydi.",
     "reopenChatConfirm": "Ha, ochish",
     "rejectBanConfirm": "Bu yuboruvchining hisobini BLOKLAYDI va barcha suhbatlarini yopadi. Faqat tushuntirmoqchi boʻlsangiz, «Ogohlantirish, yetkazmaslik»dan foydalaning — sababingiz ogohlantirishga qoʻshiladi.",
-    "rejectBanConfirmButton": "Ha, bloklash"
+    "rejectBanConfirmButton": "Ha, bloklash",
+    "chatNote": "Suhbatga moderator xabari",
+    "chatNoteNote": "Xabar suhbatda ikkala tomonga «Moderator xabari» sifatida koʻrinadi. Tanlangan kishiga Telegram orqali ham yuboriladi.",
+    "chatNoteText": "Xabar matni",
+    "chatNoteNotify": "Telegramda kimga",
+    "notifyNone": "Hech kimga",
+    "notifyMale": "Erkakka",
+    "notifyFemale": "Ayolga",
+    "notifyBoth": "Ikkalasiga",
+    "chatNoteSend": "Yuborish",
+    "chatNoteSent": "Xabar suhbatga yuborildi."
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

@@ -58,6 +58,29 @@ const CONTACT_PREFIX = [
 const CONTACT_EXACT = ['tel', 'тел', 'imo', 'tg', 'тг', 'wp', 'insta', 'инста', 'лс', 'dm'];
 
 /**
+ * Mesajlaşma uygulamasının adı tek başına geçse bile ("Telegramda", "телеграмда бор") niyet sayılır:
+ * sohbette başka bir uygulamaya geçmenin meşru bir sebebi yok. Mesaj yalnızca moderatöre tutulur, sohbet durmaz.
+ */
+const MESSENGER_MENTION_PREFIX = [
+  'telegram', 'teleg', 'telgram', 'tlgrm', 'телеграм', 'телег', 'whatsapp', 'whats', 'vatsap', 'votsap', 'watsap', 'ватсап', 'вотсап',
+  'instagram', 'инстаграм', 'viber', 'вайбер', 'lichka', 'личк', 'تلجرام', 'تيليجرام', 'تليجرام', 'واتس', 'انستا',
+];
+const MESSENGER_MENTION_EXACT = ['tg', 'тг', 'imo', 'insta', 'инста', 'лс'];
+
+/**
+ * Arama yoluyla buldurma: "Jumanoyabr abdulloh yozing, chiqadi", "qidirsangiz topasiz", "найдите меня".
+ * Arama fiili tek başına niyettir; "chiqadi/topasiz" ise "yozing/yozsangiz" ile yakın geçince sayılır.
+ */
+// Yalnızca emir/şart biçimleri: "qidiryapman" (eş arıyorum) ya da "найти" sıradan cümlelerde geçer.
+const SEARCH_EXACT = [
+  'qidiring', 'qidirsangiz', 'qidirib', 'qidir', 'izlang', 'izlasangiz', 'izlab',
+  'қидиринг', 'қидирсангиз', 'кидиринг', 'кидирсангиз', 'изланг', 'изласангиз',
+  'найдите', 'найди', 'поищите', 'поищи', 'ищите', 'ara', 'aratin', 'aratsan', 'bul', 'bulun',
+];
+const TYPE_EXACT = ['yozing', 'yozin', 'yozsangiz', 'yozsez', 'yozsayiz', 'ёзинг', 'ёзин', 'ёзсангиз', 'ёзсез', 'напишите', 'набери', 'наберите', 'введите', 'yaz', 'yazin', 'type'];
+const FOUND_PREFIX = ['chiqad', 'chiqar', 'чиқад', 'чикад', 'topas', 'topil', 'топас', 'топил'];
+
+/**
  * Veli/mahrem sözcükleri: "valiyingiz raqamini bering", "mahramlarizga aloqaga chiqaman" platformun
  * teşvik ettiği yoldur (veli bilgisi kart olarak, moderatör onayıyla paylaşılır). Yanındaki iletişim sözcüğü niyet sayılmaz.
  */
@@ -125,6 +148,10 @@ const LISTS = {
   REQUEST: { prefix: norm(REQUEST_PREFIX), exact: new Set(norm(REQUEST_EXACT)) },
   PROFANITY: { prefix: norm(PROFANITY_PREFIX), exact: new Set(norm(PROFANITY_EXACT)) },
   GUARDIAN: { prefix: norm(GUARDIAN_PREFIX), exact: new Set<string>() },
+  MESSENGER: { prefix: norm(MESSENGER_MENTION_PREFIX), exact: new Set(norm(MESSENGER_MENTION_EXACT)) },
+  SEARCH: { prefix: [], exact: new Set(norm(SEARCH_EXACT)) },
+  FOUND: { prefix: norm(FOUND_PREFIX), exact: new Set<string>() },
+  TYPE: { prefix: [], exact: new Set(norm(TYPE_EXACT)) },
 } as const;
 
 function isWord(w: string, kind: keyof typeof LISTS): boolean {
@@ -140,7 +167,11 @@ function hasWord(words: string[], kind: keyof typeof LISTS): boolean {
 function hasIntent(words: string[]): boolean {
   const near = (i: number, kind: keyof typeof LISTS) =>
     words.slice(Math.max(0, i - INTENT_WINDOW), i + INTENT_WINDOW + 1).some((w, k) => k + Math.max(0, i - INTENT_WINDOW) !== i && isWord(w, kind));
-  return words.some((w, i) => isWord(w, 'CONTACT') && !near(i, 'GUARDIAN') && !isWord(w, 'GUARDIAN') && near(i, 'REQUEST'));
+  if (words.some((w, i) => isWord(w, 'CONTACT') && !near(i, 'GUARDIAN') && !isWord(w, 'GUARDIAN') && near(i, 'REQUEST'))) return true;
+  // Uygulama adı tek başına ("Telegramda") ya da arama ile buldurma ("…yozing, chiqadi", "qidiring")
+  if (words.some((w, i) => isWord(w, 'MESSENGER') && !near(i, 'GUARDIAN'))) return true;
+  if (words.some((w) => isWord(w, 'SEARCH'))) return true;
+  return words.some((w, i) => isWord(w, 'FOUND') && near(i, 'TYPE'));
 }
 
 function digitWordsToDigits(text: string): string {

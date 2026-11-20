@@ -7,6 +7,9 @@ import { Icon } from './icons';
 import { TranslatedBubbleText } from './Translatable';
 import { cx } from './ui';
 
+/** API'deki MODERATOR_NOTE_PREFIX ile aynı. */
+const MODERATOR_NOTE = 'moderator_note:';
+
 export interface MessageActions {
   onReact?: (m: ChatMessage, reaction: string | null) => void;
   onEdit?: (m: ChatMessage) => void;
@@ -53,6 +56,20 @@ export function MessageList({
             {day}
           </li>
         );
+
+        if (m.kind === 'SYSTEM' && m.text.startsWith(MODERATOR_NOTE)) {
+          return [
+            dayRow,
+            <li key={m.id} className="flex justify-center">
+              <div className="w-full max-w-md glass rounded-card border border-accent/40 p-4">
+                <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent">
+                  <Icon name="shield" size={14} /> {t('system.moderator_note')}
+                </p>
+                <p className="mt-2 whitespace-pre-line text-sm leading-relaxed">{m.text.slice(MODERATOR_NOTE.length)}</p>
+              </div>
+            </li>,
+          ];
+        }
 
         if (m.kind === 'SYSTEM') {
           return [

@@ -26,6 +26,7 @@ import { PhotosService } from '../photos/photos.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const reasonSchema = z.object({ reason: z.string().trim().min(3).max(500) });
+const noteSchema = z.object({ text: z.string().trim().min(3).max(1500), notify: z.enum(['NONE', 'MALE', 'FEMALE', 'BOTH']) });
 const genderSchema = z.object({ gender: z.enum(['MALE', 'FEMALE']) });
 const replySchema = z.object({ text: z.string().trim().min(2).max(1000) });
 const resolveSchema = z.object({
@@ -297,6 +298,17 @@ export class AdminService {
     return { ok: true };
   }
 
+  async chatNote(mod: User, id: string, body: z.infer<typeof noteSchema>) {
+    const chat = await this.chats.moderatorNote(id, body.text);
+    const to = [
+      ...(body.notify === 'MALE' || body.notify === 'BOTH' ? [chat.match.maleId] : []),
+      ...(body.notify === 'FEMALE' || body.notify === 'BOTH' ? [chat.match.femaleId] : []),
+    ];
+    for (const userId of to) await this.notifications.notify(userId, 'moderator_note', { chatId: id, reason: body.text });
+    await this.moderation.audit(mod.id, 'chat.note', { targetType: 'CHAT', targetId: id }, { text: body.text, notify: body.notify });
+    return { ok: true };
+  }
+
   async reopenChat(mod: User, id: string) {
     await this.chats.reopenByAdmin(id);
     await this.moderation.audit(mod.id, 'chat.reopen', { targetType: 'CHAT', targetId: id }, {});
@@ -423,6 +435,11 @@ export class AdminController {
   @Roles('ADMIN')
   reopenChat(@CurrentUser() mod: User, @Param('id') id: string) {
     return this.admin.reopenChat(mod, id);
+  }
+
+  @Post('chats/:id/note')
+  chatNote(@CurrentUser() mod: User, @Param('id') id: string, @Body(new ZodPipe(noteSchema)) body: z.infer<typeof noteSchema>) {
+    return this.admin.chatNote(mod, id, body);
   }
 
   @Post('chats/:id/close')

@@ -33,6 +33,7 @@ const ICONS: Record<string, IconName> = {
   connects_credited: 'wallet',
   report_reply: 'shield',
   chat_warning: 'shield',
+  moderator_note: 'shield',
 };
 
 /** Bildirim verisindeki sayı/metin alanları çeviriye aktarılır (ör. {count}). */

@@ -505,7 +505,8 @@
       "chat_extended": "Moderatör izin verdi: her iki taraf 10 mesaj daha yazabilir.",
       "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi.",
       "chat_daily_pause": "Günlük mesaj sınırına ulaşıldı — inşallah yarın devam edersiniz. 🤍\nAllah Teâlâ nikâhı şöyle anar: «Kendileriyle huzur bulasınız diye size kendi cinsinizden eşler yaratması ve aranızda sevgi ve merhamet var etmesi O'nun ayetlerindendir» (Rûm, 21). Peygamberimiz ﷺ: «Kişinin kendisini ilgilendirmeyeni terk etmesi, Müslümanlığının güzelliğindendir» buyurdu (Tirmizî).\nNamahremle yazışma bir emanettir: amaçlı, edepli ve kısa olsun. Nikâha götüren sorular sorun, vakti boş sözlerle harcamayın.",
-      "chat_moderator_warning": "Moderatör hatırlatması: İletişim bilgisi isteyen bir mesaj iletilmedi. Telefon, Telegram ve diğer iletişim bilgileri yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla paylaşılır."
+      "chat_moderator_warning": "Moderatör hatırlatması: İletişim bilgisi isteyen bir mesaj iletilmedi. Telefon, Telegram ve diğer iletişim bilgileri yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla paylaşılır.",
+      "moderator_note": "Moderatör mesajı"
     },
     "mahram": {
       "title": "Mahrem yakının iletişim bilgisini paylaş",
@@ -658,7 +659,8 @@
       "chat_extended": "Moderatör sohbetin devam etmesine izin verdi.",
       "chat_extension_denied": "Sohbeti devam ettirme isteği reddedildi.",
       "report_reply": "Şikâyetinize moderatör yanıt verdi:",
-      "chat_warning": "Moderatör uyarısı: Sohbette telefon, Telegram veya başka iletişim bilgisi istemek ve paylaşmak yasaktır — mesajınız iletilmedi. İletişim yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla olur. Tekrarlanırsa hesabınız engellenir."
+      "chat_warning": "Moderatör uyarısı: Sohbette telefon, Telegram veya başka iletişim bilgisi istemek ve paylaşmak yasaktır — mesajınız iletilmedi. İletişim yalnızca «Mahrem yakın bilgisi» ile, aile aracılığıyla olur. Tekrarlanırsa hesabınız engellenir.",
+      "moderator_note": "Moderatörden mesaj:"
     }
   },
   "portal": {
@@ -1017,7 +1019,17 @@
     "reopenChatNote": "Yanlışlıkla kapanan sohbeti açar. İki taraf da onaylı olmalı ve başka açık sohbeti olmamalı. Kapanışta yapılan jeton iadesi geri alınmaz.",
     "reopenChatConfirm": "Evet, aç",
     "rejectBanConfirm": "Bu, gönderenin hesabını ENGELLER ve tüm sohbetlerini kapatır. Yalnızca açıklama yapmak istiyorsanız “Uyar, iletme”yi kullanın; gerekçeniz uyarıya eklenir.",
-    "rejectBanConfirmButton": "Evet, engelle"
+    "rejectBanConfirmButton": "Evet, engelle",
+    "chatNote": "Sohbete moderatör mesajı",
+    "chatNoteNote": "Mesaj sohbette iki tarafa da «Moderatör mesajı» olarak görünür. Seçilen kişiye Telegram'dan da gider.",
+    "chatNoteText": "Mesaj metni",
+    "chatNoteNotify": "Telegram'da kime",
+    "notifyNone": "Kimseye",
+    "notifyMale": "Erkeğe",
+    "notifyFemale": "Kadına",
+    "notifyBoth": "İkisine de",
+    "chatNoteSend": "Gönder",
+    "chatNoteSent": "Mesaj sohbete gönderildi."
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

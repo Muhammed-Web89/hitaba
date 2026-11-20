@@ -13,7 +13,7 @@ export function Transcript({ messages }: { messages: any[] }) {
         <div key={m.id} className="text-sm">
           <span className="me-2 text-xs text-ink-3">{new Date(m.createdAt).toLocaleString()}</span>
           <span className="me-2 font-semibold">{m.kind === 'SYSTEM' ? 'SYSTEM' : m.sender?.gender === 'FEMALE' ? '♀' : '♂'}</span>
-          <span className={m.deletedAt ? 'text-ink-3 line-through' : ''}>{m.text}</span>
+          <span className={m.deletedAt ? 'text-ink-3 line-through' : ''}>{m.kind === 'SYSTEM' ? m.text.replace(/^moderator_note:/, '✉ ') : m.text}</span>
           {m.state !== 'DELIVERED' && (
             <Chip tone="warning">
               {m.state}

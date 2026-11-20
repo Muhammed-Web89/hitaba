@@ -21,6 +21,9 @@ import { RealtimeService } from '../realtime/realtime.service';
 type ChatWithMatch = Chat & { match: Match };
 type MessageWithReactions = Message & { reactions: MessageReaction[] };
 
+/** Moderatör notu: SYSTEM mesajı, metni bu önekle başlar; istemci başlıklı kart olarak gösterir. */
+export const MODERATOR_NOTE_PREFIX = 'moderator_note:';
+
 /** Sistem mesajları anahtar olarak saklanır, istemci çevirir. */
 export type SystemMessageKey =
   | 'chat_opened'
@@ -280,6 +283,15 @@ export class ChatService implements OnModuleInit {
     });
     this.emitNew(sys);
     this.emitStatus(chatId);
+  }
+
+  /** Moderatörün sohbete yazdığı serbest uyarı/hatırlatma; iki taraf da sohbette görür. */
+  async moderatorNote(chatId: string, text: string) {
+    const chat = await this.prisma.chat.findUnique({ where: { id: chatId }, include: { match: true } });
+    if (!chat) throw new NotFoundException();
+    const sys = await this.prisma.message.create({ data: { chatId, kind: 'SYSTEM', text: `${MODERATOR_NOTE_PREFIX}${text}` }, include: { reactions: true } });
+    this.emitNew(sys);
+    return chat;
   }
 
   /** Ban: kullanıcının tüm açık sohbetleri kapanır; karşı taraf açtıysa ona iade yapılır. */
@@ -576,7 +588,7 @@ export class ChatService implements OnModuleInit {
         city: other?.city ?? '',
       },
       lastMessage: last
-        ? { text: last.kind === 'TEXT' ? last.text : `#${last.kind === 'SYSTEM' ? last.text : 'mahram'}`, at: last.createdAt.toISOString(), mine: last.senderId === viewer.id }
+        ? { text: last.kind === 'TEXT' ? last.text : `#${last.kind === 'SYSTEM' ? (last.text.startsWith(MODERATOR_NOTE_PREFIX) ? 'moderator_note' : last.text) : 'mahram'}`, at: last.createdAt.toISOString(), mine: last.senderId === viewer.id }
         : null,
       lastActivityAt: chat.lastActivityAt.toISOString(),
       canReopen: this.canReopen(viewer, chat),
