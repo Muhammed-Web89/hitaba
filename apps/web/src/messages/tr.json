@@ -1050,7 +1050,10 @@
     "mahramChat": "Sohbet",
     "mahramChatWith": "{name} ile sohbet",
     "sameContact": "Bu numara başka mahrem bilgilerinde de var ({count}). Kullanıcı kendi numarasını yakını adıyla veriyor olabilir.",
-    "openUserFull": "Profil ve sohbetler"
+    "openUserFull": "Profil ve sohbetler",
+    "reportBlocked": "Engelledi",
+    "reportNotBlocked": "Engellemedi",
+    "reportNoDetails": "Açıklama yazılmamış — sohbeti okuyun."
   },
   "consent": {
     "title": "Onaylar (zorunlu)",

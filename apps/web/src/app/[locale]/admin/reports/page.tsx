@@ -13,6 +13,8 @@ interface ReportRow {
   category: string;
   details: string | null;
   chatId: string | null;
+  pairChatId: string | null;
+  blocked: boolean;
   status: string;
   resolution: string | null;
   createdAt: string;
@@ -58,12 +60,13 @@ export default function ReportsPage() {
                 <Link href={`/admin/users/${r.targetUser.id}`} className="font-semibold text-danger hover:underline">
                   {r.targetUser.profile?.displayName ?? r.targetUser.id}
                 </Link>{' '}
-                <Chip>{t(`userStatus.${r.targetUser.status}` as never)}</Chip>
+                <Chip>{t(`userStatus.${r.targetUser.status}` as never)}</Chip>{' '}
+                <Chip tone={r.blocked ? 'warning' : 'neutral'}>{t(r.blocked ? 'reportBlocked' : 'reportNotBlocked')}</Chip>
               </p>
-              {r.details && <p className="whitespace-pre-wrap text-sm text-ink-2">{r.details}</p>}
+              {r.details ? <p className="whitespace-pre-wrap text-sm text-ink-2">{r.details}</p> : <p className="text-sm italic text-ink-3">{t('reportNoDetails')}</p>}
               <div className="flex flex-wrap gap-2">
-                {r.chatId && (
-                  <Link href={`/admin/chats/${r.chatId}`} className="inline-flex h-9 items-center rounded-control border border-line px-3 text-sm font-semibold">
+                {r.pairChatId && (
+                  <Link href={`/admin/chats/${r.pairChatId}`} className="inline-flex h-9 items-center rounded-control border border-line px-3 text-sm font-semibold">
                     {t('openChat')}
                   </Link>
                 )}

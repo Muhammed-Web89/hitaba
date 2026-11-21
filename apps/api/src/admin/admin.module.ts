@@ -63,7 +63,22 @@ export class AdminService {
         targetUser: { select: { id: true, gender: true, status: true, profile: { select: { displayName: true } } } },
       },
       take: 200,
-    }).then((rows) => rows.sort((a, b) => Number(b.category === 'MINOR') - Number(a.category === 'MINOR')));
+    }).then(async (rows) => {
+      // Şikâyet eden karşı tarafı engelledi mi, aralarında sohbet var mı (şikâyet sohbet dışından yapılmış olsa da).
+      const enriched = await Promise.all(
+        rows.map(async (r) => {
+          const [block, match] = await Promise.all([
+            this.prisma.block.findUnique({ where: { fromId_toId: { fromId: r.reporterId, toId: r.targetUserId } } }),
+            this.prisma.match.findFirst({
+              where: { OR: [{ maleId: r.reporterId, femaleId: r.targetUserId }, { maleId: r.targetUserId, femaleId: r.reporterId }] },
+              select: { chat: { select: { id: true } } },
+            }),
+          ]);
+          return { ...r, blocked: Boolean(block), pairChatId: r.chatId ?? match?.chat?.id ?? null };
+        }),
+      );
+      return enriched.sort((a, b) => Number(b.category === 'MINOR') - Number(a.category === 'MINOR'));
+    });
   }
 
   async resolveReport(mod: User, id: string, body: z.infer<typeof resolveSchema>) {

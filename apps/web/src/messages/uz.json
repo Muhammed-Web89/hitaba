@@ -1050,7 +1050,10 @@
     "mahramChat": "Suhbat",
     "mahramChatWith": "{name} bilan suhbat",
     "sameContact": "Bu raqam boshqa mahram maʼlumotlarida ham bor ({count}). Foydalanuvchi oʻz raqamini qarindosh nomi bilan berayotgan boʻlishi mumkin.",
-    "openUserFull": "Profil va suhbatlar"
+    "openUserFull": "Profil va suhbatlar",
+    "reportBlocked": "Bloklagan",
+    "reportNotBlocked": "Bloklamagan",
+    "reportNoDetails": "Izoh yozilmagan — suhbatni oʻqib koʻring."
   },
   "consent": {
     "title": "Roziliklar (majburiy)",

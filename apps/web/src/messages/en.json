@@ -1050,7 +1050,10 @@
     "mahramChat": "Chat",
     "mahramChatWith": "Chat with {name}",
     "sameContact": "This number also appears in other mahram contacts ({count}). The user may be giving their own number under a relative's name.",
-    "openUserFull": "Profile and chats"
+    "openUserFull": "Profile and chats",
+    "reportBlocked": "Blocked them",
+    "reportNotBlocked": "Did not block",
+    "reportNoDetails": "No details given — read the chat."
   },
   "consent": {
     "title": "Consents (required)",

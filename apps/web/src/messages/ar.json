@@ -1050,7 +1050,10 @@
     "mahramChat": "المحادثة",
     "mahramChatWith": "محادثة مع {name}",
     "sameContact": "هذا الرقم موجود أيضًا في بيانات محارم أخرى ({count}). ربما يقدّم المستخدم رقمه باسم أحد أقاربه.",
-    "openUserFull": "الملف والمحادثات"
+    "openUserFull": "الملف والمحادثات",
+    "reportBlocked": "حظره",
+    "reportNotBlocked": "لم يحظره",
+    "reportNoDetails": "لا توجد تفاصيل — اقرأ المحادثة."
   },
   "consent": {
     "title": "الموافقات (إلزامية)",
