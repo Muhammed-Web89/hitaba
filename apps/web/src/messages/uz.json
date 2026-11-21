@@ -444,7 +444,13 @@
     "paused": "Toʻxtatilgan",
     "closed": "Yopilgan",
     "witnessed": "Guvohli",
-    "mahramShared": "Mahram raqami ulashildi"
+    "mahramShared": "Mahram raqami ulashildi",
+    "activeChat": "Siz {name} bilan suhbatdasiz.",
+    "activeChatHint": "Suhbat davom etmayotgan boʻlsa, uni yakunlang — shundan soʻng boshqa birov bilan tanisha olasiz.",
+    "activeChatOpen": "Suhbatga oʻtish",
+    "activeChatClose": "Yakunlash",
+    "activeChatCloseTitle": "{name} bilan suhbat yakunlansinmi?",
+    "activeChatCloseText": "Suhbat ikki tomon uchun ham yopiladi va qayta ochilmaydi. Shundan soʻng yangi tanishuvlar uchun ochiq boʻlasiz."
   },
   "chat": {
     "menu": "Menyu",
@@ -482,7 +488,7 @@
     "reopenTitle": "Suhbatni qayta ochasizmi?",
     "reopenText": "{cost} ta tanga sarflanadi. Suhbatni faqat bir marta qayta ochish mumkin.",
     "closeTitle": "Suhbatni yakunlaysizmi?",
-    "closeText": "Suhbat ikki tomon uchun ham yopiladi.",
+    "closeText": "Suhbat ikki tomon uchun ham yopiladi. Shundan soʻng yangi tanishuvlar uchun yoʻl ochiladi.",
     "mahramCard": "Mahramning aloqa maʼlumotlari",
     "closedBanner": {
       "USER": "Bu suhbat yakunlangan.",
@@ -546,7 +552,8 @@
     "continue": "Davom ettirish",
     "continuePending": "Soʻrov moderatorda. Ruxsat berilgach, suhbat davom etadi.",
     "mahramHint": "Ota yoki akangizning raqamini suhbatga yozmang — shu yerdan yuboring.",
-    "mahramHintAction": "Mahram raqami"
+    "mahramHintAction": "Mahram raqami",
+    "closeShort": "Yakunlash"
   },
   "report": {
     "title": "Shikoyat yoki bloklash",

@@ -444,7 +444,13 @@
     "paused": "Durduruldu",
     "closed": "Kapandı",
     "witnessed": "Şahitli",
-    "mahramShared": "Mahrem yakının bilgisi paylaşıldı"
+    "mahramShared": "Mahrem yakının bilgisi paylaşıldı",
+    "activeChat": "{name} ile sohbettesiniz.",
+    "activeChatHint": "Sohbet devam etmiyorsa bitirin — sonra başka biriyle tanışabilirsiniz.",
+    "activeChatOpen": "Sohbete git",
+    "activeChatClose": "Bitir",
+    "activeChatCloseTitle": "{name} ile sohbet bitirilsin mi?",
+    "activeChatCloseText": "Sohbet iki taraf için de kapanır ve yeniden açılmaz. Sonra yeni tanışmalara açık olursunuz."
   },
   "chat": {
     "menu": "Menü",
@@ -482,7 +488,7 @@
     "reopenTitle": "Sohbet yeniden açılsın mı?",
     "reopenText": "{cost} jeton harcanacak. Bir sohbet yalnızca bir kez yeniden açılabilir.",
     "closeTitle": "Sohbet sonlandırılsın mı?",
-    "closeText": "Sohbet iki taraf için de kapanacak.",
+    "closeText": "Sohbet iki taraf için de kapanır. Sonra yeni tanışmaların yolu açılır.",
     "mahramCard": "Mahrem yakının iletişim bilgisi",
     "closedBanner": {
       "USER": "Bu sohbet sonlandırıldı.",
@@ -546,7 +552,8 @@
     "continue": "Devam et",
     "continuePending": "İstek moderatörde. Onaylanınca sohbet devam eder.",
     "mahramHint": "Babanızın ya da ağabeyinizin numarasını sohbete yazmayın — buradan gönderin.",
-    "mahramHintAction": "Mahrem numarası"
+    "mahramHintAction": "Mahrem numarası",
+    "closeShort": "Bitir"
   },
   "report": {
     "title": "Şikâyet veya engelle",

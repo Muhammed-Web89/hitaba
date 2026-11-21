@@ -257,6 +257,15 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
               className={translateOn ? '!text-brand-500 bg-brand-50 shadow-[0_0_18px_-6px_var(--brand-500)]' : ''}
             />
           )}
+          {chat.status !== 'CLOSED' && (
+            <button
+              type="button"
+              onClick={() => setDialog('close')}
+              className="inline-flex h-9 shrink-0 items-center rounded-full border border-danger/50 px-3 text-xs font-semibold text-danger hover:bg-surface-alt"
+            >
+              {t('closeShort')}
+            </button>
+          )}
           <div className="relative">
             <IconButton icon="more" label={t('menu')} onClick={() => setMenu(!menu)} aria-expanded={menu} />
             {menu && (

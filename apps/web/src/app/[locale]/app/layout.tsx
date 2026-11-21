@@ -4,6 +4,7 @@ import { useEffect, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 import type { NotificationItem } from '@hitaba/shared/client';
+import { ActiveChatBanner } from '@/components/ActiveChatBanner';
 import { Icon, type IconName } from '@/components/icons';
 import { Logo } from '@/components/Logo';
 import { ReviewBadge } from '@/components/StatusGate';
@@ -88,6 +89,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       <main className={cx('flex-1', !inChat && 'px-4 pb-24 pt-4')}>
         {!inChat && <TelegramReopenHint />}
+        {!inChat && me.gender === 'FEMALE' && me.status === 'APPROVED' && <ActiveChatBanner />}
         {!inChat && !me.emailVerified && (
           <div className="mb-4">
             <VerifyEmailBanner />

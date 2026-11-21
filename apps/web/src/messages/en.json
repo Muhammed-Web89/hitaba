@@ -444,7 +444,13 @@
     "paused": "Paused",
     "closed": "Closed",
     "witnessed": "Witnessed",
-    "mahramShared": "Mahram contact shared"
+    "mahramShared": "Mahram contact shared",
+    "activeChat": "You're in a chat with {name}.",
+    "activeChatHint": "If it isn't going anywhere, end it — then you can get to know someone else.",
+    "activeChatOpen": "Go to chat",
+    "activeChatClose": "End chat",
+    "activeChatCloseTitle": "End the chat with {name}?",
+    "activeChatCloseText": "The chat closes for both sides and won't reopen. After that you're open to new introductions."
   },
   "chat": {
     "menu": "Menu",
@@ -482,7 +488,7 @@
     "reopenTitle": "Reopen the chat?",
     "reopenText": "{cost, plural, one {# connect} other {# connects}} will be spent. A chat can be reopened only once.",
     "closeTitle": "End the chat?",
-    "closeText": "The chat will be closed for both sides.",
+    "closeText": "The chat closes for both sides. After that you're open to new introductions.",
     "mahramCard": "Mahram contact",
     "closedBanner": {
       "USER": "This chat has been ended.",
@@ -546,7 +552,8 @@
     "continue": "Continue",
     "continuePending": "Your request is with the moderators. The chat continues once approved.",
     "mahramHint": "Don't type your father's or brother's number in the chat — send it here.",
-    "mahramHintAction": "Mahram number"
+    "mahramHintAction": "Mahram number",
+    "closeShort": "End"
   },
   "report": {
     "title": "Report or block",
