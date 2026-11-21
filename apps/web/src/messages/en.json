@@ -475,9 +475,9 @@
     "retry": "Retry",
     "sendingNote": "Sending",
     "pausedBanner": "The chat is paused until a moderator reviews a message. This is not a punishment — it protects both sides.",
-    "contactWarning": "This message seems to contain contact details. It will not be delivered and the chat will pause until a moderator reviews it.",
+    "contactWarning": "This message contains a number or contact. Numbers can't be written in chat — such a message isn't delivered, and repeating it gets the account blocked. Send your father's or brother's number with the button below: a moderator checks it and it appears in the chat.",
     "editMessage": "Edit message",
-    "sendAnyway": "Send anyway",
+    "sendAnyway": "It's not a number, send anyway",
     "reopen": "Reopen chat · {cost, plural, one {# connect} other {# connects}}",
     "reopenTitle": "Reopen the chat?",
     "reopenText": "{cost, plural, one {# connect} other {# connects}} will be spent. A chat can be reopened only once.",
@@ -544,7 +544,9 @@
     "quotaLeft": "{left} messages left",
     "quotaReached": "You have used your {limit} messages for this stage. Ask the moderators to let the chat continue.",
     "continue": "Continue",
-    "continuePending": "Your request is with the moderators. The chat continues once approved."
+    "continuePending": "Your request is with the moderators. The chat continues once approved.",
+    "mahramHint": "Don't type your father's or brother's number in the chat — send it here.",
+    "mahramHintAction": "Mahram number"
   },
   "report": {
     "title": "Report or block",

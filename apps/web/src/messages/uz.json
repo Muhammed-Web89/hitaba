@@ -475,9 +475,9 @@
     "retry": "Qayta urinish",
     "sendingNote": "Yuborilmoqda",
     "pausedBanner": "Moderator xabarni koʻrib chiqquncha suhbat toʻxtatildi. Bu jazo emas — ikki tomonni himoya qiladi.",
-    "contactWarning": "Bu xabarda aloqa maʼlumoti borga oʻxshaydi. U yetkazilmaydi va moderator koʻrib chiqquncha suhbat toʻxtaydi.",
+    "contactWarning": "Bu xabarda raqam yoki aloqa maʼlumoti bor. Suhbatda raqam yozish mumkin emas — bunday xabar yetkazilmaydi va takrorlansa hisob bloklanadi. Ota yoki akangizning raqamini pastdagi tugma orqali yuboring: moderator tekshiradi va suhbatda koʻrinadi.",
     "editMessage": "Xabarni tahrirlash",
-    "sendAnyway": "Baribir yuborish",
+    "sendAnyway": "Raqam emas, baribir yuborish",
     "reopen": "Suhbatni qayta ochish · {cost} tanga",
     "reopenTitle": "Suhbatni qayta ochasizmi?",
     "reopenText": "{cost} ta tanga sarflanadi. Suhbatni faqat bir marta qayta ochish mumkin.",
@@ -544,7 +544,9 @@
     "quotaLeft": "Yana {left} ta xabar yozishingiz mumkin",
     "quotaReached": "Bu bosqichdagi {limit} ta xabaringiz tugadi. Suhbatni davom ettirish uchun moderatorga soʻrov yuboring.",
     "continue": "Davom ettirish",
-    "continuePending": "Soʻrov moderatorda. Ruxsat berilgach, suhbat davom etadi."
+    "continuePending": "Soʻrov moderatorda. Ruxsat berilgach, suhbat davom etadi.",
+    "mahramHint": "Ota yoki akangizning raqamini suhbatga yozmang — shu yerdan yuboring.",
+    "mahramHintAction": "Mahram raqami"
   },
   "report": {
     "title": "Shikoyat yoki bloklash",

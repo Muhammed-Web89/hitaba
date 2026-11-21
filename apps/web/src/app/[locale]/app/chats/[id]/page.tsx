@@ -351,14 +351,18 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
             <Notice tone="warning" icon="lock">
               {t('contactWarning')}
             </Notice>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              {/* Veli/mahrem numarası yazan kişiyi doğru yere yönlendir: sohbete yazılan numara reddedilir. */}
+              <Button size="sm" icon="shield" onClick={() => (setWarn(false), setDialog('mahram'))}>
+                {t('shareMahram')}
+              </Button>
               <Button size="sm" variant="secondary" onClick={() => setWarn(false)}>
                 {t('editMessage')}
               </Button>
-              <Button size="sm" onClick={() => send(true)}>
-                {t('sendAnyway')}
-              </Button>
             </div>
+            <button type="button" className="px-1 text-xs text-ink-3 underline" onClick={() => send(true)}>
+              {t('sendAnyway')}
+            </button>
           </div>
         )}
         {error && (
@@ -380,6 +384,17 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
               {tc('cancel')}
             </button>
           </div>
+        )}
+        {active && !warn && !messages?.some((m) => m.kind === 'MAHRAM_CONTACT' && m.senderId === me?.id) && (
+          <button
+            type="button"
+            onClick={() => setDialog('mahram')}
+            className="mb-2 flex w-full items-center gap-2 rounded-card border border-accent/40 px-3 py-2 text-start text-xs text-ink-2 hover:bg-surface-alt"
+          >
+            <Icon name="shield" size={16} className="shrink-0 text-accent" />
+            <span className="min-w-0 flex-1">{t('mahramHint')}</span>
+            <span className="shrink-0 font-semibold text-accent">{t('mahramHintAction')} →</span>
+          </button>
         )}
         <form
           className="flex items-end gap-2"

@@ -475,9 +475,9 @@
     "retry": "Tekrar dene",
     "sendingNote": "Gönderiliyor",
     "pausedBanner": "Bir mesaj moderatör tarafından incelenene kadar sohbet durduruldu. Bu bir ceza değil — iki tarafı da korur.",
-    "contactWarning": "Bu mesaj iletişim bilgisi içeriyor gibi görünüyor. Teslim edilmeyecek ve moderatör inceleyene kadar sohbet duracak.",
+    "contactWarning": "Bu mesajda numara ya da iletişim bilgisi var. Sohbete numara yazılamaz — böyle bir mesaj iletilmez, tekrarlanırsa hesap engellenir. Babanızın ya da ağabeyinizin numarasını aşağıdaki düğmeyle gönderin: moderatör kontrol eder ve sohbette görünür.",
     "editMessage": "Mesajı düzenle",
-    "sendAnyway": "Yine de gönder",
+    "sendAnyway": "Numara değil, yine de gönder",
     "reopen": "Sohbeti yeniden aç · {cost} jeton",
     "reopenTitle": "Sohbet yeniden açılsın mı?",
     "reopenText": "{cost} jeton harcanacak. Bir sohbet yalnızca bir kez yeniden açılabilir.",
@@ -544,7 +544,9 @@
     "quotaLeft": "{left} mesaj hakkınız kaldı",
     "quotaReached": "Bu aşamadaki {limit} mesaj hakkınız doldu. Sohbeti sürdürmek için moderatöre devam isteği gönderin.",
     "continue": "Devam et",
-    "continuePending": "İstek moderatörde. Onaylanınca sohbet devam eder."
+    "continuePending": "İstek moderatörde. Onaylanınca sohbet devam eder.",
+    "mahramHint": "Babanızın ya da ağabeyinizin numarasını sohbete yazmayın — buradan gönderin.",
+    "mahramHintAction": "Mahrem numarası"
   },
   "report": {
     "title": "Şikâyet veya engelle",
