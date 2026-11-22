@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Chat, ChatStatus, Match, Prisma, Profile, User } from '@prisma/client';
 import { RULES, type FeedCard, type FeedFilter, type MatchSummary, type PublicProfile } from '@hitaba/shared';
-import { hours, startOfLocalDay } from '../common/time';
+import { hours } from '../common/time';
 import { REVIEW_EMAIL } from '../config/production-checks';
 import { NotificationsService } from '../notifications/notifications.service';
 import { notBlockedWith } from '../blocks/blocks.module';
@@ -152,38 +152,6 @@ export class MatchingService {
       where: { userId: toId, type: 'new_like', data: { path: ['fromId'], equals: fromId }, createdAt: { gte: new Date(Date.now() - hours(24 * 7)) } },
     });
     return n > 0;
-  }
-
-  /** Karşılıksız beğeniyi geri alır. Karşılıklı olmuşsa geri alınamaz (eşleşmede "reddet" kullanılır). */
-  async unlike(viewer: User, targetId: string) {
-    const like = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: viewer.id, toId: targetId } } });
-    if (!like) throw new NotFoundException();
-    const reciprocal = await this.prisma.like.findUnique({ where: { fromId_toId: { fromId: targetId, toId: viewer.id } } });
-    if (reciprocal) throw new BadRequestException({ error: 'already_mutual' });
-    await this.withdraw(viewer, [like]);
-    void this.notifications.refreshTelegramStatus(targetId);
-    return { ok: true, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
-  }
-
-  /** Tüm karşılıksız beğenilerimi sıfırlar. */
-  async resetLikes(viewer: User) {
-    const likes = await this.prisma.like.findMany({
-      where: { fromId: viewer.id, to: { likesGiven: { none: { toId: viewer.id } } } },
-    });
-    await this.withdraw(viewer, likes);
-    for (const l of likes) void this.notifications.refreshTelegramStatus(l.toId);
-    return { removed: likes.length, likesLeftToday: await this.profiles.likesLeftToday(viewer) };
-  }
-
-  private async withdraw(viewer: User, likes: { toId: string; createdAt: Date }[]) {
-    if (!likes.length) return;
-    const today = startOfLocalDay(viewer.timezone);
-    const todays = likes.filter((l) => l.createdAt >= today);
-    await this.prisma.$transaction([
-      this.prisma.like.deleteMany({ where: { fromId: viewer.id, toId: { in: likes.map((l) => l.toId) } } }),
-      // Bugün harcanan hak iade edilmez (bkz. ProfilesService.likesLeftToday); eski beğeniler etkilemez.
-      ...(todays.length ? [this.prisma.likeWithdrawal.createMany({ data: todays.map(() => ({ userId: viewer.id })) })] : []),
-    ]);
   }
 
   async pass(viewer: User, targetId: string) {

@@ -10,7 +10,7 @@ import { Icon } from '@/components/icons';
 import { useMatchStatus } from '@/components/matchStatus';
 import { ProfileAvatar } from '@/components/ProfileView';
 import { StatusGate } from '@/components/StatusGate';
-import { Button, Card, Chip, cx, EmptyState, Modal, Notice, PageLoader } from '@/components/ui';
+import { Button, Card, Chip, cx, EmptyState, Notice, PageLoader } from '@/components/ui';
 import { Link, useRouter } from '@/i18n/navigation';
 import { api } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -269,48 +269,15 @@ function FavoritesList() {
 
 function ProfileList({ tab }: { tab: 'mine' }) {
   const t = useTranslations('likes');
-  const tc = useTranslations('common');
   const names = useDisplayNames();
-  const errorText = useErrorText();
-  const { refreshMe } = useAuth();
-  const { data, mutate } = useSWR<PublicProfile[]>(`/likes?tab=${tab}`);
-  const [busy, setBusy] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [confirmReset, setConfirmReset] = useState(false);
+  const { data } = useSWR<PublicProfile[]>(`/likes?tab=${tab}`);
   if (!data) return <PageLoader />;
   if (!data.length) return <EmptyState icon="heart" title={t('emptyMine')} />;
-  const mine = true;
 
-  async function run(key: string, fn: () => Promise<unknown>) {
-    setBusy(key);
-    setError(null);
-    try {
-      await fn();
-      await mutate();
-      void refreshMe();
-    } catch (e) {
-      setError(errorText(e));
-    } finally {
-      setBusy(null);
-      setConfirmReset(false);
-    }
-  }
-
+  // Beğeni geri alınamaz: geri alıp yeniden beğenmek karşı tarafa tekrar tekrar bildirim gönderiyordu.
   return (
     <>
-      {mine && (
-        <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-sm text-ink-2">{t('mineIntro')}</p>
-          <Button size="sm" variant="secondary" icon="undo" onClick={() => setConfirmReset(true)} className="shrink-0">
-            {t('resetAll')}
-          </Button>
-        </div>
-      )}
-      {error && (
-        <div className="mb-3">
-          <Notice tone="warning">{error}</Notice>
-        </div>
-      )}
+      <p className="mb-3 text-sm text-ink-2">{t('mineIntro')}</p>
       <ul className="grid grid-cols-2 gap-3">
         {data.map((p) => (
           <li key={p.userId}>
@@ -322,39 +289,10 @@ function ProfileList({ tab }: { tab: 'mine' }) {
                   {p.ageRange} · {names.country(p.country)}
                 </p>
               </Link>
-              {mine && (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  icon="undo"
-                  className="mt-2 w-full"
-                  loading={busy === p.userId}
-                  onClick={() => run(p.userId, () => api(`/feed/${p.userId}/like`, { method: 'DELETE' }))}
-                >
-                  {t('undoLike')}
-                </Button>
-              )}
             </Card>
           </li>
         ))}
       </ul>
-      <Modal
-        open={confirmReset}
-        onClose={() => setConfirmReset(false)}
-        title={t('resetAllTitle')}
-        footer={
-          <>
-            <Button variant="secondary" onClick={() => setConfirmReset(false)}>
-              {tc('cancel')}
-            </Button>
-            <Button variant="danger" loading={busy === 'all'} onClick={() => run('all', () => api('/likes/reset', { method: 'POST' }))}>
-              {t('resetAll')}
-            </Button>
-          </>
-        }
-      >
-        {t('resetAllText', { n: data.length })}
-      </Modal>
     </>
   );
 }
