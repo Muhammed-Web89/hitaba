@@ -100,7 +100,7 @@ export class ChatScheduler {
 
   constructor(private readonly chats: ChatService) {}
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_HOUR)
   async silence() {
     if (this.running) return;
     this.running = true;

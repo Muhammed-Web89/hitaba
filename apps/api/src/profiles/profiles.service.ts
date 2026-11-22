@@ -393,7 +393,7 @@ export class ProfilesService implements OnModuleInit {
   }
 
   /** Kuyrukta bekleyen boş anketleri de geri gönderir (kural öncesi gelenler ya da başka bir yoldan düşenler). */
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  @Cron(CronExpression.EVERY_HOUR)
   async sweepThinProfiles() {
     const items = await this.prisma.moderationItem.findMany({ where: { targetType: 'PROFILE', status: 'PENDING' } });
     if (!items.length) return;

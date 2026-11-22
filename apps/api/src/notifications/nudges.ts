@@ -139,7 +139,7 @@ export class NudgeService {
     private readonly telegram: TelegramService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
+  @Cron(CronExpression.EVERY_HOUR)
   async tick() {
     if (this.running || !this.telegram.enabled) return;
     this.running = true;
